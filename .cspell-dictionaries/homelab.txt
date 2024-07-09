@@ -203,3 +203,5 @@ xolyu
 autoupdate
 mdformat
 frontmatter
+leantime
+selfhosted

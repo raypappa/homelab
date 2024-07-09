@@ -1,0 +1,264 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: leantime-svc
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    repoURL: 'https://bjw-s.github.io/helm-charts'
+    chart: app-template
+    targetRevision: v2.5.0
+    helm:
+      valuesObject:
+        configMaps:
+          mariadb:
+            data:
+              database: leantime
+              user: lean
+        controllers:
+          mariadb:
+            type: statefulset
+            containers:
+              main:
+                nameOverride: "leantime-db"
+                image:
+                  repository: mariadb
+                  tag: latest
+                  pullPolicy: IfNotPresent
+                env:
+                  MARIADB_ROOT_PASSWORD:
+                    valueFrom:
+                      secretKeyRef:
+                        name: leantime-svc-mariadb
+                        key: root
+                  MARIADB_PASSWORD:
+                    valueFrom:
+                      secretKeyRef:
+                        name: leantime-svc-mariadb
+                        key: user
+                  MARIADB_DATABASE:
+                    valueFrom:
+                      configMapKeyRef:
+                        name: leantime-svc-mariadb
+                        key: database
+                  MARIADB_USER:
+                    valueFrom:
+                      configMapKeyRef:
+                        name: leantime-svc-mariadb
+                        key: user
+          main:
+            containers:
+              main:
+                image:
+                  repository: leantime/leantime
+                  tag: latest
+                  pullPolicy: IfNotPresent
+                env:
+                  # Lots of this is pulled wholesale from
+                  # https://github.com/Leantime/docker-leantime/blob/master/sample.env
+                  LEAN_PORT: "80"
+                  LEAN_APP_URL: "https://lt.fieldsofbears.com"
+                  LEAN_APP_DIR: ""
+                  LEAN_DEBUG: "0"
+                  # MariaDB stuff here
+                  LEAN_DB_HOST: "leantime-svc-mariadb"
+                  LEAN_DB_USER:
+                    valueFrom:
+                      configMapKeyRef:
+                        name: leantime-svc-mariadb
+                        key: user
+                  LEAN_DB_PASSWORD:
+                    valueFrom:
+                      secretKeyRef:
+                        name: leantime-svc-mariadb
+                        key: user
+                  LEAN_DB_DATABASE:
+                    valueFrom:
+                      configMapKeyRef:
+                        name: leantime-svc-mariadb
+                        key: database
+                  LEAN_DB_PORT: "3306"
+                  # General Settings
+                  LEAN_SITENAME: "Fields of Bears"
+                  LEAN_LANGUAGE: "en-US"
+                  LEAN_DEFAULT_TIMEZONE: "America/Los_Angeles"
+                  LEAN_SESSION_PASSWORD:
+                    valueFrom:
+                      secretKeyRef:
+                        name: leantime-svc
+                        key: session
+                  LEAN_SESSION_EXPIRATION: "28800"
+                  LEAN_LOG_PATH:
+                  # Look/feel stuff (can be changed in UI)
+                  LEAN_LOGO_PATH: "/images/logo.svg" # Default logo path, can be changed later
+                  LEAN_PRINT_LOGO_URL: "/images/logo.jpg" # Default logo URL use for printing (must be jpg or png format)
+                  LEAN_DEFAULT_THEME: "default" # Default theme
+                  LEAN_PRIMARY_COLOR: "#1b75bb" # Primary Theme color
+                  LEAN_SECONDARY_COLOR: "#81B1A8" # Secondary Theme Color
+                  # Local File Uploads
+                  LEAN_USER_FILE_PATH: "userfiles/" # Local relative path to store uploaded files (if not using S3)
+                  LEAN_DB_BACKUP_PATH: "backupdb/" # Local relative path to store backup files, need permission to write
+                  # S3 File Uploads
+                  # LEAN_USE_S3: false                                # Set to true if you want to use S3 instead of local files
+                  # LEAN_S3_KEY: ""                                   # S3 Key
+                  # LEAN_S3_SECRET: ""                                # S3 Secret
+                  # LEAN_S3_BUCKET: ""                                # Your S3 bucket
+                  # LEAN_S3_USE_PATH_STYLE_ENDPOINT: false            # Sets the endpoint style: false => https://[bucket].[endpoint] ; true => https://[endpoint]/[bucket]
+                  # LEAN_S3_REGION: ""                                # S3 region
+                  # LEAN_S3_FOLDER_NAME: ""                           # Foldername within S3 (can be empty)
+                  # LEAN_S3_END_POINT: null                           # S3 EndPoint S3 Compatible (https://sfo2.digitaloceanspaces.com)
+
+                  ## Email
+                  LEAN_EMAIL_RETURN: "" # Return email address, needs to be valid email address format
+                  LEAN_EMAIL_USE_SMTP: false # Use SMTP? If set to false, the default php mail() function will be used
+                  LEAN_EMAIL_SMTP_HOSTS: "" # SMTP host
+                  LEAN_EMAIL_SMTP_AUTH: true # SMTP authentication required
+                  LEAN_EMAIL_SMTP_USERNAME: "" # SMTP username
+                  LEAN_EMAIL_SMTP_PASSWORD: "" # SMTP password
+                  LEAN_EMAIL_SMTP_AUTO_TLS: true # SMTP Enable TLS encryption automatically if a server supports it
+                  LEAN_EMAIL_SMTP_SECURE: "" # SMTP Security protocol (usually one of: TLS, SSL, STARTTLS)
+                  LEAN_EMAIL_SMTP_SSLNOVERIFY: false # SMTP Allow insecure SSL: Don"t verify certificate, accept self-signed, etc.
+                  LEAN_EMAIL_SMTP_PORT: "" # Port (usually one of 25, 465, 587, 2526)
+                  ## Ldap
+                  # LEAN_LDAP_USE_LDAP: false                         # Set to true if you want to use LDAP
+                  # LEAN_LDAP_LDAP_TYPE: "OL"                         # Select the correct directory type. Currently Supported: OL - OpenLdap, AD - Active Directory
+                  # LEAN_LDAP_HOST: ""                                # FQDN
+                  # LEAN_LDAP_PORT: 389                               # Default Port
+                  # LEAN_LDAP_DN: ""                                  # Location of users, example: CN=users,DC=example,DC=com
+        # Leantime->Ldap attribute mapping
+        # LEAN_LDAP_KEYS="{
+        #         \"username\":\"uid\",
+        #         \"groups\":\"memberOf\",
+        #         \"email\":\"mail\",
+        #         \"firstname\":\"displayname\",
+        #         \"lastname\":\"\",
+        #         \"phonenumber\":\"telephoneNumber\"
+        # }"
+
+        # For AD use these default attributes
+        # LEAN_LDAP_KEYS="{
+        #        \"username\":\"cn\",
+        #        \"groups\":\"memberof\",
+        #        \"email\":\"mail\",
+        #        \"firstname\":\"givenname\",
+        #        \"lastname\":\"sn\",
+        #        \"phonenumber\":\"telephoneNumber\"
+        #      }"
+
+        # LEAN_LDAP_DEFAULT_ROLE_KEY: 20                   # Default Leantime Role on creation. (set to editor)
+
+        # Default role assignments upon first login.
+        # (Optional) Can be updated later in user settings for each user
+        # LEAN_LDAP_GROUP_ASSIGNMENT="{
+        #                \"5\": {
+        #                  \"ltRole\":\"readonly\",
+        #                  \"ldapRole\":\"readonly\"
+        #                },
+        #                \"10\": {
+        #                  \"ltRole\":\"commenter\",
+        #                   \"ldapRole\":\"commenter\"
+        #                },
+        #                \"20\": {
+        #                  \"ltRole\":\"editor\",
+        #                   \"ldapRole\":\"editor\"
+        #                },
+        #                \"30\": {
+        #                  \"ltRole\":\"manager\",
+        #                   \"ldapRole\":\"manager\"
+        #                },
+        #                \"40\": {
+        #                  \"ltRole\":\"admin\",
+        #                   \"ldapRole\":\"administrators\"
+        #                },
+        #                \"50\": {
+        #                  \"ltRole\":\"owner\",
+        #                  \"ldapRole\":\"administrators\"
+        #                }
+        # }"
+
+        ## OpenID Connect
+        # required
+        # LEAN_OIDC_ENABLE: false
+        # LEAN_OIDC_CLIENT_ID:
+        # LEAN_OIDC_CLIENT_SECRET:
+
+        # required - the url for your provider (examples down below)
+        #LEAN_OIDC_PROVIDER_URL:
+
+        # optional - these will be read from the well-known configuration if possible
+        #LEAN_OIDC_AUTH_URL_OVERRIDE:
+        #LEAN_OIDC_TOKEN_URL_OVERRIDE:
+        #LEAN_OIDC_JWKS_URL_OVERRIDE:
+        #LEAN_OIDC_USERINFO_URL_OVERRIDE:
+
+        # optional - override the public key for RSA validation
+        #LEAN_OIDC_CERTIFICATE_STRING:
+        #LEAN_OIDC_CERTIFICATE_FILE:
+
+        # optional - override the requested scopes
+        #LEAN_OIDC_SCOPES:
+
+        # optional - override the keys used for these fields
+        #LEAN_OIDC_FIELD_EMAIL:
+        #LEAN_OIDC_FIELD_FIRSTNAME:
+        #LEAN_OIDC_FIELD_LASTNAME:
+
+        ## OpenID Connect setting for github
+        #LEAN_OIDC_PROVIDER_URL: https://token.actions.githubusercontent.com/
+        #LEAN_OIDC_AUTH_URL_OVERRIDE: https://github.com/login/oauth/authorize
+        #LEAN_OIDC_TOKEN_URL_OVERRIDE: https://github.com/login/oauth/access_token
+        #LEAN_OIDC_USERINFO_URL_OVERRIDE: https://api.github.com/user,https://api.github.com/user/emails
+        #LEAN_OIDC_SCOPES: user:email
+        #LEAN_OIDC_FIELD_EMAIL: 0.email
+        persistence:
+          db-data:
+            enabled: true
+            size: 1Gi
+            accessMode: ReadWriteOnce
+            advancedMounts:
+              mariadb:
+                main:
+                  - path: /var/lib/mysql
+                    readOnly: false
+          userfiles:
+            enabled: true
+            size: 1Gi
+            accessMode: ReadWriteOnce
+            advancedMounts:
+              main:
+                main:
+                  - path: /var/www/html/userfiles
+                    readOnly: false
+          public-userfiles:
+            enabled: true
+            size: 1Gi
+            accessMode: ReadWriteOnce
+            advancedMounts:
+              main:
+                main:
+                  - path: /var/www/html/public/userfiles
+                    readOnly: false
+        service:
+          mariadb:
+            type: ClusterIP
+            controller: mariadb
+            ports:
+              http:
+                port: 3306
+          main:
+            type: ClusterIP
+            ports:
+              http:
+                port: 80
+  destination:
+    server: "https://kubernetes.default.svc"
+    namespace: leantime
+  syncPolicy:
+    automated:
+      selfHeal: true
+      prune: true
+    syncOptions:
+      - CreateNamespace=true
