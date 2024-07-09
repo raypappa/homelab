@@ -1,7 +1,7 @@
-minimum_pre_commit_version: 2.13.0
 ci:
   autofix_prs: true
   autoupdate_branch: bugfix/pre-commit-fixes
+minimum_pre_commit_version: 2.13.0
 repos:
   - hooks:
       - id: commitizen
@@ -10,13 +10,11 @@ repos:
           - push
     repo: https://github.com/commitizen-tools/commitizen
     rev: v3.27.0
-  - repo: https://github.com/google/yamlfmt
-    rev: v0.13.0
-    hooks:
+  - hooks:
       - id: yamlfmt
-  - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.6.0
-    hooks:
+    repo: https://github.com/google/yamlfmt
+    rev: v0.13.0
+  - hooks:
       - id: no-commit-to-branch
       - id: check-json
       - id: check-merge-conflict
@@ -30,23 +28,25 @@ repos:
       - id: debug-statements
       - id: mixed-line-ending
       - id: requirements-txt-fixer
-  - repo: https://github.com/python-jsonschema/check-jsonschema
-    rev: 0.29.0
-    hooks:
+    repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.6.0
+  - hooks:
       - id: check-github-workflows
       - id: check-github-actions
       - id: check-dependabot
       - id: check-taskfile
       - id: check-renovate
-  - repo: https://github.com/executablebooks/mdformat
-    rev: 0.7.17
-    hooks:
-      - id: mdformat
-        additional_dependencies:
+    repo: https://github.com/python-jsonschema/check-jsonschema
+    rev: 0.29.0
+  - hooks:
+      - additional_dependencies:
           - mdformat-frontmatter
           - mdformat-gfm
           - mdformat-toc
           - mdformat-config
+        id: mdformat
+    repo: https://github.com/executablebooks/mdformat
+    rev: 0.7.17
   - repo: https://github.com/streetsidesoftware/cspell-cli
     rev: v8.10.1
     hooks:
