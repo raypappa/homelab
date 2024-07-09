@@ -1,0 +1,6 @@
+hashicorp
+jsonencode
+loafoe
+tfstate
+tfvars
+toset

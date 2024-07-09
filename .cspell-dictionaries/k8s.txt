@@ -1,0 +1,17 @@
+abaobox
+argocd
+argoproj
+ceph
+controlplane
+ecblock
+jsonnet
+kubeconfig
+metallb
+metalpool
+nodeplugin
+prereq
+scluster
+scontrolplane
+servicelb
+snodes
+storageclass
