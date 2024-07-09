@@ -1,0 +1,14 @@
+version: "3"
+vars:
+  KUBERNETES_DIR: "{{.ROOT_DIR}}/kubernetes"
+tasks:
+  default:
+    desc: "List tasks"
+    silent: true
+    cmds:
+      - task -l
+  check:
+    desc: "Check Project"
+    silent: true
+    cmds:
+      - pre-commit run -a

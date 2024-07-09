@@ -1,0 +1,64 @@
+# To get started with Dependabot version updates, you'll need to specify which
+# package ecosystems to update and where the package manifests are located.
+# Please see the documentation for more information:
+# https://docs.github.com/github/administering-a-repository/configuration-options-for-dependency-updates
+# https://containers.dev/guide/dependabot
+# https://docs.github.com/en/code-security/supply-chain-security/keeping-your-dependencies-updated-automatically/configuration-options-for-dependency-updates
+
+version: 2
+updates:
+  - directory: /
+    open-pull-requests-limit: 5
+    package-ecosystem: github-actions
+    reviewers:
+      - blade2005
+    schedule:
+      interval: daily
+      time: "08:00"
+      timezone: America/New_York
+  - directory: /
+    open-pull-requests-limit: 5
+    package-ecosystem: npm
+    reviewers:
+      - blade2005
+    groups:
+      production-dependencies:
+        dependency-type: production
+      dev-dependencies:
+        dependency-type: development
+    schedule:
+      day: monday
+      interval: weekly
+      time: "08:00"
+      timezone: America/New_York
+  - directory: /
+    # ignore:
+    #   - dependency-name: boto3
+    #   - dependency-name: botocore
+    labels:
+      - dependencies
+      - poetry
+      - python
+    open-pull-requests-limit: 10
+    package-ecosystem: pip
+    reviewers:
+      - blade2005
+    groups:
+      production-dependencies:
+        dependency-type: production
+      dev-dependencies:
+        dependency-type: development
+    schedule:
+      day: monday
+      interval: weekly
+      time: "08:00"
+      timezone: America/New_York
+      # versioning-strategy can be used for projects that need more control
+      # over when version constraints are changed.
+      # versioning-strategy: lockfile-only
+  - package-ecosystem: "devcontainers"
+    directory: "/"
+    schedule:
+      interval: weekly
+    reviewers:
+      - blade2005

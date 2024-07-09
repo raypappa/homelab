@@ -1,0 +1,9 @@
+{
+  "devDependencies": {
+    "@cspell/dict-data-science": "^2.0.1",
+    "@cspell/dict-fullstack": "^3.1.8",
+    "@cspell/dict-git": "^3.0.0",
+    "@cspell/dict-k8s": "^1.0.5",
+    "cspell": "^8.10.4"
+  }
+}
