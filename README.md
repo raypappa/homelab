@@ -108,7 +108,7 @@ In order to ensure tunnels are managed with the config specified and not in the 
 1. Create DNS entry in Cloudflare
 1. Create Application in Cloudflare so the endpoint is protected.
 
-All steps except creation of the Application in Cloudflare are accomplished with the [create-secret](./create-secret.sh) script.
+All steps except creation of the Application in Cloudflare are accomplished with the [create-secret](./scripts/setup-tunnel.sh) script.
 
 ## Github Actions
 
