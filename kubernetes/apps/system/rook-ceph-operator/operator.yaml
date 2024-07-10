@@ -1,0 +1,28 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: rook-ceph-operator-app
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    repoURL: "https://charts.rook.io/release"
+    targetRevision: v1.14.7
+    chart: rook-ceph
+    helm:
+      valuesObject:
+        monitoring:
+          enabled: true
+  destination:
+    server: "https://kubernetes.default.svc"
+    namespace: rook-ceph
+  syncPolicy:
+    automated:
+      selfHeal: true
+      prune: true
+    syncOptions:
+      - CreateNamespace=true
