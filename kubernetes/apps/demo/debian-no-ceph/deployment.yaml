@@ -1,0 +1,53 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: debian-no-ceph
+  labels:
+    app: debian-no-ceph
+spec:
+  selector:
+    matchLabels:
+      app: debian-no-ceph
+  template:
+    metadata:
+      labels:
+        app: debian-no-ceph
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: kubernetes.io/hostname
+                    operator: In
+                    values:
+                      - puma
+      volumes:
+        - name: bookworm-vol
+          persistentVolumeClaim:
+            claimName: bookworm-no-ceph-pvc
+        - name: library-vol
+          hostPath:
+            path: /library
+            type: Directory
+      containers:
+        - image: debian:bookworm
+          name: debian-no-ceph
+          command: ["sleep"]
+          args: ["infinity"]
+          securityContext:
+            readOnlyRootFilesystem: true
+            runAsUser: 1000
+          resources:
+            requests:
+              cpu: ".05"
+              memory: 64M
+            limits:
+              cpu: ".1"
+              memory: 128M
+          volumeMounts:
+            - mountPath: "/mnt"
+              name: bookworm-vol
+            - mountPath: "/library"
+              name: library-vol

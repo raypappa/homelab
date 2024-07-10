@@ -1,0 +1,28 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: debian
+  labels:
+    app: debian
+spec:
+  selector:
+    matchLabels:
+      app: debian
+  template:
+    metadata:
+      labels:
+        app: debian
+    spec:
+      volumes:
+        - name: bookworm-vol
+          persistentVolumeClaim:
+            claimName: bookworm-pvc
+      containers:
+        - image: debian:bookworm
+          name: debian
+          command: ["sleep"]
+          args: ["infinity"]
+          volumeMounts:
+            - mountPath: "/mnt"
+              name: bookworm-vol
