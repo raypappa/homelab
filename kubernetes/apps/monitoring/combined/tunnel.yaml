@@ -1,0 +1,41 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: monitoring-tunnel
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    repoURL: 'https://cloudflare.github.io/helm-charts'
+    targetRevision: 0.3.0
+    chart: cloudflare-tunnel
+    helm:
+      valuesObject:
+        image:
+          tag: 2024.6.1
+        cloudflare:
+          secretName: 'monitoring-tunnel-credentials'
+          tunnelName: 'faerun-monitoring'
+          ingress:
+            - hostname: 'grafana.fieldsofbears.com'
+              service: 'http://monitoring-lgtm-grafana.monitoring.svc.cluster.local:80'
+            - hostname: 'prometheus.fieldsofbears.com'
+              service: 'http://prometheus-operated.monitoring.svc.cluster.local:9090'
+              # annotations:
+              #   gethomepage.dev/enabled: 'true'
+              #   gethomepage.dev/name: 'Grafana'
+              #   gethomepage.dev/description: 'Platform for data analytics and monitoring'
+              #   gethomepage.dev/group: 'Monitoring'
+              #   gethomepage.dev/icon: 'grafana.svg'
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: monitoring
+  syncPolicy:
+    automated:
+      selfHeal: true
+      prune: true
+    syncOptions:
+      - CreateNamespace=true
