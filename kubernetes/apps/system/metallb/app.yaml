@@ -1,0 +1,42 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: metallb
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  sources:
+    - repoURL: "git@github.com:blade2005/homelab.git"
+      path: kubernetes/apps/system/metallb
+      targetRevision: HEAD
+      directory:
+        recurse: true
+        jsonnet: {}
+    - chart: metallb
+      repoURL: https://metallb.github.io/metallb
+      targetRevision: 0.14.5
+      helm:
+        releaseName: metallb
+        valuesObject:
+          prometheus:
+            scrapeAnnotations: true
+            serviceAccount: "monitoring-prometheus-kube-prometheus"
+            namespace: monitoring
+            podMonitor:
+              enabled: false
+            serviceMonitor:
+              enabled: false
+            prometheusRule:
+              enabled: true
+  destination:
+    server: "https://kubernetes.default.svc"
+    namespace: metallb-system
+  syncPolicy:
+    automated:
+      selfHeal: true
+      prune: true
+    syncOptions:
+      - CreateNamespace=true
