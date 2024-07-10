@@ -1,0 +1,46 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: sonarr-app
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    repoURL: "https://charts.pree.dev"
+    targetRevision: 1.7.0
+    chart: sonarr
+    helm:
+      valuesObject:
+        persistence:
+          config:
+            enabled: true
+            type: pvc
+            storageClass: ceph-filesystem
+            accessMode: ReadWriteOnce
+            size: 2Gi
+            readOnly: false
+          library:
+            enabled: true
+            type: hostPath
+            retain: true
+            hostPathType: Directory
+            hostPath: /library
+        securityContext:
+          runAsUser: 1001
+          runAsGroup: 1001
+        podSecurityContext:
+          fsGroup: 1001
+          runAsUser: 1001
+          runAsGroup: 1001
+  destination:
+    server: "https://kubernetes.default.svc"
+    namespace: homelab
+  syncPolicy:
+    automated:
+      selfHeal: true
+      prune: true
+    syncOptions:
+      - CreateNamespace=true

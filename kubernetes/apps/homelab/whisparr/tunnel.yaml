@@ -1,0 +1,33 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: whisparr-tunnel
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    repoURL: "https://cloudflare.github.io/helm-charts"
+    targetRevision: 0.3.0
+    chart: cloudflare-tunnel
+    helm:
+      valuesObject:
+        image:
+          tag: 2024.6.1
+        cloudflare:
+          secretName: "whisparr-tunnel-credentials"
+          tunnelName: "faerun-whisparr"
+          ingress:
+            - hostname: "whisparr.fieldsofbears.com"
+              service: "http://whisparr-svc.homelab.svc.cluster.local:6969"
+  destination:
+    server: "https://kubernetes.default.svc"
+    namespace: homelab
+  syncPolicy:
+    automated:
+      selfHeal: true
+      prune: true
+    syncOptions:
+      - CreateNamespace=true

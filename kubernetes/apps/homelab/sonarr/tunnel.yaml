@@ -1,0 +1,33 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: sonarr-tunnel
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    repoURL: "https://cloudflare.github.io/helm-charts"
+    targetRevision: 0.3.0
+    chart: cloudflare-tunnel
+    helm:
+      valuesObject:
+        image:
+          tag: 2024.6.1
+        cloudflare:
+          secretName: "sonarr-tunnel-credentials"
+          tunnelName: "faerun-sonarr"
+          ingress:
+            - hostname: "sonarr.fieldsofbears.com"
+              service: "http://sonarr-app.homelab.svc.cluster.local:8989"
+  destination:
+    server: "https://kubernetes.default.svc"
+    namespace: homelab
+  syncPolicy:
+    automated:
+      selfHeal: true
+      prune: true
+    syncOptions:
+      - CreateNamespace=true

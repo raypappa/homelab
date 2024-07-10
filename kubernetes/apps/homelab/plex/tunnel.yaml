@@ -1,0 +1,31 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: plex-tunnel
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    repoURL: 'https://cloudflare.github.io/helm-charts'
+    targetRevision: 0.3.0
+    chart: cloudflare-tunnel
+    helm:
+      valuesObject:
+        image:
+          tag: 2024.6.1
+        cloudflare:
+          secretName: plex-tunnel-credentials
+          tunnelName: faerun-plex
+          ingress:
+            - hostname: 'potato.fieldsofbears.com'
+              service: 'http://plex-app.homelab.svc.cluster.local:32400'
+              originRequest:
+                noTLSVerify: true
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: homelab
+  syncPolicy:
+    automated: {}

@@ -1,0 +1,61 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: whisparr-svc
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    repoURL: https://bjw-s.github.io/helm-charts
+    chart: app-template
+    targetRevision: 3.2.1
+    helm:
+      valuesObject:
+        defaultPodOptions:
+          securityContext:
+            runAsUser: 0
+            runAsGroup: 0
+            fsGroup: 1001
+        controllers:
+          main:
+            containers:
+              main:
+                image:
+                  repository: ghcr.io/hotio/whisparr
+                  tag: latest
+                  pullPolicy: IfNotPresent
+                env:
+                  TZ: UTC
+                  PUID: 1001
+                  PGID: 1001
+                  UMASK: '022'
+        service:
+          main:
+            controller: main
+            type: ClusterIP
+            ports:
+              http:
+                port: 6969
+        persistence:
+          config:
+            enabled: true
+            storageClass: ceph-filesystem
+            accessMode: ReadWriteOnce
+            size: 5Gi
+          library:
+            enabled: true
+            type: hostPath
+            hostPathType: Directory
+            hostPath: /library
+  destination:
+    server: "https://kubernetes.default.svc"
+    namespace: homelab
+  syncPolicy:
+    automated:
+      selfHeal: true
+      prune: true
+    syncOptions:
+      - CreateNamespace=true

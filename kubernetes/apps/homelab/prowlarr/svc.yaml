@@ -1,0 +1,97 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: prowlarr-svc
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    repoURL: https://bjw-s.github.io/helm-charts
+    chart: app-template
+    targetRevision: 3.2.1
+    helm:
+      valuesObject:
+        controllers:
+          prowlarr:
+            annotations:
+              reloader.stakater.com/auto: "true"
+            pod:
+              securityContext:
+                runAsUser: 1001
+                runAsGroup: 1001
+                runAsNonRoot: true
+                fsGroup: 1001
+                fsGroupChangePolicy: OnRootMismatch
+            containers:
+              app:
+                image:
+                  repository: ghcr.io/onedr0p/prowlarr-nightly
+                  tag: 1.20.1.4600@sha256:ae5713bb80eae9090247ad6f974d4be340df5c20bd775f108c1d118da628381f
+                  pullPolicy: IfNotPresent
+                env:
+                  TZ: UTC
+                  PUID: 1001
+                  PGID: 1001
+                  UMASK: '022'
+                  COMPlus_EnableDiagnostics: "0"
+                  PROWLARR__INSTANCE_NAME: Prowlarr
+                  PROWLARR__PORT: &port 9696
+                  PROWLARR__LOG_LEVEL: info
+                  PROWLARR__ANALYTICS_ENABLED: "False"
+                  PROWLARR__AUTHENTICATION_METHOD: External
+                  PROWLARR__API_KEY:
+                    valueFrom:
+                      secretKeyRef:
+                        name: prowlarr-secret
+                        key: api_key
+                probes:
+                  liveness:
+                    enabled: true
+                  readiness:
+                    enabled: true
+                  startup:
+                    enabled: true
+                    spec:
+                      failureThreshold: 30
+                      periodSeconds: 5
+                resources:
+                  requests:
+                    cpu: 18m
+                    memory: 128Mi
+                  limits:
+                    memory: 256Mi
+                securityContext:
+                  allowPrivilegeEscalation: false
+                  readOnlyRootFilesystem: true
+                  capabilities:
+                    drop:
+                      - ALL
+        service:
+          app:
+            controller: prowlarr
+            ports:
+              http:
+                port: *port
+        persistence:
+          config:
+            enabled: true
+            storageClass: ceph-filesystem
+            accessMode: ReadWriteOnce
+            size: 5Gi
+          library:
+            enabled: true
+            type: hostPath
+            hostPathType: Directory
+            hostPath: /library
+  destination:
+    server: "https://kubernetes.default.svc"
+    namespace: homelab
+  syncPolicy:
+    automated:
+      selfHeal: true
+      prune: true
+    syncOptions:
+      - CreateNamespace=true

@@ -1,0 +1,118 @@
+---
+# Stolen heavily from https://github.com/chkpwd/iac/blob/main/kubernetes/apps/media/plex/app/helm-release.yml
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: plex-app
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    repoURL: https://bjw-s.github.io/helm-charts
+    chart: app-template
+    targetRevision: 3.2.1
+    helm:
+      valuesObject:
+        controllers:
+          plex:
+            enabled: true
+            type: statefulset
+            annotations:
+              reloader.stakater.com/auto: "true"
+            replicas: 1
+            statefulset:
+              volumeClaimTemplates:
+                - name: config
+                  accessMode: ReadWriteOnce
+                  size: 30Gi
+                  storageClass: ceph-filesystem
+                  globalMounts:
+                    - path: /config
+            pod:
+              # nodeSelector:
+              #   intel.feature.node.kubernetes.io/gpu: "true"
+              securityContext:
+                runAsUser: 1001
+                runAsGroup: &group 1001
+                fsGroup: *group
+                fsGroupChangePolicy: "OnRootMismatch"
+            containers:
+              app:
+                image:
+                  repository: ghcr.io/onedr0p/plex
+                  tag: 1.40.3.8555-fef15d30c
+                  pullPolicy: IfNotPresent
+                env:
+                  TZ: UTC
+                  PLEX_ADVERTISE_URL: http://potato.fieldsofbears.com:32400,http://172.17.42.200:32400
+                  ADVERTISE_IP: 172.17.42.200
+                  PLEX_CLAIM:
+                    valueFrom:
+                      secretKeyRef:
+                        name: plex-secrets
+                        key: PLEX_CLAIM
+                probes:
+                  liveness: &probes
+                    enabled: true
+                    custom: true
+                    spec:
+                      httpGet:
+                        path: /identity
+                        port: &port 32400
+                      initialDelaySeconds: 0
+                      periodSeconds: 10
+                      timeoutSeconds: 1
+                      failureThreshold: 3
+                  readiness: *probes
+                  startup:
+                    enabled: false
+                securityContext:
+                  allowPrivilegeEscalation: false
+                  readOnlyRootFilesystem: true
+                  capabilities:
+                    drop:
+                      - ALL
+                resources:
+                  requests:
+                    # gpu.intel.com/i915: 1
+                    cpu: 200m
+                    memory: 1Gi
+                  limits:
+                    # gpu.intel.com/i915: 1
+                    memory: 16Gi
+        service:
+          app:
+            controller: plex
+            type: LoadBalancer
+            annotations:
+              metallb.universe.tf/loadBalancerIPs: 172.17.42.200
+              metallb.universe.tf/address-pool: metalpool
+            externalTrafficPolicy: Cluster
+            ports:
+              http:
+                port: *port
+        persistence:
+          library:
+            enabled: true
+            type: hostPath
+            hostPathType: Directory
+            hostPath: /library
+            globalMounts:
+              - path: /library
+                readOnly: true
+          transcode:
+            enabled: true
+            type: emptyDir
+            globalMounts:
+              - path: /transcode
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: homelab
+  syncPolicy:
+    automated:
+      selfHeal: true
+      prune: true
+    syncOptions:
+      - CreateNamespace=true

@@ -1,0 +1,62 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: radarr-svc
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    repoURL: https://bjw-s.github.io/helm-charts
+    chart: app-template
+    targetRevision: 3.2.1
+    helm:
+      valuesObject:
+        defaultPodOptions:
+          securityContext:
+            runAsUser: 1001
+            runAsGroup: 1001
+            fsGroup: 1001
+            fsGroupChangePolicy: OnRootMismatch
+        controllers:
+          main:
+            containers:
+              main:
+                image:
+                  repository: ghcr.io/onedr0p/radarr
+                  tag: 5.7.0
+                  pullPolicy: IfNotPresent
+                env:
+                  TZ: UTC
+                  PUID: 1001
+                  PGID: 1001
+                  UMASK: '022'
+        service:
+          main:
+            controller: main
+            type: ClusterIP
+            ports:
+              http:
+                port: 7878
+        persistence:
+          config:
+            enabled: true
+            storageClass: ceph-filesystem
+            accessMode: ReadWriteOnce
+            size: 5Gi
+          library:
+            enabled: true
+            type: hostPath
+            hostPathType: Directory
+            hostPath: /library
+  destination:
+    server: "https://kubernetes.default.svc"
+    namespace: homelab
+  syncPolicy:
+    automated:
+      selfHeal: true
+      prune: true
+    syncOptions:
+      - CreateNamespace=true

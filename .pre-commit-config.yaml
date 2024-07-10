@@ -17,6 +17,8 @@ repos:
       - id: check-merge-conflict
       - id: check-toml
       - id: check-yaml
+        args:
+          - --unsafe # required for cfn or yaml with custom import (!)
       - id: trailing-whitespace
       - id: check-symlinks
       - id: check-builtin-literals

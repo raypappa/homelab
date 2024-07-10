@@ -1,0 +1,361 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: rtorrent-app
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    repoURL: https://bjw-s.github.io/helm-charts
+    chart: app-template
+    targetRevision: 3.2.1
+    helm:
+      valuesObject:
+        defaultPodOptions:
+          securityContext:
+            runAsUser: 1001
+            runAsGroup: 1001
+            fsGroup: 1001
+            fsGroupChangePolicy: OnRootMismatch
+        controllers:
+          main:
+            containers:
+              main:
+                image:
+                  repository: jesec/rtorrent-flood
+                  tag: latest
+                  pullPolicy: IfNotPresent
+                env:
+                  FLOOD_OPTION_RUNDIR: /config
+                  HOME: /config
+                  FLOOD_OPTION_HOST: 0.0.0.0
+                  FLOOD_OPTION_PORT: 3000
+                  FLOOD_OPTION_RTORRENT: "true"
+                  FLOOD_OPTION_ALLOWEDPATH: "/library"
+                  FLOOD_OPTION_AUTH: "none" # service is behind CloudFlare OAuth
+                  FLOOD_OPTION_RTSOCKET: "/config/.local/share/rtorrent/rtorrent.sock"
+        service:
+          main:
+            controller: main
+            type: ClusterIP
+            ports:
+              http:
+                port: 3000
+        persistence:
+          config:
+            enabled: true
+            storageClass: ceph-filesystem
+            accessMode: ReadWriteOnce
+            size: 1Gi
+          library:
+            enabled: true
+            type: hostPath
+            hostPathType: Directory
+            hostPath: /library
+          rtorrent-config:
+            enabled: true
+            name: rtorrent-app-rtorrent-config
+            type: configMap
+            defaultMode: '0700'
+            advancedMounts:
+              main:
+                main:
+                  - path: /config/.rtorrent.rc
+                    readOnly: false
+                    subPath: .rtorrent.rc
+                  - path: /config/completion-path.sh
+                    readOnly: true
+                    subPath: completion-path.sh
+        configMaps:
+          rtorrent-config:
+            enabled: true
+            data:
+              completetion-path.sh: |
+                #! /usr/bin/env bash
+                #
+                # Determine a dynamic completion path and print it on stdout for capturing
+                #
+                # Call with "-h" for installation instructions!
+
+                # List of attributes passed by the 'completion_path' method
+                arglist=( default session hash name directory base_path tied_to_file is_multi_file label display_name )
+
+                # Helper to get the filesystem path for any path
+                fs4path() {
+                    local path="${1:?You MUST provide a path}"
+                    df -P "$path" | tail -n1 | awk '{print $1;}'
+                }
+
+                # Determine target path (adapt this to your needs)
+                set_target_path() {
+                    local month=$(date +'%Y-%m')
+
+                    # Only move data downloaded into a "work" directory
+                    if egrep >/dev/null "/work/" <<<"${base_path}/"; then
+                        # Make sure the target directory is on the same drive as "work", else leave it alone
+                        work_dir=$(sed -re 's~(^.+/work/).*~\1~' <<<"${base_path}/")
+                        test $(fs4path "$work_dir") == $(fs4path "$(dirname ${base_path})") || return
+                    else
+                        return  # no "work" component in data path (pre-determined path)
+                    fi
+
+                    # "target_base" is used to complete a non-empty but relative "target" path
+                    target_base=$(sed -re 's~^(.*)/work/.*~\1/done~' <<<"${base_path}")
+                    target_tail=$(sed -re 's~^.*/work/(.*)~\1~' <<<"${base_path}")
+                    test "$is_multi_file" -eq 1 || target_tail="$(dirname "$target_tail")"
+                    test "$target_tail" != '.' || target_tail=""
+
+                    # Move by label
+                    test -n "$target" || case $(tr A-Z' ' a-z_ <<<"${label:-NOT_SET}") in
+                        tv|hdtv)                    target="TV" ;;
+                        movie*)                     target="Movies/$month" ;;
+                        sonarr)                     target="tv_incoming" ;;
+                        radarr)                     target="movie_incoming" ;;
+                    esac
+
+                    # Move by name patterns (check both displayname and info.name)
+                    for i in "$display_name" "$name"; do
+                        test -n "$target" -o -z "$i" || case $(tr A-Z' ' a-z. <<<"${i}") in
+                            *hdtv*|*pdtv*)              target="TV" ;;
+                            *.s[0-9][0-9].*)            target="TV" ;;
+                            *.s[0-9][0-9]e[0-9][0-9].*) target="TV" ;;
+                            *pdf|*epub|*ebook*)         target="eBooks/$month" ;;
+                        esac
+                    done
+
+                    test -z "$target" && is_movie "$name" && target="Movies/$month" || :
+                    test -z "$target" -a -n "$display_name" && is_movie "$display_name" && target="Movies/$month" || :
+
+                    # Prevent duplication at end of path
+                    if test -n "$target" -a "$is_multi_file" -eq 1 -a "$name" = "$target_tail"; then
+                        target_tail=""
+                    fi
+
+                    # Append tail path if non-empty
+                    test -z "$target" -o -z "$target_tail" || target="$target/$target_tail"
+                } # set_target_path
+
+
+                is_movie() {
+                    python - "$@" <<'EOF'
+                import re
+                import sys
+
+                pattern = re.compile(
+                    r"^(?P<title>.+?)[. ](?P<year>\d{4})"
+                    r"(?:[._ ](?P<release>UNRATED|REPACK|INTERNAL|PROPER|LIMITED|RERiP))*"
+                    r"(?:[._ ](?P<format>480p|576p|720p|1080p|1080i|2160p))?"
+                    r"(?:[._ ](?P<srctag>[a-z]{1,9}))?"
+                    r"(?:[._ ](?P<source>BDRip|BRRip|HDRip|DVDRip|DVD[59]?|PAL|NTSC|Web|WebRip|WEB-DL|Blu-ray|BluRay|BD25|BD50))"
+                    r"(?:[._ ](?P<sound1>MP3|DD.?[25]\.[01]|AC3|AAC(?:2.0)?|FLAC(?:2.0)?|DTS(?:-HD)?))?"
+                    r"(?:[._ ](?P<codec>xvid|divx|avc|x264|h\.?264|hevc|h\.?265))"
+                    r"(?:[._ ](?P<sound2>MP3|DD.?[25]\.[01]|AC3|AAC(?:2.0)?|FLAC(?:2.0)?|DTS(?:-HD)?))?"
+                    r"(?:[-.](?P<group>.+?))"
+                    r"(?P<extension>\.avi|\.mkv|\.mp4|\.m4v)?$", re.I
+                )
+
+                title = ' '.join(sys.argv[1:])
+                sys.exit(not pattern.match(title))
+                EOF
+                } # is_movie
+
+
+                # Print installation instructions when called with "-h"
+                if test "$1" = "-h" -o "$1" = "--help"; then
+                    echo "$(basename $0) – Determine a dynamic rTorrent completion path"
+                    echo
+                    echo "To install, call these commands:"
+                    cat <<EOF
+
+                # Change "~/rtorrent" to your instance's directory
+                # (and do the same in the "completion_path" method below)
+                mkdir -p ~/rtorrent/scripts
+                cp -np $(readlink -f $0) \$_
+                chmod a+x \$_/$(basename $0)
+                EOF
+                    echo
+                    echo "Also add this to your rtorrent.rc:"
+                    cat <<'EOF'
+
+                # Completion moving
+                # vim: ft=dosini
+
+                method.insert = completion_path, simple|private, "execute.capture = \
+                    ~/rtorrent/scripts/completion-path.sh, \
+                    (directory.default), (session.path), \
+                    (d.hash), (d.name), (d.directory), (d.base_path), (d.tied_to_file), \
+                    (d.is_multi_file), (d.custom1), (d.custom, displayname)"
+
+                method.insert = completion_dirname, simple|private, \
+                    "execute.capture = bash, -c, \"dirname \\\"$1\\\" | tr -d $'\\\\n'\", \
+                                             completion_dirname, (argument.0)"
+
+                method.insert = completion_move_print, simple|private, \
+                    "print = \"MOVED »\", (argument.0), \"« to »\", (argument.1), «"
+
+                method.insert = completion_move_single, simple|private, \
+                    "d.directory.set = (argument.1); \
+                     execute.throw = mkdir, -p, (argument.1); \
+                     execute.throw = mv, -u, (argument.0), (argument.1)"
+
+                method.insert = completion_move_multi, simple|private, \
+                    "d.directory_base.set = (argument.1); \
+                     execute.throw = mkdir, -p, (completion_dirname, (argument.1)); \
+                     execute.throw = mv, -uT, (argument.0), (argument.1)"
+
+                method.insert = completion_move, simple|private, \
+                    "branch=d.is_multi_file=, \
+                        \"completion_move_multi = (argument.0), (argument.1)\", \
+                        \"completion_move_single = (argument.0), (argument.1)\" ; \
+                     d.save_full_session="
+
+                method.insert = completion_move_verbose, simple|private, \
+                    "completion_move = (argument.0), (argument.1); \
+                     completion_move_print = (argument.0), (argument.1)"
+
+                method.insert = completion_move_handler, simple|private, \
+                    "branch=\"not=(equal, argument.0=, cat=)\", \
+                        \"completion_move_verbose = (d.base_path), (argument.0)\""
+
+                method.set_key = event.download.finished, move_on_completion, \
+                    "completion_move_handler = (completion_path)"
+
+                # END move_on_completion
+                EOF
+                    exit 1
+                fi
+
+
+                fail() {
+                    echo ERROR: "$@"
+                    exit 1
+                }
+
+
+                # Take arguments
+                for argname in "${arglist[@]}"; do
+                    test $# -gt 0 || fail "'$argname' is missing!"
+                    eval "$argname"'="$1"'
+                    shift
+                done
+                #set | egrep '^[a-z_]+=' >&2
+
+                # Determine target path
+                target=""
+                set_target_path
+
+                # Return result (an empty target prevents moving)
+                if test -n "$target"; then
+                    if test "${target:0:1}" = '/'; then
+                        echo -n "$target"
+                    else
+                        echo -n "${target_base%/}/$target"
+                    fi
+                fi
+              .rtorrent.rc: |
+                session.use_lock.set = no
+                method.insert = cfg.basedir,  private|const|string, (cat,(fs.homedir),"/.local/share/rtorrent/")
+                method.insert = cfg.download, private|const|string, (cat,"/library/","downloads/")
+                method.insert = cfg.logs,     private|const|string, (cat,(cfg.download),"log/")
+                method.insert = cfg.logfile,  private|const|string, (cat,(cfg.logs),"rtorrent-",(system.time),".log")
+                method.insert = cfg.session,  private|const|string, (cat,(cfg.basedir),".session/")
+                method.insert = cfg.watch,    private|const|string, (cat,(cfg.download),"watch/")
+                fs.mkdir.recursive = (cat,(cfg.basedir))
+                fs.mkdir = (cat,(cfg.download))
+                fs.mkdir = (cat,(cfg.logs))
+
+                fs.mkdir = (cat,(cfg.session))
+                fs.mkdir = (cat,(cfg.watch))
+                fs.mkdir = (cat,(cfg.watch),"/load")
+                fs.mkdir = (cat,(cfg.watch),"/start")
+
+                system.file.allocate.set = 1
+                schedule2 = watch_load, 11, 10, ((load.verbose, (cat, (cfg.watch), "load/*.torrent")))
+                schedule2 = watch_start, 10, 10, ((load.start_verbose, (cat, (cfg.watch), "start/*.torrent")))
+
+                network.port_range.set = 21284-21300
+                network.port_random.set = no
+                trackers.use_udp.set = no
+                protocol.encryption.set = require,enable_retry
+
+                throttle.max_uploads.set = 100
+                throttle.max_uploads.global.set = 250
+                throttle.min_peers.normal.set = 20
+                throttle.max_peers.normal.set = 60
+                throttle.min_peers.seed.set = 30
+
+                throttle.max_peers.seed.set = 80
+                trackers.numwant.set = 80
+                network.max_open_files.set = 600
+                network.max_open_sockets.set = 300
+                pieces.memory.max.set = 1800M
+                session.path.set = (cat, (cfg.session))
+                directory.default.set = (cat, (cfg.download), "downloads")
+                log.execute = (cat, (cfg.logs), "execute.log")
+                encoding.add = utf8
+                system.daemon.set = true
+                system.umask.set = 0002
+                system.cwd.set = (directory.default)
+
+                network.http.max_open.set = 50
+                network.http.dns_cache_timeout.set = 25
+                network.scgi.open_local = (cat,(cfg.basedir),rtorrent.sock)
+
+                print = (cat, "Logging to ", (cfg.logfile))
+                log.open_file = "log", (cfg.logfile)
+                log.add_output = "info", "log"
+                # Completion moving
+
+                method.insert = completion_path, simple|private, "execute.capture = \
+                    /config/completion-path.sh, \
+                    (directory.default), (session.path), \
+                    (d.hash), (d.name), (d.directory), (d.base_path), (d.tied_to_file), \
+                    (d.is_multi_file), (d.custom1), (d.custom, displayname)"
+
+                method.insert = completion_dirname, simple|private, \
+                    "execute.capture = bash, -c, \"dirname \\\"$1\\\" | tr -d $'\\\\n'\", \
+                                             completion_dirname, (argument.0)"
+
+                method.insert = completion_move_print, simple|private, \
+                    "print = \"MOVED »\", (argument.0), \"« to »\", (argument.1), «"
+
+                method.insert = completion_move_single, simple|private, \
+                    "d.directory.set = (argument.1); \
+                     execute.throw = mkdir, -p, (argument.1); \
+                     execute.throw = mv, -u, (argument.0), (argument.1)"
+
+                method.insert = completion_move_multi, simple|private, \
+                    "d.directory_base.set = (argument.1); \
+                     execute.throw = mkdir, -p, (completion_dirname, (argument.1)); \
+                     execute.throw = mv, -uT, (argument.0), (argument.1)"
+
+                method.insert = completion_move, simple|private, \
+                    "branch=d.is_multi_file=, \
+                        \"completion_move_multi = (argument.0), (argument.1)\", \
+                        \"completion_move_single = (argument.0), (argument.1)\" ; \
+                     d.save_full_session="
+
+                method.insert = completion_move_verbose, simple|private, \
+                    "completion_move = (argument.0), (argument.1); \
+                     completion_move_print = (argument.0), (argument.1)"
+
+                method.insert = completion_move_handler, simple|private, \
+                    "branch=\"not=(equal, argument.0=, cat=)\", \
+                        \"completion_move_verbose = (d.base_path), (argument.0)\""
+
+                method.set_key = event.download.finished, move_on_completion, \
+                    "completion_move_handler = (completion_path)"
+
+                # END move_on_completion
+  destination:
+    server: "https://kubernetes.default.svc"
+    namespace: homelab
+  syncPolicy:
+    automated:
+      selfHeal: true
+      prune: true
+    syncOptions:
+      - CreateNamespace=true

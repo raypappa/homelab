@@ -1,0 +1,313 @@
+---
+# https://github.com/jameswynn/helm-charts/tree/main/charts/homepage
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: homepage-app
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    repoURL: https://jameswynn.github.io/helm-charts
+    chart: homepage
+    targetRevision: 1.2.3
+    helm:
+      valuesObject:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        image:
+          repository: ghcr.io/gethomepage/homepage
+          tag: v0.9.2
+        env:
+          HOMEPAGE_VAR_SONARR_API_KEY:
+            valueFrom:
+              secretKeyRef:
+                name: sonarr-secret
+                key: api_key
+          HOMEPAGE_VAR_CLOUDFLARE_API_KEY:
+            valueFrom:
+              secretKeyRef:
+                name: homepage-cloudflare
+                key: api_key
+          HOMEPAGE_VAR_PLEX_API_KEY:
+            valueFrom:
+              secretKeyRef:
+                name: homepage-plex
+                key: api_key
+          HOMEPAGE_VAR_PTERODACTYL_API_KEY:
+            valueFrom:
+              secretKeyRef:
+                name: homepage-pterodactyl
+                key: api_key
+          HOMEPAGE_VAR_RADARR_API_KEY:
+            valueFrom:
+              secretKeyRef:
+                name: radarr-secret
+                key: api_key
+          HOMEPAGE_VAR_PROWLARR_API_KEY:
+            valueFrom:
+              secretKeyRef:
+                name: prowlarr-secret
+                key: api_key
+        config:
+          bookmarks:
+            - Productivity:
+                - Leantime:
+                    - abbr: lt
+                      href: https://lt.fieldsofbears.com/
+            - Developer:
+                - Infrastructure:
+                    - abbr: infra
+                      href: https://github.com/stoneydavis/infrastructure
+                - Dotfiles:
+                    - abbr: dotfiles
+                      href: https://github.com/blade2005/dotfiles
+                - Developer Guide:
+                    - abbr: quickstart-dev
+                      href: https://github.com/blade2005/quickstart-developer/
+                - Vim Cheat Sheet:
+                    - abbr: vim-cheat
+                      href: https://vim.rtorr.com/
+          services:
+            - Kubernetes:
+                - ArgoCD:
+                    href: https://argocd.fieldsofbears.com
+                    icon: argocd.svg
+                    app: argocd-server
+                    namespace: argocd
+                    # prometheus doesn't support metrics like this. would need to do customapi
+                    # widget:
+                    #   type: prometheus
+                    #   url: http://prometheus-operated.monitoring.svc.cluster.local:9090
+                    #   metrics:
+                    #     - name: Healthy Apps
+                    #       query: sum(argocd_app_info{health_status="Healthy"})
+                    #     - name: Total Apps
+                    #       query: sum(argocd_app_info)
+                - Ceph:
+                    href: https://rook.fieldsofbears.com
+                    icon: ceph.svg
+                    app: ceph-mgr
+                    namespace: rook-ceph
+                    # widget:
+                    #   type: prometheus
+                    #   url: http://prometheus-operated.monitoring.svc.cluster.local:9090
+                    #   metrics:
+                    #     - name: ceph_health_status
+                    #       query: ceph_health_status{job="ceph"}
+                    #     - name: ceph_available_capacity
+                    #       query: ceph_cluster_total_bytes{job="ceph"} - ceph_cluster_total_used_bytes{job="ceph"}
+                    #     - name: ceph_osds_up
+                    #       query: sum(ceph_osd_up{job="ceph"})
+                    #     - name: ceph_osds_down
+                    #       query: sum(ceph_osd_down{job="ceph"})
+                    #     - name: ceph_osds_in
+                    #       query: sum(ceph_osd_in{job="ceph"})
+                    #     - name: ceph_osds_out
+                    #       query: sum(ceph_osd_out{job="ceph"})
+            - Gaming:
+                - Pterodactyl:
+                    href: https://game.fieldsofbears.com
+                    icon: pterodactyl.svg
+                    widget:
+                      type: pterodactyl
+                      url: http://172.17.42.155:80
+                      key: '{{HOMEPAGE_VAR_PTERODACTYL_API_KEY}}'
+            - Monitoring:
+                - Grafana:
+                    href: https://grafana.fieldsofbears.com
+                    icon: grafana.svg
+                    namespace: monitoring
+                    app: grafana
+                - Prometheus:
+                    href: https://prometheus.fieldsofbears.com
+                    icon: prometheus.svg
+                    namespace: monitoring
+                    app: prometheus
+            - Development:
+                - AI:
+                    href: https://ai.fieldsofbears.com
+            - Media:
+                - Plex:
+                    href: https://potato.fieldsofbears.com/web/index.html#!/
+                    icon: plex.svg
+                    namespace: homelab
+                    app: plex-app
+                    widget:
+                      type: plex
+                      url: http://plex-app.homelab.svc.cluster.local:32400
+                      key: '{{HOMEPAGE_VAR_PLEX_API_KEY}}'
+                      fields:
+                        - movies
+                        - tv
+                        - albums
+                - Sonarr:
+                    href: https://sonarr.fieldsofbears.com
+                    icon: sonarr.svg
+                    namespace: homelab
+                    app: sonarr
+                    widget:
+                      type: sonarr
+                      url: http://sonarr-app.homelab.svc.cluster.local:8989
+                      key: '{{HOMEPAGE_VAR_SONARR_API_KEY}}'
+                      enableQueue: true # optional, defaults to false
+                - Radarr:
+                    href: https://radarr.fieldsofbears.com
+                    namespace: homelab
+                    app: radarr-svc
+                    icon: radarr.svg
+                    widget:
+                      type: radarr
+                      url: http://radarr-svc.homelab.svc.cluster.local:7878
+                      key: '{{HOMEPAGE_VAR_RADARR_API_KEY}}'
+                      fields:
+                        - wanted
+                        - missing
+                        - queue
+                        - movies
+                - Whisparr:
+                    href: https://whisparr.fieldsofbears.com
+                    namespace: homelab
+                    app: whisparr-svc
+                    icon: whisparr.svg
+                - Prowlarr:
+                    href: https://prowlarr.fieldsofbears.com
+                    app: prowlarr-svc
+                    namespace: homelab
+                    icon: prowlarr.svg
+                    widget:
+                      type: prowlarr
+                      url: http://prowlarr-svc.homelab.svc.cluster.local:9696
+                      key: '{{HOMEPAGE_VAR_PROWLARR_API_KEY}}'
+                      fields:
+                        - numberOfGrabs
+                        - numberOfQueries
+                        - numberOfFailGrabs
+                        - numberOfFailQueries
+                - Flood:
+                    href: https://flood.fieldsofbears.com
+                    namespace: homelab
+                    app: rtorrent-app
+                    icon: flood.svg
+                    widget:
+                      type: flood
+                      url: http://rtorrent-app.homelab.svc.cluster.local:3000
+                      fields:
+                        - download
+                        - upload
+                        - leech
+                        - seed
+            - Cloudflare Tunnels:
+                - ArgoCD:
+                    widget:
+                      type: cloudflared
+                      accountid: "c770200db72c5db16a0f5eeb7b512bbc"
+                      tunnelid: "a54a1a1a-d087-4f0c-a0a9-e4e760ce5822"
+                      key: "{{HOMEPAGE_VAR_CLOUDFLARE_API_KEY}}"
+                      fields:
+                        - status
+                - Pterodactyl:
+                    widget:
+                      type: cloudflared
+                      accountid: "c770200db72c5db16a0f5eeb7b512bbc"
+                      tunnelid: "d411817b-8bc9-45d4-9858-d6e1afd9679a"
+                      key: "{{HOMEPAGE_VAR_CLOUDFLARE_API_KEY}}"
+                      fields:
+                        - status
+                - Homepage:
+                    widget:
+                      type: cloudflared
+                      accountid: "c770200db72c5db16a0f5eeb7b512bbc"
+                      tunnelid: "784ed997-0f39-4ae6-8531-5b8ee5c1519e"
+                      key: "{{HOMEPAGE_VAR_CLOUDFLARE_API_KEY}}"
+                      fields:
+                        - status
+                - Monitoring:
+                    widget:
+                      type: cloudflared
+                      accountid: "c770200db72c5db16a0f5eeb7b512bbc"
+                      tunnelid: "2111a3cc-46d4-403b-a1bf-95fe5ef169c7"
+                      fields:
+                        - status
+                      key: "{{HOMEPAGE_VAR_CLOUDFLARE_API_KEY}}"
+                - Ollama:
+                    widget:
+                      type: cloudflared
+                      accountid: "c770200db72c5db16a0f5eeb7b512bbc"
+                      tunnelid: "da36d7d4-22ae-47cb-a6a1-b4dccbe71d69"
+                      fields:
+                        - status
+                      key: "{{HOMEPAGE_VAR_CLOUDFLARE_API_KEY}}"
+                - Plex:
+                    widget:
+                      type: cloudflared
+                      accountid: "c770200db72c5db16a0f5eeb7b512bbc"
+                      tunnelid: "02e1c7a8-46bb-4d8b-9653-ad616fa62917"
+                      key: "{{HOMEPAGE_VAR_CLOUDFLARE_API_KEY}}"
+                      fields:
+                        - status
+                - Rook:
+                    widget:
+                      type: cloudflared
+                      accountid: "c770200db72c5db16a0f5eeb7b512bbc"
+                      tunnelid: "53d08830-81a9-42dc-a096-437937d6a59c"
+                      key: "{{HOMEPAGE_VAR_CLOUDFLARE_API_KEY}}"
+                      fields:
+                        - status
+                - Flood:
+                    widget:
+                      type: cloudflared
+                      accountid: "c770200db72c5db16a0f5eeb7b512bbc"
+                      tunnelid: "c9aa5996-9619-4aab-999a-a0bad2665186"
+                      key: "{{HOMEPAGE_VAR_CLOUDFLARE_API_KEY}}"
+                      fields:
+                        - status
+                - Sonarr:
+                    widget:
+                      type: cloudflared
+                      accountid: "c770200db72c5db16a0f5eeb7b512bbc"
+                      tunnelid: "69625ec8-83cd-4516-a1eb-66489f35db12"
+                      key: "{{HOMEPAGE_VAR_CLOUDFLARE_API_KEY}}"
+                      fields:
+                        - status
+          widgets:
+            # show the kubernetes widget, with the cluster summary and individual nodes
+            - kubernetes:
+                cluster:
+                  show: true
+                  cpu: true
+                  memory: true
+                  showLabel: true
+                  label: "cluster"
+                nodes:
+                  show: true
+                  cpu: true
+                  memory: true
+                  showLabel: true
+            - search:
+                provider: duckduckgo
+                target: _blank
+          kubernetes:
+            mode: cluster
+          settings:
+            theme: dark
+        # The service account is necessary to allow discovery of other services
+        serviceAccount:
+          create: true
+          name: homepage
+        # This enables the service account to access the necessary resources
+        enableRbac: true
+        ingress:
+          main:
+            enabled: false
+  syncPolicy:
+    automated:
+      selfHeal: true
+      prune: true
+    syncOptions:
+      - CreateNamespace=true
+  destination:
+    server: "https://kubernetes.default.svc"
+    namespace: homelab
