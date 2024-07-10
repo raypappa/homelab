@@ -1,0 +1,33 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: pterodactyl-tunnel
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    repoURL: 'https://cloudflare.github.io/helm-charts'
+    targetRevision: 0.3.0
+    chart: cloudflare-tunnel
+    helm:
+      valuesObject:
+        image:
+          tag: 2024.6.1
+        cloudflare:
+          secretName: 'tunnel-credentials'
+          tunnelName: 'faerun-pterodactyl'
+          ingress:
+            - hostname: 'game.fieldsofbears.com'
+              service: 'http://172.17.42.155:80'
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: pterodactyl
+  syncPolicy:
+    automated:
+      selfHeal: true
+      prune: true
+    syncOptions:
+      - CreateNamespace=true
