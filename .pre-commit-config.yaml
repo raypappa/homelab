@@ -1,3 +1,4 @@
+---
 ci:
   autofix_prs: true
   autoupdate_branch: bugfix/pre-commit-fixes
@@ -10,10 +11,6 @@ repos:
           - push
     repo: https://github.com/commitizen-tools/commitizen
     rev: v3.27.0
-  - hooks:
-      - id: yamlfmt
-    repo: https://github.com/google/yamlfmt
-    rev: v0.13.0
   - hooks:
       - id: no-commit-to-branch
       - id: check-json
@@ -51,3 +48,11 @@ repos:
     rev: v8.10.1
     hooks:
       - id: cspell
+  - repo: https://github.com/adrienverge/yamllint.git
+    rev: v1.35.1
+    hooks:
+      - id: yamllint
+  - hooks:
+      - id: yamlfmt
+    repo: https://github.com/google/yamlfmt
+    rev: v0.13.0
