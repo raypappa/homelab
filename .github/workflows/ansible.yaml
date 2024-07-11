@@ -1,0 +1,76 @@
+---
+name: Ansible
+on: push
+jobs:
+  check:
+    if: github.secret_source != 'Dependabot'
+    runs-on: ${{ vars.RUNS_ON }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+      - name: Get Changed Files
+        id: changed-files
+        uses: tj-actions/changed-files@v44
+        with:
+          diff_relative: true
+          path: ansible
+    outputs:
+      all_changed_files_count: ${{ steps.changed-files.outputs.all_changed_files_count}}
+  ansible:
+    needs: check
+    if: github.secret_source != 'Dependabot' && needs.check.outputs.all_changed_files_count > 0
+    runs-on: ${{ vars.RUNS_ON }}
+    permissions:
+      id-token: write # This is required for requesting the JWT
+      contents: read # apparently setting permissions is holistic rather than additive.
+    steps:
+      - uses: actions/checkout@v4
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ vars.AWS_ASSUME_ROLE_ARN }}
+          aws-region: ${{ vars.AWS_DEFAULT_REGION }}
+      - name: arduino/setup-task
+        uses: arduino/setup-task@v2.0.0
+        with:
+          version: ${{ vars.TASK_VERSION}}
+      - uses: ITProKyle/action-setup-python@v1.0.0
+        with:
+          poetry-version: 1.7.1
+          python-version: ${{ vars.PYTHON_VERSION }}
+      - run: task setup
+      - name: Setup kubectl
+        run: |
+          install -m 600 -D /dev/null ~/.kube/config
+          echo "${{ secrets.KUBE_CONFIG }}" > ~/.kube/config
+          stat ~/.kube/config
+      - name: Setup SSH
+        run: |
+          install -m 600 -D /dev/null ~/.ssh/id_ed25519
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_ed25519
+          printf "Host *\n  StrictHostKeyChecking no\n  UserKnownHostsFile /dev/null\n" > ~/.ssh/config
+      - name: SSH Test
+        run: ssh ${{ vars.BASTION_USER }}@${{ vars.BASTION_HOST }} -p ${{ vars.BASTION_PORT }} echo "SSH Test"
+      - name: Ansible Canary
+        run: task ansible:deploy:canary:ci
+        env:
+          BASTION_HOST: ${{ vars.BASTION_HOST }}
+          BASTION_PORT: ${{ vars.BASTION_PORT }}
+          BASTION_USER: ${{ vars.BASTION_USER }}
+      # If package dependencies are not installed, the following task will fail. So we run in prod :D
+      # - name: Ansible Diff
+      #   run: task ansible:diff:ci
+      #   env:
+      #     BASTION_HOST: ${{ vars.BASTION_HOST}}
+      #     BASTION_PORT: ${{ vars.BASTION_PORT}}
+      #     AWS_REGION: ${{ vars.AWS_REGION}}
+      #     AWS_DEFAULT_REGION: ${{ vars.AWS_DEFAULT_REGION}}
+      - name: Ansible Deploy
+        run: echo $AWS_REGION;task ansible:deploy:ci
+        env:
+          BASTION_HOST: ${{ vars.BASTION_HOST}}
+          BASTION_PORT: ${{ vars.BASTION_PORT}}
+          AWS_REGION: ${{ vars.AWS_REGION}}
+          AWS_DEFAULT_REGION: ${{ vars.AWS_DEFAULT_REGION}}
+        if: github.ref == 'refs/heads/main'
