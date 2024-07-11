@@ -21,9 +21,6 @@
   hosts: prod_k8s_nodes
   roles:
     - k3s-nodes
-# - hosts: games
-#   roles:
-#     - games
 - name: Faerun Public
   hosts: puma.stoneydavis.lan
   roles:
