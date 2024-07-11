@@ -18,3 +18,10 @@ tasks:
     cmds:
       - pre-commit run -a
       - task: ansible:check
+  configure:
+    desc: Configure project including installing dependencies from npm/poetry
+    silent: true
+    cmds:
+      - npm ci
+      - poetry install
+      - task: ansible:configure
