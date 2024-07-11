@@ -1,0 +1,101 @@
+---
+- name: Install SSL Certificate from Amazon Secrets Manager
+  block:
+    - name: Setting host facts SSL Certificate
+      ansible.builtin.set_fact:
+        ssl_certificate_raw: "{{ lookup('amazon.aws.aws_secret', 'puma.stoneydavis.com-cert', region=lookup('env', 'AWS_REGION')) }}"
+    - name: Verify non-empty raw ssl secret
+      ansible.builtin.assert:
+        that: "ssl_certificate_raw != \"\""
+    - name: Verify SSL private key
+      community.crypto.openssl_privatekey_info:
+        content: |
+          {{ ssl_certificate_raw | community.general.json_query('private_key') }}
+    - name: Create SSL Directory
+      ansible.builtin.file:
+        path: /etc/ssl/game.puma.stoneydavis.com
+        state: directory
+        owner: root
+        group: root
+        mode: '0755'
+    - name: Install SSL Certificate
+      ansible.builtin.copy:
+        content: |
+          {{ ssl_certificate_raw | community.general.json_query('certificate') }}
+          {{ ssl_certificate_raw | community.general.json_query('certificate_chain') }}
+        dest: /etc/ssl/game.puma.stoneydavis.com/fullchain.pem
+        owner: root
+        group: root
+        mode: '0644'
+    - name: Install SSL Private Key
+      ansible.builtin.copy:
+        content: |
+          {{ ssl_certificate_raw | community.general.json_query('private_key') }}
+        dest: /etc/ssl/game.puma.stoneydavis.com/privkey.pem
+        owner: root
+        group: root
+        mode: '0644'
+- name: MariaDB
+  ansible.builtin.include_role:
+    name: xolyu.mariadb
+  vars:
+    mariadb_ensure_requirements: true
+    mariadb_databases:
+      - name: "{{ pterodactyl_mysql_db_name }}"
+    mariadb_users:
+      - name: "{{ pterodactyl_mysql_db_user }}"
+        password: "{{ pterodactyl_mysql_db_password }}"
+        priv: "{{ pterodactyl_mysql_db_name }}.*:ALL"
+- name: Install Pterodactyl
+  block:
+    - name: Install Pterodactyl Panel
+      register: pterodactyl_panel_role
+      ansible.builtin.include_role:
+        name: maxhoesel.pterodactyl.pterodactyl_panel
+      vars:
+        pterodactyl_panel_domain: "{{ game_server_domain }}"
+        pterodactyl_panel_url: https://{{ game_server_domain }}
+        pterodactyl_panel_app_key: "{{ lookup('amazon.aws.aws_secret', 'faerun-pterodactyl.app-key', nested=true, region=lookup('env', 'AWS_REGION')) }}"
+        pterodactyl_panel_hashids_salt: "{{ lookup('amazon.aws.aws_secret', 'faerun-pterodactyl.panel-salt', nested=true, region=lookup('env', 'AWS_REGION')) }}"
+        pterodactyl_panel_db_host: 127.0.0.1
+        pterodactyl_panel_db_name: "{{ pterodactyl_mysql_db_name }}"
+        pterodactyl_panel_db_user: "{{ pterodactyl_mysql_db_user }}"
+        pterodactyl_panel_db_password: "{{ pterodactyl_mysql_db_password }}"
+        pterodactyl_panel_ssl_mode: none
+        pterodactyl_panel_ssl_cert: /etc/ssl/game.puma.stoneydavis.com/fullchain.pem
+        pterodactyl_panel_ssl_key: /etc/ssl/game.puma.stoneydavis.com/privkey.pem
+        pterodactyl_panel_timezone: America/Los_Angeles
+        pterodactyl_panel_admin_mail: "{{ lookup('amazon.aws.aws_secret', 'pterodactyl-panel-admin.email', nested=true, region=lookup('env', 'AWS_REGION')) }}"
+        pterodactyl_panel_admin_user: "{{ lookup('amazon.aws.aws_secret', 'pterodactyl-panel-admin.user', nested=true, region=lookup('env', 'AWS_REGION')) }}"
+        pterodactyl_panel_admin_password: "{{ lookup('amazon.aws.aws_secret', 'pterodactyl-panel-admin.password', nested=true, region=lookup('env', 'AWS_REGION')) }}"
+    - name: Create docker network
+      community.docker.docker_network:
+        name: pterodactyl_nw
+        state: present
+        ipam_config:
+          - subnet: 172.19.0.0/16
+            gateway: 172.19.0.1
+    - name: Install Pterodactyl Wings Daemon
+      ansible.builtin.include_role:
+        name: maxhoesel.pterodactyl.pterodactyl_wings
+      # pterodactyl_wings supports additional options, see it's README for more details.
+      vars:
+        pterodactyl_wings_config:
+          uuid: "{{ pterodactyl_wings_panel_uuid }}"
+          token_id: "{{ pterodactyl_wings_panel_token_id }}"
+          token: "{{ pterodactyl_wings_panel_token }}"
+          api:
+            host: 0.0.0.0 # Address to bind the wings daemon to
+            port: 8443 # Port to bind the wings daemon to
+            ssl:
+              enabled: true
+              cert: /etc/ssl/game.puma.stoneydavis.com/fullchain.pem
+              key: /etc/ssl/game.puma.stoneydavis.com/privkey.pem
+          system:
+            sftp:
+              bind_address: 0.0.0.0
+              port: 2022
+          remote: http://127.0.0.1:80
+          allowed_origins:
+            - https://game.fieldsofbears.com
+            - https://172.17.42.155

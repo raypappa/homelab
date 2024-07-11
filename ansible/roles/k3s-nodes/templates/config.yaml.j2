@@ -1,0 +1,2 @@
+token: {{ hostvars[singleton_host]['k3s_master_token'] }}
+server: https://{{ hostvars[singleton_host]['k3s_master_ip'] }}:6443

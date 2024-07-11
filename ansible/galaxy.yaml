@@ -1,0 +1,11 @@
+---
+# vim: filetype=ansible.yaml
+roles:
+  - name: artis3n.tailscale
+  - name: xolyu.mariadb
+  - name: adrianjuhl.rbenv
+collections:
+  - name: community.general
+  - name: https://github.com/stoneydavis/ansible-collection-pterodactyl.git
+    type: git
+  - name: community.docker

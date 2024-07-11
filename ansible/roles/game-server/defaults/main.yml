@@ -1,0 +1,9 @@
+---
+mariadb_root_password: "{{ lookup('amazon.aws.aws_secret', 'game-server.mysql-root-password', nested=true, region=lookup('env', 'AWS_REGION')) }}"
+game_server_domain: "{{ lookup('amazon.aws.aws_secret', 'faerun-pterodactyl.panel-domain', nested=true, region=lookup('env', 'AWS_REGION')) }}"
+pterodactyl_wings_panel_uuid: "{{ lookup('amazon.aws.aws_secret', 'faerun-pterodactyl.wings-uuid', nested=true, region=lookup('env', 'AWS_REGION')) }}"
+pterodactyl_wings_panel_token_id: "{{ lookup('amazon.aws.aws_secret', 'faerun-pterodactyl.wings-token-id', nested=true, region=lookup('env', 'AWS_REGION')) }}"
+pterodactyl_wings_panel_token: "{{ lookup('amazon.aws.aws_secret', 'faerun-pterodactyl.wings-token', nested=true, region=lookup('env', 'AWS_REGION')) }}"
+pterodactyl_mysql_db_name: "{{ lookup('amazon.aws.aws_secret', 'faerun-pterodactyl.panel-db-name', nested=true, region=lookup('env', 'AWS_REGION')) }}"
+pterodactyl_mysql_db_user: "{{ lookup('amazon.aws.aws_secret', 'faerun-pterodactyl.panel-mysql-username', nested=true, region=lookup('env', 'AWS_REGION')) }}"
+pterodactyl_mysql_db_password: "{{ lookup('amazon.aws.aws_secret', 'faerun-pterodactyl.panel-mysql-password', nested=true, region=lookup('env', 'AWS_REGION')) }}"

@@ -1,0 +1,8 @@
+---
+# vim: filetype=ansible.yaml
+- name: Reboot if update has requested it
+  ansible.builtin.stat:
+    path: /var/run/reboot-required
+  register: file_reboot_required
+  changed_when: file_reboot_required.stat.exists
+  notify: reboot

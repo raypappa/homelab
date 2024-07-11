@@ -1,0 +1,247 @@
+---
+# The singleton is any already running k3s controlplane node.  Mostly we
+# just need to have the correct node token to use on any other control
+# plane node, because we initialize everything on the first one and then
+# all other control plane nodes will join on the running node for the
+# initial setup.
+#
+# Otherwise they won't be able to communicate and you'd have three
+# isolated control planes, not a single HA control plane.
+- name: Create /etc/rancher/k3s/ directory
+  ansible.builtin.file:
+    path: /etc/rancher/k3s/
+    state: directory
+    mode: "0755"
+- name: Copy Jinja template
+  ansible.builtin.template:
+    src: singleton.config.yaml.j2
+    dest: /etc/rancher/k3s/config.yaml
+    owner: root
+    group: root
+    mode: "0644"
+- name: Copy K3s service file
+  register: k3s_service
+  ansible.builtin.template:
+    src: k3s.service.j2
+    dest: "{{ systemd_dir }}/k3s.service"
+    owner: root
+    group: root
+    mode: "0644"
+- name: Enable and check K3s service
+  any_errors_fatal: true
+  ansible.builtin.systemd:
+    name: k3s
+    daemon_reload: true
+    state: restarted
+    enabled: true
+- name: Wait for node-token
+  ansible.builtin.wait_for:
+    path: "{{ k3s_server_location }}/server/node-token"
+- name: Register node-token file access mode
+  ansible.builtin.stat:
+    path: "{{ k3s_server_location }}/server/node-token"
+  register: p
+- name: Change file access node-token
+  ansible.builtin.file:
+    path: "{{ k3s_server_location }}/server/node-token"
+    mode: g+rx,o+rx
+- name: Read node-token from master
+  ansible.builtin.slurp:
+    path: "{{ k3s_server_location }}/server/node-token"
+  register: node_token
+- name: Store Master node-token and IP address
+  ansible.builtin.set_fact:
+    k3s_master_token: "{{ node_token.content | b64decode | regex_replace('\n', '') }}"
+    k3s_master_ip: "{{ ansible_default_ipv4.address | default(ansible_all_ipv4_addresses[0]) }}"
+- name: Restore node-token file access
+  ansible.builtin.file:
+    path: "{{ k3s_server_location }}/server/node-token"
+    mode: "{{ p.stat.mode }}"
+- name: Create directory .kube
+  ansible.builtin.file:
+    path: ~{{ ansible_user }}/.kube
+    state: directory
+    owner: "{{ ansible_user }}"
+    mode: u=rwx,g=rx,o=
+- name: Copy config file to user home directory
+  ansible.builtin.copy:
+    src: /etc/rancher/k3s/k3s.yaml
+    dest: ~{{ ansible_user }}/.kube/config
+    remote_src: true
+    owner: "{{ ansible_user }}"
+    mode: u=rw,g=,o=
+# Update the namespace in the ~{{ ansible_user }}/.kube/config to argocd.
+- name: Replace https://localhost:6443 by https://master-ip:6443
+  ansible.builtin.command: >-
+    k3s kubectl config set-cluster default --server=https://{{ master_ip }}:6443 --kubeconfig ~{{ ansible_user }}/.kube/config
+  changed_when: true
+- name: Create kubectl symlink
+  ansible.builtin.file:
+    src: /usr/local/bin/k3s
+    dest: /usr/local/bin/kubectl
+    state: link
+- name: Create crictl symlink
+  ansible.builtin.file:
+    src: /usr/local/bin/k3s
+    dest: /usr/local/bin/crictl
+    state: link
+- name: Create ArgoCD NameSpace
+  become: false
+  kubernetes.core.k8s:
+    name: argocd
+    kind: Namespace
+    state: present
+- name: Install ArgoCD
+  block:
+    # Download and install ArgoCD
+    - name: Download argoCD install manifest to the cluster for version {{ argocd_version }}
+      become: false
+      ansible.builtin.get_url:
+        url: https://raw.githubusercontent.com/argoproj/argo-cd/v{{ argocd_version }}/manifests/install.yaml
+        dest: ~/argocd-install.yaml
+        mode: "0664"
+    - name: Apply argoCD install manifest to the cluster.
+      become: false
+      kubernetes.core.k8s:
+        state: present
+        src: ~/argocd-install.yaml
+        namespace: argocd
+    - name: ArgoCD ConfigMap
+      kubernetes.core.k8s:
+        state: present
+        definition:
+          apiVersion: v1
+          kind: ConfigMap
+          metadata:
+            name: argocd-cm
+            namespace: argocd
+          data:
+            url: https://argocd.{{ k3s_cloudflare_domain_name }}
+            accounts.homepage: apiKey
+            accounts.cdavis: login, apiKey
+            dex.config: |
+              connectors:
+                - type: github
+                  id: github
+                  name: GitHub
+                  config:
+                    clientID: 21a91acb1d7b3f957d72
+                    clientSecret: $dex.github.clientSecret
+                    orgs:
+                      - name: stoneydavis
+    - name: ArgoCD CMD Params ConfigMap
+      kubernetes.core.k8s:
+        state: present
+        definition:
+          apiVersion: v1
+          kind: ConfigMap
+          metadata:
+            name: argocd-cmd-params-cm
+            namespace: argocd
+          data:
+            server.insecure: "true"
+    - name: ArgoCD RBAC ConfigMap
+      kubernetes.core.k8s:
+        state: present
+        definition:
+          apiVersion: v1
+          kind: ConfigMap
+          metadata:
+            name: argocd-rbac-cm
+            namespace: argocd
+          data:
+            policy.default: role:readonly
+            policy.csv: |
+              p, role:org-admin, applications, *, */*, allow
+              p, role:org-admin, clusters, get, *, allow
+              p, role:org-admin, repositories, get, *, allow
+              p, role:org-admin, repositories, create, *, allow
+              p, role:org-admin, repositories, update, *, allow
+              p, role:org-admin, repositories, delete, *, allow
+              p, role:org-admin, projects, get, *, allow
+              p, role:org-admin, projects, create, *, allow
+              p, role:org-admin, projects, update, *, allow
+              p, role:org-admin, projects, delete, *, allow
+              p, role:org-admin, logs, get, *, allow
+              p, role:org-admin, exec, create, */*, allow
+              g, stoneydavis:admin, role:admin
+              g, stoneydavis, role:admin
+    - name: Create ArgoCD Tunnel
+      kubernetes.core.k8s:
+        state: present
+        definition:
+          apiVersion: argoproj.io/v1alpha1
+          kind: Application
+          metadata:
+            name: argocd-tunnel
+            namespace: argocd
+            finalizers:
+              - resources-finalizer.argocd.argoproj.io
+          spec:
+            project: default
+            source:
+              repoURL: https://cloudflare.github.io/helm-charts
+              targetRevision: 0.3.0
+              chart: cloudflare-tunnel
+              helm:
+                valuesObject:
+                  image:
+                    tag: 2024.4.1
+                  cloudflare:
+                    # Note: this won't exist yet, you need to create it yourself.
+                    secretName: tunnel-credentials
+                    tunnelName: faerun-argocd
+                    ingress:
+                      - hostname: argocd.{{ k3s_cloudflare_domain_name }}
+                        service: http://argocd-server:80
+            destination:
+              server: https://kubernetes.default.svc
+              namespace: argocd
+            syncPolicy:
+              automated:
+                selfHeal: true
+                prune: true
+              syncOptions:
+                - CreateNamespace=true
+- name: Enable OCI for truecharts
+  kubernetes.core.k8s:
+    state: present
+    definition:
+      apiVersion: v1
+      kind: Secret
+      metadata:
+        labels:
+          argocd.argoproj.io/secret-type: repository
+        name: truecharts-helm-oci
+        namespace: argocd
+      stringData:
+        url: tccr.io/truecharts
+        name: truecharts
+        type: helm
+        enableOCI: "true"
+- name: Replace default namespace by argocd
+  ansible.builtin.command: >-
+    k3s kubectl config set-context default --namespace=argocd --kubeconfig ~{{ ansible_user }}/.kube/config
+  changed_when: true
+- name: Configure ArgoCD for the cluster
+  ansible.builtin.command:
+    cmd: argocd login --core
+    creates: ~/.config/argocd/config
+- name: Configure ArgoCD with SSH Key
+  block:
+    - name: List Configured Repositories in ArgoCD
+      ansible.builtin.command: >-
+        argocd repo list -o json
+      register: argocd_repos
+    - name: Create Deploy Key
+      become: false
+      community.crypto.openssh_keypair:
+        path: ~/.ssh/id_ed25519
+        type: ed25519
+        mode: "0600"
+    # Note: This makes argocd able to use the above ssh key, but the ssh key still needs to be added by hand as a deploy key to the github repo.
+    - name: Configure ArgoCD with SSH Key
+      become: false
+      ansible.builtin.command: >-
+        argocd repo add "{{ k3s_git_repo }}" --ssh-private-key-path ~/.ssh/id_ed25519
+      when: argocd_repos.stdout.find(k3s_git_repo)

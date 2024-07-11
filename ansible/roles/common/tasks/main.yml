@@ -1,0 +1,95 @@
+---
+- name: Get my public IP
+  community.general.ipify_facts:
+- name: Ensure that Bookworm /etc/apt/sources.list is sane
+  become: true
+  ansible.builtin.copy:
+    src: bookworm_etc_apt_sources.list
+    dest: /etc/apt/sources.list
+    owner: root
+    group: root
+    mode: "0644"
+  when: ansible_facts['os_family'] == "Debian" and ansible_facts['distribution_major_version'] == "12"
+- name: Upgrade the OS (apt-get dist-upgrade)
+  become: true
+  ansible.builtin.apt:
+    upgrade: dist
+    update_cache: true
+    cache_valid_time: 3600
+    autoclean: true
+- name: Ensure required packages are installed
+  become: true
+  ansible.builtin.apt:
+    pkg:
+      - apt-transport-https
+      - bc
+      - bridge-utils
+      - build-essential
+      - ca-certificates
+      - curl
+      - dbus
+      - ffmpeg
+      - firmware-misc-nonfree
+      - gdisk
+      - git
+      - htop
+      - inotify-tools
+      - iotop
+      - iptraf-ng
+      - jq
+      - keychain
+      - libbz2-dev
+      - libffi-dev
+      - liblzma-dev
+      - libncursesw5-dev
+      - libreadline-dev
+      - libsqlite3-dev
+      - libssl-dev
+      - libtcmalloc-minimal4
+      - libxml2-dev
+      - libxmlsec1-dev
+      - llvm
+      - lm-sensors
+      - luajit
+      - make
+      - mdadm
+      - nano
+      - neovim
+      - net-tools
+      - python3-kubernetes
+      - python3-pip
+      - python3-pynvim
+      - python3-venv
+      - rsync
+      - sudo
+      - smartmontools
+      - software-properties-common
+      - strace
+      - sysstat
+      - tk-dev
+      - tmux
+      - tree
+      - unzip
+      - virt-manager
+      - wget
+      - xz-utils
+      - zip
+      - zlib1g-dev
+      - lftp
+      - zsh
+    state: latest
+- name: Ensure all user homedir's are configured
+  ansible.builtin.include_tasks: user.yaml
+  vars:
+    user: "{{ item }}"
+  loop: "{{ users }}"
+# - name: Install tailscale
+#   ansible.builtin.include_role:
+#     name: artis3n.tailscale
+- name: Set hostname if specified
+  become: true
+  when: hostname is defined
+  notify: reboot
+  ansible.builtin.hostname:
+    name: "{{ hostname }}"
+    use: debian

@@ -1,0 +1,35 @@
+---
+faerun:
+  hosts:
+    puma.stoneydavis.lan:
+    panda.stoneydavis.lan:
+    warthog.stoneydavis.lan:
+prod_k8s_controlplane:
+  hosts:
+    puma.stoneydavis.lan:
+prod_k8s_nodes:
+  hosts:
+#    k8s-worker-01:
+#      ansible_host: 172.17.41.8
+prod_k8s_cluster:
+  children:
+    prod_k8s_controlplane:
+    prod_k8s_nodes:
+# games:
+#   hosts:
+#     bob:
+#       ansible_host: 172.17.40.73
+#     abaobox:
+#       ansible_host: 172.17.40.98
+game_server:
+  hosts:
+    panda.stoneydavis.lan:
+dev_k8s_controlplane:
+  hosts:
+    warthog.stoneydavis.lan:
+dev_k8s_nodes:
+  hosts:
+dev_k8s_cluster:
+  children:
+    dev_k8s_controlplane:
+    dev_k8s_nodes:

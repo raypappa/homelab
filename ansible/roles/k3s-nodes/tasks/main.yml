@@ -1,0 +1,4 @@
+---
+- name: Setup Cluster Node
+  ansible.builtin.import_tasks: cluster.yml
+  become: true

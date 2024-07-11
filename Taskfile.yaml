@@ -2,6 +2,10 @@
 version: "3"
 vars:
   KUBERNETES_DIR: "{{.ROOT_DIR}}/kubernetes"
+includes:
+  ansible:
+    taskfile: .taskfiles/ansible/Taskfile.yaml
+    dir: ansible
 tasks:
   default:
     desc: "List tasks"
@@ -13,3 +17,4 @@ tasks:
     silent: true
     cmds:
       - pre-commit run -a
+      - task: ansible:check

@@ -1,0 +1,7 @@
+[Match]
+Name=en*
+
+[Network]
+UseDomains=true
+UseDNS=yes
+DHCP=yes

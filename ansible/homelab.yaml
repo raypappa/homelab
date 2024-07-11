@@ -1,0 +1,50 @@
+---
+- name: Common
+  hosts: all
+  roles:
+    # It's just one package... it's just that it'll break DNS resolution until
+    # things get restarted, and a reboot is the easy way to do this. If DNS
+    # resolution breaks, then apt breaks, etc. Break this out so we don't break
+    # brand new hosts during the first ansibilization.
+    - common_critical
+    - common
+- name: Production Kubernetes Cluster
+  hosts: prod_k8s_cluster
+  become: true
+  roles:
+    - k3s-prereq
+- name: Production Kubernetes Control Plane
+  hosts: prod_k8s_controlplane
+  roles:
+    - k3s-controlplane
+- name: Production Kubernetes Nodes
+  hosts: prod_k8s_nodes
+  roles:
+    - k3s-nodes
+# - hosts: games
+#   roles:
+#     - games
+- name: Faerun Public
+  hosts: puma.stoneydavis.lan
+  roles:
+    - faerun-public
+- name: Game Server
+  hosts: game_server
+  roles:
+    - game-server
+# - name: Development Kubernetes Cluster
+#   hosts: dev_k8s_cluster
+#   roles:
+#     - k3s-prereq
+# - name: Development Kubernetes Control Plane
+#   hosts: dev_k8s_controlplane
+#   roles:
+#     - k3s-controlplane
+# - name: Development Kubernetes Noes
+#   hosts: dev_k8s_nodes
+#   roles:
+#     - k3s-nodes
+- name: Reboot hosts
+  hosts: all
+  roles:
+    - common_reboot # if any updates to disk are requesting a reboot at the end, ensure we reboot

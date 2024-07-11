@@ -1,0 +1,61 @@
+---
+version: "3"
+vars:
+  PROXY_ARGS: >-
+    ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o ConnectionAttempts=1 -o ConnectTimeout=2 -p {{.BASTION_PORT}} -W %h:%p -q {{.BASTION_USER}}@{{.BASTION_HOST}}
+  CI_ARGS: >-
+    -T 2 -u root --private-key ~/.ssh/id_ed25519 --ssh-common-args=' -o ConnectionAttempts=1 -o ProxyCommand="{{.PROXY_ARGS}}"'
+tasks:
+  check:
+    desc: Lint Ansible
+    cmds:
+      - poetry run ansible-lint homelab.yaml {{.ANSIBLE_LINT_ARGS}}
+  deploy:
+    desc: Run ansible playbook
+    silent: true
+    requires:
+      vars:
+        - BASTION_HOST
+        - BASTION_PORT
+        - BASTION_USER
+    cmds:
+      - poetry run ansible-playbook -i hosts {{.CLI_ARGS}} homelab.yaml
+  deploy:ci:
+    desc: Run ansible playbook in CI
+    cmds:
+      - task: deploy
+        vars:
+          CLI_ARGS: "{{.CLI_ARGS}} {{.CI_ARGS}}"
+  deploy:canary:
+    desc: Ping hosts with ansible
+    requires:
+      vars:
+        - BASTION_HOST
+        - BASTION_PORT
+        - BASTION_USER
+    cmds:
+      - poetry run ansible -i hosts -m ping all {{.CLI_ARGS}}
+  deploy:canary:ci:
+    desc: Ping host with ansible using CI flags
+    cmds:
+      - task: deploy:canary
+        vars:
+          CLI_ARGS: "{{.CLI_ARGS}} {{.CI_ARGS}}"
+  diff:
+    desc: Dry Run diff with ansible
+    cmds:
+      - task: deploy
+        vars:
+          CLI_ARGS: -C -D
+  diff:ci:
+    desc: Dry Run diff with ansible for CI
+    cmds:
+      - task: deploy:ci
+        vars:
+          CLI_ARGS: -C -D
+  configure:
+    desc: Install roles and collections
+    aliases:
+      - setup
+    cmds:
+      - poetry run ansible-galaxy install -r galaxy.yaml

@@ -1,0 +1,6 @@
+cluster-init: true
+token: {{ k3s_master_token }}
+server: https://{{ k3s_master_ip }}:6443
+disable:
+  - servicelb
+  - traefik

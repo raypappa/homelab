@@ -1,0 +1,15 @@
+---
+- name: Download and install ArgoCD CLI
+  become: true
+  ansible.builtin.get_url:
+    url: https://github.com/argoproj/argo-cd/releases/download/v{{ argocd_version }}/argocd-linux-amd64
+    dest: /usr/local/bin/argocd
+    mode: "0555"
+- name: Setup Cluster Singleton
+  ansible.builtin.import_tasks: singleton.yml
+  run_once: true
+  become: true
+- name: Setup Remaining Cluster Nodes
+  ansible.builtin.import_tasks: cluster.yml
+  become: true
+  when: inventory_hostname != singleton_host

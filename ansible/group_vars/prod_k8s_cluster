@@ -1,0 +1,4 @@
+---
+k3s_cloudflare_domain_name: fieldsofbears.com
+master_ip: "{{ hostvars[groups['prod_k8s_controlplane'][0]]['ansible_host'] | default(groups['prod_k8s_controlplane'][0]) }}"
+singleton_host: "{{ groups['prod_k8s_controlplane'][0] }}"

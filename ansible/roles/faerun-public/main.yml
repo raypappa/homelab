@@ -1,0 +1,19 @@
+---
+- name: Set R53 Hosted Zone Record for Puma
+  amazon.aws.route53:
+    state: present
+    zone: stoneydavis.com
+    record: puma.stoneydavis.com
+    type: A
+    ttl: 7200
+    value: "{{ hostvars['puma']['ansible_facts']['ipify_public_ip'] }}"
+  delegate_to: localhost
+- name: Set R53 Hosted Zone Record for Panda
+  amazon.aws.route53:
+    state: present
+    zone: stoneydavis.com
+    record: panda.stoneydavis.com
+    type: A
+    ttl: 7200
+    value: "{{ hostvars['puma']['ansible_facts']['ipify_public_ip'] }}"
+  delegate_to: localhost

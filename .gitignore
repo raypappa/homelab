@@ -1,3 +1,4 @@
+.env.local
 *$py.class
 *-secret.env
 *.cover

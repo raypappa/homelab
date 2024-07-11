@@ -1,0 +1,64 @@
+---
+# vim: filetype=ansible.yaml
+- name: Ensure that no Bullseye hosts remain
+  ansible.builtin.fail:
+    msg: '"Support for Bullseye has been removed, upgrade to Bookworm."'
+  when: ansible_facts['os_family'] == "Debian" and ansible_facts['distribution_major_version'] == "11"
+- name: Apply networkd.conf to enable using dns from dhcp
+  become: true
+  register: networkd
+  ansible.builtin.copy:
+    src: networkd.conf
+    dest: /etc/systemd/networkd.conf
+    mode: "0644"
+    owner: root
+    group: root
+- name: Apply dhcp.network to enable using dns from dhcp
+  become: true
+  register: networkd
+  ansible.builtin.copy:
+    src: dhcp.network
+    dest: /etc/systemd/network/dhcp.network
+    mode: "0644"
+    owner: root
+    group: root
+- name: Enable networkd
+  become: true
+  ansible.builtin.systemd_service:
+    enabled: true
+    name: systemd-networkd
+    state: reloaded
+- name: Upgrade the OS (apt-get dist-upgrade)
+  become: true
+  ansible.builtin.apt:
+    upgrade: dist
+    update_cache: true
+    cache_valid_time: 3600
+    autoclean: true
+- name: Ensure required packages are installed which require a reboot
+  become: true
+  register: packages
+  ansible.builtin.apt:
+    pkg:
+      - systemd-resolved
+    state: latest
+- name: Remove dhclient's ability to overwrite systemd-resolved's /etc/resolv.conf
+  become: true
+  register: dhclient
+  ansible.builtin.copy:
+    dest: /etc/dhcp/dhclient-enter-hooks.d/no-resolv-conf
+    content: |
+      #!/bin/sh
+      make_resolv_conf() { :; };
+    mode: "0755"
+    owner: root
+    group: root
+# This is not a handler, because we need to reboot immediately. There's a
+# chance a host can fail offline here if we catch a DHCP refresh cycle
+# wrong, so we need to kick it immediately.
+- name: Forced immediate reboot
+  become: true
+  throttle: 1
+  when: packages.changed or dhclient.changed or networkd.changed
+  ansible.builtin.reboot:
+    reboot_timeout: 600

@@ -1,0 +1,22 @@
+---
+# vim: filetype=ansible.yaml
+- name: reboot
+  become: true
+  throttle: 1
+  ansible.builtin.reboot:
+    reboot_timeout: 600
+- name: force-apt-cache-update
+  become: true
+  ansible.builtin.apt:
+    update_cache: true
+    cache_valid_time: 1
+- name: update-initramfs
+  become: true
+  become_flags: "-" # https://github.com/ansible/ansible/issues/45219
+  notify: reboot
+  ansible.builtin.command: update-initramfs -u
+- name: update-grub
+  become: true
+  become_flags: "-"
+  notify: reboot
+  ansible.builtin.command: update-grub2
