@@ -22,6 +22,11 @@ tasks:
       - poetry run ansible-playbook -i hosts {{.CLI_ARGS}} homelab.yaml
   deploy:ci:
     desc: Run ansible playbook in CI
+    requires:
+      vars:
+        - BASTION_HOST
+        - BASTION_PORT
+        - BASTION_USER
     cmds:
       - task: deploy
         vars:
@@ -37,18 +42,33 @@ tasks:
       - poetry run ansible -i hosts -m ping all {{.CLI_ARGS}}
   deploy:canary:ci:
     desc: Ping host with ansible using CI flags
+    requires:
+      vars:
+        - BASTION_HOST
+        - BASTION_PORT
+        - BASTION_USER
     cmds:
       - task: deploy:canary
         vars:
           CLI_ARGS: "{{.CLI_ARGS}} {{.CI_ARGS}}"
   diff:
     desc: Dry Run diff with ansible
+    requires:
+      vars:
+        - BASTION_HOST
+        - BASTION_PORT
+        - BASTION_USER
     cmds:
       - task: deploy
         vars:
           CLI_ARGS: -C -D
   diff:ci:
     desc: Dry Run diff with ansible for CI
+    requires:
+      vars:
+        - BASTION_HOST
+        - BASTION_PORT
+        - BASTION_USER
     cmds:
       - task: deploy:ci
         vars:
