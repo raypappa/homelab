@@ -76,6 +76,7 @@ jobs:
         run: echo $AWS_REGION;task ansible:deploy:ci
         env:
           BASTION_HOST: ${{ vars.BASTION_HOST}}
+          BASTION_USER: ${{ vars.BASTION_USER }}
           BASTION_PORT: ${{ vars.BASTION_PORT}}
           AWS_REGION: ${{ vars.AWS_REGION}}
           AWS_DEFAULT_REGION: ${{ vars.AWS_DEFAULT_REGION}}
