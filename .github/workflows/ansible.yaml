@@ -15,11 +15,17 @@ jobs:
         with:
           diff_relative: true
           path: ansible
+      - name: Check if override is in commit message
+        id: override
+        run: |
+          echo "${{ github.event.head_commit.message }}" | grep '[run ansible]'
+        continue-on-error: true
     outputs:
       all_changed_files_count: ${{ steps.changed-files.outputs.all_changed_files_count}}
+      override: ${{steps.override.conclusion}}
   ansible:
     needs: check
-    if: github.secret_source != 'Dependabot' && needs.check.outputs.all_changed_files_count > 0
+    if: github.secret_source != 'Dependabot' && (needs.check.outputs.all_changed_files_count > 0 || needs.check.outputs.override == 'success')
     runs-on: ${{ vars.RUNS_ON }}
     permissions:
       id-token: write # This is required for requesting the JWT
