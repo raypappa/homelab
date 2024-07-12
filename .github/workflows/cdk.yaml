@@ -1,0 +1,53 @@
+---
+name: AWS-CDK
+on: push
+jobs:
+  check:
+    runs-on: ${{ vars.RUNS_ON }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+      - name: Get Changed Files
+        id: changed-files
+        uses: tj-actions/changed-files@v44
+        with:
+          diff_relative: true
+          path: cdk
+    outputs:
+      all_changed_files_count: ${{ steps.changed-files.outputs.all_changed_files_count}}
+  aws-cdk:
+    needs: check
+    if: needs.check.outputs.all_changed_files_count > 0
+    runs-on: ${{ vars.RUNS_ON}}
+    permissions:
+      id-token: write # This is required for requesting the JWT
+      contents: read # apparently setting permissions is holistic rather than additive.
+    steps:
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ vars.AWS_ASSUME_ROLE_ARN }}
+          aws-region: ${{ vars.AWS_DEFAULT_REGION }}
+      - uses: actions/checkout@v4
+      - name: arduino/setup-task
+        uses: arduino/setup-task@v2.0.0
+        with:
+          version: ${{ vars.TASK_VERSION}}
+      - uses: ITProKyle/action-setup-python@v1.0.0
+        with:
+          python-version: ${{ vars.PYTHON_VERSION }}
+          poetry-version: 1.7.1
+      - name: Setting up CDK
+        run: task cdk:setup
+      - name: Bootstrapping CDK
+        run: task cdk:bootstrap
+      - name: CDK Unit Tests
+        run: task cdk:test:unit
+      - name: Synthesize CDK
+        run: task cdk:synth
+      - name: Difference between CDK and deployed
+        run: task cdk:diff
+      - name: Deploying CDK
+        run: task cdk:deploy:ci
+        if: github.ref == 'refs/heads/main'
