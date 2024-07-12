@@ -1,6 +1,10 @@
 ---
 name: AWS-CDK
-on: push
+on:
+  push:
+  pull_request:
+    branches:
+      - main
 jobs:
   check:
     runs-on: ${{ vars.RUNS_ON }}
