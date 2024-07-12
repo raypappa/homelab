@@ -1,0 +1,6 @@
+ignore_checks:
+    - W3005
+include_checks:
+    - I
+templates:
+    - cdk.out/*.template.json

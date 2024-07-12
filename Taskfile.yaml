@@ -6,6 +6,8 @@ includes:
   ansible:
     taskfile: .taskfiles/ansible/Taskfile.yaml
     dir: ansible
+  cdk:
+    taskfile: .taskfiles/cdk/Taskfile.yaml
 tasks:
   default:
     desc: "List tasks"

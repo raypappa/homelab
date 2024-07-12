@@ -1,0 +1,47 @@
+---
+version: "3"
+tasks:
+  cdk:
+    desc: Execute CDK
+    cmds:
+      - npx aws-cdk {{.CLI_ARGS}}
+  synth:
+    desc: Synthesize CDK
+    cmds:
+      - task: cdk
+        vars:
+          CLI_ARGS: synth {{.CLI_ARGS}}
+  deploy:
+    desc: Deploy CDK
+    cmds:
+      - task: cdk
+        vars:
+          CLI_ARGS: deploy --all {{.CLI_ARGS}}
+  deploy:ci:
+    desc: Deploy CDK (without requiring approval)
+    cmds:
+      - task: deploy
+        vars:
+          CLI_ARGS: --require-approval never {{.CLI_ARGS}}
+  bootstrap:
+    desc: Bootstrap CDK in AWS
+    cmds:
+      - task: cdk
+        vars:
+          CLI_ARGS: bootstrap {{.CLI_ARGS}}
+  destroy:
+    desc: Destroy CDK
+    cmds:
+      - task: cdk
+        vars:
+          CLI_ARGS: destroy {{.CLI_ARGS}}
+  diff:
+    desc: Diff CDK
+    cmds:
+      - task: cdk
+        vars:
+          CLI_ARGS: diff {{.CLI_ARGS}}
+  test:unit:
+    desc: Execute Tests
+    cmds:
+      - npm test

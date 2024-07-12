@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "refresh-cert"
+version = "0.1.0"
+description = ""
+authors = ["Craig Davis <cdavis@stoneydavis.com>"]
+
+[tool.poetry.dependencies]
+python = "~3.12"
+certbot = "^2.10.0"
+certbot-dns-route53 = "^2.10.0"
+black = "^24.4.2"
+flake8 = "^7.0.0"
+
+[tool.poetry.group.dev.dependencies]
+aws-lambda-powertools = {extras = ["all"], version = "^2.38.1"}
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
