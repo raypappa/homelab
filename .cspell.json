@@ -1,112 +1,106 @@
 {
-    "dictionaries": [
-        "bash",
-        "python",
-        "softwareTerms",
-        "sphinx",
-        "homelab",
-        "aws",
-        "runway",
-        "local",
-        "terraform",
-        "typescript",
-        "node",
-        "k8s-local",
-        "ansible",
-        "linux"
-    ],
-    "dictionaryDefinitions": [
-        {
-            "name": "sphinx",
-            "path": "./.cspell-dictionaries/sphinx.txt"
-        },
-        {
-            "name": "homelab",
-            "path": "./.cspell-dictionaries/homelab.txt"
-        },
-        {
-            "name": "runway",
-            "path": "./.cspell-dictionaries/runway.txt"
-        },
-        {
-            "name": "aws",
-            "path": "./.cspell-dictionaries/aws.txt"
-        },
-        {
-            "name": "terraform",
-            "path": "./.cspell-dictionaries/terraform.txt"
-        },
-        {
-            "name": "local",
-            "path": "./.cspell-dictionaries/local.txt"
-        },
-        {
-            "name": "k8s-local",
-            "path": "./.cspell-dictionaries/k8s.txt"
-        },
-        {
-            "name": "ansible",
-            "path": "./.cspell-dictionaries/ansible.txt"
-        },
-        {
-            "name": "linux",
-            "path": "./.cspell-dictionaries/linux.txt"
-        }
-    ],
-    "ignorePaths": [
-        "**/*.egg-info/**",
-        "**/*.css",
-        "**/*.js",
-        "**/*.pyc",
-        "**/*.ts",
-        "**/.runway/**",
-        "**/.serverless/**",
-        "**/.terraform/**",
-        "**/.venv/**",
-        "**/Pipfile.lock",
-        "**/__pycache__/**",
-        "**/_gitignore",
-        "**/angular.json",
-        "**/build/**",
-        "**/dist/**",
-        "**/dot_gitignore",
-        "**/node_modules/**",
-        "**/package-lock.json",
-        "**/package.json",
-        "**/poetry.lock",
-        "**/requirements.txt",
-        "**/tsconfig.json",
-        ".cspell-dictionaries/*.txt",
-        "typings/**",
-        "ansible/ansible.cfg",
-        "**/*cdk.out*/**/*",
-        "**/*secret.env",
-        "tags",
-        "tags.lock",
-        "tags.temp",
-        "authorized_keys",
-        ".gitignore"
-    ],
-    "import": [
-        "@cspell/dict-k8s/cspell-ext.json",
-        "@cspell/dict-git/cspell-ext.json",
-        "@cspell/dict-data-science/cspell-ext.json",
-        "@cspell/dict-fullstack/cspell-ext.json"
-    ],
-    "language": "en",
-    "languageSettings": [
-        {
-            "allowCompoundWords": true,
-            "dictionaries": [
-                "python",
-                "typescript",
-                "node",
-                "bash",
-                "softwareTerms"
-            ],
-            "languageId": "toml"
-        }
-    ],
-    "maxNumberOfProblems": 100,
-    "version": "0.2"
+  "dictionaries": [
+    "bash",
+    "python",
+    "softwareTerms",
+    "sphinx",
+    "homelab",
+    "aws",
+    "runway",
+    "local",
+    "terraform",
+    "typescript",
+    "node",
+    "k8s-local",
+    "ansible",
+    "linux"
+  ],
+  "dictionaryDefinitions": [
+    {
+      "name": "sphinx",
+      "path": "./.cspell-dictionaries/sphinx.txt"
+    },
+    {
+      "name": "homelab",
+      "path": "./.cspell-dictionaries/homelab.txt"
+    },
+    {
+      "name": "runway",
+      "path": "./.cspell-dictionaries/runway.txt"
+    },
+    {
+      "name": "aws",
+      "path": "./.cspell-dictionaries/aws.txt"
+    },
+    {
+      "name": "terraform",
+      "path": "./.cspell-dictionaries/terraform.txt"
+    },
+    {
+      "name": "local",
+      "path": "./.cspell-dictionaries/local.txt"
+    },
+    {
+      "name": "k8s-local",
+      "path": "./.cspell-dictionaries/k8s.txt"
+    },
+    {
+      "name": "ansible",
+      "path": "./.cspell-dictionaries/ansible.txt"
+    },
+    {
+      "name": "linux",
+      "path": "./.cspell-dictionaries/linux.txt"
+    }
+  ],
+  "ignorePaths": [
+    "**/*.egg-info/**",
+    "**/*.css",
+    "**/*.js",
+    "**/*.pyc",
+    "**/*.ts",
+    "**/.runway/**",
+    "**/.serverless/**",
+    "**/.terraform/**",
+    "**/.venv/**",
+    "**/Pipfile.lock",
+    "**/__pycache__/**",
+    "**/_gitignore",
+    "**/angular.json",
+    "**/build/**",
+    "**/dist/**",
+    "**/dot_gitignore",
+    "**/node_modules/**",
+    "**/package-lock.json",
+    "**/package.json",
+    "**/poetry.lock",
+    "**/requirements.txt",
+    "**/tsconfig.json",
+    ".cspell-dictionaries/*.txt",
+    "typings/**",
+    "ansible/ansible.cfg",
+    "**/*cdk.out*/**/*",
+    "**/*secret.env",
+    "tags",
+    "tags.lock",
+    "tags.temp",
+    "authorized_keys",
+    ".gitignore"
+  ],
+  "import": [
+    "@cspell/dict-k8s/cspell-ext.json",
+    "@cspell/dict-git/cspell-ext.json",
+    "@cspell/dict-data-science/cspell-ext.json",
+    "@cspell/dict-fullstack/cspell-ext.json"
+  ],
+  "language": "en",
+  "languageSettings": [
+    {
+      "allowCompoundWords": true,
+      "dictionaries": ["python", "typescript", "node", "bash", "softwareTerms"],
+      "languageId": "toml"
+    }
+  ],
+  "maxNumberOfProblems": 100,
+  "version": "0.2"
 }
