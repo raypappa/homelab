@@ -17,6 +17,8 @@ jobs:
               - bin/**
               - lib/**
               - test/**
+              - cdk.json
+              - tsconfig.json
     outputs:
       cdk_changed_files_count: ${{ steps.changed-files.outputs.cdk_all_changed_files_count}}
   aws-cdk:
