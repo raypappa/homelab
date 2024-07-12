@@ -12,13 +12,16 @@ jobs:
         id: changed-files
         uses: tj-actions/changed-files@v44
         with:
-          diff_relative: true
-          path: cdk
+          files_yaml: |
+            cdk:
+              - bin/**
+              - lib/**
+              - test/**
     outputs:
-      all_changed_files_count: ${{ steps.changed-files.outputs.all_changed_files_count}}
+      cdk_changed_files_count: ${{ steps.changed-files.outputs.cdk_all_changed_files_count}}
   aws-cdk:
     needs: check
-    if: needs.check.outputs.all_changed_files_count > 0
+    if: needs.check.outputs.cdk_all_changed_files_count > 0
     runs-on: ${{ vars.RUNS_ON}}
     permissions:
       id-token: write # This is required for requesting the JWT
