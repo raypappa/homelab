@@ -1,6 +1,12 @@
 ---
 name: Ansible
-on: push
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
 jobs:
   check:
     if: github.secret_source != 'Dependabot'
