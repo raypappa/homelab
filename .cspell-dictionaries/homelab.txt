@@ -214,3 +214,7 @@ divx
 dosini
 argname
 taskfiles
+devcontainers
+eitsupi
+infracost
+prulloac
