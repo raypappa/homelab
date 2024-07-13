@@ -218,3 +218,5 @@ devcontainers
 eitsupi
 infracost
 prulloac
+DEUSER
+DEPASS

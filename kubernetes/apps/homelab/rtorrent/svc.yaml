@@ -37,6 +37,12 @@ spec:
                   FLOOD_OPTION_ALLOWEDPATH: "/library"
                   FLOOD_OPTION_AUTH: "none" # service is behind CloudFlare OAuth
                   FLOOD_OPTION_RTSOCKET: "/config/.local/share/rtorrent/rtorrent.sock"
+                  FLOOD_OPTION_DEUSER: "admin"
+                  FLOOD_OPTION_DEPASS:
+                    valueFrom:
+                      secretKeyRef:
+                        name: rtorrent-secret
+                        key: pass
         service:
           main:
             controller: main
