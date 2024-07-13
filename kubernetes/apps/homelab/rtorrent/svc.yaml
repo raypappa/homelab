@@ -59,7 +59,7 @@ spec:
             enabled: true
             name: rtorrent-app-rtorrent-config
             type: configMap
-            defaultMode: '0700'
+            defaultMode: 488
             advancedMounts:
               main:
                 main:
