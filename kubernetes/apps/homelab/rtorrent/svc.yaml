@@ -293,7 +293,6 @@ spec:
                 network.max_open_sockets.set = 300
                 pieces.memory.max.set = 1800M
                 session.path.set = (cat, (cfg.session))
-                directory.default.set = (cat, (cfg.download), "downloads")
                 log.execute = (cat, (cfg.logs), "execute.log")
                 encoding.add = utf8
                 system.daemon.set = true
