@@ -19,19 +19,15 @@ jobs:
         id: changed-files
         uses: tj-actions/changed-files@v44
         with:
-          diff_relative: true
           path: ansible
-      - name: Check if override is in commit message
-        id: override
+      - name: Checkout output
         run: |
-          echo "${{ github.event.head_commit.message }}" | grep '[run ansible]'
-        continue-on-error: true
+          echo "${{ steps.changed-files.outputs.all_changed_files_count > 0 || contains(github.event.head_commit.message, '[run ansible]') }}";
     outputs:
-      all_changed_files_count: ${{ steps.changed-files.outputs.all_changed_files_count}}
-      override: ${{steps.override.conclusion}}
+      execute: ${{ steps.changed-files.outputs.all_changed_files_count > 0 || contains(github.event.head_commit.message, '[run ansible]') }}
   ansible:
     needs: check
-    if: github.secret_source != 'Dependabot' && (needs.check.outputs.all_changed_files_count > 0 || needs.check.outputs.override == 'success')
+    if: github.secret_source != 'Dependabot' && needs.check.outputs.execute == true
     runs-on: ${{ vars.RUNS_ON }}
     permissions:
       id-token: write # This is required for requesting the JWT
