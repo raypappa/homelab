@@ -264,11 +264,12 @@ spec:
                 method.insert = cfg.logfile,  private|const|string, (cat,(cfg.logs),"rtorrent-",(system.time),".log")
                 method.insert = cfg.session,  private|const|string, (cat,(cfg.basedir),".session/")
                 method.insert = cfg.watch,    private|const|string, (cat,(cfg.download),"watch/")
-                directory.default.set = (cat, (cfg.download), "download/")
                 fs.mkdir.recursive = (cat,(cfg.basedir))
                 fs.mkdir = (cat,(cfg.download))
                 fs.mkdir = (cat,(cfg.logs))
+                fs.mkdir.recursive = ((cat, (cfg.download), "download/"))
 
+                directory.default.set = (cat, (cfg.download), "download/")
                 fs.mkdir = (cat,(cfg.session))
                 fs.mkdir = (cat,(cfg.watch))
                 fs.mkdir = (cat,(cfg.watch),"/load")
