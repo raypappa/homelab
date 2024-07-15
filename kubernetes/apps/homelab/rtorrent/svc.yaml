@@ -267,7 +267,7 @@ spec:
                 fs.mkdir.recursive = (cat,(cfg.basedir))
                 fs.mkdir = (cat,(cfg.download))
                 fs.mkdir = (cat,(cfg.logs))
-                fs.mkdir.recursive = ((cat, (cfg.download), "download/"))
+                fs.mkdir.recursive = (cat, (cfg.download), "download/")
 
                 directory.default.set = (cat, (cfg.download), "download/")
                 fs.mkdir = (cat,(cfg.session))
