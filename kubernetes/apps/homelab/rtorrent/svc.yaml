@@ -71,13 +71,13 @@ spec:
                     readOnly: false
                     subPath: .rtorrent.rc
                   - path: /config/completion-path.sh
-                    readOnly: true
-                    subPath: completion-path.sh
+                    readOnly: false
+                    subPath: completion-path
         configMaps:
           rtorrent-config:
             enabled: true
             data:
-              completetion-path.sh: |
+              completetion-path: |
                 #! /usr/bin/env bash
                 #
                 # Determine a dynamic completion path and print it on stdout for capturing
@@ -186,6 +186,7 @@ spec:
                 done
                 #set | egrep '^[a-z_]+=' >&2
 
+                echo "completion-path '$default' '$session' '$hash' '$name' '$directory' '$base_path' '$tied_to_file' '$is_multi_file' '$label' '$display_name'" >> /config/completion-path.log
                 # Determine target path
                 target=""
                 set_target_path
