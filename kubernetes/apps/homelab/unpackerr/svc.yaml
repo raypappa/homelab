@@ -54,7 +54,7 @@ spec:
                   UN_SONARR_0_API_KEY:
                     valueFrom:
                       secretKeyRef:
-                        name: radarr-secret
+                        name: sonarr-secret
                         key: api_key
                   # Radarr Config
                   UN_RADARR_0_PATHS_0: /library/downloads/done/radarr
