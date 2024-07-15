@@ -82,8 +82,8 @@ spec:
           scripts:
             enabled: true
             data:
-              completetion-path.sh: |
-                #! /usr/bin/env bash
+              completion-path.sh: |
+                #! /usr/bin/env ash
                 #
                 # Determine a dynamic completion path and print it on stdout for capturing
                 #
@@ -191,7 +191,6 @@ spec:
                 done
                 #set | egrep '^[a-z_]+=' >&2
 
-                echo "completion-path '$default' '$session' '$hash' '$name' '$directory' '$base_path' '$tied_to_file' '$is_multi_file' '$label' '$display_name'" >> /config/completion-path.log
                 # Determine target path
                 target=""
                 set_target_path
