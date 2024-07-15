@@ -77,7 +77,7 @@ spec:
                     subPath: .rtorrent.rc
                   - path: /config/completion-path.sh
                     readOnly: false
-                    subPath: completion-path
+                    subPath: completion-path.sh
         configMaps:
           rtorrent-config:
             enabled: true
