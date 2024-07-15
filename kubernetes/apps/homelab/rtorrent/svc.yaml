@@ -31,7 +31,7 @@ spec:
                 image:
                   repository: blade2005/flood-rtorrent
                   tag: latest
-                  pullPolicy: IfNotPresent
+                  pullPolicy: Always
                 env:
                   FLOOD_OPTION_RUNDIR: /config
                   HOME: /config
