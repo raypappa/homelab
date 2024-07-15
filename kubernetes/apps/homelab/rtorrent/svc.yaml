@@ -272,7 +272,7 @@ spec:
                 # Completion moving
 
                 method.insert = completion_path, simple|private, "execute.capture = \
-                    /config/completion-path.sh, \
+                    /config/scripts/completion-path.sh, \
                     (directory.default), (session.path), \
                     (d.hash), (d.name), (d.directory), (d.base_path), (d.tied_to_file), \
                     (d.is_multi_file), (d.custom1), (d.custom, displayname)"
