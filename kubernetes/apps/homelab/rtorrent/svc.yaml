@@ -26,21 +26,6 @@ spec:
             annotations:
               reloader.stakater.com/auto: "true"
             type: deployment
-            initContainers:
-              setup:
-                image:
-                  repository: bash
-                  tag: latest
-                command:
-                  - /usr/local/bin/bash
-                  - -c
-                args:
-                  - |
-                    scriptPath=/config/completion-path.sh;
-                    stat $scriptPath;
-                    if [[ -d $scriptPath ]];then rmdir $scriptPath;fi;
-                    touch $scriptPath;
-                    stat $scriptPath;
             containers:
               main:
                 image:
@@ -79,18 +64,11 @@ spec:
             type: configMap
             defaultMode: 488
             identifier: rtorrent-config
-            advancedMounts:
-              main:
-                main:
-                  - path: /config/.rtorrent.rc
-                    readOnly: false
-                    subPath: .rtorrent.rc
-                  - path: /config/completion-path
-                    readOnly: false
-                    subPath: completion-path
-                  - path: /config/completion-path.sh
-                    readOnly: false
-                    subPath: completion-path
+            items:
+              - key: .rtorrent.rc
+                path: /config/.rtorrent.rc
+              - key: completion-path
+                path: /config/completion-path
         configMaps:
           rtorrent-config:
             enabled: true
