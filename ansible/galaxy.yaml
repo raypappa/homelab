@@ -1,5 +1,5 @@
 ---
-# vim: filetype=ansible.yaml
+# yaml-language-server: $schema=https://raw.githubusercontent.com/ansible/ansible-lint/main/src/ansiblelint/schemas/requirements.json
 roles:
   - name: artis3n.tailscale
   - name: xolyu.mariadb
