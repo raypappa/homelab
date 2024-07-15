@@ -55,31 +55,31 @@ spec:
                   UN_FILE_MODE: "0644"
                   UN_DIR_MODE: "0755"
                   # Sonarr Config
-                  UN_SONARR_0_PATHS_0: /library/tv_incoming
+                  UN_SONARR_0_PATHS_0: /library/downloads/done/sonarr
                   UN_SONARR_0_PROTOCOLS: torrent
                   UN_SONARR_0_TIMEOUT: 10s
                   UN_SONARR_0_DELETE_ORIG: "false"
                   UN_SONARR_0_DELETE_DELAY: 5m
                   # Radarr Config
-                  UN_RADARR_0_PATHS_0: /library/movies_incoming
+                  UN_RADARR_0_PATHS_0: /library/downloads/done/radarr
                   UN_RADARR_0_PROTOCOLS: torrent
                   UN_RADARR_0_TIMEOUT: 10s
                   UN_RADARR_0_DELETE_ORIG: "false"
                   UN_RADARR_0_DELETE_DELAY: 5m
                   # Lidarr Config
-                  UN_LIDARR_0_PATHS_0: /library/music_incoming
+                  UN_LIDARR_0_PATHS_0: /library/downloads/done/lidarr
                   UN_LIDARR_0_PROTOCOLS: torrent
                   UN_LIDARR_0_TIMEOUT: 10s
                   UN_LIDARR_0_DELETE_ORIG: "false"
                   UN_LIDARR_0_DELETE_DELAY: 5m
                   # Readarr Config
-                  UN_READARR_0_PATHS_0: /library/books_incoming
+                  UN_READARR_0_PATHS_0: /library/downloads/done/readarr
                   UN_READARR_0_PROTOCOLS: torrent
                   UN_READARR_0_TIMEOUT: 10s
                   UN_READARR_0_DELETE_ORIG: "false"
                   UN_READARR_0_DELETE_DELAY: 5m
                   # Folder Config
-                  UN_FOLDER_0_PATH: /library/incoming
+                  UN_FOLDER_0_PATH: /library/downloads/done/no-label
                   UN_FOLDER_0_EXTRACT_PATH:
                   UN_FOLDER_0_DELETE_AFTER: 10m
                   UN_FOLDER_0_DELETE_ORIGINAL: "false"
