@@ -112,8 +112,8 @@ spec:
                     fi
 
                     # "target_base" is used to complete a non-empty but relative "target" path
-                    target_base=$(sed -re 's~^(.*)/library/.*~\1/done~' <<<"${base_path}")
-                    target_tail=$(sed -re 's~^.*/library/(.*)~\1~' <<<"${base_path}")
+                    target_base=$(sed -re 's~^(.*)/download/.*~\1/done~' <<<"${base_path}")
+                    target_tail=$(sed -re 's~^.*/download/(.*)~\1~' <<<"${base_path}")
                     test "$is_multi_file" -eq 1 || target_tail="$(dirname "$target_tail")"
                     test "$target_tail" != '.' || target_tail=""
 
