@@ -70,9 +70,9 @@ spec:
                   - path: /config/.rtorrent.rc
                     readOnly: false
                     subPath: .rtorrent.rc
-                  - path: /config/completion-path.sh
-                    readOnly: false
-                    subPath: completion-path
+                    # - path: /config/completion-path.sh
+                    #   readOnly: false
+                    #   subPath: completion-path
         configMaps:
           rtorrent-config:
             enabled: true
