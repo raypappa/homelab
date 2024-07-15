@@ -50,7 +50,7 @@ spec:
                   UN_SONARR_0_TIMEOUT: 10s
                   UN_SONARR_0_DELETE_ORIG: "false"
                   UN_SONARR_0_DELETE_DELAY: 5m
-                  UN_SONARR_0_URL: http://sonarr-app.homelab.svc.cluster.local
+                  UN_SONARR_0_URL: http://sonarr-app.homelab.svc.cluster.local:8989
                   UN_SONARR_0_API_KEY:
                     valueFrom:
                       secretKeyRef:
@@ -62,7 +62,7 @@ spec:
                   UN_RADARR_0_TIMEOUT: 10s
                   UN_RADARR_0_DELETE_ORIG: "false"
                   UN_RADARR_0_DELETE_DELAY: 5m
-                  UN_RADARR_0_URL: http://radarr-svc.homelab.svc.cluster.local
+                  UN_RADARR_0_URL: http://radarr-svc.homelab.svc.cluster.local:7878
                   UN_RADARR_0_API_KEY:
                     valueFrom:
                       secretKeyRef:
