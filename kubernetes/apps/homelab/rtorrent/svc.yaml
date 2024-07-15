@@ -70,9 +70,9 @@ spec:
                   - path: /config/.rtorrent.rc
                     readOnly: false
                     subPath: .rtorrent.rc
-                    # - path: /config/completion-path.sh
-                    #   readOnly: false
-                    #   subPath: completion-path
+                  - path: /config/completion-path.sh
+                    readOnly: false
+                    subPath: completion-path
         configMaps:
           rtorrent-config:
             enabled: true
@@ -201,6 +201,7 @@ spec:
                 fi
               .rtorrent.rc: |
                 session.use_lock.set = no
+
                 method.insert = cfg.basedir,  private|const|string, (cat,(fs.homedir),"/.local/share/rtorrent/")
                 method.insert = cfg.download, private|const|string, (cat,"/library/","downloads/")
                 method.insert = cfg.logs,     private|const|string, (cat,(cfg.basedir),"log/")
@@ -210,12 +211,15 @@ spec:
                 method.insert = cfg.default_download, private|const|string, (cat, (cfg.download), "download/")
                 method.insert = cfg.download_sonarr, private|const|string, (cat, (cfg.download), "sonarr/")
                 method.insert = cfg.download_radarr, private|const|string, (cat, (cfg.download), "radarr/")
+                method.insert = cfg.download_readarr, private|const|string, (cat, (cfg.download), "readarr/")
+
                 fs.mkdir.recursive = (cat,(cfg.basedir))
                 fs.mkdir = (cat,(cfg.download))
                 fs.mkdir = (cat,(cfg.logs))
                 fs.mkdir.recursive = (cat, (cfg.default_download))
                 fs.mkdir.recursive = (cat, (cfg.download_sonarr))
                 fs.mkdir.recursive = (cat, (cfg.download_radarr))
+                fs.mkdir.recursive = (cat, (cfg.download_readarr))
 
                 directory.default.set = (cat, (cfg.default_download))
                 fs.mkdir = (cat,(cfg.session))
