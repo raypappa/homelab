@@ -62,24 +62,27 @@ spec:
           rtorrent-config:
             enabled: true
             type: configMap
-            defaultMode: 488
             identifier: rtorrent-config
-            items:
-              - key: .rtorrent.rc
-                path: .rtorrent.rc
-              - key: completion-path
-                path: completion-path.sh
             advancedMounts:
               main:
                 main:
                   - path: /config/.rtorrent.rc
                     readOnly: false
                     subPath: .rtorrent.rc
-                  - path: /config/completion-path.sh
-                    readOnly: false
-                    subPath: completion-path.sh
+          scripts:
+            enabled: true
+            type: configMap
+            identifier: scripts
+            items:
+              - key: completion-path
+                path: completion-path.sh
+                mode: 488
+            advancedMounts:
+              main:
+                main:
+                  - path: /config/scripts
         configMaps:
-          rtorrent-config:
+          scripts:
             enabled: true
             data:
               completetion-path: |
@@ -204,6 +207,9 @@ spec:
                         echo -n "${target_base%/}/$target"
                     fi
                 fi
+          rtorrent-config:
+            enabled: true
+            data:
               .rtorrent.rc: |
                 session.use_lock.set = no
 
