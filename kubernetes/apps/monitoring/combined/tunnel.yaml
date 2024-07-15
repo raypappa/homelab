@@ -1,4 +1,5 @@
 ---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/argoproj.io/application_v1alpha1.json
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
@@ -9,7 +10,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: 'https://cloudflare.github.io/helm-charts'
+    repoURL: "https://cloudflare.github.io/helm-charts"
     targetRevision: 0.3.0
     chart: cloudflare-tunnel
     helm:
@@ -17,13 +18,13 @@ spec:
         image:
           tag: 2024.6.1
         cloudflare:
-          secretName: 'monitoring-tunnel-credentials'
-          tunnelName: 'faerun-monitoring'
+          secretName: "monitoring-tunnel-credentials"
+          tunnelName: "faerun-monitoring"
           ingress:
-            - hostname: 'grafana.fieldsofbears.com'
-              service: 'http://monitoring-lgtm-grafana.monitoring.svc.cluster.local:80'
-            - hostname: 'prometheus.fieldsofbears.com'
-              service: 'http://prometheus-operated.monitoring.svc.cluster.local:9090'
+            - hostname: "grafana.fieldsofbears.com"
+              service: "http://monitoring-lgtm-grafana.monitoring.svc.cluster.local:80"
+            - hostname: "prometheus.fieldsofbears.com"
+              service: "http://prometheus-operated.monitoring.svc.cluster.local:9090"
               # annotations:
               #   gethomepage.dev/enabled: 'true'
               #   gethomepage.dev/name: 'Grafana'
@@ -31,7 +32,7 @@ spec:
               #   gethomepage.dev/group: 'Monitoring'
               #   gethomepage.dev/icon: 'grafana.svg'
   destination:
-    server: 'https://kubernetes.default.svc'
+    server: "https://kubernetes.default.svc"
     namespace: monitoring
   syncPolicy:
     automated:

@@ -1,4 +1,5 @@
 ---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/argoproj.io/application_v1alpha1.json
 # https://github.com/jameswynn/helm-charts/tree/main/charts/image-hosting
 apiVersion: argoproj.io/v1alpha1
 kind: Application

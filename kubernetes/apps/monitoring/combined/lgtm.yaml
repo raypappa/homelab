@@ -1,4 +1,5 @@
 ---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/argoproj.io/application_v1alpha1.json
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
@@ -17,7 +18,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: 'https://grafana.github.io/helm-charts'
+    repoURL: "https://grafana.github.io/helm-charts"
     targetRevision: 1.0.0
     chart: lgtm-distributed
     helm:
@@ -30,7 +31,7 @@ spec:
           ingress:
             enabled: false
   destination:
-    server: 'https://kubernetes.default.svc'
+    server: "https://kubernetes.default.svc"
     namespace: monitoring
   syncPolicy:
     automated:

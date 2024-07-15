@@ -1,4 +1,5 @@
 ---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/argoproj.io/application_v1alpha1.json
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
@@ -33,7 +34,7 @@ spec:
                   TZ: UTC
                   PUID: 1001
                   PGID: 1001
-                  UMASK: '022'
+                  UMASK: "022"
                   UN_SONARR_0_URL: http://sonarr-app.homelab.svc.cluster.local
                   UN_SONARR_0_API_KEY:
                     valueFrom:
@@ -51,8 +52,8 @@ spec:
                   UN_RETRY_DELAY: 5m
                   UN_MAX_RETRIES: 3
                   UN_PARALLEL: 1
-                  UN_FILE_MODE: '0644'
-                  UN_DIR_MODE: '0755'
+                  UN_FILE_MODE: "0644"
+                  UN_DIR_MODE: "0755"
                   # Sonarr Config
                   UN_SONARR_0_PATHS_0: /library/tv_incoming
                   UN_SONARR_0_PROTOCOLS: torrent
