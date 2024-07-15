@@ -29,7 +29,7 @@ spec:
             containers:
               main:
                 image:
-                  repository: jesec/rtorrent-flood
+                  repository: blade2005/flood-rtorrent
                   tag: latest
                   pullPolicy: IfNotPresent
                 env:
@@ -83,7 +83,7 @@ spec:
             enabled: true
             data:
               completion-path.sh: |
-                #! /usr/bin/env ash
+                #! /usr/bin/env bash
                 #
                 # Determine a dynamic completion path and print it on stdout for capturing
                 #
