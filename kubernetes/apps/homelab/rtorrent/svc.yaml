@@ -95,7 +95,7 @@ spec:
                     local month=$(date +'%Y-%m')
 
                     # Only move data downloaded into a "work" directory
-                    if egrep >/dev/null "/work/" <<<"${base_path}/"; then
+                    if egrep >/dev/null "/library/" <<<"${base_path}/"; then
                         # Make sure the target directory is on the same drive as "work", else leave it alone
                         work_dir=$(sed -re 's~(^.+/work/).*~\1~' <<<"${base_path}/")
                         test $(fs4path "$work_dir") == $(fs4path "$(dirname ${base_path})") || return
@@ -113,8 +113,8 @@ spec:
                     test -n "$target" || case $(tr A-Z' ' a-z_ <<<"${label:-NOT_SET}") in
                         tv|hdtv)                    target="TV" ;;
                         movie*)                     target="Movies/$month" ;;
-                        sonarr)                     target="tv_incoming" ;;
-                        radarr)                     target="movie_incoming" ;;
+                        sonarr)                     target="sonarr" ;;
+                        radarr)                     target="radarr" ;;
                     esac
 
                     # Move by name patterns (check both displayname and info.name)
@@ -173,7 +173,7 @@ spec:
 
                 # Change "~/rtorrent" to your instance's directory
                 # (and do the same in the "completion_path" method below)
-                mkdir -p ~/rtorrent/scripts
+                mkdir -p /config
                 cp -np $(readlink -f $0) \$_
                 chmod a+x \$_/$(basename $0)
                 EOF
@@ -185,7 +185,7 @@ spec:
                 # vim: ft=dosini
 
                 method.insert = completion_path, simple|private, "execute.capture = \
-                    ~/rtorrent/scripts/completion-path.sh, \
+                    /config/completion-path.sh, \
                     (directory.default), (session.path), \
                     (d.hash), (d.name), (d.directory), (d.base_path), (d.tied_to_file), \
                     (d.is_multi_file), (d.custom1), (d.custom, displayname)"
@@ -264,12 +264,17 @@ spec:
                 method.insert = cfg.logfile,  private|const|string, (cat,(cfg.logs),"rtorrent-",(system.time),".log")
                 method.insert = cfg.session,  private|const|string, (cat,(cfg.basedir),".session/")
                 method.insert = cfg.watch,    private|const|string, (cat,(cfg.download),"watch/")
+                method.insert = cfg.default_download, private|const|string, (cat, (cfg.download), "download/")
+                method.insert = cfg.download_sonarr, private|const|string, (cat, (cfg.download), "sonarr/")
+                method.insert = cfg.download_radarr, private|const|string, (cat, (cfg.download), "radarr/")
                 fs.mkdir.recursive = (cat,(cfg.basedir))
                 fs.mkdir = (cat,(cfg.download))
                 fs.mkdir = (cat,(cfg.logs))
-                fs.mkdir.recursive = (cat, (cfg.download), "download/")
+                fs.mkdir.recursive = (cat, (cfg.default_download))
+                fs.mkdir.recursive = (cat, (cfg.download_sonarr))
+                fs.mkdir.recursive = (cat, (cfg.download_radarr))
 
-                directory.default.set = (cat, (cfg.download), "download/")
+                directory.default.set = (cat, (cfg.default_download))
                 fs.mkdir = (cat,(cfg.session))
                 fs.mkdir = (cat,(cfg.watch))
                 fs.mkdir = (cat,(cfg.watch),"/load")
