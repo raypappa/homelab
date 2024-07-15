@@ -68,7 +68,16 @@ spec:
               - key: .rtorrent.rc
                 path: /config/.rtorrent.rc
               - key: completion-path
-                path: /config/completion-path
+                path: /config/completion-path.sh
+            advancedMounts:
+              main:
+                main:
+                  - path: /config/.rtorrent.rc
+                    readOnly: false
+                    subPath: .rtorrent.rc
+                  - path: /config/completion-path.sh
+                    readOnly: false
+                    subPath: completion-path
         configMaps:
           rtorrent-config:
             enabled: true
