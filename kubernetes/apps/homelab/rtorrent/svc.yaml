@@ -32,7 +32,7 @@ spec:
                   repository: bash
                   tag: latest
                 command:
-                  - /bin/bash
+                  - /usr/local/bin/bash
                   - -c
                 args:
                   - |
