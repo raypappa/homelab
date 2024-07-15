@@ -26,6 +26,18 @@ spec:
             annotations:
               reloader.stakater.com/auto: "true"
             type: deployment
+            initContainers:
+              setup:
+                image:
+                  repository: bash
+                  tag: latest
+                command:
+                  - /bin/bash
+                  - -c
+                args:
+                  - |
+                    touch /config/completion-path.sh;
+                    stat /config/completion-path.sh;
             containers:
               main:
                 image:
@@ -61,9 +73,9 @@ spec:
             hostPath: /library
           rtorrent-config:
             enabled: true
-            name: rtorrent-app-rtorrent-config
             type: configMap
             defaultMode: 488
+            identifier: rtorrent-config
             advancedMounts:
               main:
                 main:
