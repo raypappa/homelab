@@ -66,9 +66,9 @@ spec:
             identifier: rtorrent-config
             items:
               - key: .rtorrent.rc
-                path: /config/.rtorrent.rc
+                path: .rtorrent.rc
               - key: completion-path
-                path: /config/completion-path.sh
+                path: completion-path.sh
             advancedMounts:
               main:
                 main:
