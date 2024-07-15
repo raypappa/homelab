@@ -73,10 +73,7 @@ spec:
             enabled: true
             type: configMap
             identifier: scripts
-            items:
-              - key: completion-path
-                path: completion-path.sh
-                mode: 488
+            defaultMode: 488
             advancedMounts:
               main:
                 main:
@@ -85,7 +82,7 @@ spec:
           scripts:
             enabled: true
             data:
-              completetion-path: |
+              completetion-path.sh: |
                 #! /usr/bin/env bash
                 #
                 # Determine a dynamic completion path and print it on stdout for capturing
