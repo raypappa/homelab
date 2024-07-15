@@ -216,9 +216,10 @@ spec:
                 method.insert = cfg.session,  private|const|string, (cat,(cfg.basedir),".session/")
                 method.insert = cfg.watch,    private|const|string, (cat,(cfg.download),"watch/")
                 method.insert = cfg.default_download, private|const|string, (cat, (cfg.download), "download/")
-                method.insert = cfg.download_sonarr, private|const|string, (cat, (cfg.download), "sonarr/")
-                method.insert = cfg.download_radarr, private|const|string, (cat, (cfg.download), "radarr/")
-                method.insert = cfg.download_readarr, private|const|string, (cat, (cfg.download), "readarr/")
+                method.insert = cfg.done, private|const|string, (cat, (cfg.download), "done/")
+                method.insert = cfg.download_sonarr, private|const|string, (cat, (cfg.done), "sonarr/")
+                method.insert = cfg.download_radarr, private|const|string, (cat, (cfg.done), "radarr/")
+                method.insert = cfg.download_readarr, private|const|string, (cat, (cfg.done), "readarr/")
 
                 fs.mkdir.recursive = (cat,(cfg.basedir))
                 fs.mkdir = (cat,(cfg.download))
