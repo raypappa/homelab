@@ -47,6 +47,16 @@ spec:
               secretKeyRef:
                 name: radarr-secret
                 key: api_key
+          HOMEPAGE_VAR_FLOOD_USERNAME:
+            valueFrom:
+              secretKeyRef:
+                name: flood-secret
+                key: username
+          HOMEPAGE_VAR_FLOOD_PASSWORD:
+            valueFrom:
+              secretKeyRef:
+                name: flood-secret
+                key: password
           HOMEPAGE_VAR_PROWLARR_API_KEY:
             valueFrom:
               secretKeyRef:
@@ -194,6 +204,8 @@ spec:
                     icon: flood.svg
                     widget:
                       type: flood
+                      password: "{{HOMEPAGE_VAR_FLOOD_PASSWORD}}"
+                      username: "{{HOMEPAGE_VAR_FLOOD_USERNAME}}"
                       url: http://rtorrent-app.homelab.svc.cluster.local:3000
                       fields:
                         - download
