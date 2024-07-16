@@ -103,26 +103,26 @@ spec:
                     local month=$(date +'%Y-%m')
 
                     # Only move data downloaded into a "work" directory
-                    if egrep >/dev/null "/library/" <<<"${base_path}/"; then
+                    if egrep >/dev/null "/work/" <<<"${base_path}/"; then
                         # Make sure the target directory is on the same drive as "work", else leave it alone
-                        work_dir=$(sed -re 's~(^.+/library/).*~\1~' <<<"${base_path}/")
+                        work_dir=$(sed -re 's~(^.+/work/).*~\1~' <<<"${base_path}/")
                         test $(fs4path "$work_dir") == $(fs4path "$(dirname ${base_path})") || return
                     else
-                        return  # no "library" component in data path (pre-determined path)
+                        return  # no "work" component in data path (pre-determined path)
                     fi
 
                     # "target_base" is used to complete a non-empty but relative "target" path
-                    target_base=$(sed -re 's~^(.*)/download/.*~\1/done~' <<<"${base_path}")
-                    target_tail=$(sed -re 's~^.*/download/(.*)~\1~' <<<"${base_path}")
+                    target_base=$(sed -re 's~^(.*)/work/.*~\1/done~' <<<"${base_path}")
+                    target_tail=$(sed -re 's~^.*/work/(.*)~\1~' <<<"${base_path}")
                     test "$is_multi_file" -eq 1 || target_tail="$(dirname "$target_tail")"
                     test "$target_tail" != '.' || target_tail=""
 
                     # Move by label
                     test -n "$target" || case $(tr A-Z' ' a-z_ <<<"${label:-NOT_SET}") in
+                        sonarr)                    target="sonarr" ;;
+                        radarr)                     target="radarr/$month" ;;
                         tv|hdtv)                    target="sonarr" ;;
-                        movie*)                     target="radarr" ;;
-                        sonarr)                     target="sonarr" ;;
-                        radarr)                     target="radarr" ;;
+                        movie*)                     target="radarr/$month" ;;
                     esac
 
                     # Move by name patterns (check both displayname and info.name)
@@ -131,10 +131,12 @@ spec:
                             *hdtv*|*pdtv*)              target="sonarr" ;;
                             *.s[0-9][0-9].*)            target="sonarr" ;;
                             *.s[0-9][0-9]e[0-9][0-9].*) target="sonarr" ;;
-                            *pdf|*epub|*ebook*)         target="readarr" ;;
+                            *pdf|*epub|*ebook*)         target="readarr/$month" ;;
                         esac
                     done
 
+                    test -z "$target" && is_movie "$name" && target="radarr/$month" || :
+                    test -z "$target" -a -n "$display_name" && is_movie "$display_name" && target="radarr/$month" || :
 
                     # Prevent duplication at end of path
                     if test -n "$target" -a "$is_multi_file" -eq 1 -a "$name" = "$target_tail"; then
@@ -215,7 +217,7 @@ spec:
                 method.insert = cfg.logfile,  private|const|string, (cat,(cfg.logs),"rtorrent-",(system.time),".log")
                 method.insert = cfg.session,  private|const|string, (cat,(cfg.basedir),".session/")
                 method.insert = cfg.watch,    private|const|string, (cat,(cfg.download),"watch/")
-                method.insert = cfg.default_download, private|const|string, (cat, (cfg.download), "download/")
+                method.insert = cfg.default_download, private|const|string, (cat, (cfg.download), "work/")
                 method.insert = cfg.done, private|const|string, (cat, (cfg.download), "done/")
                 method.insert = cfg.download_sonarr, private|const|string, (cat, (cfg.done), "sonarr/")
                 method.insert = cfg.download_radarr, private|const|string, (cat, (cfg.done), "radarr/")
