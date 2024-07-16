@@ -106,7 +106,8 @@ spec:
                     if egrep >/dev/null "/work/" <<<"${base_path}/"; then
                         # Make sure the target directory is on the same drive as "work", else leave it alone
                         work_dir=$(sed -re 's~(^.+/work/).*~\1~' <<<"${base_path}/")
-                        test $(fs4path "$work_dir") == $(fs4path "$(dirname ${base_path})") || return
+                        # I don't care if they are on the same drive. for my purposes they should always be on the same drive
+                        # test $(fs4path "$work_dir") == $(fs4path "$(dirname ${base_path})") || return
                     else
                         return  # no "work" component in data path (pre-determined path)
                     fi
