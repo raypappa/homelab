@@ -139,10 +139,11 @@ spec:
                     test -z "$target" && is_movie "$name" && target="radarr/$month" || :
                     test -z "$target" -a -n "$display_name" && is_movie "$display_name" && target="radarr/$month" || :
 
+                    # This is causing me issues in the paths are set up. It's moving multi file torrents to the target location without the original directory name. If 'work' was further back in the path it would be fine.
                     # Prevent duplication at end of path
-                    if test -n "$target" -a "$is_multi_file" -eq 1 -a "$name" = "$target_tail"; then
-                        target_tail=""
-                    fi
+                    # if test -n "$target" -a "$is_multi_file" -eq 1 -a "$name" = "$target_tail"; then
+                    #     target_tail=""
+                    # fi
 
                     # Append tail path if non-empty
                     test -z "$target" -o -z "$target_tail" || target="$target/$target_tail"
