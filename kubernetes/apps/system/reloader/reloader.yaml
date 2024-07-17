@@ -12,7 +12,7 @@ spec:
   source:
     repoURL: https://stakater.github.io/stakater-charts
     chart: reloader
-    targetRevision: 1.0.115
+    targetRevision: 1.0.119
   destination:
     server: "https://kubernetes.default.svc"
     namespace: reloader
