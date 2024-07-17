@@ -19,7 +19,7 @@ spec:
   project: default
   source:
     repoURL: "https://grafana.github.io/helm-charts"
-    targetRevision: 1.0.1
+    targetRevision: 1.0.0
     chart: lgtm-distributed
     helm:
       valuesObject:
