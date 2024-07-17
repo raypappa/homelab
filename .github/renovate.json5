@@ -6,6 +6,7 @@
     ":disableRateLimiting",
     ":dependencyDashboard",
     "docker:enableMajor",
+    "customManagers:biomeVersions",
     "github>blade2005/homelab//.github/renovate/semanticCommits.json5",
     "github>blade2005/homelab//.github/renovate/commitMessage.json5"
   ],
