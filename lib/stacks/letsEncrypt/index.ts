@@ -17,7 +17,7 @@ export class LetsEncryptStack extends Stack {
     const powerToolsLayer = aws_lambda.LayerVersion.fromLayerVersionArn(
       this,
       "PowerToolsLayer",
-      `arn:aws:lambda:${this.region}:017000801446:layer:AWSLambdaPowertoolsPythonV2:59`,
+      `arn:aws:lambda:${this.region}:017000801446:layer:AWSLambdaPowertoolsPythonV2:76`,
     );
 
     const publicDomainName = this.node.getContext(
