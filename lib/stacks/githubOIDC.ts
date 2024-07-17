@@ -1,5 +1,5 @@
-import { Duration, Stack, StackProps, aws_iam } from "aws-cdk-lib";
-import { Construct } from "constructs";
+import { Duration, Stack, type StackProps, aws_iam } from "aws-cdk-lib";
+import type { Construct } from "constructs";
 // import * as sqs from 'aws-cdk-lib/aws-sqs';
 
 type GithubOrg = string;

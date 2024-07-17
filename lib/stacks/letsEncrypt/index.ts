@@ -2,13 +2,13 @@ import * as python from "@aws-cdk/aws-lambda-python-alpha";
 import {
   Duration,
   Stack,
-  StackProps,
+  type StackProps,
   aws_events,
   aws_events_targets,
   aws_iam,
   aws_lambda,
 } from "aws-cdk-lib";
-import { Construct } from "constructs";
+import type { Construct } from "constructs";
 
 export class LetsEncryptStack extends Stack {
   constructor(scope: Construct, id: string, props?: StackProps) {
