@@ -20,6 +20,7 @@ spec:
           reloader.stakater.com/auto: "true"
         image:
           repository: ghcr.io/gethomepage/homepage
+          # renovate: datasource=docker depName=ghcr.io/gethomepage/homepage
           tag: v0.9.2
         env:
           HOMEPAGE_VAR_SONARR_API_KEY:

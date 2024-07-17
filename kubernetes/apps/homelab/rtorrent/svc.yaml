@@ -30,7 +30,8 @@ spec:
               main:
                 image:
                   repository: blade2005/flood-rtorrent
-                  tag: latest
+                  # renovate: datasource=docker depName=blade2005/flood-rtorrent
+                  tag: latest@sha256:541f12018290bbf519b9fd172632c2beee06514e2d6ef53ae28e688fbd802c10
                   pullPolicy: Always
                 env:
                   FLOOD_OPTION_RUNDIR: /config

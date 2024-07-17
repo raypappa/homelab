@@ -26,6 +26,7 @@ spec:
               main:
                 image:
                   repository: ghcr.io/hotio/whisparr
+                  # renovate: datasource=docker depName=ghcr.io/hotio/whisparr
                   tag: latest
                   pullPolicy: IfNotPresent
                 env:
