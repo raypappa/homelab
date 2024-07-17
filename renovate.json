@@ -3,5 +3,14 @@
   "extends": ["config:recommended"],
   "pre-commit": {
     "enabled": true
+  },
+  "ansible": {
+    "fileMatch": ["(^|)tasks/[^/]+\\.ya?ml$"]
+  },
+  "ansible-galaxy": {
+    "fileMatch": ["(^|/)(galaxy|requirements)(\\.ansible)?\\.ya?ml$"]
+  },
+  "argocd": {
+    "fileMatch": ["^kubernetes/apps/*/app.yaml"]
   }
 }
