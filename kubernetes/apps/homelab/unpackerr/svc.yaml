@@ -29,7 +29,7 @@ spec:
                 image:
                   repository: ghcr.io/hotio/unpackerr
                   # renovate: datasource=docker depName=ghcr.io/hotio/unpackerr
-                  tag: latest
+                  tag: release-0.14.0
                   pullPolicy: IfNotPresent
                 env:
                   TZ: UTC
