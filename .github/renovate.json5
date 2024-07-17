@@ -1,0 +1,24 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:recommended",
+    ":semanticCommits",
+    ":disableRateLimiting",
+    ":dependencyDashboard",
+    "docker:enableMajor",
+    "github>blade2005/homelab//.github/renovate/semanticCommits.json5",
+    "github>blade2005/homelab//.github/renovate/commitMessage.json5"
+  ],
+  "pre-commit": {
+    "enabled": true
+  },
+  "ansible": {
+    "fileMatch": ["(^|)tasks/[^/]+\\.ya?ml$"]
+  },
+  "ansible-galaxy": {
+    "fileMatch": ["(^|/)(galaxy|requirements)(\\.ansible)?\\.ya?ml$"]
+  },
+  "argocd": {
+    "fileMatch": ["(^|/)kubernetes/.+\\.ya?ml(?:\\.j2)?$"]
+  }
+}
