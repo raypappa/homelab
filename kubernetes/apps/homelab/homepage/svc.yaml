@@ -236,11 +236,13 @@ spec:
           settings:
             theme: dark
             layout:
-              Media:
-                style: row
-                columns: 4
-              Kubernetes:
-                initiallyCollapsed: true
+              - Media:
+                  style: row
+                  columns: 4
+              - Kubernetes:
+                  initiallyCollapsed: true
+                  style: row
+                  columns: 4
         # The service account is necessary to allow discovery of other services
         serviceAccount:
           create: true
