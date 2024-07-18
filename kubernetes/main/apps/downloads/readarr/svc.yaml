@@ -1,0 +1,88 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/argoproj.io/application_v1alpha1.json
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: readarr-svc
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    repoURL: https://bjw-s.github.io/helm-charts
+    chart: app-template
+    targetRevision: 3.2.1
+    helm:
+      valuesObject:
+        defaultPodOptions:
+          securityContext:
+            runAsUser: 1001
+            runAsGroup: 1001
+            fsGroup: 1001
+            runAsNonRoot: true
+            fsGroupChangePolicy: OnRootMismatch
+        controllers:
+          readarr:
+            containers:
+              app:
+                image:
+                  repository: ghcr.io/onedr0p/readarr-nightly
+                  # renovate: datasource=docker depName=ghcr.io/onedr0p/readarr-nightly
+                  tag: 0.3.32.2585
+                  pullPolicy: IfNotPresent
+                env:
+                  COMPlus_EnableDiagnostics: "0"
+                  READARR__AUTHENTICATION_METHOD: None
+                  # READARR__AUTHENTICATION_METHOD: External
+                  # READARR__AUTHENTICATION_REQUIRED: Enabled
+                  READARR__INSTANCE_NAME: Readarr
+                  READARR__PORT: &port 8787
+                  READARR__LOG_LEVEL: info
+                  READARR__THEME: light
+                  READARR__ANALYTICSENABLED: "false"
+                  TZ: ${TIMEZONE}
+                probes:
+                  liveness:
+                    enabled: true
+                  readiness:
+                    enabled: true
+                  startup:
+                    enabled: true
+                    spec:
+                      failureThreshold: 30
+                      periodSeconds: 5
+                resources:
+                  requests:
+                    cpu: 10m
+                    memory: 128Mi
+                securityContext:
+                  allowPrivilegeEscalation: false
+                  readOnlyRootFilesystem: true
+                  capabilities: {drop: ["ALL"]}
+        service:
+          app:
+            controller: readarr
+            ports:
+              http:
+                port: *port
+        persistence:
+          config:
+            enabled: true
+            storageClass: ceph-filesystem
+            accessMode: ReadWriteOnce
+            size: 5Gi
+          library:
+            enabled: true
+            type: hostPath
+            hostPathType: Directory
+            hostPath: /library
+  destination:
+    server: "https://kubernetes.default.svc"
+    namespace: homelab
+  syncPolicy:
+    automated:
+      selfHeal: true
+      prune: true
+    syncOptions:
+      - CreateNamespace=true

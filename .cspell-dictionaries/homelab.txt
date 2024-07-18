@@ -232,3 +232,4 @@ geonames
 pguser
 pgbouncer
 volsync
+ANALYTICSENABLED

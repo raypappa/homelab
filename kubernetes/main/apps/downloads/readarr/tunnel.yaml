@@ -1,0 +1,35 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/argoproj.io/application_v1alpha1.json
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: readarr-tunnel
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    repoURL: "https://cloudflare.github.io/helm-charts"
+    targetRevision: 0.3.0
+    chart: cloudflare-tunnel
+    helm:
+      valuesObject:
+        image:
+          # renovate: datasource=docker depName=cloudflare/cloudflared
+          tag: 2024.6.1
+        cloudflare:
+          secretName: "readarr-tunnel-credentials"
+          tunnelName: "faerun-readarr"
+          ingress:
+            - hostname: "readarr.fieldsofbears.com"
+              service: "http://readarr-svc.homelab.svc.cluster.local:8787"
+  destination:
+    server: "https://kubernetes.default.svc"
+    namespace: homelab
+  syncPolicy:
+    automated:
+      selfHeal: true
+      prune: true
+    syncOptions:
+      - CreateNamespace=true
