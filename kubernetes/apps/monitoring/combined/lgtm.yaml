@@ -19,7 +19,7 @@ spec:
   project: default
   source:
     repoURL: "https://grafana.github.io/helm-charts"
-    targetRevision: 1.0.0
+    targetRevision: 2.1.0
     chart: lgtm-distributed
     helm:
       valuesObject:
@@ -30,6 +30,16 @@ spec:
             storageClassName: ceph-filesystem
           ingress:
             enabled: false
+        loki:
+          structuredConfig:
+            index_gateway:
+              mode: ring
+            query_scheduler:
+              use_scheduler_ring: true
+          persistence:
+            enabled: true
+            type: pvc
+            storageClassName: ceph-filesystem
   destination:
     server: "https://kubernetes.default.svc"
     namespace: monitoring
