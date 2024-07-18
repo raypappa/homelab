@@ -18,3 +18,5 @@ storageclass
 bjw
 volsync
 disableauth
+valkey
+kubesearch

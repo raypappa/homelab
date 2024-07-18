@@ -221,3 +221,14 @@ prulloac
 DEUSER
 DEPASS
 datasource
+tini
+pgvector
+pgbounce
+sslmode
+appendonly
+encodedvideo
+geoname
+geonames
+pguser
+pgbouncer
+volsync

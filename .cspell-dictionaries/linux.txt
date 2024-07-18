@@ -36,3 +36,4 @@ smartmontools
 sysstat
 virt
 yubioath
+libmimalloc
