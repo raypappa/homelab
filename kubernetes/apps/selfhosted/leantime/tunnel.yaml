@@ -22,7 +22,7 @@ spec:
           tunnelName: "faerun-leantime"
           ingress:
             - hostname: "lt.fieldsofbears.com"
-              service: "http://leantime-svc.leantime.svc.cluster.local:80"
+              service: "http://leantime-svc-main.leantime.svc.cluster.local:80"
   destination:
     server: "https://kubernetes.default.svc"
     namespace: leantime
