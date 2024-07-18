@@ -3,22 +3,20 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: whisparr
+  name: recyclarr-configmap
   namespace: argocd
   finalizers:
     - resources-finalizer.argocd.argoproj.io
   labels:
     namespace: homelab
-    purpose: pvr
+    purpose: pvr-sync
 spec:
   project: default
   source:
     repoURL: "git@github.com:blade2005/homelab.git"
-    path: kubernetes/main/homelab/whisparr
-    targetRevision: HEAD
-    directory:
-      recurse: true
-      jsonnet: {}
+    path: kubernetes/main/apps/downloads/recyclarr-configmap
+    kustomize:
+      namespace: homelab
   destination:
     server: "https://kubernetes.default.svc"
     namespace: homelab

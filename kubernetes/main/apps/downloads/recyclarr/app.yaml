@@ -3,18 +3,18 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: radarr
+  name: recyclarr
   namespace: argocd
   finalizers:
     - resources-finalizer.argocd.argoproj.io
   labels:
     namespace: homelab
-    purpose: pvr
+    purpose: pvr-sync
 spec:
   project: default
   source:
     repoURL: "git@github.com:blade2005/homelab.git"
-    path: kubernetes/main/homelab/radarr
+    path: kubernetes/main/apps/downloads/recyclarr
     targetRevision: HEAD
     directory:
       recurse: true

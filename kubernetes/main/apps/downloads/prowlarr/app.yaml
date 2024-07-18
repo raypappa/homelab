@@ -3,18 +3,18 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: plex
+  name: prowlarr
   namespace: argocd
   finalizers:
     - resources-finalizer.argocd.argoproj.io
   labels:
     namespace: homelab
-    purpose: media-streaming
+    purpose: indexing
 spec:
   project: default
   source:
     repoURL: "git@github.com:blade2005/homelab.git"
-    path: kubernetes/main/homelab/plex
+    path: kubernetes/main/apps/downloads/prowlarr
     targetRevision: HEAD
     directory:
       recurse: true
