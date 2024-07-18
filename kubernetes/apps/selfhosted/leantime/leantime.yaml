@@ -12,7 +12,7 @@ spec:
   source:
     repoURL: "https://bjw-s.github.io/helm-charts"
     chart: app-template
-    targetRevision: v2.5.0
+    targetRevision: 3.2.1
     helm:
       valuesObject:
         configMaps:
@@ -51,9 +51,29 @@ spec:
                       configMapKeyRef:
                         name: leantime-svc-mariadb
                         key: user
+                probes:
+                  liveness:
+                    enabled: true
+                  readiness:
+                    enabled: true
+                  startup:
+                    enabled: true
+                    spec:
+                      failureThreshold: 30
+                      periodSeconds: 5
           main:
             containers:
               main:
+                probes:
+                  liveness:
+                    enabled: true
+                  readiness:
+                    enabled: true
+                  startup:
+                    enabled: true
+                    spec:
+                      failureThreshold: 30
+                      periodSeconds: 5
                 image:
                   repository: leantime/leantime
                   tag: latest
@@ -251,6 +271,7 @@ spec:
               http:
                 port: 3306
           main:
+            controller: main
             type: ClusterIP
             ports:
               http:
