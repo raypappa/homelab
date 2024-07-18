@@ -64,6 +64,12 @@ spec:
                 name: prowlarr-secret
                 key: api_key
         config:
+          layout:
+          Media:
+            style: row
+            columns: 4
+          Kubernetes:
+            initiallyCollapsed: true
           bookmarks:
             - Productivity:
                 - Leantime:
