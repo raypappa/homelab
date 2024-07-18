@@ -16,3 +16,5 @@ servicelb
 snodes
 storageclass
 bjw
+volsync
+disableauth
