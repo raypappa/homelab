@@ -66,12 +66,6 @@ spec:
                 name: prowlarr-secret
                 key: api_key
         config:
-          layout:
-          Media:
-            style: row
-            columns: 4
-          Kubernetes:
-            initiallyCollapsed: true
           bookmarks:
             - Productivity:
                 - Leantime:
@@ -242,6 +236,12 @@ spec:
             mode: cluster
           settings:
             theme: dark
+            layout:
+              Media:
+                style: row
+                columns: 4
+              Kubernetes:
+                initiallyCollapsed: true
         # The service account is necessary to allow discovery of other services
         serviceAccount:
           create: true
