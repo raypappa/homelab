@@ -16,8 +16,10 @@ spec:
     targetRevision: 1.2.3
     helm:
       valuesObject:
-        annotations:
-          reloader.stakater.com/auto: "true"
+        controller:
+          main:
+            annotations:
+              reloader.stakater.com/auto: "true"
         image:
           repository: ghcr.io/gethomepage/homepage
           # renovate: datasource=docker depName=ghcr.io/gethomepage/homepage
