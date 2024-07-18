@@ -11,7 +11,7 @@ spec:
   project: default
   source:
     repoURL: "git@github.com:blade2005/homelab.git"
-    path: kubernetes/apps/monitoring/combined
+    path: kubernetes/main/apps/monitoring/combined
     targetRevision: HEAD
     directory:
       recurse: true

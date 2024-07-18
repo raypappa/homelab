@@ -13,7 +13,7 @@ spec:
   project: default
   source:
     repoURL: "git@github.com:blade2005/homelab.git"
-    path: kubernetes/apps/system/rook-ceph-operator
+    path: kubernetes/main/system/rook-ceph-operator
     targetRevision: HEAD
     directory:
       recurse: true

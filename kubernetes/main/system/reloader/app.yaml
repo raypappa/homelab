@@ -11,7 +11,7 @@ spec:
   project: default
   source:
     repoURL: "git@github.com:blade2005/homelab.git"
-    path: kubernetes/apps/system/reloader
+    path: kubernetes/main/system/reloader
     targetRevision: HEAD
     directory:
       recurse: true

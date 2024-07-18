@@ -14,7 +14,7 @@ spec:
   project: default
   source:
     repoURL: "git@github.com:blade2005/homelab.git"
-    path: kubernetes/apps/homelab/whisparr
+    path: kubernetes/main/homelab/whisparr
     targetRevision: HEAD
     directory:
       recurse: true

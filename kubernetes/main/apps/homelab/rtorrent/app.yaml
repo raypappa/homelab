@@ -14,7 +14,7 @@ spec:
   project: default
   source:
     repoURL: "git@github.com:blade2005/homelab.git"
-    path: kubernetes/apps/homelab/rtorrent
+    path: kubernetes/main/homelab/rtorrent
     targetRevision: HEAD
     directory:
       recurse: true
