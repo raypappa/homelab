@@ -46,6 +46,10 @@ spec:
               # mon_data_avail_warn: "10"
           disruptionManagement:
             managePodBudgets: false
+        cephFileSystemVolumeSnapshotClass:
+          enabled: true
+        cephBlockPoolsVolumeSnapshotClass:
+          enabled: true
         # -- A list of CephObjectStore configurations to deploy
         # @default -- See [below](#ceph-object-stores)
         cephObjectStores:
