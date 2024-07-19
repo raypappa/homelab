@@ -24,6 +24,11 @@ spec:
           # renovate: datasource=docker depName=ghcr.io/gethomepage/homepage
           tag: v0.9.5
         env:
+          HOMEPAGE_VAR_READARR_API_KEY:
+            valueFrom:
+              secretKeyRef:
+                name: readarr-secret
+                key: api_key
           HOMEPAGE_VAR_SONARR_API_KEY:
             valueFrom:
               secretKeyRef:
@@ -180,11 +185,25 @@ spec:
                         - missing
                         - queue
                         - movies
+                - Readarr:
+                    href: https://readarr.fieldsofbears.com
+                    namespace: homelab
+                    app: readarr-svc
+                    icon: readarr.svg
+                    widget:
+                      type: readarr
+                      url: http://readarr-svc.homelab.svc.cluster.local:8787
+                      key: "{{HOMEPAGE_VAR_READARR_API_KEY}}"
+                      fields:
+                        - wanted
+                        - queued
+                        - books
                 - Whisparr:
                     href: https://whisparr.fieldsofbears.com
                     namespace: homelab
                     app: whisparr-svc
                     icon: whisparr.svg
+            - Downloads:
                 - Prowlarr:
                     href: https://prowlarr.fieldsofbears.com
                     app: prowlarr-svc
@@ -237,6 +256,9 @@ spec:
             theme: dark
             layout:
               - Media:
+                  style: row
+                  columns: 4
+              - Downloads:
                   style: row
                   columns: 4
               - Kubernetes:
