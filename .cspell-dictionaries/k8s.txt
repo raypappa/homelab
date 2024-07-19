@@ -20,3 +20,10 @@ volsync
 disableauth
 valkey
 kubesearch
+SNAPSHOTCLASS
+backube
+COPYMETHOD
+backblaze
+onepassword
+RESTIC
+openebs
