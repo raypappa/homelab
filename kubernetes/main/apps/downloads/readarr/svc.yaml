@@ -33,9 +33,8 @@ spec:
                   pullPolicy: IfNotPresent
                 env:
                   COMPlus_EnableDiagnostics: "0"
-                  READARR__AUTHENTICATION_METHOD: None
-                  # READARR__AUTHENTICATION_METHOD: External
-                  # READARR__AUTHENTICATION_REQUIRED: Enabled
+                  READARR__AUTHENTICATION_METHOD: Forms
+                  READARR__AUTHENTICATION_REQUIRED: Disabled
                   READARR__INSTANCE_NAME: Readarr
                   READARR__PORT: &port 8787
                   READARR__LOG_LEVEL: info
