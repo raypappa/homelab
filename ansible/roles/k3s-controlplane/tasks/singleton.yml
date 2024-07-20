@@ -117,7 +117,7 @@
             namespace: argocd
           data:
             url: https://argocd.{{ k3s_cloudflare_domain_name }}
-            kustomize.buildOptions: --load_restrictor none --enable-helm
+            kustomize.buildOptions: --enable-helm
             accounts.homepage: apiKey
             accounts.cdavis: login, apiKey
             dex.config: |
