@@ -204,22 +204,6 @@
                 prune: true
               syncOptions:
                 - CreateNamespace=true
-- name: Enable OCI for truecharts
-  kubernetes.core.k8s:
-    state: present
-    definition:
-      apiVersion: v1
-      kind: Secret
-      metadata:
-        labels:
-          argocd.argoproj.io/secret-type: repository
-        name: truecharts-helm-oci
-        namespace: argocd
-      stringData:
-        url: tccr.io/truecharts
-        name: truecharts
-        type: helm
-        enableOCI: "true"
 - name: Replace default namespace by argocd
   ansible.builtin.command: >-
     k3s kubectl config set-context default --namespace=argocd --kubeconfig ~{{ ansible_user }}/.kube/config
