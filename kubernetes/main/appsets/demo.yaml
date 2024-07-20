@@ -21,12 +21,12 @@ spec:
     rollingSync:
       steps:
         - matchExpressions:
-            - key: deployGroupLabel
+            - key: deployGroup
               operator: In
               values:
                 - A
         - matchExpressions:
-            - key: deployGroupLabel
+            - key: deployGroup
               operator: In
               values:
                 - B
