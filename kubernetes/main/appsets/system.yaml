@@ -26,12 +26,12 @@ spec:
     rollingSync:
       steps:
         - matchExpressions:
-            - key: groupLabel
+            - key: deployGroup
               operator: In
               values:
                 - A
         - matchExpressions:
-            - key: groupLabel
+            - key: deployGroup
               operator: In
               values:
                 - B
@@ -39,6 +39,8 @@ spec:
     metadata:
       name: "{{.appName}}"
       namespace: argocd
+      labels:
+        deployGroup: "{{.group}}"
     spec:
       project: default
       syncPolicy:
