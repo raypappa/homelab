@@ -25,6 +25,11 @@ jobs:
           echo "${{ steps.changed-files.outputs.all_changed_files_count > 0 || contains(github.event.head_commit.message, '[run ansible]') }}";
     outputs:
       execute: ${{ steps.changed-files.outputs.all_changed_files_count > 0 || contains(github.event.head_commit.message, '[run ansible]') }}
+  verify:
+    needs: check
+    runs-on: ${{ vars.RUNS_ON }}
+    steps:
+      - run: echo "${{needs.check.outputs.execute == true}}"
   ansible:
     needs: check
     if: github.secret_source != 'Dependabot' && needs.check.outputs.execute == true
