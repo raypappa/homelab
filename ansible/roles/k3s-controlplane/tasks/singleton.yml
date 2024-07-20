@@ -141,7 +141,7 @@
             namespace: argocd
           data:
             server.insecure: "true"
-            applicationsetcontroller.enable.progressive.syncs: true
+            applicationsetcontroller.enable.progressive.syncs: "true"
     - name: ArgoCD RBAC ConfigMap
       kubernetes.core.k8s:
         state: present
