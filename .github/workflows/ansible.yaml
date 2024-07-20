@@ -29,10 +29,10 @@ jobs:
     needs: check
     runs-on: ${{ vars.RUNS_ON }}
     steps:
-      - run: echo "${{needs.check.outputs.execute == true}}"
+      - run: echo "${{needs.check.outputs.execute == 'true'}}"
   ansible:
     needs: check
-    if: github.secret_source != 'Dependabot' && needs.check.outputs.execute == true
+    if: github.secret_source != 'Dependabot' && needs.check.outputs.execute == 'true'
     runs-on: ${{ vars.RUNS_ON }}
     permissions:
       id-token: write # This is required for requesting the JWT
