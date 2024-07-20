@@ -9,7 +9,7 @@ spec:
   goTemplate: true
   goTemplateOptions: ["missingkey=error"]
   syncPolicy:
-    applicationsSync: create-delete
+    applicationsSync: sync
   generators:
     - list:
         elements:
