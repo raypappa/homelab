@@ -1,0 +1,40 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/argoproj.io/applicationset_v1alpha1.json
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: system
+  namespace: argocd
+spec:
+  goTemplate: true
+  goTemplateOptions: ["missingkey=error"]
+  syncPolicy:
+    applicationsSync: create-delete
+  generators:
+    - list:
+        elements:
+          - dirName: onepassword-connect
+            appName: onepassword-connect
+            namespace: external-secrets
+  template:
+    metadata:
+      name: "{{.appName}}-app"
+      namespace: argocd
+    spec:
+      project: default
+      syncPolicy:
+        automated:
+          selfHeal: true
+          prune: true
+        syncOptions:
+          - CreateNamespace=true
+      source:
+        repoURL: git@github.com:blade2005/homelab.git
+        targetRevision: main
+        path: kubernetes/main/system/{{.dirName}}
+        directory:
+          recurse: true
+          jsonnet: {}
+      destination:
+        server: "https://kubernetes.default.svc"
+        namespace: '{{default "system" .namespace }}'
