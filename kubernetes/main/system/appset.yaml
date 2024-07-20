@@ -12,10 +12,10 @@ spec:
     applicationsSync: create-delete
   generators:
     - list:
-        elements:
-          - dirName: onepassword-connect
-            appName: onepassword-connect
-            namespace: external-secrets
+        elements: []
+        # - dirName: onepassword-connect
+        #   appName: onepassword-connect
+        #   namespace: external-secrets
   template:
     metadata:
       name: "{{.appName}}-app"
