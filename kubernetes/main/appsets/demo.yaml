@@ -19,7 +19,17 @@ spec:
   strategy:
     type: RollingSync
     rollingSync:
-      steps: []
+      steps:
+        - matchExpressions:
+            - key: deployGroupLabel
+              operator: In
+              values:
+                - A
+        - matchExpressions:
+            - key: deployGroupLabel
+              operator: In
+              values:
+                - B
   template:
     metadata:
       name: "{{.appName}}"
