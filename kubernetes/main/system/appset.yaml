@@ -32,9 +32,6 @@ spec:
         repoURL: git@github.com:blade2005/homelab.git
         targetRevision: main
         path: kubernetes/main/system/{{.dirName}}
-        directory:
-          recurse: true
-          jsonnet: {}
       destination:
         server: "https://kubernetes.default.svc"
         namespace: '{{default "system" .namespace }}'
