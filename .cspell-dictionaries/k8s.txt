@@ -29,3 +29,4 @@ RESTIC
 openebs
 missingkey
 appset
+restrictor
