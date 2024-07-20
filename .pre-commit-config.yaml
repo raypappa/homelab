@@ -65,7 +65,7 @@ repos:
     hooks:
       - id: local-biome-check
         name: biome check
-        entry: npx  --package @biomejs/biome biome check --apply --files-ignore-unknown=true --no-errors-on-unmatched
+        entry: npx  --package @biomejs/biome biome check --write --files-ignore-unknown=true --no-errors-on-unmatched
         language: system
         types: [text]
         files: "\\.(jsx?|tsx?|c(js|ts)|m(js|ts)|d\\.(ts|cts|mts)|jsonc?|css)$"
