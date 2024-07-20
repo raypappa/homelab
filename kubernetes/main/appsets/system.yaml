@@ -16,6 +16,25 @@ spec:
           - dirName: onepassword-connect
             appName: onepassword-connect
             namespace: external-secrets
+            group: A
+          - dirName: external-secrets
+            appName: external-secrets
+            namespace: external-secrets
+            group: B # needs onepassword-connect
+  strategy:
+    type: RollingSync
+    rollingSync:
+      steps:
+        - matchExpressions:
+            - key: groupLabel
+              operator: In
+              values:
+                - A
+        - matchExpressions:
+            - key: groupLabel
+              operator: In
+              values:
+                - B
   template:
     metadata:
       name: "{{.appName}}"
@@ -23,9 +42,6 @@ spec:
     spec:
       project: default
       syncPolicy:
-        automated:
-          selfHeal: true
-          prune: true
         syncOptions:
           - CreateNamespace=true
       source:
