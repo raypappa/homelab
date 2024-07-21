@@ -27,6 +27,13 @@
     owner: root
     group: root
     mode: "0644"
+- name: Copy kubelet.config
+  ansible.builtin.template:
+    src: kubelet.config.j2
+    dest: /etc/rancher/k3s/kubelet.config
+    owner: root
+    group: root
+    mode: "0644"
 - name: Enable and check K3s service
   any_errors_fatal: true
   ansible.builtin.systemd:

@@ -31,3 +31,4 @@ missingkey
 appset
 restrictor
 applicationsetcontroller
+kubelet
