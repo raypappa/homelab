@@ -65,6 +65,8 @@ jobs:
           printf "Host *\n  StrictHostKeyChecking no\n  UserKnownHostsFile /dev/null\n" > ~/.ssh/config
       - name: SSH Test
         run: ssh ${{ vars.BASTION_USER }}@${{ vars.BASTION_HOST }} -p ${{ vars.BASTION_PORT }} echo "SSH Test"
+      - name: Kubernetes Test
+        run: kubectl api-resources
       - name: Ansible Canary
         run: task ansible:deploy:canary:ci
         env:
