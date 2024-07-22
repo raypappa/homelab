@@ -37,4 +37,3 @@ tasks:
       - $HOME/.local/bin/argocd
     status:
       - test -e $HOME/.local/bin/argocd
-
