@@ -4,21 +4,21 @@ kind: Kustomization
 namespace: argocd
 resources:
   - https://raw.githubusercontent.com/argoproj/argo-cd/v2.11.5/manifests/install.yaml
+helmCharts:
+  - name: cloudflare-tunnel
+    repo: https://cloudflare.github.io/helm-charts
+    valuesInline:
+      cloudflare:
+        ingress:
+          - hostname: argocd.fieldsofbears.com
+            service: http://argocd-server.argocd.svc.cluster.local:80
+        secretName: argocd-tunnel-credentials
+        tunnelName: faerun-argocd
+      image:
+        tag: 2024.4.1
+    version: 0.3.0
 patches:
   - path: patches/argocd-cm.yaml
   - path: patches/argocd-cmd-params-cm.yaml
   - path: patches/argocd-rbac-cm.yaml
   - path: patches/argocd-server.yaml
-helmCharts:
-  - repo: https://cloudflare.github.io/helm-charts
-    name: cloudflare-tunnel
-    version: 0.3.0
-    valuesInline:
-      image:
-        tag: 2024.4.1
-      cloudflare:
-        secretName: argocd-tunnel-credentials
-        tunnelName: faerun-argocd
-        ingress:
-          - hostname: argocd.fieldsofbears.com
-            service: http://argocd-server.argocd.svc.cluster.local:80
