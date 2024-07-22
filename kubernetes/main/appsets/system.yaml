@@ -15,7 +15,7 @@ spec:
         repoURL: git@github.com:blade2005/homelab.git
         revision: main
         files:
-          - path: kubernetes/main/apps/system/**/config.json
+          - path: kubernetes/main/system/**/config.json
   strategy:
     type: RollingSync
     rollingSync:
