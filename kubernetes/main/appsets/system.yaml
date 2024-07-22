@@ -11,16 +11,11 @@ spec:
   syncPolicy:
     applicationsSync: sync
   generators:
-    - list:
-        elements:
-          - dirName: onepassword-connect
-            appName: onepassword-connect
-            namespace: external-secrets
-            group: A
-          - dirName: external-secrets
-            appName: external-secrets
-            namespace: external-secrets
-            group: B # needs onepassword-connect
+    - git:
+        repoURL: git@github.com:blade2005/homelab.git
+        revision: main
+        files:
+          - path: kubernetes/main/apps/system/**/config.json
   strategy:
     type: RollingSync
     rollingSync:
@@ -49,7 +44,7 @@ spec:
       source:
         repoURL: git@github.com:blade2005/homelab.git
         targetRevision: main
-        path: kubernetes/main/system/{{.dirName}}
+        path: "{{.path.path}}"
       destination:
         server: "https://kubernetes.default.svc"
-        namespace: '{{default "system" .namespace }}'
+        namespace: "{{.destNamespace }}"
