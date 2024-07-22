@@ -70,7 +70,7 @@ spec:
             enabled: true
             storageClass: ceph-filesystem
             accessMode: ReadWriteOnce
-            size: 5Gi
+            size: 10Gi
           library:
             enabled: true
             type: hostPath
