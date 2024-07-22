@@ -1,0 +1,5 @@
+{
+  "destNamespace": "argocd",
+  "appName": "argocd-metrics",
+  "group": "C"
+}
