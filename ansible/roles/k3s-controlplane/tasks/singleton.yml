@@ -100,99 +100,19 @@
     state: present
 - name: Install ArgoCD
   block:
-    # Download and install ArgoCD
-    - name: Download argoCD install manifest to the cluster for version {{ argocd_version }}
+    - name: Create Deploy Key
       become: false
-      ansible.builtin.get_url:
-        url: https://raw.githubusercontent.com/argoproj/argo-cd/v{{ argocd_version }}/manifests/install.yaml
-        dest: ~/argocd-install.yaml
-        mode: "0664"
-    - name: Apply argoCD install manifest to the cluster.
-      become: false
+      community.crypto.openssh_keypair:
+        path: ~/.ssh/id_ed25519
+        type: ed25519
+        mode: "0600"
+    - name: Query ArgoCD service argocd-server
+      set_fact:
+        argocd_servers: "{{ query('kubernetes.core.k8s', kind='Deployment', namespace='argocd', resource_name='argocd-server') }}"
+    - name: Apply ArgoCD Kustomize
       kubernetes.core.k8s:
-        state: present
-        src: ~/argocd-install.yaml
-        namespace: argocd
-    - name: ArgoCD ConfigMap
-      kubernetes.core.k8s:
-        state: present
-        definition:
-          apiVersion: v1
-          kind: ConfigMap
-          metadata:
-            name: argocd-cm
-            namespace: argocd
-          data:
-            url: https://argocd.{{ k3s_cloudflare_domain_name }}
-            kustomize.buildOptions: --enable-helm
-            accounts.homepage: apiKey
-            accounts.cdavis: login, apiKey
-    - name: ArgoCD CMD Params ConfigMap
-      kubernetes.core.k8s:
-        state: present
-        definition:
-          apiVersion: v1
-          kind: ConfigMap
-          metadata:
-            name: argocd-cmd-params-cm
-            namespace: argocd
-          data:
-            server.insecure: "true"
-            applicationsetcontroller.enable.progressive.syncs: "true"
-    - name: ArgoCD RBAC ConfigMap
-      kubernetes.core.k8s:
-        state: present
-        definition:
-          apiVersion: v1
-          kind: ConfigMap
-          metadata:
-            name: argocd-rbac-cm
-            namespace: argocd
-          data:
-            policy.default: role:readonly
-            policy.csv: |
-              g, cdavis, role:admin
-    - name: Create ArgoCD Tunnel
-      kubernetes.core.k8s:
-        state: present
-        definition:
-          apiVersion: argoproj.io/v1alpha1
-          kind: Application
-          metadata:
-            name: argocd-tunnel
-            namespace: argocd
-            finalizers:
-              - resources-finalizer.argocd.argoproj.io
-          spec:
-            project: default
-            source:
-              repoURL: https://cloudflare.github.io/helm-charts
-              targetRevision: 0.3.0
-              chart: cloudflare-tunnel
-              helm:
-                valuesObject:
-                  image:
-                    tag: 2024.4.1
-                  cloudflare:
-                    # Note: this won't exist yet, you need to create it yourself.
-                    secretName: tunnel-credentials
-                    tunnelName: faerun-argocd
-                    ingress:
-                      - hostname: argocd.{{ k3s_cloudflare_domain_name }}
-                        service: http://argocd-server:80
-            destination:
-              server: https://kubernetes.default.svc
-              namespace: argocd
-            syncPolicy:
-              automated:
-                selfHeal: true
-                prune: true
-              syncOptions:
-                - CreateNamespace=true
-- name: Replace default namespace by argocd
-  ansible.builtin.command: >-
-    k3s kubectl config set-context default --namespace=argocd --kubeconfig ~{{ ansible_user }}/.kube/config
-  changed_when: true
+        definition: "{{ lookup('kubernetes.core.kustomize', dir='https://github.com/blade2005/homelab.git/kubernetes/{{git_sub_path}}/bootstrap/argocd', enable_helm=True) }}"
+      when: argocd_servers | length < 1
 - name: Configure ArgoCD for the cluster
   ansible.builtin.command:
     cmd: argocd login --core
@@ -203,12 +123,6 @@
       ansible.builtin.command: >-
         argocd repo list -o json
       register: argocd_repos
-    - name: Create Deploy Key
-      become: false
-      community.crypto.openssh_keypair:
-        path: ~/.ssh/id_ed25519
-        type: ed25519
-        mode: "0600"
     # Note: This makes argocd able to use the above ssh key, but the ssh key still needs to be added by hand as a deploy key to the github repo.
     - name: Configure ArgoCD with SSH Key
       become: false
