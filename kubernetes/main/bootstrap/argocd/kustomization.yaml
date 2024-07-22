@@ -7,6 +7,7 @@ resources:
 helmCharts:
   - name: cloudflare-tunnel
     repo: https://cloudflare.github.io/helm-charts
+    releaseName: argocd-cloudflare-tunnel
     valuesInline:
       cloudflare:
         ingress:
