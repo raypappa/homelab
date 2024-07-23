@@ -25,6 +25,9 @@ jobs:
               - test/**
               - cdk.json
               - tsconfig.json
+              - package.json
+              - package-lock.json
+              - .github/workflows/cdk.yaml
     outputs:
       cdk_changed_files_count: ${{ steps.changed-files.outputs.cdk_all_changed_files_count}}
   aws-cdk:
