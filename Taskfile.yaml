@@ -41,7 +41,7 @@ tasks:
     desc: Build all Kustomize files.
     vars:
       kustomize_files:
-        sh: find {{.KUBERNETES_DIR}} -name kustomization.yaml -type f -printf '%h|'
+        sh: find {{.KUBERNETES_DIR}} -name kustomization.yaml -type f -printf '%h|' | sed -e 's~|$~~'
     deps:
       - for:
           var: kustomize_files
