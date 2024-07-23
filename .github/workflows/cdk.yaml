@@ -29,10 +29,15 @@ jobs:
               - package-lock.json
               - .github/workflows/cdk.yaml
     outputs:
-      cdk_changed_files_count: ${{ steps.changed-files.outputs.cdk_all_changed_files_count}}
+      execute: ${{ steps.changed-files.outputs.cdk_all_changed_files_count > 0 }}
+  verify:
+    needs: check
+    runs-on: ${{ vars.RUNS_ON }}
+    steps:
+      - run: echo "${{needs.check.outputs.execute == 'true'}}"
   aws-cdk:
     needs: check
-    if: needs.check.outputs.cdk_all_changed_files_count > 0
+    if: needs.check.outputs.execute == 'true'
     runs-on: ${{ vars.RUNS_ON}}
     permissions:
       id-token: write # This is required for requesting the JWT
