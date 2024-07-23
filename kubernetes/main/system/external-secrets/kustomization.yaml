@@ -22,3 +22,5 @@ helmCharts:
         serviceMonitor:
           enabled: true
           interval: 1m
+resources:
+  - ./onepassword-cluster-secret-store.yaml
