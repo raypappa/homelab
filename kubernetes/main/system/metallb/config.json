@@ -1,0 +1,5 @@
+{
+  "destNamespace": "metallb-system",
+  "appName": "metallb",
+  "group": "C"
+}

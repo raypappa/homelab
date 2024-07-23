@@ -33,3 +33,4 @@ restrictor
 applicationsetcontroller
 kubelet
 appsets
+ippool
