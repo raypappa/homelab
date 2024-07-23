@@ -43,8 +43,6 @@ tasks:
       kustomize_files:
         sh: find {{.KUBERNETES_DIR}} -name kustomization.yaml -type f -printf '%h\n'
     cmds:
-      - cmd: echo "{{.kustomize_files}}"
-        silent: true
       - for:
           var: kustomize_files
         task: build:kustomize:internal
