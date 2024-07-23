@@ -1,0 +1,80 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/argoproj.io/applicationset_v1alpha1.json
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: selfhosted
+  namespace: argocd
+spec:
+  goTemplate: true
+  goTemplateOptions: ["missingkey=error"]
+  syncPolicy:
+    applicationsSync: sync
+  generators:
+    - git:
+        repoURL: git@github.com:blade2005/homelab.git
+        revision: main
+        files:
+          - path: kubernetes/main/selfhosted/**/config.json
+  strategy:
+    type: RollingSync
+    rollingSync:
+      steps:
+        - matchExpressions:
+            - key: deployGroup
+              operator: In
+              values:
+                - A
+        - matchExpressions:
+            - key: deployGroup
+              operator: In
+              values:
+                - B
+        - matchExpressions:
+            - key: deployGroup
+              operator: In
+              values:
+                - C
+        - matchExpressions:
+            - key: deployGroup
+              operator: In
+              values:
+                - D
+        - matchExpressions:
+            - key: deployGroup
+              operator: In
+              values:
+                - E
+        - matchExpressions:
+            - key: deployGroup
+              operator: In
+              values:
+                - F
+        - matchExpressions:
+            - key: deployGroup
+              operator: In
+              values:
+                - G
+        - matchExpressions:
+            - key: deployGroup
+              operator: In
+              values:
+                - H
+  template:
+    metadata:
+      name: "{{.appName}}"
+      namespace: argocd
+      labels:
+        deployGroup: "{{.group}}"
+    spec:
+      project: default
+      syncPolicy:
+        syncOptions:
+          - CreateNamespace=true
+      source:
+        repoURL: git@github.com:blade2005/homelab.git
+        targetRevision: main
+        path: "{{.path.path}}"
+      destination:
+        server: "https://kubernetes.default.svc"
+        namespace: "{{.destNamespace }}"
