@@ -30,6 +30,36 @@ spec:
               operator: In
               values:
                 - B
+        - matchExpressions:
+            - key: deployGroup
+              operator: In
+              values:
+                - C
+        - matchExpressions:
+            - key: deployGroup
+              operator: In
+              values:
+                - D
+        - matchExpressions:
+            - key: deployGroup
+              operator: In
+              values:
+                - E
+        - matchExpressions:
+            - key: deployGroup
+              operator: In
+              values:
+                - F
+        - matchExpressions:
+            - key: deployGroup
+              operator: In
+              values:
+                - G
+        - matchExpressions:
+            - key: deployGroup
+              operator: In
+              values:
+                - H
   template:
     metadata:
       name: "{{.appName}}"
