@@ -41,10 +41,11 @@ tasks:
     desc: Build all Kustomize files.
     vars:
       kustomize_files:
-        sh: find {{.KUBERNETES_DIR}} -name kustomization.yaml -type f -printf '%h\n'
-    cmds:
+        sh: find {{.KUBERNETES_DIR}} -name kustomization.yaml -type f -printf '%h|'
+    deps:
       - for:
           var: kustomize_files
+          split: "|"
         task: build:kustomize:internal
         vars:
           dir: "{{.ITEM}}"
