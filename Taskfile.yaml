@@ -37,3 +37,22 @@ tasks:
       - $HOME/.local/bin/argocd
     status:
       - test -e $HOME/.local/bin/argocd
+  build:kustomize:
+    desc: Build all Kustomize files.
+    vars:
+      kustomize_files:
+        sh: find . -name kustomization.yaml -type f -printf '%h\n'
+    deps:
+      - for:
+          var: kustomize_files
+        task: build:kustomize:internal
+        vars:
+          dir: "{{.ITEM}}"
+  build:kustomize:internal:
+    label: "Build Kustomize for {{.dir}}"
+    desc: Build a Kustomize file
+    cmds:
+      - cmd: kubectl kustomize --enable-helm {{.dir}} >/dev/null
+    requires:
+      vars:
+        - dir
