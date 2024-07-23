@@ -6,7 +6,7 @@ helmCharts:
   - name: metallb
     repo: https://metallb.github.io/metallb
     releaseName: metallb
-    version: 0.14.7
+    version: 0.14.8
     valuesInline:
       prometheus:
         scrapeAnnotations: true
