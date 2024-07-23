@@ -6,10 +6,6 @@ helmCharts:
     repo: https://charts.external-secrets.io
     version: 0.9.20
     valuesInline:
-      deploymentAnnotations:
-        argocd.argoproj.io/sync-wave: "3"
-      podAnnotations:
-        argocd.argoproj.io/sync-wave: "3"
       installCRDs: true
       serviceMonitor:
         enabled: true
