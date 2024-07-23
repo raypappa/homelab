@@ -16,7 +16,7 @@
     "@cspell/dict-git": "^3.0.0",
     "@cspell/dict-k8s": "^1.0.5",
     "@types/jest": "^29.5.12",
-    "@types/node": "20.14.11",
+    "@types/node": "20.14.12",
     "aws-cdk": "2.150.0",
     "cspell": "^8.10.4",
     "jest": "^29.7.0",
