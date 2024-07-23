@@ -1,5 +1,5 @@
 {
   "destNamespace": "external-secrets",
   "appName": "onepassword-connect",
-  "group": "A"
+  "group": "B"
 }
