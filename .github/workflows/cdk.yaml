@@ -58,7 +58,7 @@ jobs:
           python-version: ${{ vars.PYTHON_VERSION }}
           poetry-version: 1.7.1
       - name: Setting up CDK
-        run: task cdk:setup
+        run: task configure
       - name: Bootstrapping CDK
         run: task cdk:bootstrap
       - name: CDK Unit Tests
