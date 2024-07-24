@@ -1,0 +1,5 @@
+{
+  "destNamespace": "rook-ceph",
+  "appName": "rook-ceph-cluster-app",
+  "group": "B"
+}
