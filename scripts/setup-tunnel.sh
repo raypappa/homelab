@@ -27,7 +27,9 @@ cloudflared tunnel create "$tunnelName"
 
 cloudflared tunnel token "$tunnelName" | base64 -d | jq '.["AccountTag"] = .a | .["TunnelSecret"] = .s | .["TunnelID"] = .t | del(.a, .s, .t)' > credentials.json
 
-kubectl create secret generic "$secretName" --from-file=credentials.json=./credentials.json -n "$namespace"
+#kubectl create secret generic "$secretName" --from-file=credentials.json=./credentials.json -n "$namespace"
+
+op.exe document create --file-name credentials.json --title "$appName-tunnel" --vault Homelab credentials.json
 
 rm -f credentials.json
 

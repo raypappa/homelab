@@ -266,18 +266,20 @@ helmCharts:
       ingress:
         main:
           enabled: false
-#  - name: cloudflare-tunnel
-#    repo: https://cloudflare.github.io/helm-charts
-#    version: 0.3.0
-#    releaseName: homepage
-#    namespace: homelab
-#    valuesInline:
-#      image:
-#        # renovate: datasource=docker depName=cloudflare/cloudflared
-#        tag: 2024.6.1
-#      cloudflare:
-#        secretName: "homepage-tunnel-credentials"
-#        tunnelName: "faerun-homepage"
-#        ingress:
-#          - hostname: "fieldsofbears.com"
-#            service: "http://homepage.homelab.svc.cluster.local:3000"
+  - name: cloudflare-tunnel
+    repo: https://cloudflare.github.io/helm-charts
+    version: 0.3.0
+    releaseName: homepage
+    namespace: homelab
+    valuesInline:
+      image:
+        # renovate: datasource=docker depName=cloudflare/cloudflared
+        tag: 2024.6.1
+      cloudflare:
+        secretName: "homepage-tunnel-credentials"
+        tunnelName: "faerun-homepage"
+        ingress:
+          - hostname: "fieldsofbears.com"
+            service: "http://homepage.homelab.svc.cluster.local:3000"
+resources:
+  - ./external-secret.yaml
