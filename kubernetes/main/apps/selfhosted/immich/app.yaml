@@ -43,7 +43,7 @@ spec:
                 service: "http://immich-server-server.selfhosted.svc.cluster.local:3001"
     - repoURL: https://bjw-s.github.io/helm-charts
       chart: app-template
-      targetRevision: 3.2.1
+      targetRevision: 3.3.1
       helm:
         valuesObject:
           controllers:
