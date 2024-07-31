@@ -8,6 +8,6 @@ helmCharts:
     repo: https://backube.github.io/helm-charts/
     namespace: system
     releaseName: volsync
-    version: 0.9.1
+    version: 0.10.0
 resources:
   - prometheus-rule.yaml
