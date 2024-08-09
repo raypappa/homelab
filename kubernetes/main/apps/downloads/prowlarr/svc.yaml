@@ -82,6 +82,10 @@ spec:
             enabled: true
             storageClass: ceph-filesystem
             accessMode: ReadWriteOnce
+            dataSourceRef:
+              kind: ReplicationDestination
+              apiGroup: volsync.backube
+              name: prowlarr-config-dst
             size: 5Gi
           library:
             enabled: true
