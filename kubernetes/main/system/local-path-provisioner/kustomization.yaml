@@ -7,3 +7,4 @@ helmCharts:
     repo: https://charts.containeroo.ch
     releaseName: local-path-provisioner
     version: 0.0.30
+    includeCRDs: true
