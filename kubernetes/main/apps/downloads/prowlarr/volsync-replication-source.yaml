@@ -4,7 +4,7 @@ kind: ReplicationSource
 metadata:
   name: prowlarr-config-backblaze
 spec:
-  sourcePVC: prowlarr-config
+  sourcePVC: prowlarr-svc-config
   trigger:
     schedule: 0 0 * * *
   restic:
