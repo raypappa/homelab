@@ -10,7 +10,7 @@ spec:
     repository: prowlarr-config-volsync-backblaze-secret
     copyMethod: Snapshot
     volumeSnapshotClassName: ceph-block
-    cacheStorageClassName: local-hostpath
+    cacheStorageClassName: local-path
     cacheAccessModes:
       - ReadWriteOnce
     cacheCapacity: 8Gi
