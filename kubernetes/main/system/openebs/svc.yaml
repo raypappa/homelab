@@ -1,0 +1,55 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/argoproj.io/application_v1alpha1.json
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: openebs-svc
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  destination:
+    server: "https://kubernetes.default.svc"
+    namespace: openebs-system
+  syncPolicy:
+    automated:
+      selfHeal: true
+      prune: true
+    syncOptions:
+      - CreateNamespace=true
+  source:
+    repoURL: https://openebs.github.io/openebs
+    chart: openebs
+    targetRevision: 4.1.0
+    helm:
+      valuesObject:
+        localpv-provisioner:
+          localpv:
+            image:
+              registry: quay.io/
+          hostpathClass:
+            name: openebs-hostpath
+          helperPod:
+            image:
+              registry: quay.io/
+        openebs-crds:
+          csi:
+            volumeSnapshots:
+              enabled: false
+              keep: false
+        zfs-localpv:
+          enabled: false
+        lvm-localpv:
+          enabled: false
+        mayastor:
+          enabled: false
+        engines:
+          local:
+            lvm:
+              enabled: false
+            zfs:
+              enabled: false
+          replicated:
+            mayastor:
+              enabled: false
