@@ -12,7 +12,7 @@ repos:
         stages:
           - push
     repo: https://github.com/commitizen-tools/commitizen
-    rev: v3.28.0
+    rev: v3.29.0
   - hooks:
       - id: no-commit-to-branch
       - id: check-json
