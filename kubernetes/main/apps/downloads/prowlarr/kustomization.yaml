@@ -90,7 +90,7 @@ helmCharts:
       persistence:
         config:
           enabled: true
-          storageClass: ceph-filesystem
+          storageClass: ceph-block
           accessMode: ReadWriteOnce
           dataSourceRef:
             kind: ReplicationDestination
