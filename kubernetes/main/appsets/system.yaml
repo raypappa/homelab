@@ -17,6 +17,7 @@ spec:
         files:
           - path: kubernetes/main/system/**/config.json
           - path: kubernetes/main/system-controllers/**/config.json
+          - path: kubernetes/main/apps/**/config.json
   strategy:
     type: RollingSync
     rollingSync:
