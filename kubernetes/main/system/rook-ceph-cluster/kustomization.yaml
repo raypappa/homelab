@@ -70,6 +70,8 @@ helmCharts:
                 size: 1
             dataPool:
               failureDomain: osd
+              replicated:
+                size: 1
             preservePoolsOnDelete: true
             gateway:
               port: 80
