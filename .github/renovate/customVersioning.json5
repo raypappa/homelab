@@ -19,5 +19,25 @@
       "versioning": "regex:^RELEASE\\.(?<major>\\d+)-(?<minor>\\d+)-(?<patch>\\d+)T.*Z$",
       "matchPackagePatterns": ["minio"]
     },
+    {
+      "description": "Group aws-cdk",
+      "groupName": "aws-cdk",
+      "matchPackagePatterns": ["aws-cdk"]
+    },
+    {
+      "description": "Group for all immich updates",
+      "groupName": "immich-app",
+
+      "matchPackageNames": [
+        "ghcr.io/immich-app/immich-machine-learning",
+        "ghcr.io/immich-app/immich-server",
+        "immich"
+      ]
+    },
+    {
+      "description": "Group rook-ceph",
+      "groupName": "rook-ceph",
+      "matchPackagePatterns": ["rook/ceph"]
+    }
   ]
 }
