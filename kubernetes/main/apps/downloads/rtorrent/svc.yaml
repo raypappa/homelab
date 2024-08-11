@@ -12,7 +12,7 @@ spec:
   source:
     repoURL: https://bjw-s.github.io/helm-charts
     chart: app-template
-    targetRevision: 3.3.1
+    targetRevision: 3.3.2
     helm:
       valuesObject:
         defaultPodOptions:
