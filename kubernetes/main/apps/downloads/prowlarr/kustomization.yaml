@@ -102,6 +102,8 @@ helmCharts:
           type: hostPath
           hostPathType: Directory
           hostPath: /library
+        tmp:
+          type: emptyDir
 resources:
   - ./volsync-external-secret.yaml
   - ./volsync-replication-source.yaml
