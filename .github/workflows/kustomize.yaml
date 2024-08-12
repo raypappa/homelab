@@ -15,4 +15,4 @@ jobs:
         with:
           version: ${{ vars.TASK_VERSION}}
       - name: Kustomize It!
-        run: task build:kustomize
+        run: kustomize version;task build:kustomize
