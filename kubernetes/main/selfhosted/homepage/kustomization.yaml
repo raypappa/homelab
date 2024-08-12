@@ -153,6 +153,7 @@ helmCharts:
                       - movies
                       - tv
                       - albums
+          - Downloads:
               - Sonarr:
                   href: https://sonarr.fieldsofbears.com
                   icon: sonarr.svg
@@ -195,7 +196,6 @@ helmCharts:
                   namespace: homelab
                   app: whisparr-svc
                   icon: whisparr.svg
-          - Downloads:
               - Prowlarr:
                   href: https://prowlarr.fieldsofbears.com
                   app: prowlarr-svc
