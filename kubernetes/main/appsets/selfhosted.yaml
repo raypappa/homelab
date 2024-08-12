@@ -25,6 +25,7 @@ spec:
               operator: In
               values:
                 - A
+                - selfhosted
         - matchExpressions:
             - key: deployGroup
               operator: In

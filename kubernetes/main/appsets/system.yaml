@@ -26,27 +26,32 @@ spec:
             - key: deployGroup
               operator: In
               values:
-                - A
+                - monitoring
         - matchExpressions:
             - key: deployGroup
               operator: In
               values:
-                - B
+                - operator
         - matchExpressions:
             - key: deployGroup
               operator: In
               values:
-                - C
+                - controller
         - matchExpressions:
             - key: deployGroup
               operator: In
               values:
-                - D
+                - downloads
         - matchExpressions:
             - key: deployGroup
               operator: In
               values:
-                - E
+                - post-monitoring
+        - matchExpressions:
+            - key: deployGroup
+              operator: In
+              values:
+                - selfhosted
         - matchExpressions:
             - key: deployGroup
               operator: In
