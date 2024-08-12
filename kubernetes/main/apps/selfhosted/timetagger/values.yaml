@@ -16,7 +16,7 @@ controllers:
         image:
           repository: ghcr.io/almarklein/timetagger
           # renovate: datasource=docker depName=ghcr.io/almarklein/timetagger
-          tag: v23.9.2-nonroot
+          tag: v24.07.1-nonroot
           pullPolicy: IfNotPresent
         env:
           TIMETAGGER_BIND: 0.0.0.0:80
