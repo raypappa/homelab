@@ -1,0 +1,33 @@
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: timetagger
+helmCharts:
+  - name: cloudflare-tunnel
+    repo: https://cloudflare.github.io/helm-charts
+    namespace: timetagger
+    releaseName: timetagger
+    version: 0.3.0
+    valuesInline:
+      image:
+        # renovate: datasource=docker depName=cloudflare/cloudflared
+        tag: 2024.8.2
+      cloudflare:
+        secretName: "timetagger-tunnel-credentials"
+        tunnelName: "faerun-timetagger"
+        ingress:
+          - hostname: "timetagger.fieldsofbears.com"
+            service: "http://timetagger.timetagger.svc.cluster.local:80"
+  - name: app-template
+    includeCRDs: true
+    repo: https://bjw-s.github.io/helm-charts
+    namespace: timetagger
+    releaseName: timetagger
+    version: 3.3.2
+    valuesFile: values.yaml
+resources:
+  - ./tunnel-external-secret.yaml
+  - ./credentials-external-secret.yaml
+  - ./volsync-external-secret.yaml
+  - ./volsync-replication-source.yaml
+  - ./volsync-replication-destination.yaml

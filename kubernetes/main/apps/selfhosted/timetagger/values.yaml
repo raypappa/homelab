@@ -1,0 +1,69 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/values.schema.json
+controllers:
+  timetagger:
+    annotations:
+      reloader.stakater.com/auto: "true"
+    pod:
+      securityContext:
+        runAsUser: 1001
+        runAsGroup: 1001
+        runAsNonRoot: true
+        fsGroup: 1001
+        fsGroupChangePolicy: OnRootMismatch
+    containers:
+      app:
+        image:
+          repository: ghcr.io/almarklein/timetagger
+          # renovate: datasource=docker depName=ghcr.io/almarklein/timetagger
+          tag: v23.9.2-nonroot
+          pullPolicy: IfNotPresent
+        env:
+          TIMETAGGER_BIND: 0.0.0.0:80
+          TIMETAGGER_DATADIR: /config
+          TIMETAGGER_LOG_LEVEL: info
+          TIMETAGGER_CREDENTIALS:
+            valueFrom:
+              secretKeyRef:
+                name: timetagger-credentials
+                key: credentials
+        probes:
+          liveness:
+            enabled: true
+          readiness:
+            enabled: true
+          startup:
+            enabled: true
+            spec:
+              failureThreshold: 30
+              periodSeconds: 5
+        resources:
+          requests:
+            cpu: 18m
+            memory: 128Mi
+          limits:
+            memory: 256Mi
+        securityContext:
+          allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: true
+          capabilities:
+            drop:
+              - ALL
+service:
+  app:
+    controller: timetagger
+    ports:
+      http:
+        port: 80
+persistence:
+  config:
+    enabled: true
+    storageClass: ceph-block
+    accessMode: ReadWriteOnce
+    dataSourceRef:
+      kind: ReplicationDestination
+      apiGroup: volsync.backube
+      name: timetagger-config-dst
+    size: 5Gi
+  tmp:
+    type: emptyDir

@@ -1,0 +1,20 @@
+---
+apiVersion: volsync.backube/v1alpha1
+kind: ReplicationDestination
+metadata:
+  name: timetagger-config-dst
+spec:
+  trigger:
+    manual: restore-once
+  restic:
+    repository: timetagger-config-volsync-backblaze-secret
+    copyMethod: Snapshot
+    volumeSnapshotClassName: ceph-block
+    cacheStorageClassName: local-path
+    cacheAccessModes:
+      - ReadWriteOnce
+    cacheCapacity: 8Gi
+    storageClassName: ceph-block
+    accessModes:
+      - ReadWriteOnce
+    capacity: 5Gi
