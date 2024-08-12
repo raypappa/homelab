@@ -76,6 +76,8 @@ spec:
             type: hostPath
             hostPathType: Directory
             hostPath: /library
+          tmp:
+            type: emptyDir
   destination:
     server: "https://kubernetes.default.svc"
     namespace: homelab
