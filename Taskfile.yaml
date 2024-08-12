@@ -53,7 +53,7 @@ tasks:
     label: "Build Kustomize for {{.dir}}"
     desc: Build a Kustomize file
     cmds:
-      - cmd: kubectl kustomize --enable-helm {{.dir}} >/dev/null
+      - cmd: kustomize build --enable-helm {{.dir}} >/dev/null
     requires:
       vars:
         - dir

@@ -34,3 +34,4 @@ applicationsetcontroller
 kubelet
 appsets
 ippool
+syntaqx
