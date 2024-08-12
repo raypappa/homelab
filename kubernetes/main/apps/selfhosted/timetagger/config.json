@@ -1,5 +1,5 @@
 {
-  "destNamespace": "homelab",
-  "appName": "homepage",
+  "destNamespace": "timetagger",
+  "appName": "timetagger",
   "group": "F"
 }
