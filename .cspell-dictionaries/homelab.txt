@@ -234,3 +234,5 @@ pgbouncer
 volsync
 ANALYTICSENABLED
 timetagger
+almarklein
+nonroot
