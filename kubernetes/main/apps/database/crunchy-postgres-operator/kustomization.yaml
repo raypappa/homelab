@@ -1,0 +1,15 @@
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: homelab
+helmCharts:
+  - name: pgo
+    releaseName: crunchy-postgres-operator
+    version: 5.6.0
+    # helm show chart oci://registry.developers.crunchydata.com/crunchydata/pgo
+    repo: oci://registry.developers.crunchydata.com/crunchydata
+    includeCRDs: true
+    valuesInline:
+      install:
+        clusterLabels:
+          app.kubernetes.io/name: pgo
