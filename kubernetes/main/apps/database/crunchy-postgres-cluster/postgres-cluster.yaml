@@ -84,20 +84,13 @@ spec:
       global: &backupFlag
         compress-type: "bz2"
         compress-level: "9"
-        # Minio
+        # Backblaze
         repo1-block: "y"
         repo1-bundle: "y"
         repo1-path: /crunchy-pgo
-        repo1-retention-full: "30" # days
+        repo1-retention-full: "7" # days
         repo1-retention-full-type: "time"
         repo1-s3-uri-style: path
-        # R2
-        repo2-block: "y"
-        repo2-bundle: "y"
-        repo2-path: /crunchy-pgo
-        repo2-retention-full: "7" # days
-        repo2-retention-full-type: time
-        repo2-s3-uri-style: path
       manual:
         repoName: repo1
         options:
@@ -106,20 +99,11 @@ spec:
         labels:
           app.kubernetes.io/name: crunchy-postgres-backup
       repos:
-        - name: repo1 # Minio
-          s3: &minio
-            bucket: "crunchy-postgres"
-            endpoint: "s3.bjw-s.dev"
-            region: "us-east-1"
-          schedules:
-            full: "0 1 * * 0" # Sunday at 01:00
-            differential: "0 1 * * 1-6" # Mon-Sat at 01:00
-            incremental: "0 2-23 * * *" # Every hour except 01:00
-        - name: repo2 # R2
-          s3: &r2
-            bucket: "crunchy-postgres"
-            endpoint: ${CLUSTER_SECRET_CPGO_R2_ENDPOINT}
-            region: "us-east-1"
+        - name: repo1 # Backblaze
+          s3: &backblaze
+            bucket: "faerun-postgres-m9ee6ZzTWNEb7hsH"
+            endpoint: "s3.us-west-002.backblazeb2.com"
+            region: "us-west-002"
           schedules:
             full: "0 2 * * 0" # Sunday at 02:00
             incremental: "0 2 * * 1-6/2" # Mon-Sat at 02:00, every 2nd day
@@ -130,7 +114,7 @@ spec:
       global: *backupFlag
       repo:
         name: "repo1"
-        s3: *minio
+        s3: *backblaze
   monitoring:
     pgmonitor:
       exporter:
