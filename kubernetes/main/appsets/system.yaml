@@ -76,7 +76,6 @@ spec:
       syncPolicy:
         syncOptions:
           - CreateNamespace=true
-          - ServerSideApply=true
       source:
         repoURL: git@github.com:blade2005/homelab.git
         targetRevision: main
