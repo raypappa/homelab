@@ -1,0 +1,5 @@
+{
+  "destNamespace": "database",
+  "appName": "crunchy-postgres-cluster",
+  "group": "controller"
+}
