@@ -1,0 +1,5 @@
+{
+  "destNamespace": "cert-manager",
+  "appName": "cert-manager-issuers",
+  "group": "controller"
+}
