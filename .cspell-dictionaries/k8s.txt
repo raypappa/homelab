@@ -37,3 +37,4 @@ ippool
 syntaqx
 crunchydata
 backblazeb
+servicemonitor
