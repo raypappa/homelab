@@ -1,5 +1,6 @@
 {
   "destNamespace": "rook-ceph",
   "appName": "rook-ceph-operator-app",
+  "serverSideApply": false,
   "group": "operator"
 }

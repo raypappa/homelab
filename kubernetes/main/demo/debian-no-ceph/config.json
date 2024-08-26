@@ -1,5 +1,6 @@
 {
   "destNamespace": "demo",
   "appName": "debian-no-ceph",
+  "serverSideApply": false,
   "group": "selfhosted"
 }

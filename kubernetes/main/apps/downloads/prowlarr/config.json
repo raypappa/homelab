@@ -1,5 +1,6 @@
 {
   "destNamespace": "homelab",
   "appName": "prowlarr",
+  "serverSideApply": false,
   "group": "downloads"
 }

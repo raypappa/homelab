@@ -1,5 +1,6 @@
 {
   "destNamespace": "system-controllers",
   "appName": "snapshot-controller-svc",
+  "serverSideApply": false,
   "group": "controller"
 }

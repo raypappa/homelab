@@ -1,5 +1,6 @@
 {
   "destNamespace": "external-secrets",
   "appName": "external-secrets",
+  "serverSideApply": false,
   "group": "controller"
 }

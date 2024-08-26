@@ -1,5 +1,6 @@
 {
   "destNamespace": "homelab",
   "appName": "homepage",
+  "serverSideApply": false,
   "group": "selfhosted"
 }

@@ -1,5 +1,6 @@
 {
   "destNamespace": "metallb-system",
   "appName": "metallb",
+  "serverSideApply": false,
   "group": "operator"
 }

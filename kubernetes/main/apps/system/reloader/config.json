@@ -1,5 +1,6 @@
 {
   "destNamespace": "reloader",
   "appName": "reloader",
+  "serverSideApply": false,
   "group": "operator"
 }
