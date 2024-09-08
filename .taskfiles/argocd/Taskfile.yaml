@@ -1,0 +1,51 @@
+---
+version: "3"
+tasks:
+  deploy:
+    desc: Deploy ArgoCD, AppSets, and Apps
+    silent: true
+    cmds:
+      - task: deploy:argocd
+  deploy:argocd:
+    desc: Deploy ArgoCD
+    silent: true
+    cmds:
+      - kubectl apply -f main/bootstrap/argocd.yaml
+  deploy:appset:
+    desc: Deploy ArgoCD AppSet
+    silent: true
+    cmds:
+      - kubectl apply -f main/appsets/system.yaml
+  deploy:app:internal:
+    internal: true
+    desc: Deploy ArgoCD App
+    silent: true
+    cmds:
+      - kubectl apply -f {{.APP_PATH}}
+    requires:
+      vars:
+        - APP_PATH
+  deploy:app:
+    desc: Deploy ArgoCD Apps(not in AppSet)
+    vars:
+      APP_PATHS:
+        sh: find . main/apps -name 'app.yaml'
+    cmds:
+      - task: deploy:app:internal
+        vars:
+          APP_PATH: main/apps/{{ .ITEM }}/app.yaml
+        for:
+          - monitoring/combined
+          - monitoring/kubernetes-dashboard
+          - selfhosted/pterodactyl
+          - selfhosted/leantime
+          - selfhosted/ollama
+          - media/plex
+          - downloads/radarr
+          - downloads/readarr
+          - downloads/whisparr
+          - downloads/unpackerr
+          - downloads/recyclarr
+          - downloads/recyclarr-configmap
+          - downloads/sonarr
+          - downloads/rtorrent

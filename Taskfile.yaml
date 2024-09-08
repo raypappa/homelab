@@ -8,6 +8,9 @@ includes:
     dir: ansible
   cdk:
     taskfile: .taskfiles/cdk/Taskfile.yaml
+  argocd:
+    taskfile: .taskfiles/argocd/Taskfile.yaml
+    dir: kubernetes
 tasks:
   default:
     desc: "List tasks"
