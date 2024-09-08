@@ -15,7 +15,7 @@ tasks:
     desc: Deploy ArgoCD AppSet
     silent: true
     cmds:
-      - kubectl apply -f main/appsets/system.yaml
+      - kubectl apply -f main/bootstrap/appsets.yaml
   deploy:app:internal:
     internal: true
     desc: Deploy ArgoCD App
