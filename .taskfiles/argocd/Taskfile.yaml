@@ -36,7 +36,6 @@ tasks:
           APP_PATH: main/apps/{{ .ITEM }}/app.yaml
         for:
           - monitoring/combined
-          - monitoring/kubernetes-dashboard
           - selfhosted/pterodactyl
           - selfhosted/leantime
           - selfhosted/ollama
