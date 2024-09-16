@@ -9,6 +9,7 @@
 1. joplin
 1. headscale
 1. MySQL Operator
+1. [Stirling-PDF](https://github.com/Stirling-Tools/Stirling-PDF)
 
 ## Migrate to AppSet
 
