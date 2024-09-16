@@ -8,6 +8,7 @@
 1. [coder](https://coder.com/docs/install/kubernetes)
 1. joplin
 1. headscale
+1. MySQL Operator
 
 ## Migrate to AppSet
 
