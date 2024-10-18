@@ -10,7 +10,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: "https://gitlab.com/blade2005-2048/homelab.git"
+    repoURL: "https://github.com/raypappa/homelab.git"
     path: kubernetes/main/apps/monitoring/combined
     targetRevision: HEAD
     directory:

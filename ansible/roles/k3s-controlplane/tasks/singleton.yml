@@ -111,7 +111,7 @@
         argocd_servers: "{{ query('kubernetes.core.k8s', kind='Deployment', namespace='argocd', resource_name='argocd-server') }}"
     - name: Apply ArgoCD Kustomize
       kubernetes.core.k8s:
-        definition: "{{ lookup('kubernetes.core.kustomize', dir='https://gitlab.com/blade2005-2048/homelab.git/kubernetes/{{git_sub_path}}/bootstrap/argocd', enable_helm=True) }}"
+        definition: "{{ lookup('kubernetes.core.kustomize', dir='https://github.com/raypappa/homelab.git/kubernetes/{{git_sub_path}}/bootstrap/argocd', enable_helm=True) }}"
       when: argocd_servers | length < 1
 - name: Configure ArgoCD for the cluster
   ansible.builtin.command:

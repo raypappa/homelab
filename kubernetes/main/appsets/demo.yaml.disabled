@@ -12,7 +12,7 @@ spec:
     applicationsSync: sync
   generators:
     - git:
-        repoURL: https://gitlab.com/blade2005-2048/homelab.git
+        repoURL: https://github.com/raypappa/homelab.git
         revision: main
         files:
           - path: kubernetes/main/apps/demo/**/config.json
@@ -42,7 +42,7 @@ spec:
         syncOptions:
           - CreateNamespace=true
       source:
-        repoURL: https://gitlab.com/blade2005-2048/homelab.git
+        repoURL: https://github.com/raypappa/homelab.git
         targetRevision: main
         path: "{{.path.path}}"
       destination:
