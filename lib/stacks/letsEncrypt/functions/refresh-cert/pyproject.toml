@@ -5,7 +5,7 @@ description = ""
 authors = ["Craig Davis <cdavis@stoneydavis.com>"]
 
 [tool.poetry.dependencies]
-python = "~3.12"
+python = "~3.13.0"
 certbot = "^2.10.0"
 certbot-dns-route53 = "^2.10.0"
 black = "^24.4.2"
