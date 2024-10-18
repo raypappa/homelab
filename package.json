@@ -15,7 +15,7 @@
     "@cspell/dict-fullstack": "^3.1.8",
     "@cspell/dict-git": "^3.0.0",
     "@cspell/dict-k8s": "^1.0.5",
-    "@types/jest": "^29.5.12",
+    "@types/jest": "^29.5.13",
     "@types/node": "22.5.0",
     "aws-cdk": "2.154.1",
     "cspell": "^8.10.4",
