@@ -7,10 +7,10 @@
     ":dependencyDashboard",
     "docker:enableMajor",
     "customManagers:biomeVersions",
-    "github>blade2005/homelab//.github/renovate/customVersioning.json5",
-    "github>blade2005/homelab//.github/renovate/customManagers.json5",
-    "github>blade2005/homelab//.github/renovate/semanticCommits.json5",
-    "github>blade2005/homelab//.github/renovate/commitMessage.json5"
+    "github>raypappa/homelab//.github/renovate/customVersioning.json5",
+    "github>raypappa/homelab//.github/renovate/customManagers.json5",
+    "github>raypappa/homelab//.github/renovate/semanticCommits.json5",
+    "github>raypappa/homelab//.github/renovate/commitMessage.json5"
   ],
   "pre-commit": {
     "enabled": true
