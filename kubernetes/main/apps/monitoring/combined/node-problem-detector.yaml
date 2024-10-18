@@ -19,7 +19,7 @@ spec:
   project: default
   source:
     repoURL: https://charts.deliveryhero.io/
-    targetRevision: 2.3.13
+    targetRevision: 2.3.14
     chart: node-problem-detector
     helm:
       valuesObject:
