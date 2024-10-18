@@ -11,7 +11,7 @@ spec:
   project: default
   source:
     repoURL: "https://cloudflare.github.io/helm-charts"
-    targetRevision: 0.3.0
+    targetRevision: 0.3.2
     chart: cloudflare-tunnel
     helm:
       valuesObject:
