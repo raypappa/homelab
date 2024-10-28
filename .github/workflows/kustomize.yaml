@@ -16,5 +16,9 @@ jobs:
         uses: arduino/setup-task@v2.0.0
         with:
           version: ${{ vars.TASK_VERSION}}
+      - name: Kustomize Version
+        run: kustomize version
+      - name: Debug Kustomize
+        run: task build:kustomize:debug
       - name: Kustomize It!
-        run: kustomize version;task build:kustomize
+        run: task build:kustomize
