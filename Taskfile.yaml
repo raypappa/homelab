@@ -44,7 +44,7 @@ tasks:
     desc: Build all Kustomize files.
     vars:
       kustomize_files:
-        sh: find {{.KUBERNETES_DIR}} -name kustomization.yaml -type f -printf '%h#' | sed -e 's~|$~~'
+        sh: find {{.KUBERNETES_DIR}} -name kustomization.yaml -type f -printf '%h#' | sed -e 's~|$~~' | tr '#' '\n' | grep -v ^$ | tr '\n' '#'
     deps:
       - for:
           var: kustomize_files
@@ -56,8 +56,6 @@ tasks:
     label: "Build Kustomize for {{.dir}}"
     desc: Build a Kustomize file
     silent: true
-    preconditions:
-      - test -n "{{.dir}}"
     cmds:
       - cmd: echo "Build kustomize for '{{.dir}}'"
       - cmd: kustomize build --enable-helm "{{.dir}}" >/dev/null
