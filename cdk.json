@@ -16,8 +16,7 @@
   },
   "context": {
     "githubMap": {
-      "stoneydavis": ["infrastructure"],
-      "blade2005": ["homelab"]
+      "raypappa": ["homelab"]
     },
     "infrastructure:internalPublicDomain": "puma.stoneydavis.com",
     "infrastructure:letsEncryptEmail": "kg5ohk@gmail.com",
