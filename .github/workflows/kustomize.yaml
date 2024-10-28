@@ -19,6 +19,9 @@ jobs:
       - name: Kustomize Version
         run: kustomize version
       - name: Debug Kustomize
-        run: task build:kustomize:debug
+        run: |
+          find kubernetes -name kustomization.yaml -type f -printf '%h|' | sed -e 's~|$~~';
+          echo Boo;
+          task build:kustomize:debug;
       - name: Kustomize It!
         run: task build:kustomize
