@@ -62,3 +62,9 @@ tasks:
     requires:
       vars:
         - dir
+  build:kustomize:debug:
+    cmds:
+      - echo {{.kustomize_files}}
+    vars:
+      kustomize_files:
+        sh: find {{.KUBERNETES_DIR}} -name kustomization.yaml -type f -printf '%h|' | sed -e 's~|$~~'
