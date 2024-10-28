@@ -56,6 +56,8 @@ tasks:
     label: "Build Kustomize for {{.dir}}"
     desc: Build a Kustomize file
     silent: true
+    preconditions:
+      - test -n "{{.dir}}"
     cmds:
       - cmd: echo "Build kustomize for '{{.dir}}'"
       - cmd: kustomize build --enable-helm "{{.dir}}" >/dev/null
