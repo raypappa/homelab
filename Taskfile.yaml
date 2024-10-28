@@ -55,7 +55,9 @@ tasks:
   build:kustomize:internal:
     label: "Build Kustomize for {{.dir}}"
     desc: Build a Kustomize file
+    silent: true
     cmds:
+      - cmd: echo "Build kustomize for {{.dir}}"
       - cmd: kustomize build --enable-helm {{.dir}} >/dev/null
     requires:
       vars:
