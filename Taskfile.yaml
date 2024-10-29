@@ -42,23 +42,14 @@ tasks:
       - test -e $HOME/.local/bin/argocd
   build:kustomize:
     desc: Build all Kustomize files.
-    vars:
-      kustomize_files:
-        sh: find {{.KUBERNETES_DIR}} -name kustomization.yaml -type f -printf '%h#' | sed -e 's~|$~~' | tr '#' '\n' | grep -v ^$ | tr '\n' '#'
-    cmds:
-      - cmd: echo '"{{.kustomize_files}}"'
-      - task: build:_kustomize
-        vars:
-          kustomize_files: "{{.kustomize_files}}"
-  build:_kustomize:
-    desc: Build all Kustomize files.
+    sources:
+      - "{{.KUBERNETES_DIR}}/**/kustomization.yaml"
     deps:
       - for:
-          var: kustomize_files
-          split: "#"
+          var: sources
         task: build:kustomize:internal
         vars:
-          dir: "{{.ITEM}}"
+          dir: "{{dir .ITEM}}"
   build:kustomize:internal:
     label: "Build Kustomize for {{.dir}}"
     desc: Build a Kustomize file
