@@ -45,6 +45,13 @@ tasks:
     vars:
       kustomize_files:
         sh: find {{.KUBERNETES_DIR}} -name kustomization.yaml -type f -printf '%h#' | sed -e 's~|$~~' | tr '#' '\n' | grep -v ^$ | tr '\n' '#'
+    cmds:
+      - cmd: echo '"{{.kustomize_files}}"'
+      - task: build:_kustomize
+        vars:
+          kustomize_files: "{{.kustomize_files}}"
+  build:_kustomize:
+    desc: Build all Kustomize files.
     deps:
       - for:
           var: kustomize_files
