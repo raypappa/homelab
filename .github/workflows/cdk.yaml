@@ -56,7 +56,7 @@ jobs:
       - uses: ITProKyle/action-setup-python@v1.0.0
         with:
           python-version: ${{ vars.PYTHON_VERSION }}
-          poetry-version: 1.7.1
+          poetry-version: 1.8.4
       - name: Setting up CDK
         run: task configure
       - name: Bootstrapping CDK
