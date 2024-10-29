@@ -44,9 +44,8 @@ tasks:
     desc: Build all Kustomize files.
     sources:
       - "{{.KUBERNETES_DIR}}/**/kustomization.yaml"
-    deps:
-      - for:
-          var: sources
+    cmds:
+      - for: sources
         task: build:kustomize:internal
         vars:
           dir: "{{dir .ITEM}}"
@@ -55,7 +54,7 @@ tasks:
     desc: Build a Kustomize file
     silent: true
     cmds:
-      - cmd: echo "Build kustomize for '{{.dir}}'"
+      - cmd: echo "Building kustomize for {{.dir}}"
       - cmd: kustomize build --enable-helm "{{.dir}}" >/dev/null
     requires:
       vars:
