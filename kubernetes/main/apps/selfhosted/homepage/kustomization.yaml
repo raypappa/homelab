@@ -268,7 +268,7 @@ helmCharts:
           enabled: false
   - name: cloudflare-tunnel
     repo: https://cloudflare.github.io/helm-charts
-    version: 0.3.0
+    version: 0.3.2
     releaseName: homepage
     namespace: homelab
     valuesInline:

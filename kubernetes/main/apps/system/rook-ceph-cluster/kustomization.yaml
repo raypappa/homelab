@@ -7,7 +7,7 @@ helmCharts:
     repo: https://cloudflare.github.io/helm-charts
     releaseName: rook-ceph-cluster
     namespace: rook-ceph
-    version: 0.3.0
+    version: 0.3.2
     valuesInline:
       image:
         # renovate: datasource=docker depName=cloudflare/cloudflared
