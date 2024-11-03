@@ -17,7 +17,7 @@ spec:
       valuesObject:
         image:
           # renovate: datasource=docker depName=cloudflare/cloudflared
-          tag: 2024.8.3
+          tag: 2024.10.1
         cloudflare:
           secretName: "tunnel-credentials"
           tunnelName: "faerun-ollama"
