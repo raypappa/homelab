@@ -11,7 +11,7 @@
   },
   "devDependencies": {
     "@biomejs/biome": "^1.8.3",
-    "@cspell/dict-data-science": "^2.0.1",
+    "@cspell/dict-data-science": "^2.0.5",
     "@cspell/dict-fullstack": "^3.1.8",
     "@cspell/dict-git": "^3.0.0",
     "@cspell/dict-k8s": "^1.0.5",
