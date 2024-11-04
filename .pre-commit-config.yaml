@@ -39,7 +39,7 @@ repos:
       - id: check-renovate
         additional_dependencies: ["json5"]
     repo: https://github.com/python-jsonschema/check-jsonschema
-    rev: 0.29.2
+    rev: 0.29.4
   - hooks:
       - additional_dependencies:
           - mdformat-frontmatter
