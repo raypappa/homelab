@@ -28,7 +28,7 @@ tasks:
     silent: true
     cmds:
       - npm ci
-      - poetry install
+      - python -m poetry install
       - task: ansible:configure
   argocd:install:
     desc: Install ArgoCD CLI

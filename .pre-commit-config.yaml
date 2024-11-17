@@ -10,9 +10,9 @@ repos:
       - id: commitizen
       - id: commitizen-branch
         stages:
-          - push
+          - pre-push
     repo: https://github.com/commitizen-tools/commitizen
-    rev: v3.29.0
+    rev: v3.31.0
   - hooks:
       - id: no-commit-to-branch
       - id: check-json
@@ -30,7 +30,7 @@ repos:
       - id: mixed-line-ending
       - id: requirements-txt-fixer
     repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.6.0
+    rev: v5.0.0
   - hooks:
       - id: check-github-workflows
       - id: check-github-actions
@@ -39,7 +39,7 @@ repos:
       - id: check-renovate
         additional_dependencies: ["json5"]
     repo: https://github.com/python-jsonschema/check-jsonschema
-    rev: 0.29.2
+    rev: 0.29.4
   - hooks:
       - additional_dependencies:
           - mdformat-frontmatter
@@ -48,9 +48,9 @@ repos:
           - mdformat-config
         id: mdformat
     repo: https://github.com/executablebooks/mdformat
-    rev: 0.7.17
+    rev: 0.7.18
   - repo: https://github.com/streetsidesoftware/cspell-cli
-    rev: v8.13.3
+    rev: v8.16.0
     hooks:
       - id: cspell
   - repo: https://github.com/adrienverge/yamllint.git
