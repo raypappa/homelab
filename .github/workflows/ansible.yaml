@@ -54,9 +54,7 @@ jobs:
         with:
           poetry-version: 1.8.4
           python-version: ${{ vars.PYTHON_VERSION }}
-      - run: |
-          echo $PATH;which poetry
-          task configure
+      - run: task configure
       - name: Setup kubectl
         run: |
           install -m 600 -D /dev/null ~/.kube/config
