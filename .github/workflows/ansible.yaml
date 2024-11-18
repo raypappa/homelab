@@ -67,6 +67,15 @@ jobs:
           printf "Host *\n  StrictHostKeyChecking no\n  UserKnownHostsFile /dev/null\n" > ~/.ssh/config
       - name: SSH Test
         run: ssh ${{ vars.BASTION_USER }}@${{ vars.BASTION_HOST }} -p ${{ vars.BASTION_PORT }} echo "SSH Test"
+      - uses: stoneydavis/ssh-port-forward-action@v1.0.0
+        with:
+          ssh_key: ${{ secrets.SSH_PRIVATE_KEY }}
+          ssh_host: ${{ vars.BASTION_HOST }}
+          ssh_port: ${{ vars.BASTION_PORT }}
+          ssh_user: ${{ vars.BASTION_USER }}
+          local_port: 6443
+          remote_host: localhost
+          remote_port: 6443
       - name: Kubernetes Test
         run: kubectl api-resources
       - name: Ansible Canary
