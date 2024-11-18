@@ -10,13 +10,13 @@
 - name: Create Primary Deploy Key
   become: false
   community.crypto.openssh_keypair:
-    path: "{{ansible_user_dir, '.ssh/id_ed25519' | path_join}}"
+    path: "{{(ansible_user_dir, '.ssh','id_ed25519') | path_join}}"
     type: ed25519
     mode: "0600"
 - name: Create Secondary Deploy Key
   become: false
   community.crypto.openssh_keypair:
-    path: "{{ansible_user_dir, '.ssh/id_ed25519_backup' | path_join}}"
+    path: "{{(ansible_user_dir, '.ssh','id_ed25519_backup') | path_join}}"
     type: ed25519
     mode: "0600"
 - name: Create /etc/rancher/k3s/ directory
@@ -78,7 +78,7 @@
     mode: "{{ p.stat.mode }}"
 - name: Create directory .kube
   ansible.builtin.file:
-    path: ~{{ ansible_user }}/.kube
+    path: "{{(ansible_user_dir, '.kube') | path_join}}"
     state: directory
     owner: "{{ ansible_user }}"
     mode: u=rwx,g=rx,o=
@@ -133,7 +133,7 @@
 - name: Configure ArgoCD for the cluster
   ansible.builtin.command:
     cmd: argocd login --core
-    creates: ~/.config/argocd/config
+    creates: "{{(ansible_user_dir, '.config','argocd','config') | path_join}}"
 - name: List Configured Repositories in ArgoCD
   ansible.builtin.command: >-
     argocd repo list -o json
