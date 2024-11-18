@@ -55,7 +55,7 @@ jobs:
           poetry-version: 1.8.4
           python-version: ${{ vars.PYTHON_VERSION }}
       - run: |
-          ls  /opt/pipx_bin/ ~/.local/bin;which poetry
+          echo $PATH;which poetry
           task configure
       - name: Setup kubectl
         run: |
