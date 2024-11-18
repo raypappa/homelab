@@ -50,7 +50,7 @@ jobs:
           version: ${{ vars.TASK_VERSION}}
       - uses: ITProKyle/action-setup-python@v1.0.0
         with:
-          poetry-version: 1.7.1
+          poetry-version: 1.8.4
           python-version: ${{ vars.PYTHON_VERSION }}
       - run: task configure
       - name: Setup kubectl
