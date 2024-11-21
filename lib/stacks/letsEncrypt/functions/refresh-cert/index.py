@@ -1,3 +1,7 @@
+import boto3
+from botocore.exceptions import BotoCoreError, ClientError
+import boto3
+from botocore.exceptions import BotoCoreError, ClientError
 import json
 from typing import TypedDict
 import boto3
@@ -123,7 +127,9 @@ def should_provision(domains: tuple[str]) -> bool:
         return True
 
 
-def find_existing_cert_in_acm(domains: tuple[str]):
+def find_existing_cert_in_acm(
+    domains: tuple[str], key_types: list[str] = ["EC_prime256v1"]
+):
     """
     Finds an existing certificate in AWS Certificate Manager (ACM) that matches
     the given domains.
@@ -131,27 +137,31 @@ def find_existing_cert_in_acm(domains: tuple[str]):
     Args:
         domains (tuple[str]): A tuple of domain names to match against
         the Subject Alternative Names (SANs) of the certificates.
+        key_types (list[str]): A list of key types to include in the search.
 
     Returns:
         dict or None: The certificate details if a matching certificate is
         found, otherwise None.
     """
-
     client = boto3.client("acm")
     paginator = client.get_paginator("list_certificates")
     iterator = paginator.paginate(
         PaginationConfig={"MaxItems": 1000},
-        Includes={
-            "keyTypes": ["EC_prime256v1"],
-        },
+        Includes={"keyTypes": key_types},
     )
 
-    for page in iterator:
-        for cert in page["CertificateSummaryList"]:
-            cert = client.describe_certificate(CertificateArn=cert["CertificateArn"])
-            sans: tuple[str] = tuple(cert["Certificate"]["SubjectAlternativeNames"])
-            if sans.issubset(domains):
-                return cert
+    try:
+        for page in iterator:
+            for cert_summary in page["CertificateSummaryList"]:
+                cert = client.describe_certificate(
+                    CertificateArn=cert_summary["CertificateArn"]
+                )
+                sans: set[str] = set(cert["Certificate"]["SubjectAlternativeNames"])
+                if sans.issubset(set(domains)):
+                    return cert
+    except (BotoCoreError, ClientError) as e:
+        print(f"An error occurred: {e}")
+
     return None
 
 
@@ -168,21 +178,21 @@ def find_existing_cert(domains: tuple[str]):
     return find_existing_cert_in_acm(domains)
 
 
-def upload_cert_to_acm(cert: Cert, domains: tuple[str]):
+def upload_cert_to_acm(cert: dict, domains: tuple[str]) -> str:
     """
     Uploads a certificate to AWS Certificate Manager (ACM) and returns the ARN
     of the uploaded certificate.
 
     Args:
-        cert (Cert): The certificate object containing the certificate, private
-        key, and certificate chain. domains (tuple[str]): The set of domains
-        associated with the certificate.
+        cert (dict): The certificate object containing the certificate, private
+        key, and certificate chain.
+        domains (tuple[str]): The set of domains associated with the certificate.
 
     Returns:
         str: The ARN of the uploaded certificate.
 
     """
-    existing_cert = find_existing_cert(domains)
+    existing_cert = find_existing_cert_in_acm(domains)
     certificate_arn = (
         existing_cert["Certificate"]["CertificateArn"] if existing_cert else None
     )
@@ -196,9 +206,12 @@ def upload_cert_to_acm(cert: Cert, domains: tuple[str]):
     if certificate_arn:
         kwargs["CertificateArn"] = certificate_arn
 
-    acm_response = client.import_certificate(**kwargs)
-
-    return None if certificate_arn else acm_response["CertificateArn"]
+    try:
+        acm_response = client.import_certificate(**kwargs)
+        return certificate_arn if certificate_arn else acm_response["CertificateArn"]
+    except (BotoCoreError, ClientError) as e:
+        print(f"An error occurred: {e}")
+        return None
 
 
 def find_existing_cert_in_secrets_manager(domains: tuple[str]):
