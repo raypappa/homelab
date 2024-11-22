@@ -1,5 +1,6 @@
 ---
 - name: Install SSL Certificate from Amazon Secrets Manager
+  tags: ssl
   block:
     - name: Setting host facts SSL Certificate
       ansible.builtin.set_fact:
