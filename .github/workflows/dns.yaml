@@ -3,6 +3,7 @@ name: DNS
 on: # yamllint disable-line rule:truthy
   schedule:
     - cron: "0 0 * * 1" # Runs every Monday at midnight UTC
+  workflow_dispatch:
 jobs:
   check:
     runs-on: certbot/dns-route53
