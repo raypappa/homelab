@@ -45,9 +45,7 @@ jobs:
           aws secretsmanager update-secret --secret-id ${first_domain}-cert --secret-string "$SECRET_STRING"
       - name: Shred certificates
         run: shred -u certbot-config/archive/*/*
-  ansible:
-    needs: check
-    if: github.secret_source != 'Dependabot' && needs.check.outputs.execute == 'true'
+  deploy:
     runs-on: ${{ vars.RUNS_ON }}
     permissions:
       id-token: write # This is required for requesting the JWT
