@@ -6,6 +6,9 @@ on: # yamllint disable-line rule:truthy
   workflow_dispatch:
 jobs:
   certbot:
+    permissions:
+      id-token: write # This is required for requesting the JWT
+      contents: read # apparently setting permissions is holistic rather than additive.
     runs-on: ubuntu-latest
     steps:
       - name: Configure AWS Credentials
