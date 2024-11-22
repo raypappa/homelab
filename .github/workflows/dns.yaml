@@ -20,7 +20,7 @@ jobs:
         uses: docker://certbot/dns-route53
         with:
           args: >-
-            certonly -n --agree-tos --email ${{ secrets.CERTBOT_EMAIL }} --dns-route53 -d ${{ secrets.CERTBOT_DOMAINS }} -d ${{ secrets.CERTBOT_DOMAINSs }} --config-dir /github/workspace/certbot-config --work-dir /github/workspace/certbot-work --logs-dir /github/workspace/certbot-logs --keep-until-expiring
+            certonly -n --agree-tos --email ${{ secrets.CERTBOT_EMAIL }} --dns-route53 -d ${{ secrets.CERTBOT_DOMAINS }} --config-dir /github/workspace/certbot-config --work-dir /github/workspace/certbot-work --logs-dir /github/workspace/certbot-logs --keep-until-expiring
       - name: Fix file permissions
         uses: docker://certbot/dns-route53
         with:
