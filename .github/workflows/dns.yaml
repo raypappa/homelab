@@ -1,0 +1,40 @@
+---
+name: DNS
+on: # yamllint disable-line rule:truthy
+  schedule:
+    - cron: "0 0 * * 1" # Runs every Monday at midnight UTC
+jobs:
+  check:
+    runs-on: certbot/dns-route53
+    steps:
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ vars.AWS_ASSUME_ROLE_ARN }}
+          aws-region: ${{ vars.AWS_DEFAULT_REGION }}
+      - name: Generate certificate
+        uses: docker://certbot/dns-route53
+        with:
+          args: >-
+            certonly -n --agree-tos --email ${{ secrets.CERTBOT_EMAIL }} --dns-route53 -d ${{ secrets.CERTBOT_DOMAINS }} -d ${{ secrets.CERTBOT_DOMAINSs }} --config-dir /github/workspace/certbot-config --work-dir /github/workspace/certbot-work --logs-dir /github/workspace/certbot-logs --keep-until-expiring
+      - name: Fix file permissions
+        uses: docker://certbot/dns-route53
+        with:
+          entrypoint: /bin/sh
+          args: -c "chmod -R o+rw /github/workspace/certbot-config"
+      - name: debug
+        run: |
+          find certbot-config/live -ls
+          find certbot-config/archive -ls
+      - name: Upload certificate to AWS Secrets Manager
+        run: |
+          first_domain=$(echo ${{ secrets.CERTBOT_DOMAINS }} | cut -d',' -f1)
+          CERT_PATH="certbot-config/archive/${first_domain}"
+          CERTIFICATE=$(cat ${CERT_PATH}/fullchain1.pem)
+          PRIVATE_KEY=$(cat ${CERT_PATH}/privkey1.pem)
+          CERTIFICATE_CHAIN=$(cat ${CERT_PATH}/chain1.pem)
+          SECRET_STRING=$(jq -n --arg cert "$CERTIFICATE" --arg key "$PRIVATE_KEY" --arg chain "$CERTIFICATE_CHAIN" \
+            '{certificate: $cert, private_key: $key, certificate_chain: $chain}')
+          aws secretsmanager update-secret --secret-id ${first_domain}-cert --secret-string "$SECRET_STRING"
+      - name: Shred certificates
+        run: shred -u certbot-config/archive/*/*
