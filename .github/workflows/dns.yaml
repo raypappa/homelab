@@ -5,8 +5,8 @@ on: # yamllint disable-line rule:truthy
     - cron: "0 0 * * 1" # Runs every Monday at midnight UTC
   workflow_dispatch:
 jobs:
-  check:
-    runs-on: certbot/dns-route53
+  certbot:
+    runs-on: ubuntu-latest
     steps:
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
