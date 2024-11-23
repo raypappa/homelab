@@ -28,6 +28,9 @@
         owner: root
         group: root
         mode: '0644'
+      notify:
+        - restart-apache
+        - restart-pterodactyl-wings
     - name: Install SSL Private Key
       ansible.builtin.copy:
         content: |
@@ -36,6 +39,9 @@
         owner: root
         group: root
         mode: '0644'
+      notify:
+        - restart-apache
+        - restart-pterodactyl-wings
     - name: Verify SSL is not expired
       community.crypto.x509_certificate_info:
         path: /etc/ssl/game.puma.stoneydavis.com/fullchain.pem

@@ -1,0 +1,3 @@
+---
+- name: Import handlers
+  ansible.builtin.import_tasks: handlers.yaml
