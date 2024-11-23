@@ -2,7 +2,7 @@
 name: DNS
 on: # yamllint disable-line rule:truthy
   schedule:
-    - cron: "0 0 * * 1" # Runs every Monday at midnight UTC
+    - cron: "0 10 21 * *" # Runs on the 21st of every month at 10 AM UTC
   workflow_dispatch:
 jobs:
   certbot:
@@ -46,6 +46,7 @@ jobs:
       - name: Shred certificates
         run: shred -u certbot-config/archive/*/*
   deploy:
+    needs: certbot
     runs-on: ${{ vars.RUNS_ON }}
     permissions:
       id-token: write # This is required for requesting the JWT
