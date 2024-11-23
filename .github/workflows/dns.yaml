@@ -16,6 +16,22 @@ jobs:
         with:
           role-to-assume: ${{ vars.AWS_ASSUME_ROLE_ARN }}
           aws-region: ${{ vars.AWS_DEFAULT_REGION }}
+      - name: Retrieve certificate from AWS Secrets Manager
+        run: |
+          first_domain=$(echo ${{ secrets.CERTBOT_DOMAINS }} | cut -d',' -f1)
+          echo "::add-mask::${first_domain}-cert"
+          SECRET_STRING=$(aws secretsmanager get-secret-value --secret-id ${first_domain}-cert --query SecretString --output json)
+          CERT_PATH="certbot-config/archive/${first_domain}"
+          LIVE_PATH="certbot-config/live/${first_domain}"
+          mkdir -p ${CERT_PATH} ${LIVE_PATH}
+          echo "$SECRET_STRING" | jq -r .fullchain > ${CERT_PATH}/fullchain1.pem
+          echo "$SECRET_STRING" | jq -r .private_key > ${CERT_PATH}/privkey1.pem
+          echo "$SECRET_STRING" | jq -r .certificate_chain > ${CERT_PATH}/chain1.pem
+          echo "$SECRET_STRING" | jq -r .certificate > ${CERT_PATH}/cert1.pem
+          ln -s ${CERT_PATH}/fullchain1.pem ${LIVE_PATH}/fullchain.pem
+          ln -s ${CERT_PATH}/privkey1.pem ${LIVE_PATH}/privkey.pem
+          ln -s ${CERT_PATH}/chain1.pem ${LIVE_PATH}/chain.pem
+          ln -s ${CERT_PATH}/cert1.pem ${LIVE_PATH}/cert.pem
       - name: Generate certificate
         uses: docker://certbot/dns-route53
         with:
@@ -29,19 +45,22 @@ jobs:
           args: -c "chmod -R o+rwx /github/workspace/certbot-config"
       - name: debug
         run: |
+          first_domain=$(echo ${{ secrets.CERTBOT_DOMAINS }} | cut -d',' -f1)
+          echo "::add-mask::${first_domain}-cert"
           find certbot-config/live -ls
           find certbot-config/archive -ls
       - name: Upload certificate to AWS Secrets Manager
         run: |
+          echo "::add-mask::$(aws sts get-caller-identity --query Account --output text)"
           first_domain=$(echo ${{ secrets.CERTBOT_DOMAINS }} | cut -d',' -f1)
           echo "::add-mask::${first_domain}-cert"
           CERT_PATH="certbot-config/archive/${first_domain}"
-          CERTIFICATE=$(cat ${CERT_PATH}/fullchain1.pem)
+          FULLCHAIN=$(cat ${CERT_PATH}/fullchain1.pem)
           PRIVATE_KEY=$(cat ${CERT_PATH}/privkey1.pem)
           CERTIFICATE_CHAIN=$(cat ${CERT_PATH}/chain1.pem)
-          SECRET_STRING=$(jq -n --arg cert "$CERTIFICATE" --arg key "$PRIVATE_KEY" --arg chain "$CERTIFICATE_CHAIN" \
-            '{certificate: $cert, private_key: $key, certificate_chain: $chain}')
-          echo "::add-mask::${first_domain}-cert"
+          CERTIFICATE=$(cat ${CERT_PATH}/cert1.pem)
+          SECRET_STRING=$(jq -n --arg cert "$CERTIFICATE" --arg key "$PRIVATE_KEY" --arg chain "$CERTIFICATE_CHAIN" --arg fullchain $FULLCHAIN \
+            '{certificate: $cert, private_key: $key, certificate_chain: $chain, fullchain: $fullchain}')
           aws secretsmanager update-secret --secret-id ${first_domain}-cert --secret-string "$SECRET_STRING"
       - name: Shred certificates
         run: shred -u certbot-config/archive/*/*
