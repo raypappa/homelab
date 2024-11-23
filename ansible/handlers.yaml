@@ -20,3 +20,13 @@
   become_flags: "-"
   notify: reboot
   ansible.builtin.command: update-grub2
+- name: restart-apache
+  become: true
+  ansible.builtin.service:
+    name: apache2
+    state: restarted
+- name: restart-pterodactyl-wings
+  become: true
+  ansible.builtin.service:
+    name: wings
+    state: restarted
