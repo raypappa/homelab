@@ -47,11 +47,11 @@
         path: /etc/ssl/game.puma.stoneydavis.com/fullchain.pem
         valid_at:
           week_2: "+2w"
-      register: result
+      register: ssl_cert_info
     - name: Fail if SSL is expired
       ansible.builtin.assert:
         that:
-          - not result.valid_at.week_2
+          - ssl_cert_info.valid_at.week_2
 - name: MariaDB
   ansible.builtin.include_role:
     name: xolyu.mariadb
