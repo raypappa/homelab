@@ -6,7 +6,7 @@ authors = ["Craig Davis <cdavis@stoneydavis.com>"]
 
 [tool.poetry.dependencies]
 python = "~3.12"
-certbot = "^2.10.0"
+certbot = "^3.0.0"
 certbot-dns-route53 = "^2.10.0"
 black = "^24.4.2"
 flake8 = "^7.0.0"
