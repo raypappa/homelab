@@ -10,7 +10,7 @@
     "cdk": "cdk"
   },
   "devDependencies": {
-    "@biomejs/biome": "^1.8.3",
+    "@biomejs/biome": "^1.9.4",
     "@cspell/dict-data-science": "^2.0.1",
     "@cspell/dict-fullstack": "^3.1.8",
     "@cspell/dict-git": "^3.0.0",
