@@ -5,6 +5,6 @@ namespace: reloader
 helmCharts:
   - name: reloader
     repo: https://stakater.github.io/stakater-charts
-    version: 1.0.121
+    version: 1.2.0
     valuesInline:
       fullnameOverride: reloader
