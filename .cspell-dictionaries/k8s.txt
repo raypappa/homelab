@@ -38,3 +38,6 @@ syntaqx
 crunchydata
 backblazeb
 servicemonitor
+apiextensions
+apiserver
+apimachinery
