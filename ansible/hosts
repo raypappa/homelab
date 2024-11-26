@@ -4,14 +4,14 @@ faerun:
   hosts:
     puma.stoneydavis.lan:
     panda.stoneydavis.lan:
-    warthog.stoneydavis.lan:
+    # warthog.stoneydavis.lan:
 prod_k8s_controlplane:
   hosts:
     puma.stoneydavis.lan:
 prod_k8s_nodes:
   hosts:
-#    k8s-worker-01:
-#      ansible_host: 172.17.41.8
+    kubernetes-node-0001:
+    kubernetes-node-0002:
 prod_k8s_cluster:
   children:
     prod_k8s_controlplane:
@@ -25,12 +25,12 @@ prod_k8s_cluster:
 game_server:
   hosts:
     panda.stoneydavis.lan:
-dev_k8s_controlplane:
-  hosts:
-    warthog.stoneydavis.lan:
-dev_k8s_nodes:
-  hosts:
-dev_k8s_cluster:
-  children:
-    dev_k8s_controlplane:
-    dev_k8s_nodes:
+# dev_k8s_controlplane:
+#   hosts:
+#     warthog.stoneydavis.lan:
+# dev_k8s_nodes:
+#   hosts:
+# dev_k8s_cluster:
+#   children:
+#     dev_k8s_controlplane:
+#     dev_k8s_nodes:
