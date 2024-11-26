@@ -13,11 +13,6 @@ tasks:
   deploy:
     desc: Run ansible playbook
     silent: true
-    requires:
-      vars:
-        - BASTION_HOST
-        - BASTION_PORT
-        - BASTION_USER
     cmds:
       - poetry run ansible-playbook -i hosts {{.CLI_ARGS}} homelab.yaml
   deploy:ci:
@@ -33,11 +28,6 @@ tasks:
           CLI_ARGS: "{{.CLI_ARGS}} {{.CI_ARGS}}"
   deploy:canary:
     desc: Ping hosts with ansible
-    requires:
-      vars:
-        - BASTION_HOST
-        - BASTION_PORT
-        - BASTION_USER
     cmds:
       - poetry run ansible -i hosts -m ping all {{.CLI_ARGS}}
   deploy:canary:ci:
