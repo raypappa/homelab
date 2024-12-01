@@ -6,7 +6,7 @@ helmCharts:
   - name: app-template
     includeCRDs: true
     repo: https://bjw-s.github.io/helm-charts
-    namespace: homelab
+    namespace: ldap
     releaseName: lemonldap-app
     version: 3.5.1
     valuesFile: values.yaml
