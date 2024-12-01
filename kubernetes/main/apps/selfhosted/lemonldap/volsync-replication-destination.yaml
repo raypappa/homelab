@@ -7,7 +7,7 @@ spec:
   trigger:
     manual: restore-once
   restic:
-    repository: lemonldap-config-volsync-backblaze-secret
+    repository: etc-lemonldap-ng-volsync-backblaze-secret
     copyMethod: Snapshot
     volumeSnapshotClassName: ceph-block
     cacheStorageClassName: local-path
@@ -27,7 +27,7 @@ spec:
   trigger:
     manual: restore-once
   restic:
-    repository: lemonldap-config-volsync-backblaze-secret
+    repository: var-lib-lemonldap-ng-conf-volsync-backblaze-secret
     copyMethod: Snapshot
     volumeSnapshotClassName: ceph-block
     cacheStorageClassName: local-path
@@ -47,7 +47,7 @@ spec:
   trigger:
     manual: restore-once
   restic:
-    repository: lemonldap-config-volsync-backblaze-secret
+    repository: var-lib-lemonldap-ng-sessions-volsync-backblaze-secret
     copyMethod: Snapshot
     volumeSnapshotClassName: ceph-block
     cacheStorageClassName: local-path
@@ -67,7 +67,7 @@ spec:
   trigger:
     manual: restore-once
   restic:
-    repository: lemonldap-config-volsync-backblaze-secret
+    repository: var-lib-lemonldap-ng-psessions-volsync-backblaze-secret
     copyMethod: Snapshot
     volumeSnapshotClassName: ceph-block
     cacheStorageClassName: local-path
