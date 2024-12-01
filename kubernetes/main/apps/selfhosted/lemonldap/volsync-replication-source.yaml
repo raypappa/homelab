@@ -1,0 +1,108 @@
+---
+apiVersion: volsync.backube/v1alpha1
+kind: ReplicationSource
+metadata:
+  name: etc-lemonldap-ng-backblaze
+spec:
+  sourcePVC: etc-lemonldap-ng
+  trigger:
+    schedule: 0 0 * * *
+  restic:
+    copyMethod: Snapshot
+    pruneIntervalDays: 7
+    repository: lemonldap-config-volsync-backblaze-secret
+    volumeSnapshotClassName: ceph-block
+    cacheCapacity: 8Gi
+    cacheStorageClassName: local-path
+    cacheAccessModes:
+      - ReadWriteOnce
+    storageClassName: ceph-block
+    accessModes:
+      - ReadWriteOnce
+    moverSecurityContext:
+      runAsUser: 568
+      runAsGroup: 568
+      fsGroup: 568
+    retain:
+      daily: 7
+---
+apiVersion: volsync.backube/v1alpha1
+kind: ReplicationSource
+metadata:
+  name: var-lib-lemonldap-ng-conf-backblaze
+spec:
+  sourcePVC: var-lib-lemonldap-ng-conf
+  trigger:
+    schedule: 0 0 * * *
+  restic:
+    copyMethod: Snapshot
+    pruneIntervalDays: 7
+    repository: lemonldap-config-volsync-backblaze-secret
+    volumeSnapshotClassName: ceph-block
+    cacheCapacity: 8Gi
+    cacheStorageClassName: local-path
+    cacheAccessModes:
+      - ReadWriteOnce
+    storageClassName: ceph-block
+    accessModes:
+      - ReadWriteOnce
+    moverSecurityContext:
+      runAsUser: 568
+      runAsGroup: 568
+      fsGroup: 568
+    retain:
+      daily: 7
+---
+apiVersion: volsync.backube/v1alpha1
+kind: ReplicationSource
+metadata:
+  name: var-lib-lemonldap-ng-sessions-backblaze
+spec:
+  sourcePVC: var-lib-lemonldap-ng-sessions
+  trigger:
+    schedule: 0 0 * * *
+  restic:
+    copyMethod: Snapshot
+    pruneIntervalDays: 7
+    repository: lemonldap-config-volsync-backblaze-secret
+    volumeSnapshotClassName: ceph-block
+    cacheCapacity: 8Gi
+    cacheStorageClassName: local-path
+    cacheAccessModes:
+      - ReadWriteOnce
+    storageClassName: ceph-block
+    accessModes:
+      - ReadWriteOnce
+    moverSecurityContext:
+      runAsUser: 568
+      runAsGroup: 568
+      fsGroup: 568
+    retain:
+      daily: 7
+---
+apiVersion: volsync.backube/v1alpha1
+kind: ReplicationSource
+metadata:
+  name: var-lib-lemonldap-ng-psessions-backblaze
+spec:
+  sourcePVC: var-lib-lemonldap-ng-psessions
+  trigger:
+    schedule: 0 0 * * *
+  restic:
+    copyMethod: Snapshot
+    pruneIntervalDays: 7
+    repository: lemonldap-config-volsync-backblaze-secret
+    volumeSnapshotClassName: ceph-block
+    cacheCapacity: 8Gi
+    cacheStorageClassName: local-path
+    cacheAccessModes:
+      - ReadWriteOnce
+    storageClassName: ceph-block
+    accessModes:
+      - ReadWriteOnce
+    moverSecurityContext:
+      runAsUser: 568
+      runAsGroup: 568
+      fsGroup: 568
+    retain:
+      daily: 7

@@ -39,6 +39,11 @@ spec:
             - key: deployGroup
               operator: In
               values:
+                - system
+        - matchExpressions:
+            - key: deployGroup
+              operator: In
+              values:
                 - downloads
         - matchExpressions:
             - key: deployGroup

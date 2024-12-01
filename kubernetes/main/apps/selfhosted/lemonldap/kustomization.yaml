@@ -1,0 +1,103 @@
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: ldap
+helmCharts:
+  - name: app-template
+    includeCRDs: true
+    repo: https://bjw-s.github.io/helm-charts
+    namespace: homelab
+    releaseName: lemonldap-app
+    version: 3.5.1
+    valuesInline:
+      controllers:
+        lemonldap-app:
+          annotations:
+            reloader.stakater.com/auto: "true"
+          containers:
+            app:
+              image:
+                repository: tiredofit/lemonldap
+                # renovate: datasource=docker depName=tiredofit/lemonldap
+                tag: 2.0.75
+                pullPolicy: IfNotPresent
+              env:
+                TZ: America/Los_Angeles
+                CONTAINER_NAME: lemonldap-app
+                SETUP_TYPE: AUTO
+                API_HOSTNAME: api.manager.sso.stoneydavis.lan
+                MANAGER_HOSTNAME: manager.sso.stoneydavis.lan
+                PORTAL_HOSTNAME: sso.stoneydavis.lan
+                HANDLER_HOSTNAME: handler.sso.stoneydavis.lan
+                DOMAIN_NAME: stoneydavis.lan
+                LOG_TYPE: CONSOLE
+                LOG_LEVEL: info
+              volumeMounts:
+                - name: etc-lemonldap-ng
+                  mountPath: /etc/lemonldap-ng
+                - name: var-lib-lemonldap-ng-conf
+                  mountPath: /var/lib/lemonldap-ng/conf
+                - name: var-lib-lemonldap-ng-sessions
+                  mountPath: /var/lib/lemonldap-ng/sessions
+                - name: var-lib-lemonldap-ng-psessions
+                  mountPath: /var/lib/lemonldap-ng/psessions
+              securityContext:
+                allowPrivilegeEscalation: false
+                readOnlyRootFilesystem: true
+                capabilities:
+                  drop:
+                    - ALL
+      service:
+        app:
+          controller: lemonldap-app
+          ports:
+            http:
+              port: 80
+            llng:
+              port: 2884
+          type: LoadBalancer
+          annotations:
+            metallb.universe.tf/loadBalancerIPs: 172.17.42.201
+            metallb.universe.tf/address-pool: metalpool
+          externalTrafficPolicy: Cluster
+      persistence:
+        etc-lemonldap-ng:
+          enabled: true
+          storageClass: ceph-block
+          accessMode: ReadWriteOnce
+          dataSourceRef:
+            kind: ReplicationDestination
+            apiGroup: volsync.backube
+            name: etc-lemonldap-ng-dst
+          size: 5Gi
+        var-lib-lemonldap-ng-conf:
+          enabled: true
+          storageClass: ceph-block
+          accessMode: ReadWriteOnce
+          dataSourceRef:
+            kind: ReplicationDestination
+            apiGroup: volsync.backube
+            name: var-lib-lemonldap-ng-conf-dst
+          size: 5Gi
+        var-lib-lemonldap-ng-sessions:
+          enabled: true
+          storageClass: ceph-block
+          accessMode: ReadWriteOnce
+          dataSourceRef:
+            kind: ReplicationDestination
+            apiGroup: volsync.backube
+            name: var-lib-lemonldap-ng-sessions-dst
+          size: 5Gi
+        var-lib-lemonldap-ng-psessions:
+          enabled: true
+          storageClass: ceph-block
+          accessMode: ReadWriteOnce
+          dataSourceRef:
+            kind: ReplicationDestination
+            apiGroup: volsync.backube
+            name: var-lib-lemonldap-ng-psessions-dst
+          size: 5Gi
+resources:
+  - ./volsync-external-secret.yaml
+  - ./volsync-replication-source.yaml
+  - ./volsync-replication-destination.yaml
