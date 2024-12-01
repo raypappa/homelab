@@ -10,6 +10,9 @@
 1. headscale
 1. MySQL Operator
 1. [Stirling-PDF](https://github.com/Stirling-Tools/Stirling-PDF)
+1. [nfs](https://github.com/aminvakil/docker-alpine-nfs-server)
+1. samba
+1. ldap
 
 ## Migrate to AppSet
 

@@ -22,12 +22,6 @@ controllers:
           DOMAIN_NAME: stoneydavis.lan
           LOG_TYPE: CONSOLE
           LOG_LEVEL: info
-        securityContext:
-          allowPrivilegeEscalation: false
-          readOnlyRootFilesystem: false
-          capabilities:
-            drop:
-              - ALL
 service:
   app:
     controller: lemonldap-app
