@@ -27,7 +27,11 @@ defaultPodOptions:
 service:
   server:
     controller: nfs-server
-    clusterIP: 172.17.42.203
+    type: LoadBalancer
+    annotations:
+      metallb.universe.tf/loadBalancerIPs: 172.17.42.203
+      metallb.universe.tf/address-pool: metalpool
+    externalTrafficPolicy: Cluster
     ports:
       http:
         port: 2049
