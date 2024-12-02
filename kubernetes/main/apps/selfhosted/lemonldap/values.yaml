@@ -21,7 +21,7 @@ controllers:
           HANDLER_HOSTNAME: handler.sso.stoneydavis.lan
           DOMAIN_NAME: stoneydavis.lan
           LOG_TYPE: CONSOLE
-          LOG_LEVEL: info
+          LOG_LEVEL: debug
 service:
   app:
     controller: lemonldap-app
