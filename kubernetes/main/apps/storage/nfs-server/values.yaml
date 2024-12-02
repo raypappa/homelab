@@ -11,6 +11,7 @@ controllers:
           TZ: America/Los_Angeles
           SHARED_DIRECTORY: &path /nfsshare
         securityContext:
+          privileged: true
           capabilities:
             add:
               - SYS_ADMIN
