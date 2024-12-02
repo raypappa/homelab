@@ -1,0 +1,6 @@
+{
+  "destNamespace": "storage",
+  "appName": "nfs-server",
+  "serverSideApply": false,
+  "group": "system"
+}

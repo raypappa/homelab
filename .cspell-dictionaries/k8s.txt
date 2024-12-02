@@ -41,3 +41,6 @@ servicemonitor
 apiextensions
 apiserver
 apimachinery
+aminvakil
+nfsshare
+SETPCAP
