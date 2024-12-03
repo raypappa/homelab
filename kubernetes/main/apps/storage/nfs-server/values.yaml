@@ -12,11 +12,11 @@ controllers:
           SHARED_DIRECTORY: &path /nfsshare
         securityContext:
           privileged: true
-          capabilities:
-            add:
-              - SYS_ADMIN
-              - SETPCAP
-              - SYS_TIME
+          # capabilities:
+          #   add:
+          #     - SYS_ADMIN
+          #     - SETPCAP
+          #     - SYS_TIME
 defaultPodOptions:
   nodeSelector:
     kubernetes.io/hostname: puma
