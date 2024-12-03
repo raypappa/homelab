@@ -4,6 +4,9 @@ env:
   # -- Set the container timezone
   TZ: America/Los_Angeles
   NFS_EXPORT_0: /nfsshare *(rw,sync,no_subtree_check,no_root_squash)
+image:
+  repository: docker pull ghcr.io/obeone/nfs-server
+  tag: 2.2.3
 service:
   main:
     enabled: true
