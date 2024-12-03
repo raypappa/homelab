@@ -1,22 +1,32 @@
 ---
-# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/refs/heads/main/charts/other/app-template/values.schema.json
-controllers:
-  nfs-server:
-    containers:
-      server:
-        image:
-          repository: quay.io/aminvakil/alpine-nfs-server
-          tag: latest
-        env:
-          TZ: America/Los_Angeles
-          SHARED_DIRECTORY: &path /nfsshare
-        securityContext:
-          privileged: true
-          # capabilities:
-          #   add:
-          #     - SYS_ADMIN
-          #     - SETPCAP
-          #     - SYS_TIME
+# yaml-language-server: $schema=https://raw.githubusercontent.com/obeone/charts/refs/heads/main/charts/nfs-server/values.schema.json
+env:
+  # -- Set the container timezone
+  TZ: America/Los_Angeles
+  NFS_EXPORT_0: /nfsshare *(rw,sync,no_subtree_check,no_root_squash)
+service:
+  main:
+    enabled: true
+    primary: true
+    type: LoadBalancer
+    externalTrafficPolicy: Local
+    annotations:
+      metallb.universe.tf/loadBalancerIPs: 172.17.42.203
+      metallb.universe.tf/address-pool: metalpool
+  udp:
+    enabled: true
+    type: LoadBalancer
+    externalTrafficPolicy: Local
+    annotations:
+      metallb.universe.tf/loadBalancerIPs: 172.17.42.203
+      metallb.universe.tf/address-pool: metalpool
+persistence:
+  nfsshare:
+    enabled: true
+    type: hostPath
+    hostPath: /library
+    globalMounts:
+      - path: /nfsshare
 defaultPodOptions:
   nodeSelector:
     kubernetes.io/hostname: puma
@@ -26,21 +36,3 @@ defaultPodOptions:
       operator: Exists
     - effect: NoExecute
       operator: Exists
-service:
-  server:
-    controller: nfs-server
-    type: LoadBalancer
-    annotations:
-      metallb.universe.tf/loadBalancerIPs: 172.17.42.203
-      metallb.universe.tf/address-pool: metalpool
-    externalTrafficPolicy: Cluster
-    ports:
-      http:
-        port: 2049
-persistence:
-  nfsshare:
-    enabled: true
-    type: hostPath
-    hostPath: /library
-    globalMounts:
-      - path: *path
