@@ -89,3 +89,8 @@ spec:
       destination:
         server: "https://kubernetes.default.svc"
         namespace: "{{.destNamespace }}"
+  templatePatch: |
+    spec:
+      {{- if .ignoreDifferences }}
+      ignoreDifferences: {{.ignoreDifferences}}
+      {{- end }}
