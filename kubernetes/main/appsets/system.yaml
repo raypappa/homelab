@@ -81,7 +81,7 @@ spec:
       syncPolicy:
         syncOptions:
           - CreateNamespace=true
-          - "ServerSideApply={{.serverSideApply}}"
+          - 'ServerSideApply={{dig "serverSideApply" "false" .}}'
       source:
         repoURL: https://github.com/raypappa/homelab.git
         targetRevision: main
@@ -91,6 +91,6 @@ spec:
         namespace: "{{.destNamespace }}"
   templatePatch: |
     spec:
-      {{- if .ignoreDifferences }}
+      {{- if dig "ignoreDifferences" false . }}
       ignoreDifferences: {{.ignoreDifferences}}
       {{- end }}
