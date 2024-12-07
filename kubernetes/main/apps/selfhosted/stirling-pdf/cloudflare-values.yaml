@@ -7,4 +7,4 @@ cloudflare:
   tunnelName: "faerun-stirling-pdf"
   ingress:
     - hostname: "stirling.fieldsofbears.com"
-      service: "http://stirling-pdf.stirling-pdf.svc.cluster.local:8080"
+      service: "http://stirling-pdf-stirling-pdf-chart.stirling-pdf.svc.cluster.local:8080"
