@@ -33,4 +33,4 @@ op.exe document create --file-name credentials.json --title "$appName-tunnel" --
 
 rm -f credentials.json
 
-cloudflared tunnel route dns "$tunnelName" "$endpoint"
+cloudflared tunnel route dns -f "$tunnelName" "$endpoint"

@@ -1,0 +1,7 @@
+---
+extraEnvVars:
+  - name: OPENAI_API_KEY
+    valueFrom:
+      secretKeyRef:
+        name: open-ai-api-key
+        key: api-key
