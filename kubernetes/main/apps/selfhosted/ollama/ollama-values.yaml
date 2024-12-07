@@ -6,5 +6,4 @@ extraEnvVars:
         name: open-ai-api-key
         key: api-key
 serviceAccount:
-  annotations:
-    automountServiceAccountToken: false
+  automountServiceAccountToken: false
