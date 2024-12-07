@@ -8,4 +8,3 @@ extraEnvVars:
 serviceAccount:
   annotations:
     automountServiceAccountToken: false
-  automountServiceAccountToken: false
