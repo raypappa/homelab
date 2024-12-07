@@ -29,6 +29,11 @@ persistence:
     type: hostPath
     hostPath: /library
     mountPath: /nfsshare
+  modules:
+    enabled: true
+    type: hostPath
+    hostPath: /lib/modules
+    mountPath: /lib/modules
 defaultPodOptions:
   nodeSelector:
     kubernetes.io/hostname: puma
