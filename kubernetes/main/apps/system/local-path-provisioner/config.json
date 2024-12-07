@@ -2,5 +2,6 @@
   "destNamespace": "local-path-provisioner",
   "appName": "local-path-provisioner",
   "serverSideApply": false,
+  "ignoreDifferences": [],
   "group": "controller"
 }

@@ -2,5 +2,6 @@
   "destNamespace": "homelab",
   "appName": "prowlarr",
   "serverSideApply": false,
+  "ignoreDifferences": [],
   "group": "downloads"
 }

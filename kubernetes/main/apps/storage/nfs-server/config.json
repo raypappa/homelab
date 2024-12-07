@@ -2,5 +2,6 @@
   "destNamespace": "storage",
   "appName": "nfs-server",
   "serverSideApply": false,
+  "ignoreDifferences": [],
   "group": "system"
 }

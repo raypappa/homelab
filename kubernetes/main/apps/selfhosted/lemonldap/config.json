@@ -2,5 +2,6 @@
   "destNamespace": "ldap",
   "appName": "lemonldap",
   "serverSideApply": false,
+  "ignoreDifferences": [],
   "group": "system"
 }

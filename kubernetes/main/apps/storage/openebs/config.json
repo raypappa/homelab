@@ -2,5 +2,6 @@
   "destNamespace": "openebs",
   "appName": "openebs",
   "serverSideApply": false,
+  "ignoreDifferences": [],
   "group": "controller"
 }

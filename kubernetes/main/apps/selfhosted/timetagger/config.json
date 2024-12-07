@@ -2,5 +2,6 @@
   "destNamespace": "timetagger",
   "appName": "timetagger",
   "serverSideApply": false,
+  "ignoreDifferences": [],
   "group": "selfhosted"
 }
