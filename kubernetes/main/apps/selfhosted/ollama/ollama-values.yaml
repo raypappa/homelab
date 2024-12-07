@@ -5,3 +5,5 @@ extraEnvVars:
       secretKeyRef:
         name: open-ai-api-key
         key: api-key
+serviceAccount:
+  automountServiceAccountToken: false
