@@ -1,0 +1,6 @@
+{
+  "destNamespace": "stirling-pdf",
+  "appName": "stirling-pdf",
+  "serverSideApply": false,
+  "group": "selfhosted"
+}
