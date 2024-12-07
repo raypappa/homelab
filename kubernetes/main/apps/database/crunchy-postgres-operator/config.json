@@ -2,5 +2,6 @@
   "destNamespace": "database",
   "appName": "crunchy-postgres-operator",
   "serverSideApply": true,
+  "ignoreDifferences": [],
   "group": "operator"
 }

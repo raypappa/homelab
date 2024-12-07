@@ -81,7 +81,7 @@ spec:
       syncPolicy:
         syncOptions:
           - CreateNamespace=true
-          - 'ServerSideApply={{dig "serverSideApply" "false" .}}'
+          - 'ServerSideApply={{.serverSideApply}}'
       source:
         repoURL: https://github.com/raypappa/homelab.git
         targetRevision: main
@@ -89,3 +89,6 @@ spec:
       destination:
         server: "https://kubernetes.default.svc"
         namespace: "{{.destNamespace }}"
+  templatePatch: |-
+    spec:
+      ignoreDifferences: {{ .ignoreDifferences | toJson }}

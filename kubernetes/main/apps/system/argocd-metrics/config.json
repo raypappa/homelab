@@ -2,5 +2,6 @@
   "destNamespace": "argocd",
   "appName": "argocd-metrics",
   "serverSideApply": false,
+  "ignoreDifferences": [],
   "group": "post-monitoring"
 }

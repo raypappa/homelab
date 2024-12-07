@@ -2,5 +2,6 @@
   "destNamespace": "rook-ceph",
   "appName": "rook-ceph-cluster-app",
   "serverSideApply": false,
+  "ignoreDifferences": [],
   "group": "controller"
 }

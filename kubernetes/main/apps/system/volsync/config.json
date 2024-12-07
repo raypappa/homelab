@@ -2,5 +2,6 @@
   "destNamespace": "volsync",
   "appName": "volsync",
   "serverSideApply": false,
+  "ignoreDifferences": [],
   "group": "controller"
 }
