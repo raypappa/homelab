@@ -1,0 +1,6 @@
+{
+  "destNamespace": "ollama",
+  "appName": "ollama",
+  "serverSideApply": false,
+  "group": "system"
+}
