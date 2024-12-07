@@ -14,7 +14,7 @@ boto3 = "^1.34.143"
 
 [tool.poetry.group.dev.dependencies]
 ansible-lint = { version = "^24.6.1", markers = "platform_system != 'Windows'" }
-commitizen = "4.0.0"
+commitizen = "4.1.0"
 pre-commit = "^4.0.1"
 
 [build-system]
