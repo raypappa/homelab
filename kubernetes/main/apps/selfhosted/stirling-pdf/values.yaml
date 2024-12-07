@@ -1,0 +1,8 @@
+---
+service:
+  externalTrafficPolicy: Cluster
+  type: LoadBalancer
+  annotations:
+    metallb.universe.tf/loadBalancerIPs: 172.17.42.204
+    metallb.universe.tf/address-pool: metalpool
+  externalPort: 80
