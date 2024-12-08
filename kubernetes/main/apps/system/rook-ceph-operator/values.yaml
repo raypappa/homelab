@@ -1,0 +1,6 @@
+---
+monitoring:
+  enabled: true
+csi:
+  nfs:
+    enabled: true
