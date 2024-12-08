@@ -8,7 +8,7 @@ namespace: homelab
 helmCharts:
   - name: pgo
     releaseName: crunchy-postgres-operator
-    version: 5.7.0
+    version: 5.7.1
     # helm show chart oci://registry.developers.crunchydata.com/crunchydata/pgo
     repo: oci://registry.developers.crunchydata.com/crunchydata
     includeCRDs: true
