@@ -8,10 +8,14 @@ cephClusterSpec:
   mon:
     count: 3
   mgr:
-    count: 3
-    # modules:
-    #   - name: rook
-    #     enabled: true
+    count: 2
+    modules:
+      - name: rook
+        enabled: true
+      - name: nfs
+        enabled: true
+      - name: smb
+        enabled: true
   dashboard:
     enabled: true
     ssl: false
@@ -19,8 +23,7 @@ cephClusterSpec:
     disable: true
   cephConfig:
     global:
-      osd_pool_default_size: "3" # TODO: increase this to 3 once we have sufficient nodes in the cluster
-      mon_warn_on_pool_no_redundancy: "true" # TODO: remove this once we have more nodes
+      osd_pool_default_size: "3"
       # bdev_flock_retry: "20"
       # bluefs_buffered_io: "false"
       # mon_data_avail_warn: "10"
@@ -37,7 +40,7 @@ cephObjectStores:
     # see https://github.com/rook/rook/blob/master/Documentation/CRDs/Object-Storage/ceph-object-store-crd.md#object-store-settings for available configuration
     spec:
       metadataPool:
-        failureDomain: host # TODO: should be host but I only have one host
+        failureDomain: host
         replicated:
           size: 2
       dataPool:
