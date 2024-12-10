@@ -27,14 +27,9 @@ controllers:
           REDIS_HOSTNAME: immich-redis.immich.svc.cluster.local
           REDIS_PORT: "6379"
           DB_VECTOR_EXTENSION: pgvector # I couldn't really care less for worser machine learning, over half my library is screenshots
-          DB_URL:
-            valueFrom:
-              secretKeyRef:
-                name: pg-home-pguser-immich-fixed
-                key: pgbouncer-uri-sslmode
         envFrom:
           - secretRef:
-              name: immich-secrets
+              name: immich-db
         securityContext: &sc
           readOnlyRootFilesystem: true
           allowPrivilegeEscalation: false
@@ -214,13 +209,6 @@ persistence:
         path: /usr/src/app/node_modules/local-reverse-geocoder/geonames_dump
       - subPath: transformers
         path: /usr/src/app/.transformers_cache
-  pg-ca:
-    type: secret
-    name: pg-home-ca
-    defaultMode: 256
-    globalMounts:
-      - subPath: ca.crt
-        path: /secrets/pg/ca.crt
 defaultPodOptions:
   automountServiceAccountToken: false
   enableServiceLinks: false
