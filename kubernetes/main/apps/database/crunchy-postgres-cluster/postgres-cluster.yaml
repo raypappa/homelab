@@ -26,7 +26,7 @@ spec:
       metadata:
         labels:
           app.kubernetes.io/name: crunchy-postgres
-      replicas: &replica 1
+      replicas: &replica 2
       dataVolumeClaimSpec:
         storageClassName: openebs-hostpath
         accessModes:
@@ -51,29 +51,9 @@ spec:
       password:
         type: AlphaNumeric
     # Applications
-    - name: atuin
+    - name: immich
       databases:
-        - atuin
-      password:
-        type: AlphaNumeric
-    - name: autobrr
-      databases:
-        - autobrr
-      password:
-        type: AlphaNumeric
-    - name: dsmr-reader
-      databases:
-        - dsmr-reader
-      password:
-        type: AlphaNumeric
-    - name: miniflux
-      databases:
-        - miniflux
-      password:
-        type: AlphaNumeric
-    - name: wallabag
-      databases:
-        - wallabag
+        - immich
       password:
         type: AlphaNumeric
   backups:

@@ -4,7 +4,7 @@ kind: Kustomization
 metadata:
   annotations:
     argocd.argoproj.io/sync-options: ServerSideApply=true
-namespace: homelab
+namespace: database
 helmCharts:
   - name: pgo
     releaseName: crunchy-postgres-operator
