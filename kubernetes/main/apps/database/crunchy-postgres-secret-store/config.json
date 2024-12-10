@@ -1,0 +1,7 @@
+{
+  "destNamespace": "database",
+  "appName": "crunchy-postgres-secret-store",
+  "serverSideApply": false,
+  "ignoreDifferences": [],
+  "group": "system"
+}
