@@ -82,6 +82,7 @@ spec:
         syncOptions:
           - CreateNamespace=true
           - 'ServerSideApply={{.serverSideApply}}'
+          - Prune=true
       source:
         repoURL: https://github.com/raypappa/homelab.git
         targetRevision: main
