@@ -1,0 +1,7 @@
+{
+  "destNamespace": "immich",
+  "appName": "immich",
+  "serverSideApply": false,
+  "ignoreDifferences": [],
+  "group": "selfhosted"
+}
