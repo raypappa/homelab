@@ -124,7 +124,7 @@ controllers:
       volumeClaimTemplates:
         - name: data
           size: 10Gi
-          storageClass: local
+          storageClass: local-path
           accessMode: ReadWriteOnce
           globalMounts:
             - path: /cache
