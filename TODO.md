@@ -14,7 +14,6 @@
 
 ## Migrate to AppSet
 
-1. immich
 1. leantime
 1. pterodactyl
 1. ollama
@@ -26,3 +25,8 @@
 1. recyclarr
 1. sonarr
 1. rtorrent
+
+## Fix
+
+1. Dashboard and ArgoCD Dashboard are deploying cert-manager, get them to stop.
+1. Immich - redis errored out.
