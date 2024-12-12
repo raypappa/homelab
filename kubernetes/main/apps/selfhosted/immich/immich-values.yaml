@@ -17,4 +17,4 @@ postgresql:
   image:
     repository: tensorchord/pgvecto-rs
     # renovate: datasource=docker depName=tensorchord/pgvecto-rs
-    tag: pg17-v0.4.0
+    tag: pg16-v0.3.0
