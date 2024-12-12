@@ -16,7 +16,7 @@ controllers:
         command: &cmd ["tini", "--", "node", "/usr/src/app/dist/main"]
         args: ["immich"]
         env: &env
-          TZ: "${CONFIG_TZ}"
+          TZ: America/Los_Angeles
           LD_PRELOAD: /usr/lib/x86_64-linux-gnu/libmimalloc.so.2
           NODE_ENV: production
           LOG_LEVEL: verbose
@@ -137,6 +137,8 @@ controllers:
           - "300 1"
           - "--appendonly"
           - "yes"
+          - --dir
+          - /data
         securityContext: *sc
         resources:
           requests:
