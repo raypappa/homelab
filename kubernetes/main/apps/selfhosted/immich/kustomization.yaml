@@ -2,9 +2,9 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 helmCharts:
-  - name: app-template
-    repo: https://bjw-s.github.io/helm-charts
-    version: 3.5.1
+  - name: immich
+    repo: https://immich-app.github.io/immich-charts
+    version: 0.8.5
     namespace: immich
     releaseName: immich
     valuesFile: immich-values.yaml
@@ -16,3 +16,4 @@ helmCharts:
     valuesFile: cloudflare-values.yaml
 resources:
   - ./external-secret.yaml
+  - ./pvc.yaml
