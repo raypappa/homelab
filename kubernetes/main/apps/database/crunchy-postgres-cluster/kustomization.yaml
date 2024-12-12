@@ -6,4 +6,3 @@ resources:
   - ./pod-monitor.yaml
   - ./external-secret.yaml
   - ./postgres-cluster.yaml
-  - ./push-secret.yaml
