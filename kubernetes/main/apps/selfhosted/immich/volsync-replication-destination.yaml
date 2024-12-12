@@ -12,7 +12,7 @@ spec:
     volumeSnapshotClassName: ceph-filesystem
     cacheStorageClassName: local-path
     cacheAccessModes:
-      - ReadWriteMany
+      - ReadWriteOnce
     cacheCapacity: 8Gi
     storageClassName: ceph-filesystem
     accessModes:
