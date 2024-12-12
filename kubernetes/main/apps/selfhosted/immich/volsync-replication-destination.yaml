@@ -1,0 +1,20 @@
+---
+apiVersion: volsync.backube/v1alpha1
+kind: ReplicationDestination
+metadata:
+  name: immich-library-dst
+spec:
+  trigger:
+    manual: restore-once
+  restic:
+    repository: immich-library-volsync-backblaze-secret
+    copyMethod: Snapshot
+    volumeSnapshotClassName: ceph-block
+    cacheStorageClassName: local-path
+    cacheAccessModes:
+      - ReadWriteMany
+    cacheCapacity: 8Gi
+    storageClassName: ceph-block
+    accessModes:
+      - ReadWriteMany
+    capacity: 5Gi

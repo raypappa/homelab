@@ -4,8 +4,13 @@ kind: PersistentVolumeClaim
 metadata:
   name: immich-library
 spec:
+  storageClassName: ceph-block
   accessModes:
     - ReadWriteMany
   resources:
     requests:
       storage: 100Gi
+  dataSourceRef:
+    kind: ReplicationDestination
+    apiGroup: volsync.backube
+    name: immich-library-dst
