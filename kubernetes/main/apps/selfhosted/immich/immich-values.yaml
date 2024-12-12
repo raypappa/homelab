@@ -80,11 +80,11 @@ controllers:
           requests:
             cpu: "100m"
             memory: "300Mi"
-            gpu.intel.com/i915: "1"
+            # gpu.intel.com/i915: "1"
           limits:
             cpu: "1000m" # my machine will actually die
             memory: "2Gi"
-            gpu.intel.com/i915: "1"
+            # gpu.intel.com/i915: "1"
   ml:
     type: statefulset
     replicas: 3
@@ -138,7 +138,7 @@ controllers:
           - "--appendonly"
           - "yes"
           - --dir
-          - /data
+          - /data/
         securityContext: *sc
         resources:
           requests:
@@ -174,7 +174,7 @@ persistence:
   data:
     enabled: true
     storageClass: ceph-filesystem
-    accessMode: ReadWriteOncePod
+    accessMode: ReadWriteMany
     size: 200Gi
     advancedMounts:
       immich: &mount
@@ -189,7 +189,7 @@ persistence:
   misc:
     enabled: true
     storageClass: ceph-filesystem
-    accessMode: ReadWriteOncePod
+    accessMode: ReadWriteMany
     size: 100Gi
     advancedMounts:
       immich: &misc
