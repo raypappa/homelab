@@ -1,0 +1,27 @@
+---
+apiVersion: volsync.backube/v1alpha1
+kind: ReplicationSource
+metadata:
+  name: immich-library-backblaze
+spec:
+  sourcePVC: immich-library
+  trigger:
+    schedule: 0 0 * * *
+  restic:
+    copyMethod: Snapshot
+    pruneIntervalDays: 7
+    repository: immich-library-volsync-backblaze-secret
+    volumeSnapshotClassName: ceph-block
+    cacheCapacity: 8Gi
+    cacheStorageClassName: local-path
+    cacheAccessModes:
+      - ReadWriteMany
+    storageClassName: ceph-block
+    accessModes:
+      - ReadWriteMany
+    moverSecurityContext:
+      runAsUser: 568
+      runAsGroup: 568
+      fsGroup: 568
+    retain:
+      daily: 7
