@@ -27,6 +27,7 @@ spec:
             accessMode: ReadWriteOnce
             size: 2Gi
             readOnly: false
+            retain: true
           library:
             enabled: true
             type: hostPath
