@@ -2,6 +2,7 @@
 ##########################
 # Managed by Ansible!!!! #
 ##########################
+# {{ansible_managed }}
 {% for dir in nfs_server_export_dirs %}
 {{ dir }}  *(rw,async,no_subtree_check)
 {% endfor %}
