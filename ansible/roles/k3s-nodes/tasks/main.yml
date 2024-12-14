@@ -2,8 +2,3 @@
 - name: Setup Cluster Node
   ansible.builtin.import_tasks: cluster.yml
   become: true
-- name: Ensure required packages are installed
-  become: true
-  ansible.builtin.apt:
-    pkg:
-      - apt-transport-https
