@@ -1,0 +1,23 @@
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+helmCharts:
+  - name: app-template
+    # Ugh please replace this with using bjw-s
+    repo: https://bjw-s.github.io/helm-charts
+    version: 3.5.1
+    namespace: sonarr
+    releaseName: sonarr
+    valuesFile: sonarr-values.yaml
+  - name: cloudflare-tunnel
+    repo: https://cloudflare.github.io/helm-charts
+    version: 0.3.2
+    releaseName: sonarr
+    namespace: sonarr
+    valuesFile: cloudflare-values.yaml
+resources:
+  - ./external-secret.yaml
+  - ./pvc/config/volsync-replication-source.yaml
+  - ./pvc/config/volsync-external-secret.yaml
+  - ./pvc/config/pvc.yaml
+  - ./pvc/config/volsync-replication-destination.yaml

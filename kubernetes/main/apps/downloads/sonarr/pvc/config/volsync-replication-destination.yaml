@@ -1,0 +1,20 @@
+---
+apiVersion: volsync.backube/v1alpha1
+kind: ReplicationDestination
+metadata:
+  name: sonarr-config-dst
+spec:
+  trigger:
+    manual: restore-once
+  restic:
+    repository: sonarr-config-volsync-backblaze-secret
+    copyMethod: Snapshot
+    volumeSnapshotClassName: ceph-filesystem
+    cacheStorageClassName: local-path
+    cacheAccessModes:
+      - ReadWriteOnce
+    cacheCapacity: 2Gi
+    storageClassName: ceph-filesystem
+    accessModes:
+      - ReadWriteMany
+    capacity: 2Gi
