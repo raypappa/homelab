@@ -3,7 +3,7 @@
 env:
   # -- Set the container timezone
   TZ: America/Los_Angeles
-  NFS_EXPORT_0: /nfsshare *(rw,sync,no_subtree_check,no_root_squash)
+  NFS_EXPORT_0: /library *(rw,sync,no_subtree_check,no_root_squash)
 image:
   repository: ghcr.io/obeone/nfs-server
   tag: 2.2.3
@@ -26,11 +26,11 @@ service:
       metallb.universe.tf/address-pool: metalpool
       metallb.universe.tf/allow-shared-ip: "nfs-172.17.42.203"
 persistence:
-  nfsshare:
+  library:
     enabled: true
     type: hostPath
     hostPath: /library
-    mountPath: /nfsshare/library
+    mountPath: /library
   modules:
     enabled: true
     type: hostPath
