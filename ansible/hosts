@@ -37,6 +37,5 @@ game_server:
 nfs_server:
   hosts:
     puma.stoneydavis.lan:
-      vars:
-        nfs_server_export_dirs:
-          - /library
+      nfs_server_export_dirs:
+        - /library
