@@ -1,15 +1,30 @@
 ---
 - name: Install necessary packages
-  apt:
+  ansible.builtin.apt:
     name: nfs-kernel-server
     state: present
 - name: Create NFS exports directory
-  file:
+  ansible.builtin.file:
     path: /exports
     state: directory
     mode: "0755"
 - name: Configure NFS exports
-  template:
-    src: templates/nfs.exports.j2
+  ansible.builtin.template:
+    src: templates/exports.j2
     dest: /etc/exports
     mode: "0644"
+- name: Configure NFS server
+  ansible.builtin.template:
+    src: templates/nfs.conf.j2
+    dest: /etc/nfs.conf
+    mode: "0644"
+- name: Configure NFS server
+  ansible.builtin.template:
+    src: templates/nfsmount.conf.j2
+    dest: /etc/nfsmount.conf
+    mode: "0644"
+- name: Start NFS server
+  ansible.builtin.systemd:
+    name: nfs-kernel-server
+    state: started
+    enabled: true
