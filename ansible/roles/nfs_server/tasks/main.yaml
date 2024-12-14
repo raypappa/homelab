@@ -3,26 +3,30 @@
   ansible.builtin.apt:
     name: nfs-kernel-server
     state: present
-- name: Create NFS exports directory
-  ansible.builtin.file:
-    path: /exports
-    state: directory
-    mode: "0755"
 - name: Configure NFS exports
   ansible.builtin.template:
     src: templates/exports.j2
     dest: /etc/exports
     mode: "0644"
+  notify: Restart NFS server
 - name: Configure NFS server
   ansible.builtin.template:
     src: templates/nfs.conf.j2
     dest: /etc/nfs.conf
     mode: "0644"
+  notify: Restart NFS server
 - name: Configure NFS server
   ansible.builtin.template:
     src: templates/nfsmount.conf.j2
     dest: /etc/nfsmount.conf
     mode: "0644"
+  notify: Restart NFS server
+- name: Configure NFS Systemd
+  ansible.builtin.template:
+    src: templates/nfs-kernel-server.j2
+    dest: /etc/default/nfs-kernel-server
+    mode: "0644"
+  notify: Restart NFS server
 - name: Start NFS server
   ansible.builtin.systemd:
     name: nfs-kernel-server
