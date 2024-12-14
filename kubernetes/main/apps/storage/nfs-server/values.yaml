@@ -16,6 +16,7 @@ service:
     annotations:
       metallb.universe.tf/loadBalancerIPs: 172.17.42.203
       metallb.universe.tf/address-pool: metalpool
+      metallb.universe.tf/allow-shared-ip: "nfs-172.17.42.203"
   udp:
     enabled: true
     type: LoadBalancer
@@ -23,12 +24,13 @@ service:
     annotations:
       metallb.universe.tf/loadBalancerIPs: 172.17.42.203
       metallb.universe.tf/address-pool: metalpool
+      metallb.universe.tf/allow-shared-ip: "nfs-172.17.42.203"
 persistence:
   nfsshare:
     enabled: true
     type: hostPath
     hostPath: /library
-    mountPath: /nfsshare
+    mountPath: /nfsshare/library
   modules:
     enabled: true
     type: hostPath
