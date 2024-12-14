@@ -13,7 +13,7 @@ cephClusterSpec:
       - name: rook
         enabled: true
       - name: nfs
-        enabled: true
+        enabled: false
       - name: smb
         enabled: true
   dashboard:
