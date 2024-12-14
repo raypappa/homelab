@@ -34,3 +34,9 @@ game_server:
 #   children:
 #     dev_k8s_controlplane:
 #     dev_k8s_nodes:
+nfs_server:
+  hosts:
+    puma.stoneydavis.lan:
+      vars:
+        nfs_server_export_dirs:
+          - /library

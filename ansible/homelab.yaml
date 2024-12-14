@@ -46,3 +46,7 @@
   hosts: all
   roles:
     - common_reboot # if any updates to disk are requesting a reboot at the end, ensure we reboot
+- name: NFS Server
+  hosts: nfs_server
+  roles:
+    - nfs_server

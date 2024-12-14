@@ -1,0 +1,15 @@
+---
+- name: Install necessary packages
+  apt:
+    name: nfs-kernel-server
+    state: present
+- name: Create NFS exports directory
+  file:
+    path: /exports
+    state: directory
+    mode: "0755"
+- name: Configure NFS exports
+  template:
+    src: templates/nfs.exports.j2
+    dest: /etc/exports
+    mode: "0644"
