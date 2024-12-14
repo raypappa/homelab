@@ -33,6 +33,9 @@ jobs:
     steps:
       - run: echo "${{needs.check.outputs.execute == 'true'}}"
   ansible:
+    permissions:
+      id-token: write # This is required for requesting the JWT
+      contents: read # apparently setting permissions is holistic rather than additive.
     needs: check
     if: github.secret_source != 'Dependabot' && needs.check.outputs.execute == 'true'
     uses: raypappa/homelab/.github/workflows/ansible-scheduled.yaml@main
