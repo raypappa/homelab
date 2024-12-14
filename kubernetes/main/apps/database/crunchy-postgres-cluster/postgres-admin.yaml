@@ -1,0 +1,17 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/postgres-operator.crunchydata.com/pgadmin_v1beta1.json
+apiVersion: postgres-operator.crunchydata.com/v1beta1
+kind: PGAdmin
+metadata:
+  name: postgres
+spec:
+  dataVolumeClaimSpec:
+    accessModes:
+      - "ReadWriteOnce"
+    resources:
+      requests:
+        storage: 1Gi
+  serverGroups:
+    - name: supply
+      # An empty selector selects all postgresclusters in the Namespace
+      postgresClusterSelector: {}
