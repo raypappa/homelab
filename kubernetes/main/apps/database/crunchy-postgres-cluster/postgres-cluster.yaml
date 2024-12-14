@@ -5,6 +5,8 @@ kind: PostgresCluster
 metadata:
   name: &name postgres
 spec:
+  # renovate: datasource=docker depName=ghcr.io/chkpwd/cdpgvecto.rs
+  image: ghcr.io/chkpwd/cdpgvecto.rs:ubi8-16.4-0-v0.3.0
   postgresVersion: 16
   metadata:
     labels:
@@ -12,10 +14,13 @@ spec:
       crunchy-userinit.ramblurr.github.com/superuser: "postgres"
   service:
     type: LoadBalancer
-  patroni: # turn on sync writes to at least 1 other replica
+  patroni:
     dynamicConfiguration:
       synchronous_mode: true
       postgresql:
+        parameters:
+          shared_preload_libraries: "vectors.so"
+          search_path: '"$user", public, vectors'
         max_wal_size: 5GB
         synchronous_commit: "on"
         pg_hba:

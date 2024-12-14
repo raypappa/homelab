@@ -46,3 +46,6 @@ nfsshare
 SETPCAP
 obeone
 selfsubjectrulesreviews
+chkpwd
+cdpgvecto
+postgresclusters
