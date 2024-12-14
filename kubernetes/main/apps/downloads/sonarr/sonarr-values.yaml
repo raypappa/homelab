@@ -69,7 +69,7 @@ persistence:
     type: emptyDir
   media:
     type: nfs
-    server: nfs.stoneydavis.lan
+    server: nfs-server.storage.svc.cluster.local
     path: /library
     globalMounts:
       - path: /library
