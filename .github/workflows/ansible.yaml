@@ -39,3 +39,4 @@ jobs:
     needs: check
     if: github.secret_source != 'Dependabot' && needs.check.outputs.execute == 'true'
     uses: raypappa/homelab/.github/workflows/ansible-scheduled.yaml@main
+    secrets: inherit
