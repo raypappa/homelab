@@ -31,3 +31,8 @@
     owner: root
     group: root
     mode: "0644"
+- name: Ensure required packages are installed
+  become: true
+  ansible.builtin.apt:
+    pkg:
+      - nfs-common
