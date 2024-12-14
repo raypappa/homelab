@@ -1,0 +1,7 @@
+{
+  "destNamespace": "sonarr",
+  "appName": "sonarr",
+  "serverSideApply": false,
+  "ignoreDifferences": [],
+  "group": "selfhosted"
+}

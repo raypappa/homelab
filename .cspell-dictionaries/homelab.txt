@@ -265,3 +265,6 @@ psessions
 llng
 tensorchord
 pgvecto
+gladius
+INSTANCENAME
+APIKEY
