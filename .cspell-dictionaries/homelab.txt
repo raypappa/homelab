@@ -268,3 +268,4 @@ pgvecto
 gladius
 INSTANCENAME
 APIKEY
+nfsd
