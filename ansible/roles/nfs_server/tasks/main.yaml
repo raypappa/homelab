@@ -28,7 +28,7 @@
     mode: "0644"
   notify: Restart NFS server
 - name: Start NFS server
-  ansible.builtin.systemd:
+  ansible.builtin.sysvinit:
     name: nfs-kernel-server
     state: started
     enabled: true
