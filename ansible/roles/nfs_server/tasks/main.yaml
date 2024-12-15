@@ -32,3 +32,8 @@
     name: nfs-kernel-server
     state: started
     enabled: true
+- name: Disable systemd service
+  ansible.builtin.systemd:
+    name: nfs-kernel-server
+    state: stopped
+    enabled: false
