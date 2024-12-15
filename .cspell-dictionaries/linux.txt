@@ -62,3 +62,4 @@ nfsvers
 nconnect
 noatime
 sysvinit
+idmapd

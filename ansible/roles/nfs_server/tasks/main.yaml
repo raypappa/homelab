@@ -28,13 +28,20 @@
     mode: "0644"
   notify: Restart NFS server
 - name: Disable systemd service
+  loop:
+    - nfs-mountd
+    - nfs-kernel-server
+    - nfs-server
+    - nfs-idmapd
   ansible.builtin.systemd_service:
-    name: nfs-kernel-server
+    name: "{{ item }}"
     state: stopped
-    masked: true
+    masked: false
     enabled: false
 - name: Start NFS server
   ansible.builtin.sysvinit:
     name: nfs-kernel-server
     state: started
     enabled: true
+  environment:
+    SYSTEMCTL_SKIP_REDIRECT: 1
