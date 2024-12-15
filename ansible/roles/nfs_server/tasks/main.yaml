@@ -27,13 +27,14 @@
     dest: /etc/default/nfs-kernel-server
     mode: "0644"
   notify: Restart NFS server
+- name: Disable systemd service
+  ansible.builtin.systemd_service:
+    name: nfs-kernel-server
+    state: stopped
+    masked: true
+    enabled: false
 - name: Start NFS server
   ansible.builtin.sysvinit:
     name: nfs-kernel-server
     state: started
     enabled: true
-- name: Disable systemd service
-  ansible.builtin.systemd:
-    name: nfs-kernel-server
-    state: stopped
-    enabled: false
