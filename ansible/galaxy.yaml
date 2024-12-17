@@ -3,8 +3,6 @@
 roles:
   - name: artis3n.tailscale
   - name: xolyu.mariadb
-  - name: adrianjuhl.rbenv
-  - name: markosamuli.rust
 collections:
   - name: community.general
     version: ">=10.1.0"
