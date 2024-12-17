@@ -30,3 +30,15 @@
 
 1. Dashboard and ArgoCD Dashboard are deploying cert-manager, get them to stop.
 1. Immich - redis errored out.
+
+## Physical
+
+1. Get rpi set up with nut and a ups to plug into the bigger ups for the office
+1. Get rpi set up with nut and a ups to plug into the bigger ups for the bedroom
+1. Get rpi set up with nut and a ups to plug into the bigger ups for the network gear
+
+## Other
+
+1. setup router to send syslog to loki
+1. setup home assistant to send syslog to loki
+1. setup modem to send syslog to loki

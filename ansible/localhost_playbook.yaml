@@ -1,0 +1,5 @@
+---
+- name: Run role on localhost
+  hosts: localhost
+  roles:
+    - dev_server
