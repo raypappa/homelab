@@ -1,0 +1,30 @@
+---
+- community.general.homebrew:
+    name:
+      - git
+      - make
+      - unzip
+      - wget
+      - moreutils
+      - zip
+      - bash-completion
+      - binutils
+      - coreutils
+      - findutils
+      - gnu-tar
+      - gnu-sed
+      - gawk
+      - gnutls
+      - gnu-indent
+      - gnu-getopt
+      - grep
+      - openssh
+      - tmux
+    state: present
+    update_homebrew: true
+- name: Install homebrew casks
+  community.general.homebrew_cask:
+    name:
+      - alacritty
+      - visual-studio-code
+    state: present

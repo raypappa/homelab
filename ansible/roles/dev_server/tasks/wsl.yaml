@@ -1,0 +1,25 @@
+---
+- name: Install wsl dependencies
+  ansible.builtin.apt:
+    name:
+      - gnupg2
+      - apt-transport-https
+    state: present
+  become: true
+- name: Add wsl utilities key
+  become: true
+  ansible.builtin.apt_key:
+    url: https://pkg.wslutiliti.es/public.key
+    state: present
+- name: Add wsl utilities deb repo
+  become: true
+  ansible.builtin.apt_repository:
+    repo: "deb https://pkg.wslutiliti.es/debian {{ansible_distribution_release}} main"
+    state: present
+    filename: wslu
+    update_cache: true
+- name: Install wsl utilities
+  become: true
+  ansible.builtin.apt:
+    name: wslu
+    state: present
