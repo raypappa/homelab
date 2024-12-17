@@ -45,3 +45,8 @@
     enabled: true
   environment:
     SYSTEMCTL_SKIP_REDIRECT: 1
+- name: Increase filesystem nr open
+  ansible.posix.sysctl:
+    name: fs.nr_open
+    value: 4194304
+    sysctl_set: true
