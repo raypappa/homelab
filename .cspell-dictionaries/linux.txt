@@ -63,3 +63,13 @@ nconnect
 noatime
 sysvinit
 idmapd
+portmap
+PROCNFSD
+MOUNTPOINT
+rpcbind
+rpcinfo
+portmapper
+oknodo
+nicelevel
+rpcsec
+unexporting

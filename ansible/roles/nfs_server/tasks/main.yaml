@@ -3,6 +3,13 @@
   ansible.builtin.apt:
     name: nfs-kernel-server
     state: present
+- name: Update sysvinit for nfs-kernel-server
+  ansible.builtin.copy:
+    src: init-nfs-kernel-server
+    dest: /etc/init.d/nfs-kernel-server
+    mode: "0755"
+    owner: root
+    group: root
 - name: Configure NFS exports
   ansible.builtin.template:
     src: templates/exports.j2
