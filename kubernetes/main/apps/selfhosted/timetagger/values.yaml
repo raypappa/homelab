@@ -55,6 +55,11 @@ service:
     ports:
       http:
         port: 80
+    type: LoadBalancer
+    annotations:
+      metallb.universe.tf/loadBalancerIPs: 172.17.42.203
+      metallb.universe.tf/address-pool: metalpool
+    externalTrafficPolicy: Cluster
 persistence:
   config:
     enabled: true
