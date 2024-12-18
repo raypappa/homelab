@@ -3,7 +3,7 @@
 apiVersion: postgres-operator.crunchydata.com/v1beta1
 kind: PostgresCluster
 metadata:
-  name: &name postgres
+  name: &name postgres-0001
 spec:
   # renovate: datasource=docker depName=ghcr.io/chkpwd/cdpgvecto.rs
   image: ghcr.io/chkpwd/cdpgvecto.rs:ubi8-16.4-0-v0.3.0
