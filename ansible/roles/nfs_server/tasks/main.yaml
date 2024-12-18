@@ -5,15 +5,18 @@
     value: "2048"
     state: present
     reload: true
+  notify: Restart NFS server
 - name: Increase filesystem nr open
   ansible.posix.sysctl:
     name: fs.nr_open
     value: 4194304
     sysctl_set: true
+  notify: Restart NFS server
 - name: Install necessary packages
   ansible.builtin.apt:
     name: nfs-kernel-server
     state: present
+  notify: Restart NFS server
 - name: Update sysvinit for nfs-kernel-server
   ansible.builtin.copy:
     src: init-nfs-kernel-server
@@ -21,6 +24,7 @@
     mode: "0755"
     owner: root
     group: root
+  notify: Restart NFS server
 - name: Configure NFS exports
   ansible.builtin.template:
     src: templates/exports.j2
