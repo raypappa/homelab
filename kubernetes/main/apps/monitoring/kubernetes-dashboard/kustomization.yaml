@@ -1,0 +1,20 @@
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+helmCharts:
+  - name: kubernetes-dashboard
+    repo: https://kubernetes.github.io/dashboard/
+    version: 7.10.0
+    namespace: kubernetes-dashboard
+    releaseName: kubernetes-dashboard
+    valuesFile: dashboard-values.yaml
+    # - name: cloudflare-tunnel
+    #   repo: https://cloudflare.github.io/helm-charts
+    #   version: 0.3.2
+    #   releaseName: kubernetes-dashboard
+    #   namespace: kubernetes-dashboard
+    #   valuesFile: cloudflare-values.yaml
+resources:
+  - ./service-account.yaml
+  - ./cluster-role.yaml
+#  - ./external-secret.yaml

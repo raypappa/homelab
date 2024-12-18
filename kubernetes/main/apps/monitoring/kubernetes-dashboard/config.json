@@ -1,0 +1,7 @@
+{
+  "destNamespace": "kubernetes-dashboard",
+  "appName": "kubernetes-dashboard",
+  "serverSideApply": false,
+  "ignoreDifferences": [],
+  "group": "monitoring"
+}
