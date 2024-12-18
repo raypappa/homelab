@@ -1,4 +1,6 @@
 ---
+- name: Get my public IP
+  community.general.ipify_facts:
 - name: Set R53 Hosted Zone Record for Puma
   amazon.aws.route53:
     state: present
@@ -6,7 +8,8 @@
     record: puma.stoneydavis.com
     type: A
     ttl: 7200
-    value: "{{ hostvars['puma']['ansible_facts']['ipify_public_ip'] }}"
+    value: "{{ hostvars['puma.stoneydavis.lan']['ansible_facts']['ipify_public_ip'] }}"
+    overwrite: true
   delegate_to: localhost
 - name: Set R53 Hosted Zone Record for Panda
   amazon.aws.route53:
@@ -15,5 +18,6 @@
     record: panda.stoneydavis.com
     type: A
     ttl: 7200
-    value: "{{ hostvars['puma']['ansible_facts']['ipify_public_ip'] }}"
+    value: "{{ hostvars['puma.stoneydavis.lan']['ansible_facts']['ipify_public_ip'] }}"
+    overwrite: true
   delegate_to: localhost
