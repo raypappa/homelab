@@ -4,7 +4,7 @@ global:
   rbac:
     create: true
 crds:
-  enabled: false
+  enabled: true
 prometheus:
   enabled: true
   servicemonitor:
