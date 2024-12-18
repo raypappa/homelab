@@ -516,19 +516,34 @@
 - name: Install Rust
   block:
     - name: Check if rustup has been installed
-      stat:
+      ansible.builtin.stat:
         path: "{{ rustup_bin }}"
       register: rustup_st
     - name: Create temporary directory
-      tempfile:
+      ansible.builtin.tempfile:
         state: directory
         suffix: rustup
       register: rustup_tmp
     - name: Download rustup-init script
-      get_url:
+      ansible.builtin.get_url:
         dest: "{{ rustup_tmp.path }}/rustup-init.sh"
         url: https://sh.rustup.rs
     - name: Run rustup-init script
-      command: "sh {{ rustup_tmp.path }}/rustup-init.sh -y --no-modify-path"
+      ansible.builtin.command: "sh {{ rustup_tmp.path }}/rustup-init.sh -y --no-modify-path"
       changed_when: true
-      when: rustup_st.stat.exists == false
+      when: not rustup_st.stat.exists
+- name: Install kustomize
+  tags:
+    - kustomize
+  block:
+    - name: Find latest version of kustomize
+      ansible.builtin.uri:
+        url: https://github.com/kubernetes-sigs/kustomize/releases/latest
+        headers:
+          Accept: application/json
+        status_code: 200
+      register: kustomize_latest
+    - name: Install kustomize
+      ansible.builtin.unarchive:
+        src: https://github.com/kubernetes-sigs/kustomize/releases/download/kustomize%2F{{kustomize_latest.json.tag_name}}/kustomize_{{kustomize_latest.json.tag_name}}_{{ansible_system|lower}}_{{dev_server_ansible_architecture}}.tar.gz
+        dest: $HOME/.local/bin
