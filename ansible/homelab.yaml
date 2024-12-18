@@ -10,24 +10,31 @@
     - common_critical
     - common
 - name: Production Kubernetes Cluster
-  hosts: prod_k8s_cluster
+  hosts:
+    - prod_k8s_cluster
   become: true
   roles:
     - k3s-prereq
 - name: Production Kubernetes Control Plane
-  hosts: prod_k8s_controlplane
+  hosts:
+    - prod_k8s_controlplane
   roles:
     - k3s-controlplane
 - name: Production Kubernetes Nodes
-  hosts: prod_k8s_nodes
+  hosts:
+    - prod_k8s_nodes
   roles:
     - k3s-nodes
 - name: Faerun Public
-  hosts: puma.stoneydavis.lan
+  hosts:
+    - puma.stoneydavis.lan
   roles:
     - faerun-public
+  tags:
+    - faerun
 - name: Game Server
-  hosts: game_server
+  hosts:
+    - game_server
   roles:
     - game-server
 # - name: Development Kubernetes Cluster
@@ -47,6 +54,7 @@
   roles:
     - common_reboot # if any updates to disk are requesting a reboot at the end, ensure we reboot
 - name: NFS Server
-  hosts: nfs_server
+  hosts:
+    - nfs_server
   roles:
     - nfs_server
