@@ -1,4 +1,15 @@
 ---
+- name: Increase max inotify watches
+  ansible.posix.sysctl:
+    name: fs.inotify.max_user_instances
+    value: "2048"
+    state: present
+    reload: true
+- name: Increase filesystem nr open
+  ansible.posix.sysctl:
+    name: fs.nr_open
+    value: 4194304
+    sysctl_set: true
 - name: Install necessary packages
   ansible.builtin.apt:
     name: nfs-kernel-server
@@ -52,8 +63,3 @@
     enabled: true
   environment:
     SYSTEMCTL_SKIP_REDIRECT: 1
-- name: Increase filesystem nr open
-  ansible.posix.sysctl:
-    name: fs.nr_open
-    value: 4194304
-    sysctl_set: true
