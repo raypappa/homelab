@@ -1,0 +1,9 @@
+---
+fullnameOverride: "kubernetes-dashboard"
+nginx:
+  enabled: false
+cert-manager:
+  enabled: false
+app:
+  ingress:
+    enabled: false
