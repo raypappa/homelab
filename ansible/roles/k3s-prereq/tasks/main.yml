@@ -7,6 +7,18 @@
     value: "1"
     state: present
     reload: true
+- name: Increase max queued connections
+  ansible.posix.sysctl:
+    name: net.core.somaxconn
+    value: "4096"
+    state: present
+    reload: true
+- name: Increase max inotify watches
+  ansible.posix.sysctl:
+    name: fs.inotify.max_user_watches
+    value: "524288"
+    state: present
+    reload: true
 - name: Enable IPv6 forwarding
   ansible.posix.sysctl:
     name: net.ipv6.conf.all.forwarding
