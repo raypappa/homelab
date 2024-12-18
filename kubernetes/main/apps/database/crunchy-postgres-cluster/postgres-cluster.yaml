@@ -39,6 +39,9 @@ spec:
         resources:
           requests:
             storage: 20Gi
+      resources:
+        limits:
+          memory: 4Gi
       topologySpreadConstraints:
         - maxSkew: 1
           topologyKey: "kubernetes.io/hostname"
