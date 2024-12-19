@@ -545,8 +545,15 @@
       register: kustomize_latest
     - name: Install kustomize
       ansible.builtin.unarchive:
-        src: https://github.com/kubernetes-sigs/kustomize/releases/download/{{kustomize_latest.json.tag_name}}/kustomize_{{ 1 | extract(kustomize_latest.json.tag_name | split('/')) }}_{{ansible_system|lower}}_{{dev_server_ansible_architecture}}.tar.gz
+        src: https://github.com/kubernetes-sigs/kustomize/releases/download/{{ kustomize_latest.json.tag_name }}/kustomize_{{ 1 | extract(kustomize_latest.json.tag_name | split('/')) }}_{{ ansible_system | lower }}_{{ dev_server_ansible_architecture }}.tar.gz
         dest: $HOME/.local/bin
         mode: "0755"
         keep_newer: true
         remote_src: true
+- name: Install cloudflared
+  tags:
+    - cloudflared
+  ansible.builtin.get_url:
+    url: https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-{{ dev_server_ansible_architecture }}
+    dest: $HOME/.local/bin/cloudflared
+    mode: "0755"
