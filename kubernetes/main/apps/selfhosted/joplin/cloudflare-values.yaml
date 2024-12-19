@@ -1,0 +1,10 @@
+---
+image:
+  # renovate: datasource=docker depName=cloudflare/cloudflared
+  tag: 2024.12.1
+cloudflare:
+  secretName: "joplin-tunnel-credentials"
+  tunnelName: "faerun-joplin"
+  ingress:
+    - hostname: "joplin.fieldsofbears.com"
+      service: "http://joplin.joplin.svc.cluster.local:8080"
