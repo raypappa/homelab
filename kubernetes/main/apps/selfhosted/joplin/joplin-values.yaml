@@ -17,27 +17,27 @@ controllers:
           POSTGRES_PASSWORD:
             valueFrom:
               secretKeyRef:
-                name: immich-db-secret
+                name: joplin-db-secret
                 key: DB_PASSWORD
           POSTGRES_DATABASE:
             valueFrom:
               secretKeyRef:
-                name: immich-db-secret
+                name: joplin-db-secret
                 key: DB_DATABASE_NAME
           POSTGRES_USER:
             valueFrom:
               secretKeyRef:
-                name: immich-db-secret
+                name: joplin-db-secret
                 key: DB_USERNAME
           POSTGRES_PORT:
             valueFrom:
               secretKeyRef:
-                name: immich-db-secret
+                name: joplin-db-secret
                 key: DB_PORT
           POSTGRES_HOST:
             valueFrom:
               secretKeyRef:
-                name: immich-db-secret
+                name: joplin-db-secret
                 key: DB_HOSTNAME
         probes:
           liveness: &probes
