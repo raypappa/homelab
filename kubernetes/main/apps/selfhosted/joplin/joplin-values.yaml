@@ -1,0 +1,67 @@
+---
+controllers:
+  main:
+    annotations:
+      secret.reloader.stakater.com/reload: joplin-secrets
+    containers:
+      app:
+        image:
+          repository: joplin/server
+          # renovate: datasource=docker depName=joplin/server
+          tag: 3.0.1-beta
+        env:
+          APP_BASE_URL: https://joplin.fieldsofbears.com
+          APP_PORT: &port 8080
+          TZ: America/Los_Angeles
+          DB_CLIENT: pg
+          POSTGRES_PASSWORD:
+            valueFrom:
+              secretKeyRef:
+                name: immich-db-secret
+                key: DB_PASSWORD
+          POSTGRES_DATABASE:
+            valueFrom:
+              secretKeyRef:
+                name: immich-db-secret
+                key: DB_DATABASE_NAME
+          POSTGRES_USER:
+            valueFrom:
+              secretKeyRef:
+                name: immich-db-secret
+                key: DB_USERNAME
+          POSTGRES_PORT:
+            valueFrom:
+              secretKeyRef:
+                name: immich-db-secret
+                key: DB_PORT
+          POSTGRES_HOST:
+            valueFrom:
+              secretKeyRef:
+                name: immich-db-secret
+                key: DB_HOSTNAME
+        probes:
+          liveness: &probes
+            enabled: true
+            custom: true
+            spec:
+              httpGet:
+                httpHeaders:
+                  - name: Host
+                    value: "joplin.fieldsofbears.com"
+                path: /api/ping
+                port: *port
+              initialDelaySeconds: 0
+              periodSeconds: 10
+              timeoutSeconds: 1
+              failureThreshold: 3
+          readiness: *probes
+        resources:
+          requests:
+            cpu: 50m
+            memory: 256Mi
+service:
+  main:
+    controller: main
+    ports:
+      http:
+        port: *port

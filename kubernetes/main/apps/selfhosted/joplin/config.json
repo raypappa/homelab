@@ -1,0 +1,7 @@
+{
+  "destNamespace": "joplin",
+  "appName": "joplin",
+  "serverSideApply": false,
+  "ignoreDifferences": [],
+  "group": "selfhosted"
+}
