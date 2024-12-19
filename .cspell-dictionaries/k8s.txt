@@ -49,3 +49,4 @@ selfsubjectrulesreviews
 chkpwd
 cdpgvecto
 postgresclusters
+dragonflydb
