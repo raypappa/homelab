@@ -1,0 +1,5 @@
+---
+image:
+  repository: docker.dragonflydb.io/dragonflydb/dragonfly
+  # renovate: datasource=docker depName=docker.dragonflydb.io/dragonflydb/dragonfly
+  tag: ""

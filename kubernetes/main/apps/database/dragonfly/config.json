@@ -1,0 +1,7 @@
+{
+  "destNamespace": "database",
+  "appName": "dragonfly",
+  "serverSideApply": false,
+  "ignoreDifferences": [],
+  "group": "operator"
+}
