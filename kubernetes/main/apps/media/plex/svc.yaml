@@ -45,7 +45,7 @@ spec:
                 image:
                   repository: ghcr.io/onedr0p/plex
                   # renovate: datasource=docker depName=ghcr.io/onedr0p/plex
-                  tag: 1.41.1.9057-af5eaea7a
+                  tag: 1.41.3.9314-a0bfb8370
                   pullPolicy: IfNotPresent
                 env:
                   TZ: UTC
