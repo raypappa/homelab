@@ -29,7 +29,11 @@
 ## Fix
 
 1. Dashboard and ArgoCD Dashboard are deploying cert-manager, get them to stop.
-1. Immich - redis errored out.
+1. Immich - complaints about db not having pgvecto.rs set up
+1. Joplin - permission denied for schema public
+1. PGAdmin - set up users
+1. Joplin - update to use dragonfly
+1. Immich - update to use dragonfly
 
 ## Physical
 
