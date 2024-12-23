@@ -12,6 +12,7 @@ spec:
     pruneIntervalDays: 7
     repository: plex-config-volsync-backblaze-secret
     volumeSnapshotClassName: ceph-block
+    storageClassName: ceph-block
     cacheAccessModes:
       - ReadWriteOnce
     accessModes:
