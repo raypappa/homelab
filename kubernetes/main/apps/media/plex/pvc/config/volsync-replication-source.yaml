@@ -11,7 +11,7 @@ spec:
     copyMethod: Snapshot
     pruneIntervalDays: 7
     repository: plex-config-volsync-backblaze-secret
-    volumeSnapshotClassName: ceph-filesystem
+    volumeSnapshotClassName: ceph-block
     cacheAccessModes:
       - ReadWriteOnce
     accessModes:
