@@ -13,5 +13,4 @@ spec:
         storage: 1Gi
   serverGroups:
     - name: supply
-      # An empty selector selects all postgresclusters in the Namespace
-      postgresClusterSelector: {}
+      postgresClusterName: postgres-0002
