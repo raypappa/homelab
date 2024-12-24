@@ -11,6 +11,9 @@
 1. MySQL Operator
 1. samba
 1. ldap
+1. [nginx-ingress](https://github.com/bjw-s-labs/home-ops/blob/main/kubernetes/main/apps/network/ingress-nginx/internal/helmrelease.yaml)
+1. [external-dns](https://github.com/bjw-s-labs/home-ops/blob/main/kubernetes/main/apps/network/external-dns/unifi/helmrelease.yaml)
+1. once I have mikrotik using [external-dns-provider-mikrotik](https://github.com/mirceanton/external-dns-provider-mikrotik)
 
 ## Migrate to AppSet
 
@@ -34,6 +37,7 @@
 1. PGAdmin - set up users
 1. Joplin - update to use dragonfly
 1. Immich - update to use dragonfly
+1. ollama nginx ingress
 
 ## Physical
 
