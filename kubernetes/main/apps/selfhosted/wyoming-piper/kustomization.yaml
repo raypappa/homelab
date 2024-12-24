@@ -1,0 +1,12 @@
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: home-assistant
+helmCharts:
+  - name: app-template
+    includeCRDs: true
+    repo: https://bjw-s.github.io/helm-charts
+    namespace: home-assistant
+    releaseName: piper
+    version: 3.5.1
+    valuesFile: values.yaml
