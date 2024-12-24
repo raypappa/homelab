@@ -16,7 +16,8 @@ controllers:
         args:
           - --voice
           # https://rhasspy.github.io/piper-samples/
-          - en_US-norman-medium
+          # en-us-ryan-medium
+          - en-us-norman-medium
         env:
           TZ: "America/Los_Angeles"
 persistence:
