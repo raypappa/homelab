@@ -1,0 +1,7 @@
+{
+  "destNamespace": "home-assistant",
+  "appName": "wyoming-whisper",
+  "serverSideApply": false,
+  "ignoreDifferences": [],
+  "group": "selfhosted"
+}
