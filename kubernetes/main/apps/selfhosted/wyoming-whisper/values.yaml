@@ -25,7 +25,7 @@ persistence:
     enabled: true
     globalMounts:
       - path: /data
-    accessMode: "ReadWriteMany"
+    accessMode: "ReadWriteOnce"
     size: 15Gi
 service:
   main:
