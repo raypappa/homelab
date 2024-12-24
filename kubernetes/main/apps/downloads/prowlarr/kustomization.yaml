@@ -11,7 +11,7 @@ helmCharts:
     valuesInline:
       image:
         # renovate: datasource=docker depName=cloudflare/cloudflared
-        tag: 2024.12.1
+        tag: 2024.12.2
       cloudflare:
         secretName: "prowlarr-tunnel-credentials"
         tunnelName: "faerun-prowlarr"
