@@ -15,9 +15,9 @@ controllers:
             enabled: false
         args:
           - --voice
-          # https://rhasspy.github.io/piper-samples/
-          # en-us-ryan-medium
-          - en-us-norman-medium
+          # Use https://rhasspy.github.io/piper-samples/ to select a voice
+          # Check https://github.com/rhasspy/wyoming-piper/blob/master/wyoming_piper/voices.json to make sure the model is in the image.
+          - en_GB-alba-medium
         env:
           TZ: "America/Los_Angeles"
 persistence:
