@@ -25,7 +25,7 @@ persistence:
     globalMounts:
       - path: /data
     size: 15Gi
-    accessMode: "ReadWriteMany"
+    accessMode: "ReadWriteOnce"
 service:
   main:
     type: LoadBalancer
