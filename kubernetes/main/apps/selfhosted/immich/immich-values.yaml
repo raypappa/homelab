@@ -32,5 +32,6 @@ env:
       secretKeyRef:
         name: immich-db-secret
         key: DB_PASSWORD
+  DB_VECTOR_EXTENSION: pgvector.rs
 postgresql:
   enabled: false
