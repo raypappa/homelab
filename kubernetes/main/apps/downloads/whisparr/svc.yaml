@@ -15,6 +15,9 @@ spec:
     targetRevision: 3.6.0
     helm:
       valuesObject:
+        pod:
+          nodeSelector:
+            kubernetes.io/hostname: puma
         defaultPodOptions:
           securityContext:
             runAsUser: 0
