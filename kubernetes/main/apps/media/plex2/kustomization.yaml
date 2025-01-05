@@ -16,8 +16,12 @@ kind: Kustomization
 #   valuesFile: cloudflare-values.yaml
 resources:
   # - ./external-secret.yaml
+  - ./container.yaml
+  - ./pvc/cache/volsync-replication-source.yaml
+  - ./pvc/cache/volsync-external-secret.yaml
+  - ./pvc/cache/pvc.yaml
+  - ./pvc/cache/volsync-replication-destination.yaml
   - ./pvc/config/volsync-replication-source.yaml
   - ./pvc/config/volsync-external-secret.yaml
   - ./pvc/config/pvc.yaml
   - ./pvc/config/volsync-replication-destination.yaml
-  - ./container.yaml
