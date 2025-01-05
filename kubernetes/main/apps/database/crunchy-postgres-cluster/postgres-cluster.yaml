@@ -59,11 +59,11 @@ spec:
       password:
         type: AlphaNumeric
     # Applications
-    - name: immich
-      databases:
-        - immich
-      password:
-        type: AlphaNumeric
+    # - name: immich
+    #   databases:
+    #     - immich
+    #   password:
+    #     type: AlphaNumeric
     - name: joplin
       databases:
         - joplin
