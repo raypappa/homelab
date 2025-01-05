@@ -1,10 +1,9 @@
 {
-   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-   "customManagers": [
-      {
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "customManagers": [
+    {
       "customType": "regex",
       "description": "Process custom dependencies",
-
       "fileMatch": [
         "(^|/)kubernetes/.+\\.ya?ml$",
       ],
@@ -15,7 +14,6 @@
       "versioningTemplate": "{{#if versioning}}{{{versioning}}}{{else}}semver-coerced{{/if}}",
       "extractVersionTemplate": "{{#if extractVersion}}{{{extractVersion}}}{{/if}}"
     },
-
     {
       "description": "GitHub URL dependencies",
       "fileMatch": [
