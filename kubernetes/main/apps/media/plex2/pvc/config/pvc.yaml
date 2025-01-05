@@ -4,7 +4,7 @@ kind: PersistentVolumeClaim
 metadata:
   name: plex-config
 spec:
-  storageClassName: ceph-filesystem
+  storageClassName: ceph-block
   accessModes:
     - ReadWriteOnce
   resources:

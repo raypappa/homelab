@@ -13,6 +13,7 @@ spec:
     cacheStorageClassName: local-path
     cacheAccessModes:
       - ReadWriteOnce
+    cacheCapacity: 8Gi
     storageClassName: ceph-block
     accessModes:
-      - ReadWriteMany
+      - ReadWriteOnce
