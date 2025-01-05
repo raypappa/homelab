@@ -4,12 +4,12 @@ kind: PersistentVolumeClaim
 metadata:
   name: plex-cache
 spec:
-  storageClassName: ceph-filesystem
+  storageClassName: ceph-block
   accessModes:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 100Gi
+      storage: 50Gi
   dataSourceRef:
     kind: ReplicationDestination
     apiGroup: volsync.backube

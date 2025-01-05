@@ -4,7 +4,7 @@ kind: ReplicationSource
 metadata:
   name: plex-cache-backblaze
 spec:
-  sourcePVC: cache-plex
+  sourcePVC: plex-cache
   trigger:
     schedule: 0 0 * * *
   restic:
@@ -12,11 +12,13 @@ spec:
     pruneIntervalDays: 7
     repository: plex-cache-volsync-backblaze-secret
     volumeSnapshotClassName: ceph-block
-    storageClassName: ceph-block
+    cacheCapacity: 8Gi
+    cacheStorageClassName: local-hostpath
     cacheAccessModes:
       - ReadWriteOnce
+    storageClassName: ceph-block
     accessModes:
-      - ReadWriteMany
+      - ReadWriteOnce
     moverSecurityContext:
       runAsUser: 568
       runAsGroup: 568
