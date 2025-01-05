@@ -6,6 +6,8 @@
       "description": "Process custom dependencies",
       "fileMatch": [
         "(^|/)kubernetes/.+\\.ya?ml$",
+        // Add support for ansible group_vars files
+        "group_vars/.+\\.ya?ml$",
       ],
       "matchStrings": [
         "datasource=(?<datasource>\\S+) depName=(?<depName>\\S+)( versioning=(?<versioning>\\S+))?( extractVersion=(?<extractVersion>\\S+))?\n[^:\"]*?:[ \"]*(?:[^:\r\n]*:|)(?<currentValue>[^\"\r\n]+)\"*\n"
