@@ -36,6 +36,8 @@ helmCharts:
               runAsNonRoot: true
               fsGroup: 1001
               fsGroupChangePolicy: OnRootMismatch
+            nodeSelector:
+              kubernetes.io/hostname: puma
           containers:
             app:
               image:

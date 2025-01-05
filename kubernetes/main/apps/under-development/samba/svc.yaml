@@ -23,6 +23,8 @@ spec:
     chart: samba4
     helm:
       valuesObject:
+        nodeSelector:
+          kubernetes.io/hostname: puma
         samba:
           users:
             - username: otherUser

@@ -24,6 +24,9 @@ spec:
             fsGroupChangePolicy: OnRootMismatch
         controllers:
           readarr:
+            pod:
+              nodeSelector:
+                kubernetes.io/hostname: puma
             containers:
               app:
                 image:

@@ -22,6 +22,9 @@ spec:
             fsGroup: 1001
         controllers:
           main:
+            pod:
+              nodeSelector:
+                kubernetes.io/hostname: puma
             annotations:
               reloader.stakater.com/auto: "true"
             containers:
