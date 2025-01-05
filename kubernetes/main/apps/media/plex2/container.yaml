@@ -11,3 +11,12 @@ spec:
       volumeMounts:
         - name: plex-config
           mountPath: /config
+        - name: plex-cache
+          mountPath: /config/Library/Application Support/Plex Media Server/Cache
+  volumes:
+    - name: plex-config
+      persistentVolumeClaim:
+        claimName: plex-config
+    - name: plex-cache
+      persistentVolumeClaim:
+        claimName: plex-cache

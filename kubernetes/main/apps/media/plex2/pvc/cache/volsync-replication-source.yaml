@@ -1,0 +1,25 @@
+---
+apiVersion: volsync.backube/v1alpha1
+kind: ReplicationSource
+metadata:
+  name: plex-cache-backblaze
+spec:
+  sourcePVC: cache-plex
+  trigger:
+    schedule: 0 0 * * *
+  restic:
+    copyMethod: Snapshot
+    pruneIntervalDays: 7
+    repository: plex-cache-volsync-backblaze-secret
+    volumeSnapshotClassName: ceph-block
+    storageClassName: ceph-block
+    cacheAccessModes:
+      - ReadWriteOnce
+    accessModes:
+      - ReadWriteMany
+    moverSecurityContext:
+      runAsUser: 568
+      runAsGroup: 568
+      fsGroup: 568
+    retain:
+      daily: 7
