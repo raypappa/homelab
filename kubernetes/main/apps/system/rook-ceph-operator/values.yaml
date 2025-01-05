@@ -4,3 +4,5 @@ monitoring:
 csi:
   nfs:
     enabled: true
+  disableHolderPods: true
+  enableCSIHostNetwork: true
