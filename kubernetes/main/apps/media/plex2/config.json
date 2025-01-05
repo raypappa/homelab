@@ -1,0 +1,7 @@
+{
+  "destNamespace": "media",
+  "appName": "plex2",
+  "serverSideApply": false,
+  "ignoreDifferences": [],
+  "group": "selfhosted"
+}
