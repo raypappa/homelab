@@ -13,7 +13,7 @@ spec:
     repository: plex-config-volsync-backblaze-secret
     volumeSnapshotClassName: ceph-block
     cacheCapacity: 8Gi
-    cacheStorageClassName: local-hostpath
+    cacheStorageClassName: local-path
     cacheAccessModes:
       - ReadWriteOnce
     storageClassName: ceph-block
