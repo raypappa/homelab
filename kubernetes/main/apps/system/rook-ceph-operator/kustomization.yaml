@@ -7,5 +7,5 @@ helmCharts:
     includeCRDs: true
     releaseName: rook-ceph
     repo: https://charts.rook.io/release
-    version: v1.16.0
+    version: v1.16.1
     valuesFile: values.yaml
