@@ -19,7 +19,6 @@
 
 1. leantime
 1. pterodactyl
-1. ollama
 1. plex
 1. radarr
 1. readarr
