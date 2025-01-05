@@ -4,6 +4,7 @@ k3s_server_location: /var/lib/rancher/k3s
 k3s_env_tz: America/Los_Angeles
 k3s_env_puid: "1000"
 k3s_env_pgid: "1000"
+# renovate: datasource=github-releases depName=k3s-io/k3s
 k3s_version: v1.30.2+k3s1
 ansible_connection: ssh
 argocd_version: 2.11.5
