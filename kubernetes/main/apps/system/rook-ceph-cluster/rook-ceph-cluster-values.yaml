@@ -5,6 +5,13 @@ monitoring:
 toolbox:
   enabled: true
 cephClusterSpec:
+  resources:
+    mgr:
+      limits:
+        memory: "2Gi"
+      requests:
+        cpu: "500m"
+        memory: "512Mi"
   mon:
     count: 3
   mgr:
