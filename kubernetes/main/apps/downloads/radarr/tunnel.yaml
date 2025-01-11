@@ -17,7 +17,7 @@ spec:
       valuesObject:
         image:
           # renovate: datasource=docker depName=cloudflare/cloudflared
-          tag: 2024.12.2
+          tag: 2025.1.0
         cloudflare:
           secretName: "radarr-tunnel-credentials"
           tunnelName: "faerun-radarr"
