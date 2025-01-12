@@ -10,7 +10,7 @@ spec:
   resources:
     requests:
       storage: 100Gi
-  # dataSourceRef:
-  #   kind: ReplicationDestination
-  #   apiGroup: volsync.backube
-  #   name: plex-config-dst
+  dataSourceRef:
+    kind: ReplicationDestination
+    apiGroup: volsync.backube
+    name: plex-config-dst
