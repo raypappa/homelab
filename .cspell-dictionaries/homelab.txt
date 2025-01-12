@@ -275,3 +275,4 @@ RPCMOUNTDOPTS
 RPCSVCGSSDOPTS
 rhasspy
 mikrotik
+komac
