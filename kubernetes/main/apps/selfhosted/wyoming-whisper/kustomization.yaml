@@ -8,5 +8,5 @@ helmCharts:
     repo: https://bjw-s.github.io/helm-charts
     namespace: home-assistant
     releaseName: whisper
-    version: 3.6.0
+    version: 3.6.1
     valuesFile: values.yaml
