@@ -514,6 +514,8 @@
     - cspell
     - aws-azure-login
 - name: Install Rust
+  tags:
+    - rust
   block:
     - name: Check if rustup has been installed
       ansible.builtin.stat:
@@ -557,3 +559,13 @@
     url: https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-{{ dev_server_ansible_architecture }}
     dest: $HOME/.local/bin/cloudflared
     mode: "0755"
+- name: Install komac nightly
+  tags:
+    - komac-nightly
+    - never
+  ansible.builtin.unarchive:
+    src: https://github.com/russellbanks/Komac/releases/download/nightly/komac-nightly-x86_64-unknown-linux-gnu.tar.gz
+    remote_src: true
+    keep_newer: true
+    mode: "0755"
+    dest: $HOME/.local/bin
