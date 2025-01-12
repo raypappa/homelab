@@ -1,4 +1,5 @@
 ---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/volsync.backube/replicationsource_v1alpha1.json
 apiVersion: volsync.backube/v1alpha1
 kind: ReplicationSource
 metadata:
@@ -12,8 +13,8 @@ spec:
     pruneIntervalDays: 7
     repository: sonarr-config-volsync-backblaze-secret
     volumeSnapshotClassName: ceph-filesystem
-    cacheCapacity: 2Gi
-    cacheStorageClassName: local-path
+    cacheCapacity: 1Gi
+    cacheStorageClassName: openebs-hostpath
     cacheAccessModes:
       - ReadWriteOnce
     storageClassName: ceph-filesystem

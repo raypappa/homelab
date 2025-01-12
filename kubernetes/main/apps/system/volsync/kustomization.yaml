@@ -9,5 +9,6 @@ helmCharts:
     namespace: system
     releaseName: volsync
     version: 0.11.0
+    valuesFile: values.yaml
 resources:
   - prometheus-rule.yaml

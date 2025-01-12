@@ -1,4 +1,5 @@
 ---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/volsync.backube/replicationdestination_v1alpha1.json
 apiVersion: volsync.backube/v1alpha1
 kind: ReplicationDestination
 metadata:
@@ -10,15 +11,16 @@ spec:
     repository: etc-lemonldap-ng-volsync-backblaze-secret
     copyMethod: Snapshot
     volumeSnapshotClassName: ceph-block
-    cacheStorageClassName: local-path
+    cacheStorageClassName: openebs-hostpath
     cacheAccessModes:
       - ReadWriteOnce
-    cacheCapacity: 8Gi
+    cacheCapacity: 1Gi
     storageClassName: ceph-block
     accessModes:
       - ReadWriteOnce
     capacity: 5Gi
 ---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/volsync.backube/replicationdestination_v1alpha1.json
 apiVersion: volsync.backube/v1alpha1
 kind: ReplicationDestination
 metadata:
@@ -30,15 +32,16 @@ spec:
     repository: var-lib-lemonldap-ng-conf-volsync-backblaze-secret
     copyMethod: Snapshot
     volumeSnapshotClassName: ceph-block
-    cacheStorageClassName: local-path
+    cacheStorageClassName: openebs-hostpath
     cacheAccessModes:
       - ReadWriteOnce
-    cacheCapacity: 8Gi
+    cacheCapacity: 1Gi
     storageClassName: ceph-block
     accessModes:
       - ReadWriteOnce
     capacity: 5Gi
 ---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/volsync.backube/replicationdestination_v1alpha1.json
 apiVersion: volsync.backube/v1alpha1
 kind: ReplicationDestination
 metadata:
@@ -50,15 +53,16 @@ spec:
     repository: var-lib-lemonldap-ng-sessions-volsync-backblaze-secret
     copyMethod: Snapshot
     volumeSnapshotClassName: ceph-block
-    cacheStorageClassName: local-path
+    cacheStorageClassName: openebs-hostpath
     cacheAccessModes:
       - ReadWriteOnce
-    cacheCapacity: 8Gi
+    cacheCapacity: 1Gi
     storageClassName: ceph-block
     accessModes:
       - ReadWriteOnce
     capacity: 5Gi
 ---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/volsync.backube/replicationdestination_v1alpha1.json
 apiVersion: volsync.backube/v1alpha1
 kind: ReplicationDestination
 metadata:
@@ -70,10 +74,10 @@ spec:
     repository: var-lib-lemonldap-ng-psessions-volsync-backblaze-secret
     copyMethod: Snapshot
     volumeSnapshotClassName: ceph-block
-    cacheStorageClassName: local-path
+    cacheStorageClassName: openebs-hostpath
     cacheAccessModes:
       - ReadWriteOnce
-    cacheCapacity: 8Gi
+    cacheCapacity: 1Gi
     storageClassName: ceph-block
     accessModes:
       - ReadWriteOnce
