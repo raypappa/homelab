@@ -5,6 +5,6 @@ namespace: database
 helmCharts:
   - name: dragonfly
     releaseName: dragonfly
-    version: v1.26.0
+    version: v1.26.1
     repo: oci://ghcr.io/dragonflydb/dragonfly/helm
     valuesFile: dragonfly-values.yaml
