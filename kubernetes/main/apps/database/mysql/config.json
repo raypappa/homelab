@@ -1,0 +1,7 @@
+{
+  "destNamespace": "database",
+  "appName": "mysql",
+  "serverSideApply": false,
+  "ignoreDifferences": [],
+  "group": "operator"
+}
