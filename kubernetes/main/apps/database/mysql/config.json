@@ -6,8 +6,9 @@
     {
       "kind": "CustomResourceDefinition",
       "name": "innodbclusters.mysql.oracle.com",
+      "group": "apiextensions.k8s.io",
       "jqPathExpressions": [
-        ".spec.versions[] | select(.name == \"v2\") | .schema.openAPIV3Schema.properties.spec.properties.keyring.properties.oci.properties.endpoints.description"
+        ".spec.versions[].schema.openAPIV3Schema.properties.spec.properties.keyring.properties.oci.properties.endpoints.description"
       ]
     }
   ],
