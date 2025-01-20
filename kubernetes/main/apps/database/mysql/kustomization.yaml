@@ -8,3 +8,9 @@ helmCharts:
     repo: https://mysql.github.io/mysql-operator/
     version: 2.2.2
     namespace: database
+  - name: mysql-cluster
+    repo: https://mysql.github.io/mysql-operator/
+    version: 2.2.2
+    namespace: database
+    releaseName: mysql-faerun
+    valuesFile: mysql-cluster-values.yaml

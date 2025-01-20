@@ -9,3 +9,7 @@ helmCharts:
     releaseName: cert-manager
     valuesFile: values.yaml
     includeCRDs: true
+resources:
+  - ./external-secret.yaml
+  - ./lets-encrypt-prod.yaml
+  - ./lets-encrypt-staging.yaml

@@ -1,7 +1,0 @@
-{
-  "destNamespace": "cert-manager",
-  "appName": "cert-manager-issuers",
-  "serverSideApply": false,
-  "ignoreDifferences": [],
-  "group": "controller"
-}
