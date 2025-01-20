@@ -131,6 +131,7 @@
 - name: Install pyenv-virtualenv
   tags:
     - pyenv-virtualenv
+    - pyenv
   ansible.builtin.git:
     repo: https://github.com/pyenv/pyenv-virtualenv.git
     dest: $HOME/.pyenv/plugins/pyenv-virtualenv
@@ -138,9 +139,26 @@
 - name: Install pyenv-update
   tags:
     - pyenv-update
+    - pyenv
   ansible.builtin.git:
     repo: https://github.com/pyenv/pyenv-update.git
     dest: $HOME/.pyenv/plugins/pyenv-update
+    update: true
+- name: Install pyenv-doctor
+  tags:
+    - pyenv-doctor
+    - pyenv
+  ansible.builtin.git:
+    repo: https://github.com/pyenv/pyenv-doctor.git
+    dest: $HOME/.pyenv/plugins/pyenv-doctor
+    update: true
+- name: Install pyenv-default-packages
+  tags:
+    - pyenv-default-packages
+    - pyenv
+  ansible.builtin.git:
+    repo: https://github.com/jawshooah/pyenv-default-packages.git
+    dest: $HOME/.pyenv/plugins/pyenv-default-packages
     update: true
 - name: Install glow
   tags:
