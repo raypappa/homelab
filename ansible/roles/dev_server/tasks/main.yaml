@@ -135,6 +135,13 @@
     repo: https://github.com/pyenv/pyenv-virtualenv.git
     dest: $HOME/.pyenv/plugins/pyenv-virtualenv
     update: true
+- name: Install pyenv-update
+  tags:
+    - pyenv-update
+  ansible.builtin.git:
+    repo: https://github.com/pyenv/pyenv-update.git
+    dest: $HOME/.pyenv/plugins/pyenv-update
+    update: true
 - name: Install glow
   tags:
     - glow
