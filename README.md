@@ -131,6 +131,22 @@ In order to have a functioning pipeline and make it easier for others I have som
 
 ______________________________________________________________________
 
+## Icons
+
+I'm going to make an effort to source any icons I need from https://selfh.st/icons/
+
+## Development
+
+Run the following commands from the project directory
+
+```shell
+pyenv install # this will install the version in .python-version
+pip install poetry
+poetry self add poetry-plugin-shell poetry-plugin-export poetry-plugin-up poetry-dotenv-plugin
+poetry self update
+poetry shell
+```
+
 ## :handshake: Thanks
 
 Thanks to all the people who donate their time to the [Kubernetes @Home](https://discord.gg/k8s-at-home) Discord community. A lot of inspiration for my cluster comes from the people that have shared their clusters using the [k8s-at-home](https://github.com/topics/k8s-at-home) GitHub topic. Be sure to check out the [Kubernetes @Home search](https://nanne.dev/k8s-at-home-search/) for ideas on how to deploy applications or get ideas on what you can deploy. Also a fantastic resource was [bjw-s](https://github.com/bjw-s) own homelab [repo](https://github.com/bjw-s/home-ops/tree/main) and [helm charts](https://github.com/bjw-s/helm-charts) of which without the community would be worse for.
