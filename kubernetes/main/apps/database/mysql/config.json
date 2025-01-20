@@ -2,6 +2,14 @@
   "destNamespace": "database",
   "appName": "mysql",
   "serverSideApply": false,
-  "ignoreDifferences": [],
+  "ignoreDifferences": [
+    {
+      "kind": "CustomResourceDefinition",
+      "name": "innodbclusters.mysql.oracle.com",
+      "jqPathExpressions": [
+        ".spec.versions[] | select(.name == \"v2\") | .schema.openAPIV3Schema.properties.spec.properties.keyring.properties.oci.properties.endpoints.description"
+      ]
+    }
+  ],
   "group": "operator"
 }
