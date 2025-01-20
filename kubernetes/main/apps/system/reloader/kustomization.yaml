@@ -6,5 +6,4 @@ helmCharts:
   - name: reloader
     repo: https://stakater.github.io/stakater-charts
     version: 1.2.0
-    valuesInline:
-      fullnameOverride: reloader
+    valuesFile: values.yaml
