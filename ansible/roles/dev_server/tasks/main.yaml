@@ -18,7 +18,7 @@
     path: $HOME/.ssh
     state: directory
     mode: "0700"
-- name: authorized_keys
+- name: Authorized_keys
   ansible.builtin.copy:
     src: authorized_keys
     dest: $HOME/.ssh/authorized_keys
@@ -40,12 +40,11 @@
     mode: "0755"
   tags:
     - alacritty
-- name: Install Alacritty terminfo
-  ansible.builtin.command: >
-    curl -L -s https://github.com/alacritty/alacritty/releases/latest/download/alacritty.info | sudo tic -xe alacritty,alacritty-direct -
-
-  tags:
-    - alacritty
+# - name: Install Alacritty terminfo
+#   ansible.builtin.command: >
+#     curl -L -s https://github.com/alacritty/alacritty/releases/latest/download/alacritty.info | sudo tic -xe alacritty,alacritty-direct -
+#   tags:
+#     - alacritty
 - name: Architecture mapping
   ansible.builtin.set_fact:
     dev_server_ansible_architecture: "amd64"
@@ -53,7 +52,7 @@
   tags:
     - always
 - name: Install OS Specific packages
-  ansible.builtin.include_tasks: "{{ansible_os_family|lower}}.yaml"
+  ansible.builtin.include_tasks: "{{ ansible_os_family | lower }}.yaml"
 - name: WSL
   when: '"microsoft" in ansible_facts["kernel"]'
   ansible.builtin.include_tasks: wsl.yaml
@@ -75,7 +74,7 @@
       register: lazydocker_latest
     - name: "Extract lazydocker"
       ansible.builtin.unarchive:
-        src: https://github.com/jesseduffield/lazydocker/releases/download/{{lazydocker_latest.json.tag_name}}/lazydocker_{{lazydocker_latest.json.tag_name|replace('v', '')}}_{{ansible_system}}_{{ansible_architecture}}.tar.gz
+        src: https://github.com/jesseduffield/lazydocker/releases/download/{{ lazydocker_latest.json.tag_name }}/lazydocker_{{ lazydocker_latest.json.tag_name | replace('v', '') }}_{{ ansible_system }}_{{ ansible_architecture }}.tar.gz
         dest: $HOME/.local/bin
         include:
           - lazydocker
@@ -86,7 +85,7 @@
   tags:
     - tflint
   ansible.builtin.unarchive:
-    src: https://github.com/terraform-linters/tflint/releases/latest/download//tflint_{{ansible_system|lower}}_{{dev_server_ansible_architecture}}.zip
+    src: https://github.com/terraform-linters/tflint/releases/latest/download//tflint_{{ ansible_system | lower }}_{{ dev_server_ansible_architecture }}.zip
     include:
       - tflint
     dest: $HOME/.local/bin
@@ -114,7 +113,7 @@
       register: terraform_docs_latest
     - name: "Download terraform-docs"
       ansible.builtin.unarchive:
-        src: https://github.com/terraform-docs/terraform-docs/releases/download/{{terraform_docs_latest.json.tag_name}}/terraform-docs-{{terraform_docs_latest.json.tag_name}}-{{ansible_system|lower}}-{{dev_server_ansible_architecture}}.tar.gz
+        src: https://github.com/terraform-docs/terraform-docs/releases/download/{{ terraform_docs_latest.json.tag_name }}/terraform-docs-{{ terraform_docs_latest.json.tag_name }}-{{ ansible_system | lower }}-{{ dev_server_ansible_architecture }}.tar.gz
         dest: $HOME/.local/bin
         keep_newer: true
         include:
@@ -173,11 +172,11 @@
       register: glow_latest
     - name: "Download glow"
       ansible.builtin.unarchive:
-        src: https://github.com/charmbracelet/glow/releases/download/{{glow_latest.json.tag_name}}/glow_{{glow_latest.json.tag_name|replace('v', '')}}_{{ansible_system}}_{{ansible_architecture}}.tar.gz
+        src: https://github.com/charmbracelet/glow/releases/download/{{ glow_latest.json.tag_name }}/glow_{{ glow_latest.json.tag_name | replace('v', '') }}_{{ ansible_system }}_{{ ansible_architecture }}.tar.gz
         dest: $HOME/.local/bin
         extra_opts:
           - --strip-components=1
-        include: glow_{{glow_latest.json.tag_name|replace('v', '')}}_{{ansible_system}}_{{ansible_architecture}}/glow
+        include: glow_{{ glow_latest.json.tag_name | replace('v', '') }}_{{ ansible_system }}_{{ ansible_architecture }}/glow
         keep_newer: true
         remote_src: true
 - name: Install vale
@@ -193,7 +192,7 @@
       register: vale_latest
     - name: "Download vale"
       ansible.builtin.unarchive:
-        src: https://github.com/errata-ai/vale/releases/download/{{vale_latest.json.tag_name}}/vale_{{vale_latest.json.tag_name|replace('v', '')}}_{{ansible_system}}_64-bit.tar.gz
+        src: https://github.com/errata-ai/vale/releases/download/{{ vale_latest.json.tag_name }}/vale_{{ vale_latest.json.tag_name | replace('v', '') }}_{{ ansible_system }}_64-bit.tar.gz
         dest: $HOME/.local/bin
         include:
           - vale
@@ -212,14 +211,14 @@
     - name: Download awscli v2 installer.
       ansible.builtin.unarchive:
         src: "https://awscli.amazonaws.com/awscli-exe-linux-{{ ansible_architecture }}.zip"
-        dest: "{{aws_cli_tmp_dir.path}}"
+        dest: "{{ aws_cli_tmp_dir.path }}"
         remote_src: true
-        creates: "{{aws_cli_tmp_dir.path}}/aws/install"
+        creates: "{{ aws_cli_tmp_dir.path }}/aws/install"
         mode: "0755"
     - name: Run the installer
       command:
       args:
-        cmd: "{{aws_cli_tmp_dir.path}}/aws/install --bin-dir $HOME/.local/bin --install-dir $HOME/.local/opt/aws-cli"
+        cmd: "{{ aws_cli_tmp_dir.path }}/aws/install --bin-dir $HOME/.local/bin --install-dir $HOME/.local/opt/aws-cli"
         creates: $HOME/.local/bin/aws
 - name: Install aws sam CLI
   tags:
@@ -238,19 +237,19 @@
       register: aws_sam_cli_tmp_dir
     - name: Download
       ansible.builtin.unarchive:
-        src: "https://github.com/aws/aws-sam-cli/releases/download/{{sam_latest.json.tag_name}}/aws-sam-cli-linux-{{ansible_architecture}}.zip"
-        dest: "{{aws_sam_cli_tmp_dir.path}}"
+        src: "https://github.com/aws/aws-sam-cli/releases/download/{{ sam_latest.json.tag_name }}/aws-sam-cli-linux-{{ ansible_architecture }}.zip"
+        dest: "{{ aws_sam_cli_tmp_dir.path }}"
         remote_src: true
-        creates: "{{aws_sam_cli_tmp_dir.path}}/install"
+        creates: "{{ aws_sam_cli_tmp_dir.path }}/install"
     - name: Install
       ansible.builtin.command:
-        cmd: "{{aws_sam_cli_tmp_dir.path}}/install --bin-dir $HOME/.local/bin --install-dir $HOME/.local/opt/aws-sam-cli"
+        cmd: "{{ aws_sam_cli_tmp_dir.path }}/install --bin-dir $HOME/.local/bin --install-dir $HOME/.local/opt/aws-sam-cli"
         creates: $HOME/.local/bin/sam
 - name: Install aws-vault
   tags:
     - aws-vault
   ansible.builtin.get_url:
-    url: https://github.com/99designs/aws-vault/releases/latest/download/aws-vault-{{ansible_system|lower}}-{{dev_server_ansible_architecture}}
+    url: https://github.com/99designs/aws-vault/releases/latest/download/aws-vault-{{ ansible_system | lower }}-{{ dev_server_ansible_architecture }}
     dest: $HOME/.local/bin/aws-vault
     mode: "0755"
 - name: Install kubectl
@@ -265,7 +264,7 @@
       register: kubectl_latest
     - name: Download kubectl
       ansible.builtin.get_url:
-        url: https://dl.k8s.io/release/{{kubectl_latest.content}}/bin/{{ansible_system|lower}}/{{dev_server_ansible_architecture}}/kubectl
+        url: https://dl.k8s.io/release/{{ kubectl_latest.content }}/bin/{{ ansible_system | lower }}/{{ dev_server_ansible_architecture }}/kubectl
         dest: $HOME/.local/bin/kubectl
         mode: "0755"
 - name: Install fzf
@@ -281,7 +280,7 @@
       register: fzf_latest
     - name: Download fzf
       ansible.builtin.unarchive:
-        src: https://github.com/junegunn/fzf/releases/download/{{fzf_latest.json.tag_name}}/fzf-{{fzf_latest.json.tag_name|replace('v', '')}}-{{ansible_system}}_{{dev_server_ansible_architecture}}.tar.gz
+        src: https://github.com/junegunn/fzf/releases/download/{{ fzf_latest.json.tag_name }}/fzf-{{ fzf_latest.json.tag_name | replace('v', '') }}-{{ ansible_system }}_{{ dev_server_ansible_architecture }}.tar.gz
         dest: $HOME/.local/bin
         include:
           - fzf
@@ -298,7 +297,7 @@
         state: directory
     - name: Download neovim
       ansible.builtin.unarchive:
-        src: https://github.com/neovim/neovim/releases/latest/download/nvim-{{ansible_system|lower}}64.tar.gz
+        src: https://github.com/neovim/neovim/releases/latest/download/nvim-{{ ansible_system | lower }}64.tar.gz
         remote_src: true
         keep_newer: true
         mode: "0755"
@@ -323,10 +322,10 @@
       register: ripgrep_latest
     - name: Install ripgrep
       ansible.builtin.unarchive:
-        src: https://github.com/BurntSushi/ripgrep/releases/download/{{ripgrep_latest.json.tag_name}}/ripgrep-{{ripgrep_latest.json.tag_name}}-{{ansible_architecture}}-unknown-{{ansible_system|lower}}-musl.tar.gz
+        src: https://github.com/BurntSushi/ripgrep/releases/download/{{ ripgrep_latest.json.tag_name }}/ripgrep-{{ ripgrep_latest.json.tag_name }}-{{ ansible_architecture }}-unknown-{{ ansible_system | lower }}-musl.tar.gz
         dest: $HOME/.local/bin
         include:
-          - ripgrep-{{ripgrep_latest.json.tag_name}}-{{ansible_architecture}}-unknown-{{ansible_system|lower}}-musl/rg
+          - ripgrep-{{ ripgrep_latest.json.tag_name }}-{{ ansible_architecture }}-unknown-{{ ansible_system | lower }}-musl/rg
         keep_newer: true
         remote_src: true
         mode: "0755"
@@ -346,10 +345,10 @@
       register: fd_latest
     - name: Install fd
       ansible.builtin.unarchive:
-        src: https://github.com/sharkdp/fd/releases/download/{{fd_latest.json.tag_name}}/fd-{{fd_latest.json.tag_name}}-{{ansible_architecture}}-unknown-{{ansible_system|lower}}-gnu.tar.gz
+        src: https://github.com/sharkdp/fd/releases/download/{{ fd_latest.json.tag_name }}/fd-{{ fd_latest.json.tag_name }}-{{ ansible_architecture }}-unknown-{{ ansible_system | lower }}-gnu.tar.gz
         dest: $HOME/.local/bin
         include:
-          - fd-{{fd_latest.json.tag_name}}-{{ansible_architecture}}-unknown-{{ansible_system|lower}}-gnu/fd
+          - fd-{{ fd_latest.json.tag_name }}-{{ ansible_architecture }}-unknown-{{ ansible_system | lower }}-gnu/fd
         keep_newer: true
         remote_src: true
         mode: "0755"
@@ -366,11 +365,11 @@
       register: tree_sitter_tmp_dir
     - name: Download tree-sitter
       ansible.builtin.get_url:
-        url: https://github.com/tree-sitter/tree-sitter/releases/latest/download/tree-sitter-{{ansible_system}}-x64.gz
-        dest: "{{tree_sitter_tmp_dir.path}}/tree-sitter.gz"
+        url: https://github.com/tree-sitter/tree-sitter/releases/latest/download/tree-sitter-{{ ansible_system }}-x64.gz
+        dest: "{{ tree_sitter_tmp_dir.path }}/tree-sitter.gz"
     - name: Install tree-sitter
       community.general.decompress:
-        src: "{{tree_sitter_tmp_dir.path}}/tree-sitter.gz"
+        src: "{{ tree_sitter_tmp_dir.path }}/tree-sitter.gz"
         dest: $HOME/.local/bin/tree-sitter
         mode: "0755"
         format: gz
@@ -378,7 +377,7 @@
   tags:
     - pnpm
   ansible.builtin.get_url:
-    url: https://github.com/pnpm/pnpm/releases/latest/download/pnpm-{{ansible_system|lower}}-x64
+    url: https://github.com/pnpm/pnpm/releases/latest/download/pnpm-{{ ansible_system | lower }}-x64
     dest: $HOME/.local/bin/pnpm
 - name: Install goenv
   tags:
@@ -407,10 +406,10 @@
       register: gh_latest
     - name: Download
       ansible.builtin.unarchive:
-        src: https://github.com/cli/cli/releases/download/{{gh_latest.json.tag_name}}/gh_{{gh_latest.json.tag_name|replace('v', '')}}_{{ansible_system|lower}}_{{dev_server_ansible_architecture}}.tar.gz
+        src: https://github.com/cli/cli/releases/download/{{ gh_latest.json.tag_name }}/gh_{{ gh_latest.json.tag_name | replace('v', '') }}_{{ ansible_system | lower }}_{{ dev_server_ansible_architecture }}.tar.gz
         dest: $HOME/.local/
         include:
-          - gh_{{gh_latest.json.tag_name|replace('v', '')}}_{{ansible_system|lower}}_{{dev_server_ansible_architecture}}/bin/gh
+          - gh_{{ gh_latest.json.tag_name | replace('v', '') }}_{{ ansible_system | lower }}_{{ dev_server_ansible_architecture }}/bin/gh
         keep_newer: true
         extra_opts:
           - --strip-components=1
@@ -439,25 +438,25 @@
       register: taskfile_tmp_dir
     - name: Download taskfile
       ansible.builtin.unarchive:
-        src: https://github.com/go-task/task/releases/latest/download/task_{{ansible_system|lower}}_{{dev_server_ansible_architecture}}.tar.gz
-        dest: "{{taskfile_tmp_dir.path}}"
+        src: https://github.com/go-task/task/releases/latest/download/task_{{ ansible_system | lower }}_{{ dev_server_ansible_architecture }}.tar.gz
+        dest: "{{ taskfile_tmp_dir.path }}"
         mode: "0755"
         keep_newer: true
         remote_src: true
     - name: Install taskfile bin
       ansible.builtin.copy:
-        src: "{{taskfile_tmp_dir.path}}/task"
+        src: "{{ taskfile_tmp_dir.path }}/task"
         dest: $HOME/.local/bin/task
         mode: "0755"
     - name: Install taskfile bash completion
       ansible.builtin.copy:
-        src: "{{taskfile_tmp_dir.path}}/completion/bash/task.bash"
+        src: "{{ taskfile_tmp_dir.path }}/completion/bash/task.bash"
         dest: $HOME/.local/share/bash-completion/task.bash
         mode: "0755"
         # I don't know where zsh completion is supposed to go
         # - name: Install zsh completion
         #   ansible.builtin.copy:
-        #     src: "{{taskfile_tmp_dir.path}}/completion/zsh/_task"
+        #     src: "{{ taskfile_tmp_dir.path }}/completion/zsh/_task"
         #     dest: $HOME/.local/share/zsh/site-functions/_task
         #     mode: "0755"
 - name: git-plugins
@@ -471,14 +470,14 @@
   tags:
     - git-checkout-branch
   ansible.builtin.get_url:
-    url: https://github.com/royeo/git-checkout-branch/releases/latest/download/git-checkout-branch-{{ansible_system}}-{{ansible_architecture}}
+    url: https://github.com/royeo/git-checkout-branch/releases/latest/download/git-checkout-branch-{{ ansible_system }}-{{ ansible_architecture }}
     dest: $HOME/.local/bin/git-checkout-branch
     mode: "0755"
 - name: Install k9s
   tags:
     - k9s
   ansible.builtin.unarchive:
-    src: https://github.com/derailed/k9s/releases/latest/download/k9s_{{ansible_system}}_{{dev_server_ansible_architecture}}.tar.gz
+    src: https://github.com/derailed/k9s/releases/latest/download/k9s_{{ ansible_system }}_{{ dev_server_ansible_architecture }}.tar.gz
     dest: $HOME/.local/bin
     include:
       - k9s
@@ -493,7 +492,7 @@
 - name: Install latest version of python
   tags:
     - python
-  ansible.builtin.shell: pyenv install -s {{latest_python.stdout}}
+  ansible.builtin.shell: pyenv install -s {{ latest_python.stdout }}
 - name: Install pip modules
   tags:
     - pip
@@ -505,12 +504,12 @@
   tags:
     - nvshim
   community.general.pipx:
-    executable: $HOME/.pyenv/versions/{{latest_python.stdout}}/bin/pipx
+    executable: $HOME/.pyenv/versions/{{ latest_python.stdout }}/bin/pipx
     global: false
     name: nvshim
     source: git+https://github.com/iamogbz/nvshim.git
     state: latest
-    python: "{{latest_python.stdout}}"
+    python: "{{ latest_python.stdout }}"
 - name: Setup nvm
   tags:
     - nvm
@@ -530,7 +529,7 @@
   tags:
     - npm
   ansible.builtin.file:
-    src: $NVM_BIN/{{item}}
+    src: $NVM_BIN/{{ item }}
     dest: $HOME/.local/bin/{{ item }}
     state: link
   loop:
@@ -594,3 +593,30 @@
     keep_newer: true
     mode: "0755"
     dest: $HOME/.local/bin
+- name: Install yq
+  tags:
+    - yq
+  ansible.builtin.get_url:
+    url: https://github.com/mikefarah/yq/releases/latest/download/yq_{{ ansible_system | lower }}_{{ dev_server_ansible_architecture }}
+    dest: $HOME/.local/bin/yq
+    mode: "0755"
+- name: Install chart-testing
+  tags:
+    - chart-testing
+  block:
+    - name: Find latest version of chart-testing
+      ansible.builtin.uri:
+        url: https://github.com/helm/chart-testing/releases/latest
+        headers:
+          Accept: application/json
+        status_code: 200
+      register: ct_latest
+    - name: Install chart-testing
+      ansible.builtin.unarchive:
+        src: https://github.com/helm/chart-testing/releases/download/{{ ct_latest.json.tag_name }}/chart-testing_{{ ct_latest.json.tag_name | replace('v', '') }}_{{ ansible_system | lower }}_{{ dev_server_ansible_architecture }}.tar.gz
+        remote_src: true
+        keep_newer: true
+        mode: "0755"
+        dest: $HOME/.local/bin
+        include:
+          - ct
