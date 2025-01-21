@@ -8,5 +8,5 @@ spec:
   dnsNames:
     - 'mysql.faerun.fieldsofbears.com'
   issuerRef:
-    name: letsencrypt-staging
+    name: letsencrypt-production
     kind: ClusterIssuer
