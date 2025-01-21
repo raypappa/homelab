@@ -8,3 +8,4 @@ helmCharts:
     namespace: ldap
     releaseName: lldap
     version: 0.1.0
+    valuesFile: values.yaml
