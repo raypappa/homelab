@@ -7,4 +7,4 @@ helmCharts:
     repo: https://raypappa.github.io/helm-charts
     namespace: ldap
     releaseName: lldap
-    version: 0.0.1
+    version: 0.1.0
