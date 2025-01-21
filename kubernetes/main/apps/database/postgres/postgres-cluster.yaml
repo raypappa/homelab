@@ -58,17 +58,18 @@ spec:
       options: "SUPERUSER"
       password:
         type: AlphaNumeric
-    # Applications
-    # - name: immich
-    #   databases:
-    #     - immich
-    #   password:
-    #     type: AlphaNumeric
-    - name: joplin
-      databases:
-        - joplin
-      password:
-        type: AlphaNumeric
+        # Applications
+        # - name: immich
+        #   databases:
+        #     - immich
+        #   password:
+        #     type: AlphaNumeric
+        # Disabled until joplin supports mTLS or extra headers
+        # - name: joplin
+        #   databases:
+        #     - joplin
+        #   password:
+        #     type: AlphaNumeric
   backups:
     pgbackrest:
       configuration: &backupConfig
