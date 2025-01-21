@@ -1,0 +1,12 @@
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: certificate
+spec:
+  secretName: mysql-faerun-router-tls
+  dnsNames:
+    - 'mysql-faerun.stoneydavis.lan'
+  issuerRef:
+    name: letsencrypt-staging
+    kind: ClusterIssuer
