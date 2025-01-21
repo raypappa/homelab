@@ -1,0 +1,10 @@
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: ldap
+helmCharts:
+  - name: lldap
+    repo: https://raypappa.github.io/helm-charts
+    namespace: ldap
+    releaseName: lldap
+    version: 0.0.1
