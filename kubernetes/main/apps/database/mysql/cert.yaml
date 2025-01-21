@@ -6,7 +6,7 @@ metadata:
 spec:
   secretName: mysql-faerun-router-tls
   dnsNames:
-    - 'mysql-faerun.stoneydavis.lan'
+    - 'mysql.faerun.fieldsofbears.com'
   issuerRef:
     name: letsencrypt-staging
     kind: ClusterIssuer
