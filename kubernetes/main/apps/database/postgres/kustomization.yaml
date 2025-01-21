@@ -16,3 +16,16 @@ helmCharts:
       install:
         clusterLabels:
           app.kubernetes.io/name: pgo
+  - name: crunchy-userinit-controller
+    releaseName: crunchy-userinit-controller
+    version: 0.0.4
+    repo: https://ramblurr.github.io/crunchy-userinit-controller
+    valuesInline:
+      fullnameOverride: crunchy-userinit-controller
+resources:
+  - ./rbac.yaml
+  - ./secret-store.yaml
+  - ./pod-monitor.yaml
+  - ./external-secret.yaml
+  - ./postgres-cluster.yaml
+  - ./postgres-admin.yaml
