@@ -1,7 +1,0 @@
-{
-  "destNamespace": "database",
-  "appName": "crunchy-userinit-controller",
-  "serverSideApply": false,
-  "ignoreDifferences": [],
-  "group": "system"
-}
