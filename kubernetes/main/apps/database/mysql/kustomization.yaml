@@ -14,3 +14,5 @@ helmCharts:
     namespace: database
     releaseName: mysql-faerun
     valuesFile: mysql-cluster-values.yaml
+resources:
+  - cert.yaml
