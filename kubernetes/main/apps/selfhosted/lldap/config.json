@@ -1,0 +1,7 @@
+{
+  "destNamespace": "ldap",
+  "appName": "lldap",
+  "serverSideApply": false,
+  "ignoreDifferences": [],
+  "group": "system"
+}
