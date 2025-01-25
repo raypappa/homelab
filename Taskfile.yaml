@@ -23,36 +23,20 @@ tasks:
     cmds:
       - pre-commit run -a
       - task: ansible:check
-  configure:poetry:install:
-    desc: Install poetry
+  configure:uv:
+    desc: Configure project including installing dependencies from uv
     silent: true
-    preconditions:
-      - type pip
-      - test -z "$POETRY_ACTIVE"
-    cmds:
-      - pip install poetry
-      - poetry self add poetry-plugin-shell poetry-plugin-export poetry-plugin-up poetry-dotenv-plugin
-    status:
-      - type poetry
-      - poetry self show plugins | grep poetry-plugin-shell
-      - poetry self show plugins | grep poetry-plugin-export
-      - poetry self show plugins | grep poetry-plugin-up
-      - poetry self show plugins | grep poetry-dotenv-plugin
-  configure:poetry:
-    desc: Configure project including installing dependencies from poetry
-    silent: true
-    deps:
-      - configure:poetry:install
     preconditions:
       - test -e pyproject.toml
+      - type uv
     cmds:
-      - poetry install
+      - uv sync --all-packages
   configure:
-    desc: Configure project including installing dependencies from npm/poetry
+    desc: Configure project including installing dependencies from npm/uv
     silent: true
     cmds:
       - npm ci
-      - task: configure:poetry
+      - task: configure:uv
       - task: ansible:configure
   argocd:install:
     desc: Install ArgoCD CLI
