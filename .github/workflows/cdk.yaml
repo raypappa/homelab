@@ -1,6 +1,6 @@
 ---
 name: AWS-CDK
-on:
+on: # yamllint disable-line rule:truthy
   push:
     branches:
       - main
@@ -53,10 +53,14 @@ jobs:
         uses: arduino/setup-task@v2.0.0
         with:
           version: ${{ vars.TASK_VERSION}}
-      - uses: ITProKyle/action-setup-python@v1.1.0
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
         with:
-          python-version: ${{ vars.PYTHON_VERSION }}
-          poetry-version: 1.8.4
+          version: "0.5.24"
+      - name: "Set up Python"
+        uses: actions/setup-python@v5
+        with:
+          python-version-file: ".python-version"
       - name: Setting up CDK
         run: task configure
       - name: Bootstrapping CDK

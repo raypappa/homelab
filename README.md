@@ -139,13 +139,7 @@ I'm going to make an effort to source any icons I need from https://selfh.st/ico
 
 Run the following commands from the project directory
 
-```shell
-pyenv install # this will install the version in .python-version
-pip install poetry
-poetry self add poetry-plugin-shell poetry-plugin-export poetry-plugin-up poetry-dotenv-plugin
-poetry self update
-poetry shell
-```
+<!-- TODO: replace with uv instructions -->
 
 ## :handshake: Thanks
 

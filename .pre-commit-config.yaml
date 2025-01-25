@@ -69,3 +69,8 @@ repos:
         language: system
         types: [text]
         files: "\\.(jsx?|tsx?|c(js|ts)|m(js|ts)|d\\.(ts|cts|mts)|jsonc?|css)$"
+  - repo: https://github.com/astral-sh/uv-pre-commit
+    # uv version.
+    rev: 0.5.24
+    hooks:
+      - id: uv-lock

@@ -277,3 +277,4 @@ rhasspy
 mikrotik
 komac
 dotenv
+duduribeiro

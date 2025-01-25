@@ -620,3 +620,16 @@
         dest: $HOME/.local/bin
         include:
           - ct
+- name: Install uv
+  tags:
+    - uv
+  ansible.builtin.unarchive:
+    src: https://github.com/astral-sh/uv/releases/latest/download/uv-{{ ansible_architecture }}-unknown-{{ ansible_system | lower }}-gnu.tar.gz
+    remote_src: true
+    keep_newer: true
+    mode: "0755"
+    dest: $HOME/.local/bin
+    include:
+      - uv-{{ ansible_architecture }}-unknown-{{ ansible_system | lower }}-gnu/uv
+    extra_opts:
+      - --strip-components=1

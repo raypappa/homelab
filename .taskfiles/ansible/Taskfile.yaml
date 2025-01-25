@@ -9,12 +9,12 @@ tasks:
   check:
     desc: Lint Ansible
     cmds:
-      - poetry run ansible-lint homelab.yaml {{.ANSIBLE_LINT_ARGS}}
+      - uv run ansible-lint homelab.yaml {{.ANSIBLE_LINT_ARGS}}
   deploy:
     desc: Run ansible playbook
     silent: true
     cmds:
-      - poetry run ansible-playbook -i hosts {{.CLI_ARGS}} homelab.yaml
+      - uv run ansible-playbook -i hosts {{.CLI_ARGS}} homelab.yaml
   deploy:ci:
     desc: Run ansible playbook in CI
     requires:
@@ -29,7 +29,7 @@ tasks:
   deploy:canary:
     desc: Ping hosts with ansible
     cmds:
-      - poetry run ansible -i hosts -m ping all {{.CLI_ARGS}}
+      - uv run ansible -i hosts -m ping all {{.CLI_ARGS}}
   deploy:canary:ci:
     desc: Ping host with ansible using CI flags
     requires:
@@ -68,4 +68,4 @@ tasks:
     aliases:
       - setup
     cmds:
-      - poetry run ansible-galaxy install -r galaxy.yaml
+      - uv run ansible-galaxy install -r galaxy.yaml
