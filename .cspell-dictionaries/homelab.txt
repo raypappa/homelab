@@ -278,3 +278,12 @@ mikrotik
 komac
 dotenv
 duduribeiro
+coderabbitai
+languagetool
+swiftlint
+phpstan
+golangci
+detekt
+rubocop
+cppcheck
+semgrep
