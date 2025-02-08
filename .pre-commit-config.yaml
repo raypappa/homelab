@@ -48,7 +48,7 @@ repos:
           - mdformat-config
         id: mdformat
     repo: https://github.com/executablebooks/mdformat
-    rev: 0.7.21
+    rev: 0.7.22
   - repo: https://github.com/streetsidesoftware/cspell-cli
     rev: v8.17.1
     hooks:
