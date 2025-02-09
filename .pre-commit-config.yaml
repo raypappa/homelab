@@ -12,7 +12,7 @@ repos:
         stages:
           - pre-push
     repo: https://github.com/commitizen-tools/commitizen
-    rev: v4.2.0
+    rev: v4.2.1
   - hooks:
       - id: no-commit-to-branch
       - id: check-json
