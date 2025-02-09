@@ -4,7 +4,7 @@ kind: ConfigMap
 metadata:
   name: argocd-cm
 data:
-  url: https://argocd.fieldsofbears.com
+  url: https://argocd.app.fieldsofbears.com
   kustomize.buildOptions: --enable-helm
   accounts.homepage: apiKey
   accounts.cdavis: login, apiKey

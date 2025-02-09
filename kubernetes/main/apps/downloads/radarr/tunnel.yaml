@@ -22,7 +22,7 @@ spec:
           secretName: "radarr-tunnel-credentials"
           tunnelName: "faerun-radarr"
           ingress:
-            - hostname: "radarr.fieldsofbears.com"
+            - hostname: "radarr.app.fieldsofbears.com"
               service: "http://radarr-svc.homelab.svc.cluster.local:7878"
   destination:
     server: "https://kubernetes.default.svc"

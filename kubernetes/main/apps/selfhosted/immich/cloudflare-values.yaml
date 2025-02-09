@@ -6,5 +6,5 @@ cloudflare:
   secretName: "immich-tunnel-credentials"
   tunnelName: "faerun-immich"
   ingress:
-    - hostname: "immich.fieldsofbears.com"
+    - hostname: "immich.app.fieldsofbears.com"
       service: "http://immich-server-server.selfhosted.svc.cluster.local:3001"

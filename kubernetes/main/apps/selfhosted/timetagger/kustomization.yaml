@@ -16,7 +16,7 @@ helmCharts:
         secretName: "timetagger-tunnel-credentials"
         tunnelName: "faerun-timetagger"
         ingress:
-          - hostname: "timetagger.fieldsofbears.com"
+          - hostname: "timetagger.app.fieldsofbears.com"
             service: "http://timetagger.timetagger.svc.cluster.local:80"
   - name: app-template
     includeCRDs: true
