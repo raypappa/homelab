@@ -12,10 +12,7 @@ helmCharts:
     # helm show chart oci://registry.developers.crunchydata.com/crunchydata/pgo
     repo: oci://registry.developers.crunchydata.com/crunchydata
     includeCRDs: true
-    valuesInline:
-      install:
-        clusterLabels:
-          app.kubernetes.io/name: pgo
+    valuesFile: operator-values.yaml
   - name: crunchy-userinit-controller
     releaseName: crunchy-userinit-controller
     version: 0.0.4
@@ -28,4 +25,4 @@ resources:
   - ./pod-monitor.yaml
   - ./external-secret.yaml
   - ./postgres-cluster.yaml
-  - ./postgres-admin.yaml
+  # - ./postgres-admin.yaml
