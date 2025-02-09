@@ -58,16 +58,15 @@ spec:
       options: "SUPERUSER"
       password:
         type: AlphaNumeric
-        # Applications
+    # Applications
+    - name: joplin
+      databases:
+        - joplin
+      password:
+        type: AlphaNumeric
         # - name: immich
         #   databases:
         #     - immich
-        #   password:
-        #     type: AlphaNumeric
-        # Disabled until joplin supports mTLS or extra headers
-        # - name: joplin
-        #   databases:
-        #     - joplin
         #   password:
         #     type: AlphaNumeric
   backups:
