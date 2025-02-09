@@ -22,7 +22,7 @@ spec:
           secretName: "rtorrent-tunnel-credentials"
           tunnelName: "faerun-rtorrent"
           ingress:
-            - hostname: "flood.app.fieldsofbears.com"
+            - hostname: "flood.fieldsofbears.com"
               service: "http://rtorrent-app.homelab.svc.cluster.local:3000"
   destination:
     server: "https://kubernetes.default.svc"

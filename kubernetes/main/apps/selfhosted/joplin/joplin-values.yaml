@@ -10,7 +10,7 @@ controllers:
           # renovate: datasource=docker depName=joplin/server
           tag: 3.0.1-beta
         env:
-          APP_BASE_URL: https://joplin.app.fieldsofbears.com
+          APP_BASE_URL: https://joplin.fieldsofbears.com
           APP_PORT: &port 8080
           TZ: America/Los_Angeles
           DB_CLIENT: pg
@@ -47,7 +47,7 @@ controllers:
               httpGet:
                 httpHeaders:
                   - name: Host
-                    value: "joplin.app.fieldsofbears.com"
+                    value: "joplin.fieldsofbears.com"
                 path: /api/ping
                 port: *port
               initialDelaySeconds: 0

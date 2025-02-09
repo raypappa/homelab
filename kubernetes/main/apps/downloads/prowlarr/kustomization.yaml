@@ -16,7 +16,7 @@ helmCharts:
         secretName: "prowlarr-tunnel-credentials"
         tunnelName: "faerun-prowlarr"
         ingress:
-          - hostname: "prowlarr.app.fieldsofbears.com"
+          - hostname: "prowlarr.fieldsofbears.com"
             service: "http://prowlarr.homelab.svc.cluster.local:9696"
   - name: app-template
     includeCRDs: true

@@ -12,7 +12,7 @@ helmCharts:
     valuesInline:
       cloudflare:
         ingress:
-          - hostname: argocd.app.fieldsofbears.com
+          - hostname: argocd.fieldsofbears.com
             service: http://argocd-server.argocd.svc.cluster.local:80
         secretName: argocd-tunnel-credentials
         tunnelName: faerun-argocd

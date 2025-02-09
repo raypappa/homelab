@@ -6,5 +6,5 @@ cloudflare:
   secretName: "joplin-tunnel-credentials"
   tunnelName: "faerun-joplin"
   ingress:
-    - hostname: "joplin.app.fieldsofbears.com"
+    - hostname: "joplin.fieldsofbears.com"
       service: "http://joplin.joplin.svc.cluster.local:8080"

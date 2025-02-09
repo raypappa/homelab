@@ -6,5 +6,5 @@ cloudflare:
   secretName: "sonarr-tunnel-credentials"
   tunnelName: "faerun-sonarr"
   ingress:
-    - hostname: "sonarr.app.fieldsofbears.com"
+    - hostname: "sonarr.fieldsofbears.com"
       service: "http://sonarr.sonarr.svc.cluster.local:8989"

@@ -58,7 +58,7 @@ config:
     - Productivity:
         - Leantime:
             - abbr: lt
-              href: https://lt.app.fieldsofbears.com/
+              href: https://lt.fieldsofbears.com/
     - Developer:
         - Infrastructure:
             - abbr: infra
@@ -75,7 +75,7 @@ config:
   services:
     - Kubernetes:
         - ArgoCD:
-            href: https://argocd.app.fieldsofbears.com
+            href: https://argocd.fieldsofbears.com
             icon: argocd.svg
             app: argocd-server
             namespace: argocd
@@ -89,7 +89,7 @@ config:
             #     - name: Total Apps
             #       query: sum(argocd_app_info)
         - Ceph:
-            href: https://rook.app.fieldsofbears.com
+            href: https://rook.fieldsofbears.com
             icon: ceph.svg
             app: ceph-mgr
             namespace: rook-ceph
@@ -119,18 +119,18 @@ config:
               key: "{{HOMEPAGE_VAR_PTERODACTYL_API_KEY}}"
     - Monitoring:
         - Grafana:
-            href: https://grafana.app.fieldsofbears.com
+            href: https://grafana.fieldsofbears.com
             icon: grafana.svg
             namespace: monitoring
             app: grafana
         - Prometheus:
-            href: https://prometheus.app.fieldsofbears.com
+            href: https://prometheus.fieldsofbears.com
             icon: prometheus.svg
             namespace: monitoring
             app: prometheus
     - Development:
         - AI:
-            href: https://ai.app.fieldsofbears.com
+            href: https://ai.fieldsofbears.com
     - Media:
         - Plex:
             href: https://potato.fieldsofbears.com/web/index.html#!/
@@ -147,7 +147,7 @@ config:
                 - albums
     - Downloads:
         - Sonarr:
-            href: https://sonarr.app.fieldsofbears.com
+            href: https://sonarr.fieldsofbears.com
             icon: sonarr.svg
             namespace: homelab
             app: sonarr
@@ -157,7 +157,7 @@ config:
               key: "{{HOMEPAGE_VAR_SONARR_API_KEY}}"
               enableQueue: true # optional, defaults to false
         - Radarr:
-            href: https://radarr.app.fieldsofbears.com
+            href: https://radarr.fieldsofbears.com
             namespace: homelab
             app: radarr-svc
             icon: radarr.svg
@@ -171,7 +171,7 @@ config:
                 - queue
                 - movies
         - Readarr:
-            href: https://readarr.app.fieldsofbears.com
+            href: https://readarr.fieldsofbears.com
             namespace: homelab
             app: readarr-svc
             icon: readarr.svg
@@ -184,12 +184,12 @@ config:
                 - queued
                 - books
         - Whisparr:
-            href: https://whisparr.app.fieldsofbears.com
+            href: https://whisparr.fieldsofbears.com
             namespace: homelab
             app: whisparr-svc
             icon: whisparr.svg
         - Prowlarr:
-            href: https://prowlarr.app.fieldsofbears.com
+            href: https://prowlarr.fieldsofbears.com
             app: prowlarr-svc
             namespace: homelab
             icon: prowlarr.svg
@@ -203,7 +203,7 @@ config:
                 - numberOfFailGrabs
                 - numberOfFailQueries
         - Flood:
-            href: https://flood.app.fieldsofbears.com
+            href: https://flood.fieldsofbears.com
             namespace: homelab
             app: rtorrent-app
             icon: flood.svg

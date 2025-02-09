@@ -22,9 +22,9 @@ spec:
           secretName: "monitoring-tunnel-credentials"
           tunnelName: "faerun-monitoring"
           ingress:
-            - hostname: "grafana.app.fieldsofbears.com"
+            - hostname: "grafana.fieldsofbears.com"
               service: "http://monitoring-lgtm-grafana.monitoring.svc.cluster.local:80"
-            - hostname: "prometheus.app.fieldsofbears.com"
+            - hostname: "prometheus.fieldsofbears.com"
               service: "http://prometheus-operated.monitoring.svc.cluster.local:9090"
               # annotations:
               #   gethomepage.dev/enabled: 'true'
