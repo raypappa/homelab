@@ -82,7 +82,7 @@ spec:
                   # Lots of this is pulled wholesale from
                   # https://github.com/Leantime/docker-leantime/blob/master/sample.env
                   LEAN_PORT: "80"
-                  LEAN_APP_URL: "https://lt.fieldsofbears.com"
+                  LEAN_APP_URL: "https://lt.app.fieldsofbears.com"
                   LEAN_APP_DIR: ""
                   LEAN_DEBUG: "0"
                   # MariaDB stuff here

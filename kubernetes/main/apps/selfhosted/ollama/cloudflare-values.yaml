@@ -6,5 +6,5 @@ cloudflare:
   secretName: "ollama-tunnel-credentials"
   tunnelName: "faerun-ollama"
   ingress:
-    - hostname: "ai.fieldsofbears.com"
+    - hostname: "ai.app.fieldsofbears.com"
       service: "http://open-webui.ollama.svc.cluster.local:8080"
