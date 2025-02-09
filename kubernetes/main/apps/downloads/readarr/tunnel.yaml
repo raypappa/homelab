@@ -22,7 +22,7 @@ spec:
           secretName: "readarr-tunnel-credentials"
           tunnelName: "faerun-readarr"
           ingress:
-            - hostname: "readarr.app.fieldsofbears.com"
+            - hostname: "readarr.fieldsofbears.com"
               service: "http://readarr-svc.homelab.svc.cluster.local:8787"
   destination:
     server: "https://kubernetes.default.svc"

@@ -6,5 +6,5 @@ cloudflare:
   secretName: "rook-ceph-tunnel-credentials"
   tunnelName: "faerun-rook-ceph"
   ingress:
-    - hostname: "rook.app.fieldsofbears.com"
+    - hostname: "rook.fieldsofbears.com"
       service: "http://rook-ceph-mgr-dashboard.rook-ceph.svc.cluster.local:7000"

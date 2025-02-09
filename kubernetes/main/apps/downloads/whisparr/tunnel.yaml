@@ -22,7 +22,7 @@ spec:
           secretName: "whisparr-tunnel-credentials"
           tunnelName: "faerun-whisparr"
           ingress:
-            - hostname: "whisparr.app.fieldsofbears.com"
+            - hostname: "whisparr.fieldsofbears.com"
               service: "http://whisparr-svc.homelab.svc.cluster.local:6969"
   destination:
     server: "https://kubernetes.default.svc"
