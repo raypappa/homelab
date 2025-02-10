@@ -14,6 +14,8 @@
 1. [nginx-ingress](https://github.com/bjw-s-labs/home-ops/blob/main/kubernetes/main/apps/network/ingress-nginx/internal/helmrelease.yaml)
 1. [external-dns](https://github.com/bjw-s-labs/home-ops/blob/main/kubernetes/main/apps/network/external-dns/unifi/helmrelease.yaml)
 1. once I have mikrotik using [external-dns-provider-mikrotik](https://github.com/mirceanton/external-dns-provider-mikrotik)
+1. [spotizerr](https://github.com/Xoconoch/spotizerr)
+1. [metube](https://github.com/alexta69/metube) or [tubearchivist](https://github.com/tubearchivist/tubearchivist)
 
 ## Migrate to AppSet
 

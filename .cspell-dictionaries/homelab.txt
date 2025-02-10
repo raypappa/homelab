@@ -287,3 +287,6 @@ detekt
 rubocop
 cppcheck
 semgrep
+spotizerr
+metube
+tubearchivist
