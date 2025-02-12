@@ -20,7 +20,7 @@ jobs:
         run: |
           first_domain=$(echo ${{ secrets.CERTBOT_DOMAINS }} | cut -d',' -f1)
           echo "::add-mask::${first_domain}-cert"
-          SECRET_STRING=$(aws secretsmanager get-secret-value --secret-id ${first_domain}-cert --query SecretString --output json)
+          SECRET_STRING=$(aws secretsmanager get-secret-value --secret-id ${first_domain}-cert --query SecretString --output text)
           CERT_PATH="certbot-config/archive/${first_domain}"
           LIVE_PATH="certbot-config/live/${first_domain}"
           mkdir -p ${CERT_PATH} ${LIVE_PATH}
