@@ -32,6 +32,12 @@ jobs:
           ln -s ${CERT_PATH}/privkey1.pem ${LIVE_PATH}/privkey.pem
           ln -s ${CERT_PATH}/chain1.pem ${LIVE_PATH}/chain.pem
           ln -s ${CERT_PATH}/cert1.pem ${LIVE_PATH}/cert.pem
+      - name: debug
+        run: |
+          first_domain=$(echo ${{ secrets.CERTBOT_DOMAINS }} | cut -d',' -f1)
+          echo "::add-mask::${first_domain}"
+          find certbot-config/live -ls
+          find certbot-config/archive -ls
       - name: Generate certificate
         uses: docker://certbot/dns-route53
         with:
@@ -46,7 +52,7 @@ jobs:
       - name: debug
         run: |
           first_domain=$(echo ${{ secrets.CERTBOT_DOMAINS }} | cut -d',' -f1)
-          echo "::add-mask::${first_domain}-cert"
+          echo "::add-mask::${first_domain}"
           find certbot-config/live -ls
           find certbot-config/archive -ls
       - name: Upload certificate to AWS Secrets Manager
