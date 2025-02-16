@@ -290,3 +290,5 @@ semgrep
 spotizerr
 metube
 tubearchivist
+homeassistant
+prometheusmetric

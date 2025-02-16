@@ -72,6 +72,9 @@ config:
         - Vim Cheat Sheet:
             - abbr: vim-cheat
               href: https://vim.rtorr.com/
+        - Chat with NeoVim Hacks:
+            - abbr: neovim-hacks
+              href: https://gooey.ai/chat/vimbo-VYm/
   services:
     - Kubernetes:
         - ArgoCD:
@@ -79,14 +82,13 @@ config:
             icon: argocd.svg
             app: argocd-server
             namespace: argocd
-            # prometheus doesn't support metrics like this. would need to do customapi
             # widget:
-            #   type: prometheus
+            #   type: prometheusmetric
             #   url: http://prometheus-operated.monitoring.svc.cluster.local:9090
             #   metrics:
-            #     - name: Healthy Apps
+            #     - label: Healthy Apps
             #       query: sum(argocd_app_info{health_status="Healthy"})
-            #     - name: Total Apps
+            #     - labels: Total Apps
             #       query: sum(argocd_app_info)
         - Ceph:
             href: https://rook.fieldsofbears.com
@@ -109,6 +111,9 @@ config:
             #       query: sum(ceph_osd_in{job="ceph"})
             #     - name: ceph_osds_out
             #       query: sum(ceph_osd_out{job="ceph"})
+        - Tailscale(coming soon):
+            href: https://tailscale.fieldsofbears.com
+            icon: tailscale.svg
     - Gaming:
         - Pterodactyl:
             href: https://game.fieldsofbears.com
@@ -128,9 +133,37 @@ config:
             icon: prometheus.svg
             namespace: monitoring
             app: prometheus
+        - Mimir:
+            href: https://mimir.fieldsofbears.com
+            icon: mimir.svg
+            namespace: monitoring
+            app: mimir
+    - Productivity:
+        - Time Tagger:
+            - abbr: tt
+              href: https://timetagger.fieldsofbears.com/
+              icon: timetagger.svg
     - Development:
         - AI:
             href: https://ai.fieldsofbears.com
+        - Stirling PDF:
+            href: https://stirling.fieldsofbears.com
+            icon: stirling-pdf.svg
+        - Coder(coming soon):
+            href: https://coder.fieldsofbears.com
+            icon: coder.svg
+        - Gitea(coming soon):
+            href: https://gitea.fieldsofbears.com
+            icon: gitea.svg
+    - SmartHome:
+        - HomeAssistant:
+            href: https://ha.fieldsofbears.com
+            icon: homeassistant.svg
+            namespace: homelab
+            app: homeassistant
+            # widget:
+            #   type: homeassistant
+            #   url: http://homeassistant.local:8123/
     - Media:
         - Plex:
             href: https://potato.fieldsofbears.com/web/index.html#!/
@@ -145,6 +178,14 @@ config:
                 - movies
                 - tv
                 - albums
+        - Immich:
+            href: https://immich.fieldsofbears.com
+            icon: immich.svg
+            namespace: homelab
+            app: immich
+            widget:
+              type: immich
+              url: http://immich.homelab.svc.cluster.local:3000
     - Downloads:
         - Sonarr:
             href: https://sonarr.fieldsofbears.com
