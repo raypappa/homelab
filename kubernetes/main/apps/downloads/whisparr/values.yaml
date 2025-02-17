@@ -17,6 +17,17 @@ controllers:
           tag: latest
           pullPolicy: IfNotPresent
         env:
+          WHISPARR__APP__INSTANCENAME: Whisparr
+          WHISPARR__AUTH__APIKEY:
+            valueFrom:
+              secretKeyRef:
+                name: whisparr-secret
+                key: api_key
+          WHISPARR__AUTH__METHOD: External
+          WHISPARR__AUTH__REQUIRED: DisabledForLocalAddresses
+          WHISPARR__LOG__LEVEL: info
+          WHISPARR__SERVER__PORT: &port 6969
+          WHISPARR__UPDATE__BRANCH: develop
           TZ: UTC
           PUID: 1001
           PGID: 1001
@@ -27,7 +38,7 @@ service:
     type: ClusterIP
     ports:
       http:
-        port: 6969
+        port: *port
 persistence:
   config:
     enabled: true

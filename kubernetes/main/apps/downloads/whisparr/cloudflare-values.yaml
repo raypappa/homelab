@@ -7,4 +7,4 @@ cloudflare:
   tunnelName: "faerun-whisparr"
   ingress:
     - hostname: "whisparr.fieldsofbears.com"
-      service: "http://whisparr.whisparr.svc.cluster.local:9696"
+      service: "http://whisparr.whisparr.svc.cluster.local:6969"
