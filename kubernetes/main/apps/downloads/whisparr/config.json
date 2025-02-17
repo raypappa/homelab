@@ -1,0 +1,7 @@
+{
+  "destNamespace": "whisparr",
+  "appName": "whisparr",
+  "serverSideApply": false,
+  "ignoreDifferences": [],
+  "group": "downloads"
+}
