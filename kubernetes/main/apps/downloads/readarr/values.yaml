@@ -20,14 +20,19 @@ controllers:
           pullPolicy: IfNotPresent
         env:
           COMPlus_EnableDiagnostics: "0"
-          READARR__AUTHENTICATION_METHOD: Forms
-          READARR__AUTHENTICATION_REQUIRED: Disabled
+          READARR__AUTH__METHOD: External
+          READARR__AUTH__REQUIRED: DisabledForLocalAddresses
           READARR__INSTANCE_NAME: Readarr
           READARR__PORT: &port 8787
           READARR__LOG_LEVEL: info
           READARR__THEME: light
           READARR__ANALYTICSENABLED: "false"
-          TZ: ${TIMEZONE}
+          READARR__AUTH__APIKEY:
+            valueFrom:
+              secretKeyRef:
+                name: readarr-secret
+                key: api_key
+          TZ: UTC
         probes:
           liveness:
             enabled: true
