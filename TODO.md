@@ -16,12 +16,12 @@
 1. [metube](https://github.com/alexta69/metube) or [tubearchivist](https://github.com/tubearchivist/tubearchivist)
 1. [Collabora](https://collaboraonline.github.io/online/)
 1. lidarr
+1. grafana/prometheus for unpackerr
 
 ## Migrate to AppSet
 
 1. leantime
 1. pterodactyl
-1. plex
 
 ## Fix
 
