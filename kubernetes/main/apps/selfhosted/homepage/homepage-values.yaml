@@ -18,11 +18,6 @@ env:
       secretKeyRef:
         name: sonarr-secret
         key: api_key
-  HOMEPAGE_VAR_CLOUDFLARE_API_KEY:
-    valueFrom:
-      secretKeyRef:
-        name: homepage-cloudflare
-        key: api_key
   HOMEPAGE_VAR_PLEX_API_KEY:
     valueFrom:
       secretKeyRef:
