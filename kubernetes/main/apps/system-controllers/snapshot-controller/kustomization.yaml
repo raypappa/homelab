@@ -15,3 +15,5 @@ helmCharts:
           create: true
       webhook:
         enabled: true
+resources:
+  - https://github.com/kubernetes-csi/external-snapshotter/client/config/crd?ref=master
