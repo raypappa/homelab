@@ -1,0 +1,7 @@
+{
+  "destNamespace": "radarr",
+  "appName": "radarr",
+  "serverSideApply": false,
+  "ignoreDifferences": [],
+  "group": "downloads"
+}
