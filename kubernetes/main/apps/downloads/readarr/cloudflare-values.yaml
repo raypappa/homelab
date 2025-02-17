@@ -7,4 +7,4 @@ cloudflare:
   tunnelName: "faerun-readarr"
   ingress:
     - hostname: "readarr.fieldsofbears.com"
-      service: "http://readarr.readarr.svc.cluster.local:9696"
+      service: "http://readarr.readarr.svc.cluster.local:8787"
