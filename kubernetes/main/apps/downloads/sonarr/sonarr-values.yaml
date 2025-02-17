@@ -5,6 +5,8 @@ controllers:
     annotations:
       reloader.stakater.com/auto: "true"
     pod:
+      nodeSelector:
+        kubernetes.io/hostname: puma
       securityContext:
         runAsUser: 1001
         runAsGroup: 1001
@@ -68,8 +70,7 @@ persistence:
   tmp:
     type: emptyDir
   media:
-    type: nfs
-    server: nfs-server.storage.svc.cluster.local
-    path: /library
-    globalMounts:
-      - path: /library
+    enabled: true
+    type: hostPath
+    hostPathType: Directory
+    hostPath: /library
