@@ -4,14 +4,14 @@ controllers:
     annotations:
       reloader.stakater.com/auto: "true"
     pod:
+      nodeSelector:
+        kubernetes.io/hostname: puma
       securityContext:
         runAsUser: 1001
         runAsGroup: 1001
         runAsNonRoot: true
         fsGroup: 1001
         fsGroupChangePolicy: OnRootMismatch
-      nodeSelector:
-        kubernetes.io/hostname: puma
     containers:
       app:
         image:
