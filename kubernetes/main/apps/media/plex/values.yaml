@@ -59,9 +59,6 @@ controllers:
         resources:
           requests:
             cpu: 100m
-          limits:
-            gpu.intel.com/i915: 1
-            memory: 9248M
 service:
   app:
     controller: plex
