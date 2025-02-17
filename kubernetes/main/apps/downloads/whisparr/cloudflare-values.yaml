@@ -1,0 +1,10 @@
+---
+image:
+  # renovate: datasource=docker depName=cloudflare/cloudflared
+  tag: 2025.2.0
+cloudflare:
+  secretName: "whisparr-tunnel-credentials"
+  tunnelName: "faerun-whisparr"
+  ingress:
+    - hostname: "whisparr.fieldsofbears.com"
+      service: "http://whisparr.whisparr.svc.cluster.local:9696"
