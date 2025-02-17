@@ -1,0 +1,18 @@
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+helmCharts:
+  - name: gitea
+    repo: https://dl.gitea.io/charts
+    version: 10.4.0
+    namespace: gitea
+    releaseName: gitea
+    valuesFile: gitea-values.yaml
+    # - name: cloudflare-tunnel
+    #   repo: https://cloudflare.github.io/helm-charts
+    #   version: 0.3.2
+    #   releaseName: gitea
+    #   namespace: gitea
+    #   valuesFile: cloudflare-values.yaml
+resources:
+  - ./external-secret.yaml
