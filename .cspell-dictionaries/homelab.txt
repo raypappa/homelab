@@ -295,3 +295,4 @@ prometheusmetric
 SIGNUP
 repository
 sshkeys
+collabora
