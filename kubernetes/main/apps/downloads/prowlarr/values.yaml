@@ -25,12 +25,14 @@ controllers:
           PGID: 1001
           UMASK: "022"
           COMPlus_EnableDiagnostics: "0"
-          PROWLARR__INSTANCE_NAME: Prowlarr
-          PROWLARR__PORT: &port 9696
-          PROWLARR__LOG_LEVEL: info
-          PROWLARR__ANALYTICS_ENABLED: "False"
-          PROWLARR__AUTHENTICATION_METHOD: External
-          PROWLARR__API_KEY:
+          PROWLARR__SERVER__PORT: &port 9696
+          PROWLARR__LOG__LEVEL: info
+          PROWLARR__ANALYTICS__ENABLED: "False"
+          PROWLARR__AUTH__METHOD: External
+          PROWLARR__APP__INSTANCENAME: Whisparr
+          PROWLARR__AUTH__REQUIRED: DisabledForLocalAddresses
+          PROWLARR__UPDATE__BRANCH: develop
+          PROWLARR__AUTH__APIKEY:
             valueFrom:
               secretKeyRef:
                 name: prowlarr-secret
