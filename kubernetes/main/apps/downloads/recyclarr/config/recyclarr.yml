@@ -22,6 +22,7 @@ sonarr:
           enabled: true
         upgrade:
           allowed: false
+          until_quality: WEBDL-1080p
         min_format_score: 0
         quality_sort: top
         qualities:
@@ -34,6 +35,7 @@ sonarr:
           enabled: true
         upgrade:
           allowed: false
+          until_quality: HDTV-2160p
         min_format_score: 0
         quality_sort: top
         qualities:
