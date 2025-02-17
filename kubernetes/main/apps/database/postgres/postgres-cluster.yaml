@@ -64,11 +64,11 @@ spec:
         - joplin
       password:
         type: AlphaNumeric
-        # - name: immich
-        #   databases:
-        #     - immich
-        #   password:
-        #     type: AlphaNumeric
+    - name: immich
+      databases:
+        - immich
+      password:
+        type: AlphaNumeric
   backups:
     pgbackrest:
       configuration: &backupConfig
