@@ -1,0 +1,7 @@
+{
+  "destNamespace": "readarr",
+  "appName": "readarr",
+  "serverSideApply": false,
+  "ignoreDifferences": [],
+  "group": "downloads"
+}

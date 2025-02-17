@@ -1,0 +1,10 @@
+---
+image:
+  # renovate: datasource=docker depName=cloudflare/cloudflared
+  tag: 2025.2.0
+cloudflare:
+  secretName: "readarr-tunnel-credentials"
+  tunnelName: "faerun-readarr"
+  ingress:
+    - hostname: "readarr.fieldsofbears.com"
+      service: "http://readarr.readarr.svc.cluster.local:9696"
