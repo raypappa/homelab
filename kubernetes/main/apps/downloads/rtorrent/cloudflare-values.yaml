@@ -7,4 +7,4 @@ cloudflare:
   tunnelName: "faerun-rtorrent"
   ingress:
     - hostname: "flood.fieldsofbears.com"
-      service: "http://rtorrent.rtorrent.svc.cluster.local:9696"
+      service: "http://rtorrent.rtorrent.svc.cluster.local:3000"
