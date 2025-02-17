@@ -15,7 +15,7 @@ helmCharts:
     namespace: radarr
     releaseName: radarr
     version: 3.7.1
-    valuesFile: radarr-values.yaml
+    valuesFile: values.yaml
 resources:
   - ./volsync-external-secret.yaml
   - ./volsync-replication-source.yaml
