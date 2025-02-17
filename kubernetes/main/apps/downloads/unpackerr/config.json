@@ -1,0 +1,7 @@
+{
+  "destNamespace": "unpackerr",
+  "appName": "unpackerr",
+  "serverSideApply": false,
+  "ignoreDifferences": [],
+  "group": "downloads"
+}
