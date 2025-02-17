@@ -1,0 +1,10 @@
+---
+image:
+  # renovate: datasource=docker depName=cloudflare/cloudflared
+  tag: 2025.2.0
+cloudflare:
+  secretName: "plex-tunnel-credentials"
+  tunnelName: "faerun-plex"
+  ingress:
+    - hostname: "potato.fieldsofbears.com"
+      service: "http://plex.plex.svc.cluster.local:3000"
