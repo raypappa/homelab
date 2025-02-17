@@ -50,7 +50,7 @@ controllers:
           UN_RADARR_0_TIMEOUT: 10s
           UN_RADARR_0_DELETE_ORIG: "false"
           UN_RADARR_0_DELETE_DELAY: 5m
-          UN_RADARR_0_URL: http://radarr.radarr.svc.cluster.local:7878
+          UN_RADARR_0_URL: http://radarr.radarr.svc.cluster.local:9696
           UN_RADARR_0_API_KEY:
             valueFrom:
               secretKeyRef:
@@ -68,6 +68,25 @@ controllers:
           UN_READARR_0_TIMEOUT: 10s
           UN_READARR_0_DELETE_ORIG: "false"
           UN_READARR_0_DELETE_DELAY: 5m
+          UN_READARR_0_URL: http://readarr.readarr.svc.cluster.local:8787
+          UN_READARR_0_API_KEY:
+            valueFrom:
+              secretKeyRef:
+                name: readarr-secret
+                key: api_key
+          # Whisparr Config
+          UN_WHISPARR_0_URL: http://whisparr.whisparr.svc.cluster.local:6969
+          UN_WHISPARR_0_API_KEY:
+            valueFrom:
+              secretKeyRef:
+                name: whisparr-secret
+                key: api_key
+          UN_WHISPARR_0_PATHS_0: /library/downloads/done/whisparr
+          UN_WHISPARR_0_PROTOCOLS: torrent
+          UN_WHISPARR_0_TIMEOUT: 10s
+          UN_WHISPARR_0_DELETE_DELAY: 5m
+          UN_WHISPARR_0_DELETE_ORIG: false
+          UN_WHISPARR_0_SYNCTHING: false
           # Folder Config
           UN_FOLDER_0_PATH: /library/downloads/done/no-label
           UN_FOLDER_0_EXTRACT_PATH:
@@ -76,7 +95,11 @@ controllers:
           UN_FOLDER_0_DELETE_FILES: "false"
           UN_FOLDER_0_MOVE_BACK: "false"
           # Webhook Config
-          UN_WEBHOOK_0_URL: https://notifiarr.com/api/v1/notification/unpackerr/b2c77ff1-38ae-4aea-96b7-e99319d76226
+          UN_WEBHOOK_0_URL:
+            valueFrom:
+              secretKeyRef:
+                name: notifiarr-secret
+                key: url
           UN_WEBHOOK_0_NAME: Notifiarr
           UN_WEBHOOK_0_NICKNAME: Unpackerr
           UN_WEBHOOK_0_CHANNEL: ""
