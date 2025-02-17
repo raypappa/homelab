@@ -1,0 +1,7 @@
+{
+  "destNamespace": "gitea",
+  "appName": "gitea",
+  "serverSideApply": false,
+  "ignoreDifferences": [],
+  "group": "selfhosted"
+}

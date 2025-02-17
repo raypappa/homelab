@@ -1,0 +1,10 @@
+---
+image:
+  # renovate: datasource=docker depName=cloudflare/cloudflared
+  tag: 2024.11.1
+cloudflare:
+  secretName: "gitea-tunnel-credentials"
+  tunnelName: "faerun-gitea"
+  ingress:
+    - hostname: "gitea.app.fieldsofbears.com"
+      service: "http://gitea-server-server.selfhosted.svc.cluster.local:3001"
