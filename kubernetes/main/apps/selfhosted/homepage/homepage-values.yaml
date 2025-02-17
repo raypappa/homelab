@@ -185,7 +185,7 @@ config:
             app: immich
             widget:
               type: immich
-              url: http://immich.homelab.svc.cluster.local:3000
+              url: http://immich.immich.svc.cluster.local:3000
     - Downloads:
         - Sonarr:
             href: https://sonarr.fieldsofbears.com
@@ -194,7 +194,7 @@ config:
             app: sonarr
             widget:
               type: sonarr
-              url: http://sonarr-app.homelab.svc.cluster.local:8989
+              url: http://sonarr.sonarr.svc.cluster.local:8989
               key: "{{HOMEPAGE_VAR_SONARR_API_KEY}}"
               enableQueue: true # optional, defaults to false
         - Radarr:
@@ -204,7 +204,7 @@ config:
             icon: radarr.svg
             widget:
               type: radarr
-              url: http://radarr-svc.homelab.svc.cluster.local:7878
+              url: http://radarr.radarr.svc.cluster.local:7878
               key: "{{HOMEPAGE_VAR_RADARR_API_KEY}}"
               fields:
                 - wanted
@@ -218,7 +218,7 @@ config:
             icon: readarr.svg
             widget:
               type: readarr
-              url: http://readarr-svc.homelab.svc.cluster.local:8787
+              url: http://readarr.readarr.svc.cluster.local:8787
               key: "{{HOMEPAGE_VAR_READARR_API_KEY}}"
               fields:
                 - wanted
@@ -236,7 +236,7 @@ config:
             icon: prowlarr.svg
             widget:
               type: prowlarr
-              url: http://prowlarr-svc.homelab.svc.cluster.local:9696
+              url: http://prowlarr.prowlarr.svc.cluster.local:9696
               key: "{{HOMEPAGE_VAR_PROWLARR_API_KEY}}"
               fields:
                 - numberOfGrabs
