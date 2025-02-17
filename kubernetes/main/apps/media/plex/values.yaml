@@ -30,7 +30,7 @@ controllers:
           PLEX_CLAIM:
             valueFrom:
               secretKeyRef:
-                name: plex-secrets
+                name: plex-secret
                 key: PLEX_CLAIM
         probes:
           liveness: &probes
