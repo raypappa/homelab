@@ -14,6 +14,7 @@ resources:
   - ./volsync-external-secret.yaml
   - ./volsync-replication-source.yaml
   - ./volsync-replication-destination.yaml
+  - ./external-secret.yaml
 configMapGenerator:
   - name: recyclarr-configmap
     files:
