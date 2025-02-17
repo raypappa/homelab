@@ -1,0 +1,10 @@
+---
+image:
+  # renovate: datasource=docker depName=cloudflare/cloudflared
+  tag: 2025.2.0
+cloudflare:
+  secretName: "rtorrent-tunnel-credentials"
+  tunnelName: "faerun-rtorrent"
+  ingress:
+    - hostname: "flood.fieldsofbears.com"
+      service: "http://rtorrent.rtorrent.svc.cluster.local:9696"
