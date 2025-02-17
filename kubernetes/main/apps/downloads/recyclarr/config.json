@@ -1,0 +1,7 @@
+{
+  "destNamespace": "recyclarr",
+  "appName": "recyclarr",
+  "serverSideApply": false,
+  "ignoreDifferences": [],
+  "group": "downloads"
+}
