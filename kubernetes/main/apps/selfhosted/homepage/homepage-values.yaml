@@ -26,12 +26,12 @@ env:
   HOMEPAGE_VAR_PLEX_API_KEY:
     valueFrom:
       secretKeyRef:
-        name: homepage-plex
+        name: plex-secret
         key: api_key
   HOMEPAGE_VAR_PTERODACTYL_API_KEY:
     valueFrom:
       secretKeyRef:
-        name: homepage-pterodactyl
+        name: pterodactyl-secret
         key: api_key
   HOMEPAGE_VAR_RADARR_API_KEY:
     valueFrom:
@@ -159,7 +159,7 @@ config:
         - HomeAssistant:
             href: https://ha.fieldsofbears.com
             icon: homeassistant.svg
-            namespace: homelab
+            namespace: homepage
             app: homeassistant
             # widget:
             #   type: homeassistant
@@ -168,11 +168,11 @@ config:
         - Plex:
             href: https://potato.fieldsofbears.com/web/index.html#!/
             icon: plex.svg
-            namespace: homelab
+            namespace: homepage
             app: plex-app
             widget:
               type: plex
-              url: http://plex-app.homelab.svc.cluster.local:32400
+              url: http://plex-app.homepage.svc.cluster.local:32400
               key: "{{HOMEPAGE_VAR_PLEX_API_KEY}}"
               fields:
                 - movies
@@ -181,7 +181,7 @@ config:
         - Immich:
             href: https://immich.fieldsofbears.com
             icon: immich.svg
-            namespace: homelab
+            namespace: homepage
             app: immich
             widget:
               type: immich
@@ -190,7 +190,7 @@ config:
         - Sonarr:
             href: https://sonarr.fieldsofbears.com
             icon: sonarr.svg
-            namespace: homelab
+            namespace: homepage
             app: sonarr
             widget:
               type: sonarr
@@ -199,7 +199,7 @@ config:
               enableQueue: true # optional, defaults to false
         - Radarr:
             href: https://radarr.fieldsofbears.com
-            namespace: homelab
+            namespace: homepage
             app: radarr-svc
             icon: radarr.svg
             widget:
@@ -213,7 +213,7 @@ config:
                 - movies
         - Readarr:
             href: https://readarr.fieldsofbears.com
-            namespace: homelab
+            namespace: homepage
             app: readarr-svc
             icon: readarr.svg
             widget:
@@ -226,13 +226,13 @@ config:
                 - books
         - Whisparr:
             href: https://whisparr.fieldsofbears.com
-            namespace: homelab
+            namespace: homepage
             app: whisparr-svc
             icon: whisparr.svg
         - Prowlarr:
             href: https://prowlarr.fieldsofbears.com
             app: prowlarr-svc
-            namespace: homelab
+            namespace: homepage
             icon: prowlarr.svg
             widget:
               type: prowlarr
@@ -245,14 +245,14 @@ config:
                 - numberOfFailQueries
         - Flood:
             href: https://flood.fieldsofbears.com
-            namespace: homelab
+            namespace: homepage
             app: rtorrent-app
             icon: flood.svg
             widget:
               type: flood
               password: "{{HOMEPAGE_VAR_FLOOD_PASSWORD}}"
               username: "{{HOMEPAGE_VAR_FLOOD_USERNAME}}"
-              url: http://rtorrent-app.homelab.svc.cluster.local:3000
+              url: http://rtorrent-app.homepage.svc.cluster.local:3000
               fields:
                 - download
                 - upload
