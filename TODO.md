@@ -16,6 +16,7 @@
 1. once I have mikrotik using [external-dns-provider-mikrotik](https://github.com/mirceanton/external-dns-provider-mikrotik)
 1. [spotizerr](https://github.com/Xoconoch/spotizerr)
 1. [metube](https://github.com/alexta69/metube) or [tubearchivist](https://github.com/tubearchivist/tubearchivist)
+1. [Collabora](https://collaboraonline.github.io/online/)
 
 ## Migrate to AppSet
 
