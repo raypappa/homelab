@@ -54,3 +54,6 @@ innodbclusters
 APIV
 innodbcluster
 lldap
+groupsnapshot
+cephfsplugin
+groupsnapclass

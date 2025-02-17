@@ -19,3 +19,4 @@ helmCharts:
 resources:
   - ./dashboard-external-http.yaml
   - ./external-secret.yaml
+  - ./volume-group-snapshot-class.yaml
