@@ -7,4 +7,4 @@ cloudflare:
   tunnelName: "faerun-immich"
   ingress:
     - hostname: "immich.fieldsofbears.com"
-      service: "http://immich-server-server.selfhosted.svc.cluster.local:3001"
+      service: "http://immich-server.immich.svc.cluster.local:2283"
