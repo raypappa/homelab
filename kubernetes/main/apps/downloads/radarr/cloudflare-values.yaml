@@ -1,0 +1,10 @@
+---
+image:
+  # renovate: datasource=docker depName=cloudflare/cloudflared
+  tag: 2025.2.0
+cloudflare:
+  secretName: "radarr-tunnel-credentials"
+  tunnelName: "faerun-radarr"
+  ingress:
+    - hostname: "radarr.fieldsofbears.com"
+      service: "http://radarr.radarr.svc.cluster.local:9696"
