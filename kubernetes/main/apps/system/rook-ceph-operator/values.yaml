@@ -6,3 +6,4 @@ csi:
     enabled: true
   disableHolderPods: true
   enableCSIHostNetwork: true
+  enableVolumeGroupSnapshot: false
