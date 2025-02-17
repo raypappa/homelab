@@ -17,16 +17,16 @@ controllers:
           tag: latest
           pullPolicy: IfNotPresent
         env:
-          WHISPARR__APP__INSTANCENAME: Whisparr
+          WHISPARR__INSTANCE_NAME: Whisparr
           WHISPARR__AUTH__APIKEY:
             valueFrom:
               secretKeyRef:
                 name: whisparr-secret
                 key: api_key
-          WHISPARR__AUTH__METHOD: External
-          WHISPARR__AUTH__REQUIRED: DisabledForLocalAddresses
+          WHISPARR__AUTHENTICATION_METHOD: External
+          WHISPARR__AUTHENTICATION_REQUIRED: DisabledForLocalAddresses
           WHISPARR__LOG__LEVEL: info
-          WHISPARR__SERVER__PORT: &port 6969
+          WHISPARR__PORT: &port 6969
           WHISPARR__UPDATE__BRANCH: develop
           TZ: UTC
           PUID: 1001
