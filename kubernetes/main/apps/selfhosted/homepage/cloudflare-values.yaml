@@ -7,4 +7,4 @@ cloudflare:
   tunnelName: "faerun-homepage"
   ingress:
     - hostname: "fieldsofbears.com"
-      service: "http://homepage.homelab.svc.cluster.local:3000"
+      service: "http://homepage.homepage.svc.cluster.local:3000"

@@ -1,5 +1,5 @@
 {
-  "destNamespace": "homelab",
+  "destNamespace": "homepage",
   "appName": "homepage",
   "serverSideApply": false,
   "ignoreDifferences": [],

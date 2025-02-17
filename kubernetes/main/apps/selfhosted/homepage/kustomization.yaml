@@ -5,14 +5,14 @@ helmCharts:
   - name: homepage
     repo: https://jameswynn.github.io/helm-charts
     version: 2.0.1
-    namespace: homelab
+    namespace: homepage
     releaseName: homepage
     valuesFile: homepage-values.yaml
   - name: cloudflare-tunnel
     repo: https://cloudflare.github.io/helm-charts
     version: 0.3.2
     releaseName: homepage
-    namespace: homelab
+    namespace: homepage
     valuesFile: cloudflare-values.yaml
 resources:
   - ./external-secret.yaml
