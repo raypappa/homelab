@@ -1,0 +1,7 @@
+{
+  "destNamespace": "rtorrent",
+  "appName": "rtorrent",
+  "serverSideApply": false,
+  "ignoreDifferences": [],
+  "group": "downloads"
+}

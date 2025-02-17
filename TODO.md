@@ -40,6 +40,7 @@
 1. Joplin - update to use dragonfly
 1. Immich - update to use dragonfly
 1. ollama nginx ingress
+1. rtorrent image is using an old image from blade2005.
 
 ## Physical
 
