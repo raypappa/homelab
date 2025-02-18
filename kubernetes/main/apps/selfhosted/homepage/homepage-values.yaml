@@ -8,11 +8,11 @@ image:
   # renovate: datasource=docker depName=ghcr.io/gethomepage/homepage
   tag: v0.10.9
 env:
-  # HOMEPAGE_VAR_JELLYFIN_API_KEY:
-  #   valueFrom:
-  #     secretKeyRef:
-  #       name: jellyfin-secret
-  #       key: api_key
+  HOMEPAGE_VAR_JELLYFIN_API_KEY:
+    valueFrom:
+      secretKeyRef:
+        name: jellyfin-secret
+        key: api_key
   HOMEPAGE_VAR_HOME_ASSISTANT_API_KEY:
     valueFrom:
       secretKeyRef:
@@ -68,13 +68,13 @@ config:
     - Developer:
         - Infrastructure:
             - icon: sh-github.svg
-              href: https://github.com/stoneydavis/infrastructure
+              href: https://github.com/raypappa/homelab
         - Dotfiles:
             - icon: sh-github.svg
-              href: https://github.com/blade2005/dotfiles
+              href: https://github.com/raypappa/dotfiles
         - Developer Guide:
             - icon: sh-github.svg
-              href: https://github.com/blade2005/quickstart-developer/
+              href: https://github.com/raypappa/quickstart-developer/
         - Vim Cheat Sheet:
             - abbr: vim-cheat
               href: https://vim.rtorr.com/
@@ -86,6 +86,7 @@ config:
         - ArgoCD:
             href: https://argocd.fieldsofbears.com
             icon: sh-argocd.svg
+            description: ArgoCD is a GitOps continuous delivery tool for Kubernetes
             app: argocd-server
             namespace: argocd
             # widget:
@@ -99,6 +100,7 @@ config:
         - Ceph:
             href: https://rook.fieldsofbears.com
             icon: sh-ceph.svg
+            description: Ceph is a distributed storage system
             app: ceph-mgr
             namespace: rook-ceph
             # widget:
@@ -120,6 +122,7 @@ config:
         - Tailscale(coming soon):
             href: https://tailscale.fieldsofbears.com
             icon: sh-tailscale.svg
+            description: Tailscale is a VPN service
     - Gaming:
         - Pterodactyl:
             href: https://game.fieldsofbears.com
@@ -148,27 +151,32 @@ config:
         - Time Tagger:
             href: https://timetagger.fieldsofbears.com/
             icon: sh-timetagger.svg
+            description: Time Tagger is a time tracking system
             namespace: timetagger
             app: timetagger
         - Leantime:
             href: https://lt.fieldsofbears.com/
             icon: sh-leantime.svg
             namespace: leantime
+            description: Leantime is a project management system
             app: leantime-svc
     - Development:
         - AI:
             href: https://ai.fieldsofbears.com
             namespace: ollama
+            description: Ollama WebUI
             app: ollama
             icon: sh-ollama.svg
         - Coder(coming soon):
             href: https://coder.fieldsofbears.com
             namespace: coder
+            description: Coder is a web/remote IDE
             app: coder
             icon: sh-coder.svg
         - Gitea(coming soon):
             href: https://gitea.fieldsofbears.com
             namespace: gitea
+            description: Gitea is a git service
             app: gitea
             icon: sh-gitea.svg
         - IT Tools:
@@ -180,12 +188,14 @@ config:
         - Stirling PDF:
             href: https://stirling.fieldsofbears.com
             namespace: stirling
+            description: Stirling PDF is a suite of PDF tools
             app: stirling
             icon: sh-stirling-pdf.svg
     - SmartHome:
         - HomeAssistant:
             href: https://ha.fieldsofbears.com
             icon: sh-home-assistant.svg
+            description: Home Assistant is a home automation system
             widget:
               type: homeassistant
               url: http://homeassistant.stoneydavis.lan:8123
@@ -231,6 +241,7 @@ config:
             href: https://sonarr.fieldsofbears.com
             icon: sh-sonarr.svg
             namespace: sonarr
+            description: Sonarr is a tv show management system
             app: sonarr
             widget:
               type: sonarr
@@ -240,6 +251,7 @@ config:
         - Radarr:
             href: https://radarr.fieldsofbears.com
             namespace: radarr
+            description: Radarr is a movie management system
             app: radarr
             icon: sh-radarr.svg
             widget:
@@ -256,6 +268,7 @@ config:
             namespace: readarr
             app: readarr
             icon: sh-readarr.svg
+            description: Readarr is a ebook management system
             widget:
               type: readarr
               url: http://readarr.readarr.svc.cluster.local:8787
@@ -268,12 +281,14 @@ config:
             href: https://whisparr.fieldsofbears.com
             namespace: whisparr
             app: whisparr
+            description: Whisparr is a search engine for porn
             icon: sh-whisparr.svg
         - Prowlarr:
             href: https://prowlarr.fieldsofbears.com
             app: prowlarr
             namespace: prowlarr
             icon: sh-prowlarr.svg
+            description: Prowlarr is a search engine for torrents
             widget:
               type: prowlarr
               url: http://prowlarr.prowlarr.svc.cluster.local:9696
@@ -288,6 +303,7 @@ config:
             namespace: rtorrent
             app: rtorrent
             icon: sh-flood.svg
+            description: Flood is a web UI for rTorrent
             widget:
               type: flood
               password: "{{HOMEPAGE_VAR_FLOOD_PASSWORD}}"
