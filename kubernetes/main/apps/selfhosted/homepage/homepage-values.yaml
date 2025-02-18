@@ -65,7 +65,7 @@ env:
         key: api_key
 config:
   bookmarks:
-    - Developer:
+    - Links:
         - Infrastructure:
             - icon: sh-github.svg
               href: https://github.com/raypappa/homelab
@@ -277,12 +277,6 @@ config:
                 - wanted
                 - queued
                 - books
-        - Whisparr:
-            href: https://whisparr.fieldsofbears.com
-            namespace: whisparr
-            app: whisparr
-            description: Whisparr is a search engine for porn
-            icon: sh-whisparr.svg
         - Prowlarr:
             href: https://prowlarr.fieldsofbears.com
             app: prowlarr
@@ -314,6 +308,13 @@ config:
                 - upload
                 - leech
                 - seed
+        # It looks weird in the display without a widget.
+        - Whisparr:
+            href: https://whisparr.fieldsofbears.com
+            namespace: whisparr
+            app: whisparr
+            description: Whisparr is a media manager for porn
+            icon: sh-whisparr.svg
   widgets:
     # show the kubernetes widget, with the cluster summary and individual nodes
     - kubernetes:
@@ -356,16 +357,20 @@ config:
           header: false
       - Development:
           style: row
+          columns: 6
           header: false
       - Monitoring:
           style: row
+          columns: 6
           header: false
       - Kubernetes:
           style: row
+          columns: 6
           header: false
           icon: https://raw.githubusercontent.com/kubernetes/kubernetes/refs/heads/master/logo/logo.svg
-      - Developer:
-          header: false
+      - Links:
+          style: row
+          columns: 6
 # The service account is necessary to allow discovery of other services
 serviceAccount:
   create: true
