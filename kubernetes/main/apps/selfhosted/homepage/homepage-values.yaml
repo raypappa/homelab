@@ -8,6 +8,11 @@ image:
   # renovate: datasource=docker depName=ghcr.io/gethomepage/homepage
   tag: v0.10.9
 env:
+  # HOMEPAGE_VAR_JELLYFIN_API_KEY:
+  #   valueFrom:
+  #     secretKeyRef:
+  #       name: jellyfin-secret
+  #       key: api_key
   HOMEPAGE_VAR_HOME_ASSISTANT_API_KEY:
     valueFrom:
       secretKeyRef:
@@ -180,7 +185,7 @@ config:
             app: plex-app
             widget:
               type: plex
-              url: http://plex-app.homepage.svc.cluster.local:32400
+              url: http://plex.plex.svc.cluster.local:32400
               key: "{{HOMEPAGE_VAR_PLEX_API_KEY}}"
               fields:
                 - movies
@@ -189,13 +194,22 @@ config:
         - Immich:
             href: https://immich.fieldsofbears.com
             icon: immich.svg
-            namespace: homepage
+            namespace: immich
             app: immich
             widget:
               type: immich
               url: http://immich-server.immich.svc.cluster.local:2283
               key: "{{HOMEPAGE_VAR_IMMICH_API_KEY}}"
               version: 2
+        - Jellyfin:
+            href: https://jellyfin.fieldsofbears.com
+            icon: jellyfin.svg
+            namespace: jellyfin
+            app: jellyfin
+            # widget:
+            #   type: jellyfin
+            #   url: http://jellyfin.jellyfin.svc.cluster.local:8096
+            #   key: "{{HOMEPAGE_VAR_JELLYFIN_API_KEY}}"
     - Downloads:
         - Sonarr:
             href: https://sonarr.fieldsofbears.com
