@@ -42,3 +42,12 @@
 1. setup router to send syslog to loki
 1. setup home assistant to send syslog to loki
 1. setup modem to send syslog to loki
+
+## Other Applications to consider
+
+1. [Tooljet](https://www.tooljet.ai/?ref=selfh.st)
+1. [AppSmith](https://docs.appsmith.com/getting-started/setup)
+1. [n8n](https://docs.n8n.io/hosting/#)
+1. [Supabase](https://github.com/supabase-community/supabase-kubernetes/tree/main/charts/supabase)
+1. [grist](https://github.com/gristlabs/grist-core?tab=readme-ov-file)
+1. [immich-power-tools](https://immich-power-tools.featureos.help/en/articles/setting-up-power-tools)
