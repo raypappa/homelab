@@ -148,31 +148,43 @@ config:
         - Time Tagger:
             href: https://timetagger.fieldsofbears.com/
             icon: timetagger.svg
+            namespace: timetagger
+            app: timetagger
         - Leantime:
             href: https://lt.fieldsofbears.com/
             icon: leantime.svg
+            namespace: leantime
+            app: leantime-svc
     - Development:
         - AI:
             href: https://ai.fieldsofbears.com
+            namespace: ollama
+            app: ollama
         - Coder(coming soon):
             href: https://coder.fieldsofbears.com
+            namespace: coder
+            app: coder
             icon: coder.svg
         - Gitea(coming soon):
             href: https://gitea.fieldsofbears.com
+            namespace: gitea
+            app: gitea
             icon: gitea.svg
         - IT Tools:
             description: Tools and services for IT
             href: https://it-tools.fieldsofbears.com/
+            namespace: it-tools
+            app: it-tools
             icon: it-tools.svg
         - Stirling PDF:
             href: https://stirling.fieldsofbears.com
+            namespace: stirling
+            app: stirling
             icon: stirling-pdf.svg
     - SmartHome:
         - HomeAssistant:
             href: https://ha.fieldsofbears.com
             icon: home-assistant.svg
-            namespace: homepage
-            app: homeassistant
             widget:
               type: homeassistant
               url: http://homeassistant.stoneydavis.lan:8123
@@ -181,8 +193,8 @@ config:
         - Plex:
             href: https://potato.fieldsofbears.com/web/index.html#!/
             icon: plex.svg
-            namespace: homepage
-            app: plex-app
+            namespace: plex
+            app: plex
             widget:
               type: plex
               url: http://plex.plex.svc.cluster.local:32400
@@ -214,7 +226,7 @@ config:
         - Sonarr:
             href: https://sonarr.fieldsofbears.com
             icon: sonarr.svg
-            namespace: homepage
+            namespace: sonarr
             app: sonarr
             widget:
               type: sonarr
@@ -223,8 +235,8 @@ config:
               enableQueue: true # optional, defaults to false
         - Radarr:
             href: https://radarr.fieldsofbears.com
-            namespace: homepage
-            app: radarr-svc
+            namespace: radarr
+            app: radarr
             icon: radarr.svg
             widget:
               type: radarr
@@ -237,8 +249,8 @@ config:
                 - movies
         - Readarr:
             href: https://readarr.fieldsofbears.com
-            namespace: homepage
-            app: readarr-svc
+            namespace: readarr
+            app: readarr
             icon: readarr.svg
             widget:
               type: readarr
@@ -250,13 +262,13 @@ config:
                 - books
         - Whisparr:
             href: https://whisparr.fieldsofbears.com
-            namespace: homepage
-            app: whisparr-svc
+            namespace: whisparr
+            app: whisparr
             icon: whisparr.svg
         - Prowlarr:
             href: https://prowlarr.fieldsofbears.com
-            app: prowlarr-svc
-            namespace: homepage
+            app: prowlarr
+            namespace: prowlarr
             icon: prowlarr.svg
             widget:
               type: prowlarr
@@ -269,8 +281,8 @@ config:
                 - numberOfFailQueries
         - Flood:
             href: https://flood.fieldsofbears.com
-            namespace: homepage
-            app: rtorrent-app
+            namespace: rtorrent
+            app: rtorrent
             icon: flood.svg
             widget:
               type: flood
