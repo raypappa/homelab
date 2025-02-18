@@ -8,3 +8,5 @@ cloudflare:
   ingress:
     - hostname: "immich.fieldsofbears.com"
       service: "http://immich-server.immich.svc.cluster.local:2283"
+    - hostname: "immich-app.fieldsofbears.com"
+      service: "http://immich-server.immich.svc.cluster.local:2283"
