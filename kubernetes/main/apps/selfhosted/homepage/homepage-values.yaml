@@ -85,7 +85,7 @@ config:
     - Kubernetes:
         - ArgoCD:
             href: https://argocd.fieldsofbears.com
-            icon: sh-argocd.svg
+            icon: sh-argo-cd.svg
             description: ArgoCD is a GitOps continuous delivery tool for Kubernetes
             app: argocd-server
             namespace: argocd
@@ -144,7 +144,7 @@ config:
             app: prometheus
         - Mimir:
             href: https://mimir.fieldsofbears.com
-            icon: mimir.svg
+            icon: https://grafana.com/static/img/logos/logo-mimir.svg
             namespace: monitoring
             app: mimir
     - Productivity:
@@ -334,31 +334,38 @@ config:
   kubernetes:
     mode: cluster
   settings:
+    headerStyle: boxed
     theme: dark
     layout:
       - Media:
           style: row
-          columns: 4
+          columns: 3
+          header: false
       - Downloads:
           style: row
-          columns: 4
+          columns: 6
+          header: false
       - Gaming:
           style: column
+          header: false
       - SmartHome:
           style: column
-      - Monitoring:
-          style: column
+          header: false
       - Productivity:
           style: column
+          header: false
       - Development:
-          style: column
-          fiveColumns: true
+          style: row
+          header: false
+      - Monitoring:
+          style: row
+          header: false
       - Kubernetes:
-          style: column
-          initiallyCollapsed: true
-          icon: https://github.com/kubernetes/kubernetes/blob/master/logo/logo.svg
+          style: row
+          header: false
+          icon: https://raw.githubusercontent.com/kubernetes/kubernetes/refs/heads/master/logo/logo.svg
       - Developer:
-          iconsOnly: true
+          header: false
 # The service account is necessary to allow discovery of other services
 serviceAccount:
   create: true
