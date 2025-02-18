@@ -1,4 +1,5 @@
 version = 1
+revision = 1
 requires-python = ">=3.13.0, <4.0.0"
 
 [[package]]
@@ -237,7 +238,7 @@ wheels = [
 
 [[package]]
 name = "commitizen"
-version = "4.2.1"
+version = "4.2.2"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "argcomplete" },
@@ -251,9 +252,9 @@ dependencies = [
     { name = "termcolor" },
     { name = "tomlkit" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/d8/a3/77ffc9aee014cbf46c84c9f156a1ddef2d4c7cfb87d567decf2541464245/commitizen-4.2.1.tar.gz", hash = "sha256:5255416f6d6071068159f0b97605777f3e25d00927ff157b7a8d01efeda7b952", size = 50645 }
+sdist = { url = "https://files.pythonhosted.org/packages/1d/b7/44729c1e989fb901d0739471a9784ef8d161f545a1d0eb7c5d53631dd050/commitizen-4.2.2.tar.gz", hash = "sha256:eadf31514d6ce6a12537ccba095d3107f659ff99ae6159212d9de2a9d896dd76", size = 50678 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/57/ce/2f5d8ebe8376991b5f805e9f33d20c7f4c9ca6155bdbda761117dc41dff1/commitizen-4.2.1-py3-none-any.whl", hash = "sha256:a347889e0fe408c3b920a34130d8f35616be3ea8ac6b7b20c5b9aac19762661b", size = 72646 },
+    { url = "https://files.pythonhosted.org/packages/b6/b3/e6b59862924acb36f63f47bac19a7ac12ef7a2f083d489d58c46be8484c5/commitizen-4.2.2-py3-none-any.whl", hash = "sha256:5b42228178ee999dbdd95c2bf0ea73f8f539e8ed4cad421c2fe0b55b16458d2f", size = 72631 },
 ]
 
 [[package]]
@@ -364,7 +365,7 @@ requires-dist = [
 [package.metadata.requires-dev]
 dev = [
     { name = "ansible-lint", marker = "sys_platform != 'win32'", specifier = ">=25.0.0,<26.0.0" },
-    { name = "commitizen", specifier = "==4.2.1" },
+    { name = "commitizen", specifier = "==4.2.2" },
     { name = "pre-commit", specifier = ">=4.0.1,<5.0.0" },
 ]
 
