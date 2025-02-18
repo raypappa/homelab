@@ -1,0 +1,73 @@
+---
+controllers:
+  main:
+    annotations:
+      reloader.stakater.com/auto: "true"
+    pod:
+      securityContext:
+        runAsUser: 1001
+        runAsGroup: 1001
+        fsGroup: 1001
+        fsGroupChangePolicy: "OnRootMismatch"
+        supplementalGroups:
+          - 44
+          - 109
+          - 65542 # gladius:external-services
+          - 44
+          - 109
+          - 100
+      nodeSelector:
+        kubernetes.io/hostname: puma
+    containers:
+      app:
+        image:
+          repository: docker.io/jellyfin/jellyfin
+          # renovate: datasource=docker depName=docker.io/jellyfin/jellyfin
+          tag: 10.10.5
+        env:
+          TZ: "UTC"
+          JELLYFIN_CACHE_DIR: "/config/cache"
+        securityContext:
+          supplementalGroups:
+            #   # Hardware acceleration using an Intel iGPU w/ QuickSync
+            #   # These IDs below should be matched to your `video` and `render` group on the host
+            #   # To obtain those IDs run the following grep statement on the host:
+            #   # $ cat /etc/group | grep "video\|render"
+            - 44
+            - 109
+            - 100
+        resources:
+          requests:
+            #gpu.intel.com/i915: 1
+            cpu: 500m
+            memory: 1000Mi
+          limits:
+            #gpu.intel.com/i915: 1
+            memory: 8000Mi
+persistence:
+  config:
+    existingClaim: jellyfin-config
+    advancedMounts:
+      jellyfin:
+        app:
+          - path: /config
+  transcode:
+    enabled: true
+    type: emptyDir
+    #medium: "Memory"
+    sizeLimit: 10Gi
+  library:
+    enabled: true
+    type: hostPath
+    hostPathType: Directory
+    hostPath: /library
+    globalMounts:
+      - path: /library
+        readOnly: true
+service:
+  main:
+    controller: main
+    externalTrafficPolicy: Local
+    ports:
+      http:
+        port: 8096

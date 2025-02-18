@@ -1,0 +1,10 @@
+---
+image:
+  # renovate: datasource=docker depName=cloudflare/cloudflared
+  tag: 2025.2.0
+cloudflare:
+  secretName: "jellyfin-tunnel-credentials"
+  tunnelName: "faerun-jellyfin"
+  ingress:
+    - hostname: "jellyfin.fieldsofbears.com"
+      service: "http://jellyfin.jellyfin.svc.cluster.local:3000"
