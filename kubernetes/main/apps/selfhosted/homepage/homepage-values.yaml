@@ -343,9 +343,17 @@ config:
           style: row
           columns: 4
       - Kubernetes:
-          initiallyCollapsed: true
-          style: row
-          columns: 4
+          iconsOnly: true
+      - Gaming:
+          iconsOnly: true
+      - Monitoring:
+          iconsOnly: true
+      - Productivity:
+          iconsOnly: true
+      - Development:
+          iconsOnly: true
+      - Developer:
+          iconsOnly: true
 # The service account is necessary to allow discovery of other services
 serviceAccount:
   create: true
