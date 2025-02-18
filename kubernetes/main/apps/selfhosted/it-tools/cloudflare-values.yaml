@@ -7,4 +7,4 @@ cloudflare:
   tunnelName: "faerun-it-tools"
   ingress:
     - hostname: "it-tools.fieldsofbears.com"
-      service: "http://it-tools.it-tools.svc.cluster.local:8080"
+      service: "http://it-tools.it-tools.svc.cluster.local:80"
