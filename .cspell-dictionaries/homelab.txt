@@ -297,3 +297,4 @@ repository
 sshkeys
 collabora
 syncthing
+jellyfin

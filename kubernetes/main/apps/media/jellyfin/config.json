@@ -1,0 +1,7 @@
+{
+  "destNamespace": "jellyfin",
+  "appName": "jellyfin",
+  "serverSideApply": false,
+  "ignoreDifferences": [],
+  "group": "selfhosted"
+}
