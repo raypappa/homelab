@@ -60,19 +60,15 @@ env:
         key: api_key
 config:
   bookmarks:
-    - Productivity:
-        - Leantime:
-            - abbr: lt
-              href: https://lt.fieldsofbears.com/
     - Developer:
         - Infrastructure:
-            - abbr: infra
+            - icon: github.svg
               href: https://github.com/stoneydavis/infrastructure
         - Dotfiles:
-            - abbr: dotfiles
+            - icon: github.svg
               href: https://github.com/blade2005/dotfiles
         - Developer Guide:
-            - abbr: quickstart-dev
+            - icon: github.svg
               href: https://github.com/blade2005/quickstart-developer/
         - Vim Cheat Sheet:
             - abbr: vim-cheat
@@ -147,13 +143,9 @@ config:
         - Time Tagger:
             href: https://timetagger.fieldsofbears.com/
             icon: timetagger.svg
-        - IT Tools:
-            description: Tools and services for IT
-            href: https://it-tools.fieldsofbears.com/
-            icon: sh-it-tools.svg
-        - Stirling PDF:
-            href: https://stirling.fieldsofbears.com
-            icon: stirling-pdf.svg
+        - Leantime:
+            href: https://lt.fieldsofbears.com/
+            icon: leantime.svg
     - Development:
         - AI:
             href: https://ai.fieldsofbears.com
@@ -163,10 +155,17 @@ config:
         - Gitea(coming soon):
             href: https://gitea.fieldsofbears.com
             icon: gitea.svg
+        - IT Tools:
+            description: Tools and services for IT
+            href: https://it-tools.fieldsofbears.com/
+            icon: it-tools.svg
+        - Stirling PDF:
+            href: https://stirling.fieldsofbears.com
+            icon: stirling-pdf.svg
     - SmartHome:
         - HomeAssistant:
             href: https://ha.fieldsofbears.com
-            icon: homeassistant.svg
+            icon: home-assistant.svg
             namespace: homepage
             app: homeassistant
             widget:
