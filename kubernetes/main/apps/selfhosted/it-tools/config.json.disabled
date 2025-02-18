@@ -1,0 +1,7 @@
+{
+  "destNamespace": "it-tools",
+  "appName": "it-tools",
+  "serverSideApply": false,
+  "ignoreDifferences": [],
+  "group": "selfhosted"
+}

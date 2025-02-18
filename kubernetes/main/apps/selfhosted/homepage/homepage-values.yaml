@@ -8,6 +8,11 @@ image:
   # renovate: datasource=docker depName=ghcr.io/gethomepage/homepage
   tag: v0.10.9
 env:
+  HOMEPAGE_VAR_HOME_ASSISTANT_API_KEY:
+    valueFrom:
+      secretKeyRef:
+        name: home-assistant-secret
+        key: api_key
   HOMEPAGE_VAR_READARR_API_KEY:
     valueFrom:
       secretKeyRef:
@@ -140,15 +145,18 @@ config:
             app: mimir
     - Productivity:
         - Time Tagger:
-            - abbr: tt
-              href: https://timetagger.fieldsofbears.com/
-              icon: timetagger.svg
-    - Development:
-        - AI:
-            href: https://ai.fieldsofbears.com
+            href: https://timetagger.fieldsofbears.com/
+            icon: timetagger.svg
+        - IT Tools:
+            description: Tools and services for IT
+            href: https://it-tools.fieldsofbears.com/
+            icon: sh-it-tools.svg
         - Stirling PDF:
             href: https://stirling.fieldsofbears.com
             icon: stirling-pdf.svg
+    - Development:
+        - AI:
+            href: https://ai.fieldsofbears.com
         - Coder(coming soon):
             href: https://coder.fieldsofbears.com
             icon: coder.svg
@@ -161,9 +169,10 @@ config:
             icon: homeassistant.svg
             namespace: homepage
             app: homeassistant
-            # widget:
-            #   type: homeassistant
-            #   url: http://homeassistant.local:8123/
+            widget:
+              type: homeassistant
+              url: http://homeassistant.local:8123/
+              key: "{{HOMEPAGE_VAR_HOME_ASSISTANT_API_KEY}}"
     - Media:
         - Plex:
             href: https://potato.fieldsofbears.com/web/index.html#!/
