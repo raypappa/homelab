@@ -7,4 +7,4 @@ cloudflare:
   tunnelName: "faerun-jellyfin"
   ingress:
     - hostname: "jellyfin.fieldsofbears.com"
-      service: "http://jellyfin.jellyfin.svc.cluster.local:3000"
+      service: "http://jellyfin.jellyfin.svc.cluster.local:8096"
