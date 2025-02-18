@@ -170,7 +170,7 @@ config:
             app: homeassistant
             widget:
               type: homeassistant
-              url: http://homeassistant.local:8123/
+              url: http://homeassistant.stoneydavis.lan:8123
               key: "{{HOMEPAGE_VAR_HOME_ASSISTANT_API_KEY}}"
     - Media:
         - Plex:
