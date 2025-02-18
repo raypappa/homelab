@@ -1,0 +1,30 @@
+---
+controllers:
+  it-tools:
+    annotations:
+      reloader.stakater.com/auto: "true"
+    containers:
+      app:
+        image:
+          repository: ghcr.io/corentinth/it-tools
+          # renovate: datasource=docker depName=ghcr.io/corentinth/it-tools
+          tag: 2023.12.21-5ed3693
+        probes:
+          liveness:
+            enabled: false
+          readiness:
+            enabled: false
+          startup:
+            enabled: false
+        resources:
+          requests:
+            cpu: 100m
+            memory: 500Mi
+          limits:
+            memory: 2500Mi
+service:
+  app:
+    controller: it-tools
+    ports:
+      http:
+        port: 80
