@@ -67,13 +67,13 @@ config:
   bookmarks:
     - Developer:
         - Infrastructure:
-            - icon: github.svg
+            - icon: sh-github.svg
               href: https://github.com/stoneydavis/infrastructure
         - Dotfiles:
-            - icon: github.svg
+            - icon: sh-github.svg
               href: https://github.com/blade2005/dotfiles
         - Developer Guide:
-            - icon: github.svg
+            - icon: sh-github.svg
               href: https://github.com/blade2005/quickstart-developer/
         - Vim Cheat Sheet:
             - abbr: vim-cheat
@@ -85,7 +85,7 @@ config:
     - Kubernetes:
         - ArgoCD:
             href: https://argocd.fieldsofbears.com
-            icon: argocd.svg
+            icon: sh-argocd.svg
             app: argocd-server
             namespace: argocd
             # widget:
@@ -98,7 +98,7 @@ config:
             #       query: sum(argocd_app_info)
         - Ceph:
             href: https://rook.fieldsofbears.com
-            icon: ceph.svg
+            icon: sh-ceph.svg
             app: ceph-mgr
             namespace: rook-ceph
             # widget:
@@ -119,11 +119,11 @@ config:
             #       query: sum(ceph_osd_out{job="ceph"})
         - Tailscale(coming soon):
             href: https://tailscale.fieldsofbears.com
-            icon: tailscale.svg
+            icon: sh-tailscale.svg
     - Gaming:
         - Pterodactyl:
             href: https://game.fieldsofbears.com
-            icon: pterodactyl.svg
+            icon: sh-pterodactyl.svg
             widget:
               type: pterodactyl
               url: http://172.17.42.155:80
@@ -131,12 +131,12 @@ config:
     - Monitoring:
         - Grafana:
             href: https://grafana.fieldsofbears.com
-            icon: grafana.svg
+            icon: sh-grafana.svg
             namespace: monitoring
             app: grafana
         - Prometheus:
             href: https://prometheus.fieldsofbears.com
-            icon: prometheus.svg
+            icon: sh-prometheus.svg
             namespace: monitoring
             app: prometheus
         - Mimir:
@@ -147,12 +147,12 @@ config:
     - Productivity:
         - Time Tagger:
             href: https://timetagger.fieldsofbears.com/
-            icon: timetagger.svg
+            icon: sh-timetagger.svg
             namespace: timetagger
             app: timetagger
         - Leantime:
             href: https://lt.fieldsofbears.com/
-            icon: leantime.svg
+            icon: sh-leantime.svg
             namespace: leantime
             app: leantime-svc
     - Development:
@@ -160,31 +160,32 @@ config:
             href: https://ai.fieldsofbears.com
             namespace: ollama
             app: ollama
+            icon: sh-ollama.svg
         - Coder(coming soon):
             href: https://coder.fieldsofbears.com
             namespace: coder
             app: coder
-            icon: coder.svg
+            icon: sh-coder.svg
         - Gitea(coming soon):
             href: https://gitea.fieldsofbears.com
             namespace: gitea
             app: gitea
-            icon: gitea.svg
+            icon: sh-gitea.svg
         - IT Tools:
             description: Tools and services for IT
             href: https://it-tools.fieldsofbears.com/
             namespace: it-tools
             app: it-tools
-            icon: it-tools.svg
+            icon: sh-it-tools.svg
         - Stirling PDF:
             href: https://stirling.fieldsofbears.com
             namespace: stirling
             app: stirling
-            icon: stirling-pdf.svg
+            icon: sh-stirling-pdf.svg
     - SmartHome:
         - HomeAssistant:
             href: https://ha.fieldsofbears.com
-            icon: home-assistant.svg
+            icon: sh-home-assistant.svg
             widget:
               type: homeassistant
               url: http://homeassistant.stoneydavis.lan:8123
@@ -192,9 +193,10 @@ config:
     - Media:
         - Plex:
             href: https://potato.fieldsofbears.com/web/index.html#!/
-            icon: plex.svg
+            icon: sh-plex.svg
             namespace: plex
             app: plex
+            description: Plex is a media server
             widget:
               type: plex
               url: http://plex.plex.svc.cluster.local:32400
@@ -205,8 +207,9 @@ config:
                 - albums
         - Immich:
             href: https://immich.fieldsofbears.com
-            icon: immich.svg
+            icon: sh-immich.svg
             namespace: immich
+            description: Immich is a image hosting service
             app: immich
             widget:
               type: immich
@@ -215,17 +218,18 @@ config:
               version: 2
         - Jellyfin:
             href: https://jellyfin.fieldsofbears.com
-            icon: jellyfin.svg
+            icon: sh-jellyfin.svg
             namespace: jellyfin
             app: jellyfin
-            # widget:
-            #   type: jellyfin
-            #   url: http://jellyfin.jellyfin.svc.cluster.local:8096
-            #   key: "{{HOMEPAGE_VAR_JELLYFIN_API_KEY}}"
+            description: Jellyfin is a media server
+            widgets:
+              - type: jellyfin
+                url: http://jellyfin.jellyfin.svc.cluster.local:8096
+                key: "{{HOMEPAGE_VAR_JELLYFIN_API_KEY}}"
     - Downloads:
         - Sonarr:
             href: https://sonarr.fieldsofbears.com
-            icon: sonarr.svg
+            icon: sh-sonarr.svg
             namespace: sonarr
             app: sonarr
             widget:
@@ -237,7 +241,7 @@ config:
             href: https://radarr.fieldsofbears.com
             namespace: radarr
             app: radarr
-            icon: radarr.svg
+            icon: sh-radarr.svg
             widget:
               type: radarr
               url: http://radarr.radarr.svc.cluster.local:7878
@@ -251,7 +255,7 @@ config:
             href: https://readarr.fieldsofbears.com
             namespace: readarr
             app: readarr
-            icon: readarr.svg
+            icon: sh-readarr.svg
             widget:
               type: readarr
               url: http://readarr.readarr.svc.cluster.local:8787
@@ -264,12 +268,12 @@ config:
             href: https://whisparr.fieldsofbears.com
             namespace: whisparr
             app: whisparr
-            icon: whisparr.svg
+            icon: sh-whisparr.svg
         - Prowlarr:
             href: https://prowlarr.fieldsofbears.com
             app: prowlarr
             namespace: prowlarr
-            icon: prowlarr.svg
+            icon: sh-prowlarr.svg
             widget:
               type: prowlarr
               url: http://prowlarr.prowlarr.svc.cluster.local:9696
@@ -283,7 +287,7 @@ config:
             href: https://flood.fieldsofbears.com
             namespace: rtorrent
             app: rtorrent
-            icon: flood.svg
+            icon: sh-flood.svg
             widget:
               type: flood
               password: "{{HOMEPAGE_VAR_FLOOD_PASSWORD}}"

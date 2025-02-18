@@ -67,7 +67,11 @@ persistence:
 service:
   main:
     controller: main
-    externalTrafficPolicy: Local
+    type: LoadBalancer
+    annotations:
+      metallb.universe.tf/loadBalancerIPs: 172.17.42.206
+      metallb.universe.tf/address-pool: metalpool
+    externalTrafficPolicy: Cluster
     ports:
       http:
         port: 8096
