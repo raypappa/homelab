@@ -254,7 +254,7 @@ config:
               type: flood
               password: "{{HOMEPAGE_VAR_FLOOD_PASSWORD}}"
               username: "{{HOMEPAGE_VAR_FLOOD_USERNAME}}"
-              url: http://rtorrent-app.homepage.svc.cluster.local:3000
+              url: http://rtorrent.rtorrent.svc.cluster.local:3000
               fields:
                 - download
                 - upload
