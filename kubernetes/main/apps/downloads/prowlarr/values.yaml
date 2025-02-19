@@ -17,7 +17,7 @@ controllers:
         image:
           repository: ghcr.io/onedr0p/prowlarr-nightly
           # renovate: datasource=docker depName=ghcr.io/onedr0p/prowlarr-nightly
-          tag: 1.20.1.4600@sha256:ae5713bb80eae9090247ad6f974d4be340df5c20bd775f108c1d118da628381f
+          tag: 1.31.2.4974@sha256:a9eb75defa0a3e49eb3172c7a83cda10be583be8b8861ef8b1f7da555ffbcc1b
           pullPolicy: IfNotPresent
         env:
           TZ: UTC
