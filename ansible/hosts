@@ -2,19 +2,19 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/ansible/ansible-lint/main/src/ansiblelint/schemas/inventory.json
 faerun:
   hosts:
-    puma.local:
-    panda.local:
-    # warthog.stoneydavis.local:
+    puma.stoneydavis.local:
+    panda.stoneydavis.local:
+    # warthog.stoneydavis.stoneydavis.local:
 prod_k8s_controlplane:
   hosts:
-    kubernetes-node-0003.local:
-    kubernetes-node-0001.local:
-    kubernetes-node-0002.local:
+    kubernetes-node-0003.stoneydavis.local:
+    kubernetes-node-0001.stoneydavis.local:
+    kubernetes-node-0002.stoneydavis.local:
 prod_k8s_nodes:
   hosts:
-    kubernetes-node-0003.local:
-    kubernetes-node-0001.local:
-    kubernetes-node-0002.local:
+    kubernetes-node-0003.stoneydavis.local:
+    kubernetes-node-0001.stoneydavis.local:
+    kubernetes-node-0002.stoneydavis.local:
 prod_k8s_cluster:
   children:
     prod_k8s_controlplane:
@@ -27,10 +27,10 @@ prod_k8s_cluster:
 #       ansible_host: 172.17.40.98
 game_server:
   hosts:
-    panda.local:
+    panda.stoneydavis.local:
 # dev_k8s_controlplane:
 #   hosts:
-#     warthog.stoneydavis.local:
+#     warthog.stoneydavis.stoneydavis.local:
 # dev_k8s_nodes:
 #   hosts:
 # dev_k8s_cluster:
@@ -39,6 +39,6 @@ game_server:
 #     dev_k8s_nodes:
 nfs_server:
   hosts:
-    puma.local:
+    puma.stoneydavis.local:
       nfs_server_export_dirs:
         - /library
