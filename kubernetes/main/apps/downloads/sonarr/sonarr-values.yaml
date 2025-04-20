@@ -20,7 +20,7 @@ controllers:
         image:
           repository: ghcr.io/onedr0p/sonarr-develop
           # renovate: datasource=docker depName=ghcr.io/onedr0p/sonarr-develop
-          tag: 4.0.13
+          tag: 4.0.14
         env:
           COMPlus_EnableDiagnostics: "0"
           SONARR__APP__INSTANCENAME: Sonarr
