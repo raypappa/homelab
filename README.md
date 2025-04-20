@@ -129,6 +129,12 @@ In order to have a functioning pipeline and make it easier for others I have som
 | RUNS_ON                 | ubuntu-latest      |
 | TASK_VERSION            | 3.31.0             |
 
+### Secrets
+
+| Name                   | Description                                                          |
+| ---------------------- | -------------------------------------------------------------------- |
+| ANSIBLE_EXTRA_VAR_JSON | json document for extra vars, holds op_connect_token and op_vault_id |
+
 ______________________________________________________________________
 
 ## Icons

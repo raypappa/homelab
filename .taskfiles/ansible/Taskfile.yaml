@@ -14,7 +14,7 @@ tasks:
     desc: Run ansible playbook
     silent: true
     cmds:
-      - uv run ansible-playbook -i hosts {{.CLI_ARGS}} homelab.yaml
+      - uv run ansible-playbook -i hosts --extra-vars "@ansible_extra_vars.json" {{.CLI_ARGS}} homelab.yaml
   deploy:ci:
     desc: Run ansible playbook in CI
     requires:

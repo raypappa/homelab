@@ -2,3 +2,12 @@ cluster-init: true
 disable:
   - servicelb
   - traefik
+etcd-snapshot-retention: 60
+etcd-snapshot-schedule-cron: 0 */12 * * *
+etcd-s3-endpoint: "{{ b2_s3_endpoint.field.value }}"
+etcd-s3-access-key: "{{ b2_s3_access_key.field.value }}"
+etcd-s3-secret-key: "{{ b2_s3_secret_key.field.value }}"
+etcd-s3-bucket: "{{ b2_s3_bucket.field.value }}"
+etcd-s3-region: "{{ b2_s3_region.field.value }}"
+etcd-s3-folder: "{{ b2_s3_folder.field.value }}"
+etcd-s3: true
