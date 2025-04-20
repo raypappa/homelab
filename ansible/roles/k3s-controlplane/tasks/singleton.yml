@@ -7,6 +7,54 @@
 #
 # Otherwise they won't be able to communicate and you'd have three
 # isolated control planes, not a single HA control plane.
+- name: Get B2 endpoint
+  field_info:
+    token: "{{ op_connect_token }}"
+    item: backblaze-etcd
+    field: endpoint
+    vault: "{{ op_vault_id }}"
+  no_log: true
+  register: b2_s3_endpoint
+- name: Get B2 access key
+  field_info:
+    token: "{{ op_connect_token }}"
+    item: backblaze-etcd
+    field: access_key
+    vault: "{{ op_vault_id }}"
+  no_log: true
+  register: b2_s3_access_key
+- name: Get B2 secret key
+  field_info:
+    token: "{{ op_connect_token }}"
+    item: backblaze-etcd
+    field: secret_key
+    vault: "{{ op_vault_id }}"
+  no_log: true
+  register: b2_s3_secret_key
+- name: Get B2 bucket
+  field_info:
+    token: "{{ op_connect_token }}"
+    item: backblaze-etcd
+    field: bucket
+    vault: "{{ op_vault_id }}"
+  no_log: true
+  register: b2_s3_bucket
+- name: Get B2 region
+  field_info:
+    token: "{{ op_connect_token }}"
+    item: backblaze-etcd
+    field: region
+    vault: "{{ op_vault_id }}"
+  no_log: true
+  register: b2_s3_region
+- name: Get B2 folder
+  field_info:
+    token: "{{ op_connect_token }}"
+    item: backblaze-etcd
+    field: folder
+    vault: "{{ op_vault_id }}"
+  no_log: true
+  register: b2_s3_folder
 - name: Create Primary Deploy Key
   become: false
   community.crypto.openssh_keypair:
@@ -73,7 +121,6 @@
 - name: Store Master node-token and IP address
   ansible.builtin.set_fact:
     k3s_master_token: "{{ node_token.content | b64decode | regex_replace('\n', '') }}"
-    k3s_master_ip: "{{ ansible_default_ipv4.address | default(ansible_all_ipv4_addresses[0]) }}"
 - name: Restore node-token file access
   ansible.builtin.file:
     path: "{{ k3s_server_location }}/server/node-token"
@@ -94,7 +141,7 @@
 # Update the namespace in the "{{(ansible_user_dir, '.kube', 'config') | path_join}}" to argocd.
 - name: Replace https://localhost:6443 by https://master-ip:6443
   ansible.builtin.command: >-
-    k3s kubectl config set-cluster default --server=https://{{ master_ip }}:6443 --kubeconfig "{{(ansible_user_dir, '.kube', 'config') | path_join}}"
+    k3s kubectl config set-cluster default --server=https://{{ inventory_hostname }}:6443 --kubeconfig "{{(ansible_user_dir, '.kube', 'config') | path_join}}"
   changed_when: true
 - name: Create kubectl symlink
   ansible.builtin.file:
@@ -109,13 +156,15 @@
 - name: Create ArgoCD NameSpace
   become: false
   kubernetes.core.k8s:
+    host: https://{{ inventory_hostname }}:6443
     name: argocd
     kind: Namespace
     state: present
 - name: Apply ArgoCD Kustomize
   kubernetes.core.k8s:
+    host: https://{{ inventory_hostname }}:6443
     definition: "{{ lookup('kubernetes.core.kustomize', dir='https://github.com/raypappa/homelab.git/kubernetes/{{git_sub_path}}/bootstrap/argocd', enable_helm=True) }}"
-  when: "{{ query('kubernetes.core.k8s', kind='Deployment', namespace='argocd', resource_name='argocd-server') | length < 1}}"
+  when: "{{ query('kubernetes.core.k8s', host='https://{{inventory_hostname}}:6443', kind='Deployment', namespace='argocd', resource_name='argocd-server') | length < 1}}"
 - name: Read kubeconfig
   ansible.builtin.slurp:
     src: "{{(ansible_user_dir, '.kube', 'config') | path_join}}"

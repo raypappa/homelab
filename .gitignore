@@ -65,3 +65,6 @@ node_modules
 .cdk.staging
 cdk.out
 charts/
+
+# homelab specific
+ansible/ansible_extra_vars.json

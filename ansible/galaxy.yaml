@@ -9,3 +9,4 @@ collections:
   - name: https://github.com/stoneydavis/ansible-collection-pterodactyl.git
     type: git
   - name: community.docker
+  - name: onepassword.connect
