@@ -31,6 +31,8 @@ jobs:
         with:
           python-version-file: ".python-version"
       - run: task configure
+      - name: Create extra vars file
+        run: echo "${{ secrets.ANSIBLE_EXTRA_VAR_JSON}}" > ansible/ansible_extra_vars.json
       - name: Setup kubectl
         run: |
           install -m 600 -D /dev/null ~/.kube/config
