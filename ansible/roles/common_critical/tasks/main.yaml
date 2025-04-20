@@ -42,6 +42,15 @@
     pkg:
       - systemd-resolved
     state: latest
+- name: Apply resolved.conf to configure systemd-resolved
+  become: true
+  register: networkd
+  ansible.builtin.copy:
+    src: resolved.conf
+    dest: /etc/systemd/resolved.conf
+    mode: "0644"
+    owner: root
+    group: root
 - name: Remove dhclient's ability to overwrite systemd-resolved's /etc/resolv.conf
   become: true
   register: dhclient

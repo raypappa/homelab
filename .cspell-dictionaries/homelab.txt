@@ -300,3 +300,5 @@ syncthing
 jellyfin
 tooljet
 supabase
+DNSSEC
+LLMNR

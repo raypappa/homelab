@@ -2,6 +2,8 @@
 Name=en*
 
 [Network]
+DHCP=yes
+
+[DHCPv4]
 UseDomains=true
 UseDNS=yes
-DHCP=yes
