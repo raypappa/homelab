@@ -1,4 +1,5 @@
 ---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/ansible/ansible-lint/main/src/ansiblelint/schemas/ansible.json#/$defs/tasks
 - name: Get my public IP
   community.general.ipify_facts:
 - name: Ensure that Bookworm /etc/apt/sources.list is sane

@@ -131,9 +131,10 @@ In order to have a functioning pipeline and make it easier for others I have som
 
 ### Secrets
 
-| Name                   | Description                                                          |
-| ---------------------- | -------------------------------------------------------------------- |
-| ANSIBLE_EXTRA_VAR_JSON | json document for extra vars, holds op_connect_token and op_vault_id |
+| Name                     | Description                                                          |
+| ------------------------ | -------------------------------------------------------------------- |
+| ANSIBLE_EXTRA_VAR_JSON   | json document for extra vars, holds op_connect_token and op_vault_id |
+| OP_SERVICE_ACCOUNT_TOKEN | 1password Service Account Auth Token: GitHub Actions                 |
 
 ______________________________________________________________________
 
