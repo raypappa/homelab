@@ -1,4 +1,5 @@
 ---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/ansible/ansible-lint/main/src/ansiblelint/schemas/ansible.json#/$defs/tasks
 # The singleton is any already running k3s controlplane node.  Mostly we
 # just need to have the correct node token to use on any other control
 # plane node, because we initialize everything on the first one and then
@@ -7,54 +8,6 @@
 #
 # Otherwise they won't be able to communicate and you'd have three
 # isolated control planes, not a single HA control plane.
-- name: Get B2 endpoint
-  field_info:
-    token: "{{ op_connect_token }}"
-    item: backblaze-etcd
-    field: endpoint
-    vault: "{{ op_vault_id }}"
-  no_log: true
-  register: b2_s3_endpoint
-- name: Get B2 access key
-  field_info:
-    token: "{{ op_connect_token }}"
-    item: backblaze-etcd
-    field: access_key
-    vault: "{{ op_vault_id }}"
-  no_log: true
-  register: b2_s3_access_key
-- name: Get B2 secret key
-  field_info:
-    token: "{{ op_connect_token }}"
-    item: backblaze-etcd
-    field: secret_key
-    vault: "{{ op_vault_id }}"
-  no_log: true
-  register: b2_s3_secret_key
-- name: Get B2 bucket
-  field_info:
-    token: "{{ op_connect_token }}"
-    item: backblaze-etcd
-    field: bucket
-    vault: "{{ op_vault_id }}"
-  no_log: true
-  register: b2_s3_bucket
-- name: Get B2 region
-  field_info:
-    token: "{{ op_connect_token }}"
-    item: backblaze-etcd
-    field: region
-    vault: "{{ op_vault_id }}"
-  no_log: true
-  register: b2_s3_region
-- name: Get B2 folder
-  field_info:
-    token: "{{ op_connect_token }}"
-    item: backblaze-etcd
-    field: folder
-    vault: "{{ op_vault_id }}"
-  no_log: true
-  register: b2_s3_folder
 - name: Create Primary Deploy Key
   become: false
   community.crypto.openssh_keypair:
@@ -73,14 +26,14 @@
   ansible.builtin.file:
     path: /etc/rancher/k3s/
     state: directory
-    mode: "0755"
+    mode: "0700"
 - name: Copy Jinja template
   ansible.builtin.template:
     src: singleton.config.yaml.j2
     dest: /etc/rancher/k3s/config.yaml
     owner: root
     group: root
-    mode: "0644"
+    mode: "0600"
 - name: Copy K3s service file
   register: k3s_service
   ansible.builtin.template:
@@ -95,7 +48,7 @@
     dest: /etc/rancher/k3s/kubelet.config
     owner: root
     group: root
-    mode: "0644"
+    mode: "0600"
 - name: Enable and check K3s service
   any_errors_fatal: true
   ansible.builtin.systemd:
@@ -156,35 +109,52 @@
 - name: Create ArgoCD NameSpace
   become: false
   kubernetes.core.k8s:
-    host: https://{{ inventory_hostname }}:6443
+    host: https://localhost:6443
     name: argocd
     kind: Namespace
     state: present
-- name: Apply ArgoCD Kustomize
-  kubernetes.core.k8s:
-    host: https://{{ inventory_hostname }}:6443
-    definition: "{{ lookup('kubernetes.core.kustomize', dir='https://github.com/raypappa/homelab.git/kubernetes/{{git_sub_path}}/bootstrap/argocd', enable_helm=True) }}"
-  when: "{{ query('kubernetes.core.k8s', host='https://{{inventory_hostname}}:6443', kind='Deployment', namespace='argocd', resource_name='argocd-server') | length < 1}}"
+- name: Wait for k3s to stabilize
+  ansible.builtin.wait_for:
+    port: 6443
+    delay: 10
+    timeout: 300
+    state: started
+- name: Apply ArgoCD Kustomize # this is not the right way to do it but using kubernetes.core.k8s was failing for some reason.
+  ansible.builtin.shell:
+    cmd: >-
+      k3s kubectl kustomize --enable-helm=True https://github.com/raypappa/homelab.git/kubernetes/{{ git_sub_path }}/bootstrap/argocd | k3s kubectl apply -f -
+- name: Wait for ArgoCD to be ready
+  become: false
+  retries: 10
+  until: argocd_server_check is not failed
+  delay: 5
+  register: argocd_server_check
+  kubernetes.core.k8s_info:
+    host: https://localhost:6443
+    label_selectors:
+      - name = argocd-repo-server
+    kind: pod
+    namespace: argocd
 - name: Read kubeconfig
   ansible.builtin.slurp:
-    src: "{{(ansible_user_dir, '.kube', 'config') | path_join}}"
+    src: "{{ (ansible_user_dir, '.kube', 'config') | path_join }}"
   register: kubeconfig_b64
 - name: Parse kubeconfig
   ansible.builtin.set_fact:
     kubeconfig: "{{ kubeconfig_b64['content'] | b64decode | from_yaml }}"
 - name: First Context in kubeconfig
   ansible.builtin.set_fact:
-    kubeconfig_contexts: "{{ [kubeconfig.contexts[0]|combine({'context': {'namespace': 'argocd'}}, recursive=True)] | union(kubeconfig.contexts[1:]) }}"
+    kubeconfig_contexts: "{{ [kubeconfig.contexts[0]|combine({ 'context': {'namespace': 'argocd' }}, recursive=True)] | union(kubeconfig.contexts[1:]) }}"
 - name: Set kubectl current context namespace to argocd
   ansible.builtin.copy:
-    dest: "{{(ansible_user_dir, '.kube', 'config') | path_join}}"
+    dest: "{{ (ansible_user_dir, '.kube', 'config') | path_join }}"
     content: "{{ kubeconfig|combine({'contexts': kubeconfig_contexts})|ansible.builtin.to_nice_yaml}}"
     owner: "{{ ansible_user }}"
     mode: u=rw,g=,o=
 - name: Configure ArgoCD for the cluster
   ansible.builtin.command:
     cmd: argocd login --core
-    creates: "{{(ansible_user_dir, '.config','argocd','config') | path_join}}"
+    creates: "{{ (ansible_user_dir, '.config','argocd','config') | path_join }}"
 - name: List Configured Repositories in ArgoCD
   ansible.builtin.command: >-
     argocd repo list -o json
@@ -193,5 +163,5 @@
 - name: Configure ArgoCD with SSH Key
   become: true
   ansible.builtin.command: >-
-    argocd repo add "{{ k3s_git_repo }}" --ssh-private-key-path "{{(ansible_user_dir, '.ssh','id_ed25519_backup') | path_join}}"
+    argocd repo add "{{ k3s_git_repo }}"
   when: argocd_repos.stdout.find(k3s_git_repo)

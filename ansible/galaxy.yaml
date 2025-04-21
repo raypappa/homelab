@@ -2,11 +2,14 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/ansible/ansible-lint/main/src/ansiblelint/schemas/requirements.json
 roles:
   - name: artis3n.tailscale
+    version: "5.0.1"
   - name: xolyu.mariadb
+    version: "0.2.0"
+  - name: hussainweb.chezmoi
 collections:
   - name: community.general
-    version: ">=10.1.0"
+    version: "10.5.0"
   - name: https://github.com/stoneydavis/ansible-collection-pterodactyl.git
     type: git
   - name: community.docker
-  - name: onepassword.connect
+    version: "4.5.2"

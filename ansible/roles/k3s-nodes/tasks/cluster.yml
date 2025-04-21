@@ -1,4 +1,5 @@
 ---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/ansible/ansible-lint/main/src/ansiblelint/schemas/ansible.json#/$defs/tasks
 # vim filetype=ansible.yaml
 # NON-SINGLETON cluster - 2nd and after HA masters.
 
