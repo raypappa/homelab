@@ -86,7 +86,7 @@
   loop: "{{ users }}"
 # - name: Install tailscale
 #   ansible.builtin.include_role:
-#     name: artis3n.tailscale
+#     name: artis3n.tailscale.machine
 - name: Set hostname if specified
   become: true
   when: hostname is defined

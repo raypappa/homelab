@@ -1,8 +1,6 @@
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/ansible/ansible-lint/main/src/ansiblelint/schemas/requirements.json
 roles:
-  - name: artis3n.tailscale
-    version: "5.0.1"
   - name: xolyu.mariadb
     version: "0.2.0"
   - name: hussainweb.chezmoi
@@ -13,3 +11,5 @@ collections:
     type: git
   - name: community.docker
     version: "4.5.2"
+  - name: artis3n.tailscale
+    version: "1.0.1"
