@@ -1,4 +1,5 @@
 ---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/ansible/ansible-lint/main/src/ansiblelint/schemas/ansible.json#/$defs/tasks
 - name: Increase max inotify watches
   ansible.posix.sysctl:
     name: fs.inotify.max_user_instances

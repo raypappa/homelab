@@ -10,24 +10,27 @@
     - common_critical
     - common
 - name: Production Kubernetes Cluster
+  order: sorted
   hosts:
     - prod_k8s_cluster
   become: true
   roles:
     - k3s-prereq
 - name: Production Kubernetes Control Plane
+  order: sorted
   hosts:
     - prod_k8s_controlplane
   roles:
     - k3s-controlplane
 - name: Production Kubernetes Nodes
+  order: sorted
   hosts:
     - prod_k8s_nodes
   roles:
     - k3s-nodes
 - name: Faerun Public
   hosts:
-    - puma.stoneydavis.lan
+    - kubernetes-node-0001.stoneydavis.local
   roles:
     - faerun-public
   tags:

@@ -1,4 +1,5 @@
 ---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/ansible/ansible-lint/main/src/ansiblelint/schemas/ansible.json#/$defs/tasks
 - name: Get my public IP
   community.general.ipify_facts:
 - name: Ensure that Bookworm /etc/apt/sources.list is sane
@@ -85,7 +86,7 @@
   loop: "{{ users }}"
 # - name: Install tailscale
 #   ansible.builtin.include_role:
-#     name: artis3n.tailscale
+#     name: artis3n.tailscale.machine
 - name: Set hostname if specified
   become: true
   when: hostname is defined

@@ -1,4 +1,5 @@
 ---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/ansible/ansible-lint/main/src/ansiblelint/schemas/ansible.json#/$defs/tasks
 # vim: filetype=ansible.yaml
 - name: Create a configured account for "{{ user }}"
   become: true
@@ -7,26 +8,11 @@
     shell: /bin/bash
     groups: libvirt, dialout, audio, video
     append: true
-- name: Ensure bare dotfile repo is present for "{{ user }}"
-  become_user: "{{ user }}"
-  become: true
-  ansible.builtin.git:
-    dest: ~/.cfg
-    repo: https://github.com/raypappa/dotfiles.git
-    bare: true
-    update: true
-- name: Ensure the config repo is checked out for "{{ user }}"
-  become_user: "{{ user }}"
-  become: true
-  ansible.builtin.command: # noqa: command-instead-of-module
-    cmd: git --git-dir=$HOME/.cfg/ --work-tree=$HOME checkout main --force
-  args:
-    creates: ~/.zshrc
-- name: Ensure config repo is up to date for "{{ user }}"
-  become_user: "{{ user }}"
-  become: true
-  ansible.builtin.command: # noqa: no-changed-when command-instead-of-module
-    cmd: git --git-dir=$HOME/.cfg/ --work-tree=$HOME pull --force
+# - name: Chezmoi user
+#   ansible.builtin.import_role:
+#     name: hussainweb.chezmoi
+#   vars:
+#     chezmoi_init_url: "https://github.com/raypappa/chezmoi-dotfiles.git"
 - name: Create .ssh dir if it doesn't exist for "{{ user }}"
   become: true
   become_user: "{{ user }}"

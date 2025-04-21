@@ -4,10 +4,11 @@ disable:
   - traefik
 etcd-snapshot-retention: 60
 etcd-snapshot-schedule-cron: 0 */12 * * *
-etcd-s3-endpoint: "{{ b2_s3_endpoint.field.value }}"
-etcd-s3-access-key: "{{ b2_s3_access_key.field.value }}"
-etcd-s3-secret-key: "{{ b2_s3_secret_key.field.value }}"
-etcd-s3-bucket: "{{ b2_s3_bucket.field.value }}"
-etcd-s3-region: "{{ b2_s3_region.field.value }}"
-etcd-s3-folder: "{{ b2_s3_folder.field.value }}"
+etcd-s3-endpoint: "{{ lookup("community.general.onepassword","backblaze-etcd", field="endpoint", service_account_token=op_sa_token, subdomain="my", vault=op_vault_id) }}"
+etcd-s3-access-key: "{{ lookup("community.general.onepassword","backblaze-etcd", field="access_key", service_account_token=op_sa_token, subdomain="my", vault=op_vault_id) }}"
+etcd-s3-secret-key: "{{ lookup("community.general.onepassword","backblaze-etcd", field="secret_key", service_account_token=op_sa_token, subdomain="my", vault=op_vault_id) }}"
+etcd-s3-bucket: "{{ lookup("community.general.onepassword","backblaze-etcd", field="bucket", service_account_token=op_sa_token, subdomain="my", vault=op_vault_id) }}"
+etcd-s3-region: "{{ lookup("community.general.onepassword","backblaze-etcd", field="region", service_account_token=op_sa_token, subdomain="my", vault=op_vault_id) }}"
+etcd-s3-folder: "{{ lookup("community.general.onepassword","backblaze-etcd", field="folder", service_account_token=op_sa_token, subdomain="my", vault=op_vault_id) }}"
 etcd-s3: true
+tls-san: "{{ inventory_hostname }}"

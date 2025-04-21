@@ -1,6 +1,5 @@
 ---
 # yaml-language server: $schema=https://raw.githubusercontent.com/ansible/ansible-lint/main/src/ansiblelint/schemas/vars.json
 k3s_cloudflare_domain_name: fieldsofbears.com
-master_ip: "{{ hostvars[groups['prod_k8s_controlplane'][0]]['ansible_host'] | default(groups['prod_k8s_controlplane'][0]) }}"
 singleton_host: "{{ groups['prod_k8s_controlplane'][0] }}"
 git_sub_path: "main"

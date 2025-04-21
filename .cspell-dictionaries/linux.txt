@@ -73,3 +73,4 @@ oknodo
 nicelevel
 rpcsec
 unexporting
+chezmoi
