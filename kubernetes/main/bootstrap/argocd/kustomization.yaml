@@ -4,7 +4,7 @@ kind: Kustomization
 namespace: argocd
 resources:
   # renovate:github-url
-  - https://raw.githubusercontent.com/argoproj/argo-cd/v2.14.2/manifests/install.yaml
+  - https://raw.githubusercontent.com/argoproj/argo-cd/v2.14.11/manifests/install.yaml
 helmCharts:
   - name: cloudflare-tunnel
     repo: https://cloudflare.github.io/helm-charts
