@@ -4,7 +4,7 @@ kind: Kustomization
 helmCharts:
   - name: homepage
     repo: https://jameswynn.github.io/helm-charts
-    version: 2.0.1
+    version: 2.1.0
     namespace: homepage
     releaseName: homepage
     valuesFile: homepage-values.yaml
