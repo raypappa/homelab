@@ -23,12 +23,12 @@ jobs:
       #     SECRET_STRING=$(aws secretsmanager get-secret-value --secret-id ${first_domain}-cert --query SecretString --output text)
       #     CERT_PATH="certbot-config/archive/${first_domain}"
       #     LIVE_PATH="certbot-config/live/${first_domain}"
-      #     mkdir -p ${CERT_PATH} ${LIVE_PATH}
+      #     mkdir -p ${CERT_PATH} ${LIVE_PATH} certbot-config/renewal
       #     echo "$SECRET_STRING" | jq -r .fullchain > ${CERT_PATH}/fullchain1.pem
       #     echo "$SECRET_STRING" | jq -r .private_key > ${CERT_PATH}/privkey1.pem
       #     echo "$SECRET_STRING" | jq -r .certificate_chain > ${CERT_PATH}/chain1.pem
       #     echo "$SECRET_STRING" | jq -r .certificate > ${CERT_PATH}/cert1.pem
-      #     echo "$SECRET_STRING" | jq -r .renewal > certbot-config/renewal
+      #     echo "$SECRET_STRING" | jq -r .renewal > certbot-config/renewal/${first_domain}.conf
       #     ln -s ${CERT_PATH}/fullchain1.pem ${LIVE_PATH}/fullchain.pem
       #     ln -s ${CERT_PATH}/privkey1.pem ${LIVE_PATH}/privkey.pem
       #     ln -s ${CERT_PATH}/chain1.pem ${LIVE_PATH}/chain.pem
@@ -63,11 +63,12 @@ jobs:
           first_domain=$(echo ${{ secrets.CERTBOT_DOMAINS }} | cut -d',' -f1)
           echo "::add-mask::${first_domain}-cert"
           CERT_PATH="certbot-config/archive/${first_domain}"
+          RENEWAL_PATH="certbot-config/renewal"
           FULLCHAIN=$(cat ${CERT_PATH}/fullchain1.pem)
           PRIVATE_KEY=$(cat ${CERT_PATH}/privkey1.pem)
           CERTIFICATE_CHAIN=$(cat ${CERT_PATH}/chain1.pem)
           CERTIFICATE=$(cat ${CERT_PATH}/cert1.pem)
-          RENEWAL=$(cat certbot-config/renewal)
+          RENEWAL=$(cat ${RENEWAL_PATH}/${first_domain}.conf)
           SECRET_STRING=$(jq -n --arg cert "$CERTIFICATE" --arg key "$PRIVATE_KEY" --arg chain "$CERTIFICATE_CHAIN" --arg fullchain "$FULLCHAIN"  --arg renewal "$RENEWAL" \
           '{"certificate": $cert, "private_key": $key, "certificate_chain": $chain, "fullchain": $fullchain}, "renewal": ${renewal}')
           aws secretsmanager update-secret --secret-id ${first_domain}-cert --secret-string "$SECRET_STRING"
