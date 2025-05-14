@@ -15,7 +15,7 @@ controllers:
         image:
           repository: ghcr.io/onedr0p/radarr
           # renovate: datasource=docker depName=ghcr.io/onedr0p/radarr
-          tag: 5.18.4
+          tag: 5.19.3
           pullPolicy: IfNotPresent
         env:
           COMPlus_EnableDiagnostics: "0"
