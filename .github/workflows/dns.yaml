@@ -70,7 +70,7 @@ jobs:
           CERTIFICATE=$(cat ${CERT_PATH}/cert1.pem)
           RENEWAL=$(cat ${RENEWAL_PATH}/${first_domain}.conf)
           SECRET_STRING=$(jq -n --arg cert "$CERTIFICATE" --arg key "$PRIVATE_KEY" --arg chain "$CERTIFICATE_CHAIN" --arg fullchain "$FULLCHAIN"  --arg renewal "$RENEWAL" \
-          '{"certificate": $cert, "private_key": $key, "certificate_chain": $chain, "fullchain": $fullchain}, "renewal": ${renewal}')
+          '{"certificate": $cert, "private_key": $key, "certificate_chain": $chain, "fullchain": $fullchain, "renewal": $renewal')
           aws secretsmanager update-secret --secret-id ${first_domain}-cert --secret-string "$SECRET_STRING"
       - name: Shred certificates
         run: shred -u certbot-config/archive/*/*
