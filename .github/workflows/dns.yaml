@@ -56,6 +56,7 @@ jobs:
           echo "::add-mask::${first_domain}"
           find certbot-config/live -ls
           find certbot-config/archive -ls
+          find certbot-config/renewal -ls
       - name: Upload certificate to AWS Secrets Manager
         run: |
           echo "::add-mask::$(aws sts get-caller-identity --query Account --output text)"
