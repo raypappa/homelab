@@ -6,9 +6,9 @@
     # warthog.stoneydavis.local:
 prod_k8s_controlplane:
   hosts:
-    kubernetes-node-0003.stoneydavis.local:
     kubernetes-node-0001.stoneydavis.local:
     kubernetes-node-0002.stoneydavis.local:
+    kubernetes-node-0003.stoneydavis.local:
 # Non-Controlplane nodes
 # prod_k8s_nodes:
 #   hosts:

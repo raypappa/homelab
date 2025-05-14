@@ -4,3 +4,5 @@ server: https://{{ singleton_host }}:6443
 disable:
   - servicelb
   - traefik
+tls-san:
+  - {{ inventory_hostname }}
