@@ -4,7 +4,7 @@ kind: Kustomization
 helmCharts:
   - name: stirling-pdf-chart
     repo: https://stirling-tools.github.io/Stirling-PDF-chart
-    version: 1.7.0
+    version: 1.9.1
     namespace: stirling-pdf
     releaseName: stirling-pdf
   - name: cloudflare-tunnel
