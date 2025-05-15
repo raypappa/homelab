@@ -16,7 +16,7 @@ controllers:
         image:
           repository: ghcr.io/home-operations/readarr
           # renovate: datasource=docker depName=ghcr.io/home-operations/readarr
-          tag: 0.4.0
+          tag: 0.4.16
           pullPolicy: IfNotPresent
         env:
           COMPlus_EnableDiagnostics: "0"
