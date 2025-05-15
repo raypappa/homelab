@@ -21,7 +21,7 @@ controllers:
         image:
           repository: ghcr.io/home-operations/plex
           # renovate: datasource=docker depName=ghcr.io/home-operations/plex
-          tag: 1.41.4.9463-630c9f557
+          tag: 1.41.6
         env:
           PLEX_NO_AUTH_NETWORKS: 172.17.42.0/24
           TZ: UTC
