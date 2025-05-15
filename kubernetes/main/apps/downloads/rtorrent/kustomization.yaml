@@ -11,7 +11,7 @@ helmCharts:
     valuesFile: cloudflare-values.yaml
   - name: app-template
     includeCRDs: true
-    repo: https://bjw-s.github.io/helm-charts
+    repo: https://bjw-s-labs.github.io/helm-charts
     namespace: rtorrent
     releaseName: rtorrent
     version: 3.7.1
