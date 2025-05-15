@@ -1,6 +1,6 @@
 [project]
 authors = [
-    {name = "Craig Davis", email = "11911367+blade2005@users.noreply.github.com"},
+    { name = "Craig Davis", email = "11911367+blade2005@users.noreply.github.com" },
 ]
 requires-python = "<4.0.0,>=3.13.0"
 dependencies = [

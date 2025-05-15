@@ -14,8 +14,8 @@ controllers:
     containers:
       app:
         image:
-          repository: ghcr.io/home-operations/readarr-nightly
-          # renovate: datasource=docker depName=ghcr.io/home-operations/readarr-nightly
+          repository: ghcr.io/home-operations/readarr
+          # renovate: datasource=docker depName=ghcr.io/home-operations/readarr
           tag: 0.4.0
           pullPolicy: IfNotPresent
         env:
