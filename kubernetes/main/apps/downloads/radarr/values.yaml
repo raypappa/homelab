@@ -13,8 +13,8 @@ controllers:
     containers:
       main:
         image:
-          repository: ghcr.io/onedr0p/radarr
-          # renovate: datasource=docker depName=ghcr.io/onedr0p/radarr
+          repository: ghcr.io/home-operations/radarr
+          # renovate: datasource=docker depName=ghcr.io/home-operations/radarr
           tag: 5.18.4
           pullPolicy: IfNotPresent
         env:
