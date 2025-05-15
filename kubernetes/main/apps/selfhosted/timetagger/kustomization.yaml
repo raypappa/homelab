@@ -20,7 +20,7 @@ helmCharts:
             service: "http://timetagger.timetagger.svc.cluster.local:80"
   - name: app-template
     includeCRDs: true
-    repo: https://bjw-s.github.io/helm-charts
+    repo: https://bjw-s-labs.github.io/helm-charts
     namespace: timetagger
     releaseName: timetagger
     version: 3.7.1

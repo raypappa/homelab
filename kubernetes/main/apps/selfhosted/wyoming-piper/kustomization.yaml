@@ -5,7 +5,7 @@ namespace: home-assistant
 helmCharts:
   - name: app-template
     includeCRDs: true
-    repo: https://bjw-s.github.io/helm-charts
+    repo: https://bjw-s-labs.github.io/helm-charts
     namespace: home-assistant
     releaseName: piper
     version: 3.7.1
