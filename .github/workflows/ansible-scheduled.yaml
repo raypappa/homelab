@@ -26,10 +26,6 @@ jobs:
         uses: astral-sh/setup-uv@v6
         with:
           version: "0.5.24"
-      - name: "Set up Python"
-        uses: actions/setup-python@v5
-        with:
-          python-version-file: ".python-version"
       - run: task configure
       - name: Create extra vars file
         run: echo "${{ secrets.ANSIBLE_EXTRA_VAR_JSON}}" > ansible/ansible_extra_vars.json
