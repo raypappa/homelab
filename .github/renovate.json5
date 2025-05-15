@@ -1,27 +1,33 @@
 {
-  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": [
-    "config:recommended",
-    ":semanticCommits",
-    ":disableRateLimiting",
-    ":dependencyDashboard",
-    "docker:enableMajor",
-    "customManagers:biomeVersions",
-    "github>raypappa/homelab//.github/renovate/customVersioning.json5",
-    "github>raypappa/homelab//.github/renovate/customManagers.json5",
-    "github>raypappa/homelab//.github/renovate/semanticCommits.json5",
-    "github>raypappa/homelab//.github/renovate/commitMessage.json5"
+  $schema: 'https://docs.renovatebot.com/renovate-schema.json',
+  extends: [
+    'config:recommended',
+    ':semanticCommits',
+    ':disableRateLimiting',
+    ':dependencyDashboard',
+    'docker:enableMajor',
+    'customManagers:biomeVersions',
+    'github>raypappa/homelab//.github/renovate/customVersioning.json5',
+    'github>raypappa/homelab//.github/renovate/customManagers.json5',
+    'github>raypappa/homelab//.github/renovate/semanticCommits.json5',
+    'github>raypappa/homelab//.github/renovate/commitMessage.json5',
   ],
-  "pre-commit": {
-    "enabled": true
+  'pre-commit': {
+    enabled: true,
   },
-  "ansible": {
-    "fileMatch": ["(^|)tasks/[^/]+\\.ya?ml$"]
+  ansible: {
+    managerFilePatterns: [
+      '/(^|)tasks/[^/]+\\.ya?ml$/',
+    ],
   },
-  "ansible-galaxy": {
-    "fileMatch": ["(^|/)(galaxy|requirements)(\\.ansible)?\\.ya?ml$"]
+  'ansible-galaxy': {
+    managerFilePatterns: [
+      '/(^|/)(galaxy|requirements)(\\.ansible)?\\.ya?ml$/',
+    ],
   },
-  "argocd": {
-    "fileMatch": ["(^|/)kubernetes/.+\\.ya?ml(?:\\.j2)?$"]
-  }
+  argocd: {
+    managerFilePatterns: [
+      '/(^|/)kubernetes/.+\\.ya?ml(?:\\.j2)?$/',
+    ],
+  },
 }
