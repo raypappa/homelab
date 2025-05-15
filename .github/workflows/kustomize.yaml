@@ -22,5 +22,7 @@ jobs:
           version: ${{ vars.TASK_VERSION}}
       - name: Kustomize Version
         run: kustomize version
+      - name: Helm version
+        run: helm version
       - name: Kustomize It!
         run: task build:kustomize
