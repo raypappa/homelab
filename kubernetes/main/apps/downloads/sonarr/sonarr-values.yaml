@@ -18,8 +18,8 @@ controllers:
     containers:
       app:
         image:
-          repository: ghcr.io/home-operations/sonarr-develop
-          # renovate: datasource=docker depName=ghcr.io/home-operations/sonarr-develop
+          repository: ghcr.io/home-operations/sonarr
+          # renovate: datasource=docker depName=ghcr.io/home-operations/sonarr
           tag: 4.0.13
         env:
           COMPlus_EnableDiagnostics: "0"
