@@ -6,7 +6,7 @@ controller:
 image:
   repository: ghcr.io/gethomepage/homepage
   # renovate: datasource=docker depName=ghcr.io/gethomepage/homepage
-  tag: v1.2
+  tag: v1.3.2
 env:
   HOMEPAGE_VAR_JELLYFIN_API_KEY:
     valueFrom:
