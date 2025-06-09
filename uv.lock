@@ -238,13 +238,14 @@ wheels = [
 
 [[package]]
 name = "commitizen"
-version = "4.7.2"
+version = "4.8.3"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "argcomplete" },
     { name = "charset-normalizer" },
     { name = "colorama" },
     { name = "decli" },
+    { name = "importlib-metadata" },
     { name = "jinja2" },
     { name = "packaging" },
     { name = "pyyaml" },
@@ -252,9 +253,9 @@ dependencies = [
     { name = "termcolor" },
     { name = "tomlkit" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/ac/2b/0dcd3ab025dafd3353cf8051f5859ce7f75b86e90e2b3c0395304fbbbfa3/commitizen-4.7.2.tar.gz", hash = "sha256:e5ca28f909c3b3d28575b294561feeee21e33c864c7362babfe0e7798ae11aae", size = 53356, upload-time = "2025-05-18T15:17:49.7Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/ee/c0/fe5ba5555f2891bcb0b3e7dc1c57fcfd206ab7133a3094d70b81fd5a4a10/commitizen-4.8.3.tar.gz", hash = "sha256:303ebdc271217aadbb6a73a015612121291d180c8cdd05b5251c7923d4a14195", size = 56225, upload-time = "2025-06-09T14:18:51.472Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/b5/8a/02db37d46e17f8f45fa0a61159296fa58b58a2303440e08bc797b942e659/commitizen-4.7.2-py3-none-any.whl", hash = "sha256:eb3cd2da0690c6edbb8c11e586d3f07b09e9795424aa51f5413ed89827927623", size = 76192, upload-time = "2025-05-18T15:17:48.39Z" },
+    { url = "https://files.pythonhosted.org/packages/11/37/5a8e1dadd02eede38bf5a92af108071f6a11b6fc50b7ae27d9083c649ba9/commitizen-4.8.3-py3-none-any.whl", hash = "sha256:91f261387ca2bbb4ab6c79a1a6378dc1576ffb40e3b7dbee201724d95aceba38", size = 80112, upload-time = "2025-06-09T14:18:49.673Z" },
 ]
 
 [[package]]
@@ -365,7 +366,7 @@ requires-dist = [
 [package.metadata.requires-dev]
 dev = [
     { name = "ansible-lint", marker = "sys_platform != 'win32'", specifier = ">=25.0.0,<26.0.0" },
-    { name = "commitizen", specifier = "==4.7.2" },
+    { name = "commitizen", specifier = "==4.8.3" },
     { name = "pre-commit", specifier = ">=4.0.1,<5.0.0" },
 ]
 
