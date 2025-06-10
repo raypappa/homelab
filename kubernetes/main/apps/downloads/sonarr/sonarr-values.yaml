@@ -20,7 +20,7 @@ controllers:
         image:
           repository: ghcr.io/home-operations/sonarr
           # renovate: datasource=docker depName=ghcr.io/home-operations/sonarr
-          tag: 4.0.14
+          tag: 4.0.15
         env:
           COMPlus_EnableDiagnostics: "0"
           SONARR__APP__INSTANCENAME: Sonarr
