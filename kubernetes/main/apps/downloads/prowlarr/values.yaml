@@ -17,7 +17,7 @@ controllers:
         image:
           repository: ghcr.io/home-operations/prowlarr
           # renovate: datasource=docker depName=ghcr.io/home-operations/prowlarr
-          tag: 1.36.1
+          tag: 2.0.0
           pullPolicy: IfNotPresent
         env:
           TZ: UTC
