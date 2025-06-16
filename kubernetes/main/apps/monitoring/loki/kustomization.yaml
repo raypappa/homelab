@@ -1,0 +1,14 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/kustomization
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: monitoring
+helmCharts:
+  - name: loki
+    repo: oci://ghcr.io/home-operations/charts-mirror/loki
+    version: 6.29.0
+    namespace: monitoring
+    releaseName: loki
+    valuesFile: loki-values.yaml
+resources:
+  - ./prometheus-rule.yaml

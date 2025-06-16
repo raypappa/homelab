@@ -1,0 +1,83 @@
+---
+controllers:
+  spotizerr:
+    strategy: RollingUpdate
+    initContainers:
+      config-copy:
+        image:
+          repository: mikefarah/yq
+          tag: 4.45.1
+        securityContext:
+          runAsUser: 0
+          runAsGroup: 1000
+          allowPrivilegeEscalation: False
+        command:
+          - /bin/sh
+          - -c
+          - yq -o json /config/main.yaml > /app/config/main.json && chown -R 1000:1000 /app/config
+    containers:
+      app:
+        image:
+          repository: cooldockerizer93/spotizerr
+          tag: latest
+        # env:
+        #   PUID: "1000"
+        #   PGID: "1000"
+        command:
+          - /bin/sh
+          - -c
+          - mkdir -p /app/creds/spotify/MyAccount/ && cp /secrets/spotify.json /app/creds/spotify/MyAccount/credentials.json && chown -R 1000:1000 /app/prgs && chmod +x /app/entrypoint.sh && /app/entrypoint.sh python app.py
+service:
+  spotizerr:
+    controller: spotizerr
+    ports:
+      http:
+        port: 7171
+ingress:
+  spotizerr:
+    enabled: true
+    annotations:
+      kubernetes.io/ingress.class: nginx
+      gethomepage.dev/enabled: "true"
+      gethomepage.dev/group: Piracy
+      gethomepage.dev/icon: spotify
+      gethomepage.dev/name: Spotify Downloader
+      gethomepage.dev/description: Download albums or playlists from spotify to the Nas
+      uptimekuma.io/monitor: "true"
+      uptimekuma.io/name: "Spotifzerr"
+      uptimekuma.io/type: "http"
+      uptimekuma.io/interval: "120"
+    hosts:
+      - host: spotdl.herrington.services
+        paths:
+          - path: /
+            service:
+              identifier: spotizerr
+              port: http
+    tls:
+      - secretName: spotizerr
+        hosts:
+          - spotdl.herrington.services
+persistence:
+  config:
+    type: persistentVolumeClaim
+    accessMode: ReadWriteOnce
+    size: 500Mi
+    globalMounts:
+      - path: /app/config
+  progress:
+    type: persistentVolumeClaim
+    accessMode: ReadWriteOnce
+    size: 500Mi
+    globalMounts:
+      - path: /app/prgs
+  credentials:
+    type: secret
+    name: credentials
+    globalMounts:
+      - path: /secrets
+  config-map:
+    type: configMap
+    name: configuration
+    globalMounts:
+      - path: /config

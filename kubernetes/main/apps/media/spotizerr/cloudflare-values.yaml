@@ -1,0 +1,12 @@
+---
+image:
+  # renovate: datasource=docker depName=cloudflare/cloudflared
+  tag: 2025.2.0
+cloudflare:
+  secretName: "immich-tunnel-credentials"
+  tunnelName: "faerun-immich"
+  ingress:
+    - hostname: "immich.fieldsofbears.com"
+      service: "http://immich-server.immich.svc.cluster.local:2283"
+    - hostname: "immich-app.fieldsofbears.com"
+      service: "http://immich-server.immich.svc.cluster.local:2283"

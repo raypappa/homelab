@@ -1,0 +1,12 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/kustomization
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: monitoring
+helmCharts:
+  - name: kube-state-metrics
+    repo: oci://ghcr.io/prometheus-community/charts/kube-state-metrics
+    version: 5.33.1
+    namespace: monitoring
+    releaseName: kube-state-metrics
+    valuesFile: kube-state-metrics-values.yaml

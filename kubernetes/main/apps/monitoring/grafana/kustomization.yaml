@@ -1,0 +1,15 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/kustomization
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: monitoring
+helmCharts:
+  - name: grafana
+    repo: oci://ghcr.io/grafana/helm-charts
+    namespace: monitoring
+    releaseName: grafana
+    version: 9.0.0
+    valuesFile: grafana-values.yaml
+resources:
+  - ./externalsecret.yaml
+  - ./dashboard
