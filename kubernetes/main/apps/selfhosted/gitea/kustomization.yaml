@@ -4,7 +4,7 @@ kind: Kustomization
 helmCharts:
   - name: gitea
     repo: https://dl.gitea.io/charts
-    version: 11.0.1
+    version: 12.1.0
     namespace: gitea
     releaseName: gitea
     valuesFile: gitea-values.yaml
