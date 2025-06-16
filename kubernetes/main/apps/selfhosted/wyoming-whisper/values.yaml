@@ -7,7 +7,7 @@ controllers:
         image:
           repository: rhasspy/wyoming-whisper
           # renovate: datasource=docker depName=rhasspy/wyoming-whisper
-          tag: 2.4.0
+          tag: 2.5.0
         args:
           - --model
           - base
