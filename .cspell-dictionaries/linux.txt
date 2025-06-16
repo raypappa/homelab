@@ -74,3 +74,4 @@ nicelevel
 rpcsec
 unexporting
 chezmoi
+oomkilled

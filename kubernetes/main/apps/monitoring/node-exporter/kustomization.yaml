@@ -1,0 +1,12 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/kustomization
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: monitoring
+helmCharts:
+  - name: prometheus-node-exporter
+    repo: oci://ghcr.io/prometheus-community/charts/prometheus-node-exporter
+    version: 4.46.0
+    namespace: monitoring
+    releaseName: node-exporter
+    valuesFile: node-exporter-values.yaml
