@@ -17,7 +17,7 @@ ansible_user: root
 tailscale_authkey: "{{ lookup('env', 'HEADSCALE_KEY') }}"
 users: ['root', 'stoney']
 # renovate: datasource=github-releases depName=helm/helm
-helm_version: 3.17.3
+helm_version: 3.18.3
 helm_arch:
   x86_64: amd64
   aarch64: arm64
