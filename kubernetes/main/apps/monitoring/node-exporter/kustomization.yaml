@@ -5,7 +5,7 @@ kind: Kustomization
 namespace: monitoring
 helmCharts:
   - name: prometheus-node-exporter
-    repo: oci://ghcr.io/prometheus-community/charts/prometheus-node-exporter
+    repo: oci://ghcr.io/prometheus-community/charts
     version: 4.46.0
     namespace: monitoring
     releaseName: node-exporter

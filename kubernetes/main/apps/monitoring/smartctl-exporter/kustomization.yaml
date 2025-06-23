@@ -4,9 +4,9 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 namespace: monitoring
 helmCharts:
-  - name: smartctl-exporter
-    repo: oci://ghcr.io/prometheus-community/charts/prometheus-smartctl-exporter
-    version: 0.15.1
+  - name: prometheus-smartctl-exporter
+    repo: oci://ghcr.io/prometheus-community/charts
+    version: 0.15.3
     namespace: monitoring
     releaseName: smartctl-exporter
     valuesFile: smartctl-exporter-values.yaml
