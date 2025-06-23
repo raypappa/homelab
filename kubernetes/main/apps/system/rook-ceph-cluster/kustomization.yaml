@@ -14,7 +14,7 @@ helmCharts:
     releaseName: rook-ceph-cluster
     namespace: rook-ceph
     repo: https://charts.rook.io/release
-    version: v1.17.2
+    version: v1.17.5
     valuesFile: rook-ceph-cluster-values.yaml
 resources:
   - ./dashboard-external-http.yaml
