@@ -19,7 +19,8 @@ controllers:
       app:
         image:
           repository: cooldockerizer93/spotizerr
-          tag: latest
+          # renovate: datasource=docker depName=cooldockerizer93/spotizerr
+          tag: "2.5"
         # env:
         #   PUID: "1000"
         #   PGID: "1000"
