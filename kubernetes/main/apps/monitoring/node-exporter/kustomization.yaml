@@ -6,7 +6,7 @@ namespace: monitoring
 helmCharts:
   - name: prometheus-node-exporter
     repo: oci://ghcr.io/prometheus-community/charts
-    version: 4.46.0
+    version: 4.47.0
     namespace: monitoring
     releaseName: node-exporter
     valuesFile: node-exporter-values.yaml
