@@ -5,7 +5,7 @@ kind: Kustomization
 namespace: monitoring
 helmCharts:
   - name: prometheus-operator-crds
-    repo: oci://ghcr.io/prometheus-community/charts/prometheus-operator-crds
+    repo: oci://ghcr.io/prometheus-community/charts
     version: 20.0.0
     namespace: monitoring
     releaseName: prometheus-operator-crds

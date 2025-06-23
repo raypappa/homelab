@@ -14,5 +14,3 @@ helmCharts:
     releaseName: spotizerr
     namespace: spotizerr
     valuesFile: cloudflare-values.yaml
-resources:
-  - ./external-secret.yaml
