@@ -6,7 +6,7 @@ namespace: monitoring
 helmCharts:
   - name: promtail
     repo: oci://ghcr.io/grafana/helm-charts
-    version: 6.16.6
+    version: 6.17.0
     namespace: monitoring
     releaseName: promtail
     valuesFile: promtail-values.yaml
