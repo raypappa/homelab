@@ -9,8 +9,6 @@ configMapGenerator:
   - name: alertmanager
     files:
       - config/alertmanager.yml
-configurations:
-  - kustomizeconfig.yaml
 helmCharts:
   - name: app-template
     includeCRDs: true
