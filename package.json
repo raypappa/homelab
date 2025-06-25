@@ -28,5 +28,9 @@
     "aws-cdk-lib": "2.202.0",
     "constructs": "^10.3.0",
     "source-map-support": "^0.5.21"
+  },
+  "overrides": {
+    "glob": "^10.4.5",
+    "test-exclude": "^7.0.1"
   }
 }
