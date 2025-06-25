@@ -146,7 +146,7 @@ database:
 # URL to ACME directory
 acme_url: https://acme-v02.api.letsencrypt.org/directory
 # Email to register with ACME provider
-acme_email: ""
+acme_email: "ops@stoneydavis.com"
 # Domain name to request a TLS certificate for:
 tls_letsencrypt_hostname: "weasel.stoneydavis.com"
 # Path to store certificates and metadata needed by
