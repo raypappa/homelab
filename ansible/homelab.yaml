@@ -62,6 +62,7 @@
   roles:
     - nfs_server
 - hosts: headscale
+  become: true
   roles:
     - ovh
     - headscale
