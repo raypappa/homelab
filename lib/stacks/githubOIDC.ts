@@ -1,5 +1,6 @@
-import { Duration, Stack, type StackProps, aws_iam } from "aws-cdk-lib";
+import { aws_iam, Duration, Stack, type StackProps } from "aws-cdk-lib";
 import type { Construct } from "constructs";
+
 // import * as sqs from 'aws-cdk-lib/aws-sqs';
 
 type GithubOrg = string;
@@ -27,7 +28,7 @@ export class GithubOIDCStack extends Stack {
     };
     const principal = new aws_iam.OpenIdConnectPrincipal(provider, conditions);
 
-    const role = new aws_iam.Role(this, "Role", {
+    new aws_iam.Role(this, "Role", {
       assumedBy: principal,
       managedPolicies: [
         aws_iam.ManagedPolicy.fromAwsManagedPolicyName("AdministratorAccess"),
