@@ -1,0 +1,8 @@
+network:
+  version: 2
+  renderer: networkd
+  ethernets:
+    eno1:
+      dhcp4: true
+      addresses:
+      {{ ovh_additional_ips | to_nice_yaml }}

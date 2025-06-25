@@ -1,0 +1,69 @@
+---
+# vim: filetype=ansible.yaml
+- name: Enable IPv4 forwarding
+  become: True
+  sysctl:
+    name: net.ipv4.ip_forward
+    value: "1"
+    state: present
+    reload: yes
+- name: Enable IPv6 forwarding
+  become: True
+  sysctl:
+    name: net.ipv6.conf.all.forwarding
+    value: "1"
+    state: present
+    reload: yes
+  when: ansible_all_ipv6_addresses
+- name: Ensure undesired packages are not installed
+  become: True
+  ansible.builtin.apt:
+    pkg:
+      - docker.io
+      - docker-ce
+      - docker-ce-cli
+      - containerd.io
+      - docker-buildx-plugin
+      - docker-compose-plugin
+    state: absent
+- name: Get debian architecture
+  shell: dpkg --print-architecture
+  register: debian_arch
+- name: Create headscale config directory
+  become: True
+  ansible.builtin.file:
+    path: "/etc/headscale"
+    state: directory
+    owner: root
+    group: root
+    mode: '0755'
+- name: Add headscale config
+  become: True
+  ansible.builtin.copy:
+    src: config.yaml
+    dest: "/etc/headscale/config.yaml"
+    owner: root
+    group: root
+    mode: '0644'
+- name: Install required packages
+  become: True
+  ansible.builtin.apt:
+    update_cache: yes
+    cache_valid_time: 3600
+    autoclean: yes
+    state: latest
+    pkg:
+      - curl
+      - ca-certificates
+- name: Install headscale deb package
+  become: True
+  become_flags: '-' # https://github.com/ansible/ansible/issues/45219
+  ansible.builtin.apt:
+    deb: https://github.com/juanfont/headscale/releases/download/v{{ headscale_version }}/headscale_{{ headscale_version }}_linux_{{ debian_arch.stdout }}.deb
+- name: Enable headscale systemd service
+  become: True
+  ansible.builtin.systemd_service:
+    name: headscale.service
+    enabled: True
+    daemon_reload: yes
+    state: restarted

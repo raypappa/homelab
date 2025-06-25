@@ -39,3 +39,6 @@ nfs_server:
     kubernetes-node-0001.stoneydavis.local:
       nfs_server_export_dirs:
         - /library
+headscale:
+  hosts:
+    weasel.stoneydavis.com:

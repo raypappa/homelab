@@ -1,0 +1,35 @@
+---
+# vim: filetype=ansible.yaml
+- name: Ensure required packages are installed
+  become: True
+  ansible.builtin.apt:
+    pkg:
+      - netplan.io # Should be there by default...
+    state: latest
+- name: Install netplan template if additional IPs
+  become: True
+  template:
+    src: netplan-additional-ips.yaml.j2
+    dest: /etc/netplan/51-additional-ips.yaml
+    owner: root
+    group: root
+    mode: '0640'
+  when: ovh_additional_ips is defined
+  register: netplan_template
+- name: Check netplan try
+  become: True
+  shell: |
+    /usr/sbin/netplan try
+  register: netplan_try
+  when: ovh_additional_ips is defined and netplan_template.changed
+- name: Apply netplan if try succeeded
+  become: True
+  shell: |
+    /usr/sbin/netplan apply
+  when: ovh_additional_ips is defined and netplan_template.changed and netplan_try.rc == 0
+- name: Delete netplan file if no additional IPs
+  become: True
+  file:
+    path: /etc/netplan/51-additional-ips.yaml
+    state: absent
+  when: ovh_additional_ips is not defined
