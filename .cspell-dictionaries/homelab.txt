@@ -302,3 +302,17 @@ tooljet
 supabase
 DNSSEC
 LLMNR
+netplan
+buildx
+tailaddresses
+derp
+derpmap
+myvpn
+myuser
+logtail
+tailscale
+tailscales
+headscales
+ethernets
+darp
+hujson
