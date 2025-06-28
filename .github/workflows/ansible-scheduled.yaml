@@ -28,7 +28,7 @@ jobs:
           version: "0.5.24"
       - run: task configure
       - name: Create extra vars file
-        run: echo "${{ secrets.ANSIBLE_EXTRA_VAR_JSON}}" > ansible/ansible_extra_vars.json && jq . >/dev/null 2>&1
+        run: echo "${{ secrets.ANSIBLE_EXTRA_VAR_JSON}}" > ansible/ansible_extra_vars.json && jq . ansible/ansible_extra_vars.json >/dev/null 2>&1
       - name: Setup kubectl
         run: |
           install -m 600 -D /dev/null ~/.kube/config
