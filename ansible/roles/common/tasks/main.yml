@@ -84,6 +84,7 @@
   vars:
     user: "{{ item }}"
   loop: "{{ users }}"
+# ideally this should be conditional if the headscale pre-auth key is present, but for now I'll disable to bootstrap headscale
 - name: Install tailscale
   ansible.builtin.include_role:
     name: artis3n.tailscale

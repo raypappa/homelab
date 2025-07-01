@@ -14,6 +14,7 @@
     mode: "0644"
     owner: root
     group: root
+  when: hostvars[inventory_hostname]['ansible_default_ipv4']['address'] is ansible.utils.private
 - name: Apply dhcp.network to enable using dns from dhcp
   become: true
   register: networkd
@@ -23,18 +24,21 @@
     mode: "0644"
     owner: root
     group: root
+  when: hostvars[inventory_hostname]['ansible_default_ipv4']['address'] is ansible.utils.private
 - name: Enable networkd
   become: true
   ansible.builtin.systemd_service:
     enabled: true
     name: systemd-networkd
     state: reloaded
+  # running this on ovh hosts causes them to break.
+  when: hostvars[inventory_hostname]['ansible_default_ipv4']['address'] is ansible.utils.private
 - name: Upgrade the OS (apt-get dist-upgrade)
   become: true
   ansible.builtin.apt:
     upgrade: dist
     update_cache: true
-    cache_valid_time: 3600
+    # cache_valid_tie: 3600
     autoclean: true
 - name: Ensure required packages are installed which require a reboot
   become: true
