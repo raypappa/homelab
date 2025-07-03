@@ -60,7 +60,7 @@ repos:
   - hooks:
       - id: yamlfmt
     repo: https://github.com/google/yamlfmt
-    rev: v0.17.1
+    rev: v0.17.2
   - repo: local
     hooks:
       - id: local-biome-check
