@@ -3,13 +3,15 @@
 - name: Download and install ArgoCD CLI
   become: true
   ansible.builtin.get_url:
-    url: https://github.com/argoproj/argo-cd/releases/download/v{{ argocd_version }}/argocd-linux-amd64
+    url: https://github.com/argoproj/argo-cd/releases/download/v{{ argocd_version
+      }}/argocd-linux-amd64
     dest: /usr/local/bin/argocd
     mode: "0555"
 - name: Download and install Helm
   become: true
   ansible.builtin.unarchive:
-    src: https://get.helm.sh/helm-v{{ helm_version }}-linux-{{ helm_arch[ansible_architecture] }}.tar.gz
+    src: https://get.helm.sh/helm-v{{ helm_version }}-linux-{{ helm_arch[ansible_architecture]
+      }}.tar.gz
     remote_src: true
     extra_opts:
       - --strip-components=1

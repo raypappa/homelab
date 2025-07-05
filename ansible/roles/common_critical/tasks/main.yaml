@@ -4,7 +4,8 @@
 - name: Ensure that no Bullseye hosts remain
   ansible.builtin.fail:
     msg: '"Support for Bullseye has been removed, upgrade to Bookworm."'
-  when: ansible_facts['os_family'] == "Debian" and ansible_facts['distribution_major_version'] == "11"
+  when: ansible_facts['os_family'] == "Debian" and ansible_facts['distribution_major_version']
+    == "11"
 - name: Apply networkd.conf to enable using dns from dhcp
   become: true
   register: networkd

@@ -12,7 +12,9 @@ config:
       prober: http
       timeout: 5s
       http:
-        valid_http_versions: ["HTTP/1.1", "HTTP/2.0"]
+        valid_http_versions:
+          - "HTTP/1.1"
+          - "HTTP/2.0"
         follow_redirects: true
         preferred_ip_protocol: "ip4"
     icmp:
@@ -55,7 +57,8 @@ securityContext:
   readOnlyRootFilesystem: true
   allowPrivilegeEscalation: false
   capabilities:
-    add: ["NET_RAW"]
+    add:
+      - "NET_RAW"
 serviceMonitor:
   enabled: true
   defaults:

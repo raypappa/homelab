@@ -8,7 +8,8 @@ strategy:
   type: Recreate
 containerSecurityContext:
   capabilities:
-    add: ["SYS_CHROOT"]
+    add:
+      - "SYS_CHROOT"
 gitea:
   admin:
     username: cdavis

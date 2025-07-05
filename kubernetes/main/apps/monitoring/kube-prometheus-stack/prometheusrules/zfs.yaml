@@ -13,7 +13,8 @@ spec:
       rules:
         - alert: ZfsUnexpectedPoolState
           annotations:
-            summary: ZFS pool {{$labels.zpool}} on {{$labels.instance}} is in a unexpected state {{$labels.state}}
+            summary: ZFS pool {{$labels.zpool}} on {{$labels.instance}} is in a unexpected
+              state {{$labels.state}}
           expr: |
             node_zfs_zpool_state{state!="online"} > 0
           for: 15m

@@ -61,7 +61,8 @@
     - nfs_server
   roles:
     - nfs_server
-- hosts: headscale
+- name: Headscale
+  hosts: headscale
   become: true
   roles:
     - ovh

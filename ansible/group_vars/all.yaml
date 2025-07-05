@@ -15,9 +15,12 @@ extra_server_args: ""
 extra_agent_args: ""
 ansible_user: root
 tailscale_args: "--login-server='http://weasel.stoneydavis.com'"
-tailscale_authkey: "{{ lookup('amazon.aws.aws_secret', 'weasel.stoneydavis.com/headscale/pre-auth-key', region=lookup('env', 'AWS_REGION')) }}"
+tailscale_authkey: "{{ lookup('amazon.aws.aws_secret', 'weasel.stoneydavis.com/headscale/pre-auth-key',
+  region=lookup('env', 'AWS_REGION')) }}"
 # tailscale_authkey: "{{ lookup('env', 'HEADSCALE_KEY') }}"
-users: ['root', 'stoney']
+users:
+  - 'root'
+  - 'stoney'
 # renovate: datasource=github-releases depName=helm/helm
 helm_version: 3.18.3
 helm_arch:

@@ -21,8 +21,8 @@ tasks:
     desc: "Check Project"
     silent: true
     cmds:
-      - pre-commit run -a
       - task: ansible:check
+      - pre-commit run -a
   configure:uv:
     desc: Configure project including installing dependencies from uv
     silent: true

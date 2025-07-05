@@ -1,22 +1,22 @@
 ---
 # vim: filetype=ansible.yaml
 - name: Enable IPv4 forwarding
-  become: True
-  sysctl:
+  become: true
+  ansible.posix.sysctl:
     name: net.ipv4.ip_forward
     value: "1"
     state: present
-    reload: yes
+    reload: true
 - name: Enable IPv6 forwarding
-  become: True
-  sysctl:
+  become: true
+  ansible.posix.sysctl:
     name: net.ipv6.conf.all.forwarding
     value: "1"
     state: present
-    reload: yes
+    reload: true
   when: ansible_all_ipv6_addresses
 - name: Ensure undesired packages are not installed
-  become: True
+  become: true
   ansible.builtin.apt:
     pkg:
       - docker.io
@@ -27,10 +27,15 @@
       - docker-compose-plugin
     state: absent
 - name: Get debian architecture
-  shell: dpkg --print-architecture
+  ansible.builtin.command: dpkg --print-architecture
   register: debian_arch
+  changed_when: debian_arch.rc != 0
+- name: Set debian Arch fact
+  ansible.builtin.set_fact:
+    cacheable: true
+    dpkg_architecture: "{{ debian_arch.stdout }}"
 - name: Create headscale config directory
-  become: True
+  become: true
   ansible.builtin.file:
     path: "/etc/headscale"
     state: directory
@@ -38,7 +43,7 @@
     group: root
     mode: '0755'
 - name: Add headscale config
-  become: True
+  become: true
   ansible.builtin.copy:
     src: config.yaml
     dest: "/etc/headscale/config.yaml"
@@ -46,24 +51,25 @@
     group: root
     mode: '0644'
 - name: Install required packages
-  become: True
+  become: true
   ansible.builtin.apt:
-    update_cache: yes
+    update_cache: true
     cache_valid_time: 3600
-    autoclean: yes
+    autoclean: true
     state: latest
     pkg:
       - curl
       - ca-certificates
 - name: Install headscale deb package
-  become: True
+  become: true
   become_flags: '-' # https://github.com/ansible/ansible/issues/45219
   ansible.builtin.apt:
-    deb: https://github.com/juanfont/headscale/releases/download/v{{ headscale_version }}/headscale_{{ headscale_version }}_linux_{{ debian_arch.stdout }}.deb
+    deb: https://github.com/juanfont/headscale/releases/download/v{{ headscale_version
+      }}/headscale_{{ headscale_version }}_linux_{{ dpkg_architecture }}.deb
 - name: Enable headscale systemd service
-  become: True
+  become: true
   ansible.builtin.systemd_service:
     name: headscale.service
-    enabled: True
-    daemon_reload: yes
+    enabled: true
+    daemon_reload: true
     state: restarted

@@ -2,9 +2,11 @@
 version: "3"
 vars:
   PROXY_ARGS: >-
-    ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o ConnectionAttempts=1 -o ConnectTimeout=2 -p {{.BASTION_PORT}} -W %h:%p -q {{.BASTION_USER}}@{{.BASTION_HOST}}
+    ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o ConnectionAttempts=1
+    -o ConnectTimeout=2 -p {{.BASTION_PORT}} -W %h:%p -q {{.BASTION_USER}}@{{.BASTION_HOST}}
   CI_ARGS: >-
-    -T 2 -u root --private-key ~/.ssh/id_ed25519 --ssh-common-args=' -o ConnectionAttempts=1 -o ProxyCommand="{{.PROXY_ARGS}}"'
+    -T 2 -u root --private-key ~/.ssh/id_ed25519 --ssh-common-args=' -o ConnectionAttempts=1
+    -o ProxyCommand="{{.PROXY_ARGS}}"'
 tasks:
   check:
     desc: Lint Ansible
@@ -14,7 +16,8 @@ tasks:
     desc: Run ansible playbook
     silent: true
     cmds:
-      - uv run ansible-playbook -i hosts --extra-vars "@ansible_extra_vars.json" {{.CLI_ARGS}} homelab.yaml
+      - uv run ansible-playbook -i hosts --extra-vars "@ansible_extra_vars.json" {{.CLI_ARGS}}
+        homelab.yaml
   deploy:ci:
     desc: Run ansible playbook in CI
     requires:

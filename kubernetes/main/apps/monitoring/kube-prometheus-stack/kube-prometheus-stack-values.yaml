@@ -13,10 +13,12 @@ kubeApiServer:
     metricRelabelings:
       # Drop high cardinality labels
       - action: drop
-        sourceLabels: ["__name__"]
+        sourceLabels:
+          - "__name__"
         regex: (apiserver|etcd|rest_client)_request(|_sli|_slo)_duration_seconds_bucket
       - action: drop
-        sourceLabels: ["__name__"]
+        sourceLabels:
+          - "__name__"
         regex: (apiserver_response_sizes_bucket|apiserver_watch_events_sizes_bucket)
 kubeControllerManager:
   enabled: false
@@ -32,7 +34,8 @@ kubelet:
       - action: labeldrop
         regex: (id|name)
       - action: drop
-        sourceLabels: ["__name__"]
+        sourceLabels:
+          - "__name__"
         regex: (rest_client_request_duration_seconds_bucket|rest_client_request_duration_seconds_sum|rest_client_request_duration_seconds_count)
 kubeProxy:
   enabled: false
@@ -105,13 +108,12 @@ prometheus:
             requests:
               storage: 55Gi
     walCompression: true
-
-# route:
-#   main:
-#     enabled: true
-#     hostnames:
-#       - prometheus.bjw-s.dev
-#     parentRefs:
-#       - name: internal
-#         namespace: kube-system
-#         sectionName: https
+    # route:
+    #   main:
+    #     enabled: true
+    #     hostnames:
+    #       - prometheus.bjw-s.dev
+    #     parentRefs:
+    #       - name: internal
+    #         namespace: kube-system
+    #         sectionName: https

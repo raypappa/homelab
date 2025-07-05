@@ -34,8 +34,10 @@ spec:
       containers:
         - image: debian:bookworm
           name: debian-no-ceph
-          command: ["sleep"]
-          args: ["infinity"]
+          command:
+            - "sleep"
+          args:
+            - "infinity"
           securityContext:
             readOnlyRootFilesystem: true
             runAsUser: 1000

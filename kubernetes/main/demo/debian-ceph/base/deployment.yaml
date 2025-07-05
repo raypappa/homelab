@@ -21,8 +21,10 @@ spec:
       containers:
         - image: debian:bookworm
           name: debian
-          command: ["sleep"]
-          args: ["infinity"]
+          command:
+            - "sleep"
+          args:
+            - "infinity"
           volumeMounts:
             - mountPath: "/mnt"
               name: bookworm-vol
