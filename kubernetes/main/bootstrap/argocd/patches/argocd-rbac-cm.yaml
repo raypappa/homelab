@@ -5,5 +5,5 @@ metadata:
   name: argocd-rbac-cm
 data:
   policy.default: role:readonly
-  policy.csv: |
+  policy.csv: |-
     g, cdavis, role:admin

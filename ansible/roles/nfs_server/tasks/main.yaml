@@ -10,7 +10,7 @@
 - name: Increase filesystem nr open
   ansible.posix.sysctl:
     name: fs.nr_open
-    value: 4194304
+    value: "4194304"
     sysctl_set: true
   notify: Restart NFS server
 - name: Install necessary packages
@@ -67,4 +67,4 @@
     state: started
     enabled: true
   environment:
-    SYSTEMCTL_SKIP_REDIRECT: 1
+    SYSTEMCTL_SKIP_REDIRECT: "1"

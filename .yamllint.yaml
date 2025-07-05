@@ -9,14 +9,26 @@ rules:
     present: true
     level: error
   # Don't warn on line length
-  line-length: disable
+  line-length:
+    max: 80
+    level: warning
   # Certain systems (e.g. ansible) document yes/no as valid values
   truthy: enable
   comments-indentation: false
-  braces:
-    max-spaces-inside: 1
   octal-values:
     forbid-implicit-octal: true
     forbid-explicit-octal: true
   comments:
     min-spaces-from-content: 1
+  braces:
+    forbid: true
+    level: warning
+  brackets:
+    forbid: true
+    level: warning
+  commas: enable
+  quoted-strings:
+    quote-type: double
+    required: only-when-needed
+    level: warning
+  trailing-spaces: enable

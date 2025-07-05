@@ -7,7 +7,8 @@ metadata:
   namespace: argocd
 spec:
   goTemplate: true
-  goTemplateOptions: ["missingkey=error"]
+  goTemplateOptions:
+    - "missingkey=error"
   syncPolicy:
     applicationsSync: sync
   generators:

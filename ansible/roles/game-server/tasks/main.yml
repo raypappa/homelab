@@ -4,7 +4,8 @@
   block:
     - name: Setting host facts SSL Certificate
       ansible.builtin.set_fact:
-        ssl_certificate_raw: "{{ lookup('amazon.aws.aws_secret', 'puma.stoneydavis.com-cert', region=lookup('env', 'AWS_REGION')) }}"
+        ssl_certificate_raw: "{{ lookup('amazon.aws.aws_secret', 'puma.stoneydavis.com-cert',
+          region=lookup('env', 'AWS_REGION')) }}"
     - name: Verify non-empty raw ssl secret
       ansible.builtin.assert:
         that: "ssl_certificate_raw != \"\""
@@ -72,8 +73,10 @@
       vars:
         pterodactyl_panel_domain: "{{ game_server_domain }}"
         pterodactyl_panel_url: https://{{ game_server_domain }}
-        pterodactyl_panel_app_key: "{{ lookup('amazon.aws.aws_secret', 'faerun-pterodactyl.app-key', nested=true, region=lookup('env', 'AWS_REGION')) }}"
-        pterodactyl_panel_hashids_salt: "{{ lookup('amazon.aws.aws_secret', 'faerun-pterodactyl.panel-salt', nested=true, region=lookup('env', 'AWS_REGION')) }}"
+        pterodactyl_panel_app_key: "{{ lookup('amazon.aws.aws_secret', 'faerun-pterodactyl.app-key',
+          nested=true, region=lookup('env', 'AWS_REGION')) }}"
+        pterodactyl_panel_hashids_salt: "{{ lookup('amazon.aws.aws_secret', 'faerun-pterodactyl.panel-salt',
+          nested=true, region=lookup('env', 'AWS_REGION')) }}"
         pterodactyl_panel_db_host: 127.0.0.1
         pterodactyl_panel_db_name: "{{ pterodactyl_mysql_db_name }}"
         pterodactyl_panel_db_user: "{{ pterodactyl_mysql_db_user }}"
@@ -82,9 +85,12 @@
         pterodactyl_panel_ssl_cert: /etc/ssl/game.puma.stoneydavis.com/fullchain.pem
         pterodactyl_panel_ssl_key: /etc/ssl/game.puma.stoneydavis.com/privkey.pem
         pterodactyl_panel_timezone: America/Los_Angeles
-        pterodactyl_panel_admin_mail: "{{ lookup('amazon.aws.aws_secret', 'pterodactyl-panel-admin.email', nested=true, region=lookup('env', 'AWS_REGION')) }}"
-        pterodactyl_panel_admin_user: "{{ lookup('amazon.aws.aws_secret', 'pterodactyl-panel-admin.user', nested=true, region=lookup('env', 'AWS_REGION')) }}"
-        pterodactyl_panel_admin_password: "{{ lookup('amazon.aws.aws_secret', 'pterodactyl-panel-admin.password', nested=true, region=lookup('env', 'AWS_REGION')) }}"
+        pterodactyl_panel_admin_mail: "{{ lookup('amazon.aws.aws_secret', 'pterodactyl-panel-admin.email',
+          nested=true, region=lookup('env', 'AWS_REGION')) }}"
+        pterodactyl_panel_admin_user: "{{ lookup('amazon.aws.aws_secret', 'pterodactyl-panel-admin.user',
+          nested=true, region=lookup('env', 'AWS_REGION')) }}"
+        pterodactyl_panel_admin_password: "{{ lookup('amazon.aws.aws_secret', 'pterodactyl-panel-admin.password',
+          nested=true, region=lookup('env', 'AWS_REGION')) }}"
     - name: Create docker network
       community.docker.docker_network:
         name: pterodactyl_nw

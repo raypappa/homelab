@@ -12,14 +12,14 @@
   become: false
   community.crypto.openssh_keypair:
     force: false # flip to true to rotate keys
-    path: "{{(ansible_user_dir, '.ssh','id_ed25519') | path_join}}"
+    path: "{{ (ansible_user_dir, '.ssh', 'id_ed25519') | path_join }}"
     type: ed25519
     mode: "0600"
 - name: Create Secondary Deploy Key
   become: false
   community.crypto.openssh_keypair:
     force: false # flip to true to rotate keys
-    path: "{{(ansible_user_dir, '.ssh','id_ed25519_backup') | path_join}}"
+    path: "{{ (ansible_user_dir, '.ssh', 'id_ed25519_backup') | path_join }}"
     type: ed25519
     mode: "0600"
 - name: Create /etc/rancher/k3s/ directory
@@ -73,28 +73,30 @@
   register: node_token
 - name: Store Master node-token and IP address
   ansible.builtin.set_fact:
-    k3s_master_token: "{{ node_token.content | b64decode | regex_replace('\n', '') }}"
+    k3s_master_token: "{{ node_token.content | b64decode | regex_replace('\n', '')
+      }}"
 - name: Restore node-token file access
   ansible.builtin.file:
     path: "{{ k3s_server_location }}/server/node-token"
     mode: "{{ p.stat.mode }}"
 - name: Create directory .kube
   ansible.builtin.file:
-    path: "{{(ansible_user_dir, '.kube') | path_join}}"
+    path: "{{ (ansible_user_dir, '.kube') | path_join }}"
     state: directory
     owner: "{{ ansible_user }}"
     mode: u=rwx,g=rx,o=
 - name: Copy config file to user home directory
   ansible.builtin.copy:
     src: /etc/rancher/k3s/k3s.yaml
-    dest: "{{(ansible_user_dir, '.kube', 'config') | path_join}}"
+    dest: "{{ (ansible_user_dir, '.kube', 'config') | path_join }}"
     remote_src: true
     owner: "{{ ansible_user }}"
     mode: u=rw,g=,o=
-# Update the namespace in the "{{(ansible_user_dir, '.kube', 'config') | path_join}}" to argocd.
+# Update the namespace in the "{{ (ansible_user_dir, '.kube', 'config') | path_join }}" to argocd.
 - name: Replace https://localhost:6443 by https://master-ip:6443
   ansible.builtin.command: >-
-    k3s kubectl config set-cluster default --server=https://{{ inventory_hostname }}:6443 --kubeconfig "{{(ansible_user_dir, '.kube', 'config') | path_join}}"
+    k3s kubectl config set-cluster default --server=https://{{ inventory_hostname
+    }}:6443 --kubeconfig "{{ (ansible_user_dir, '.kube', 'config') | path_join }}"
   changed_when: true
 - name: Create kubectl symlink
   ansible.builtin.file:
@@ -122,7 +124,13 @@
 - name: Apply ArgoCD Kustomize # this is not the right way to do it but using kubernetes.core.k8s was failing for some reason.
   ansible.builtin.shell:
     cmd: >-
-      k3s kubectl kustomize --enable-helm=True https://github.com/raypappa/homelab.git/kubernetes/{{ git_sub_path }}/bootstrap/argocd | k3s kubectl apply -f -
+      set -o pipefail &&
+      k3s kubectl kustomize
+      --enable-helm=True https://github.com/raypappa/homelab.git/kubernetes/{{ git_sub_path
+      }}/bootstrap/argocd |
+      k3s kubectl apply -f -
+    executable: /bin/bash
+  changed_when: true
 - name: Wait for ArgoCD to be ready
   become: false
   retries: 10
@@ -144,24 +152,27 @@
     kubeconfig: "{{ kubeconfig_b64['content'] | b64decode | from_yaml }}"
 - name: First Context in kubeconfig
   ansible.builtin.set_fact:
-    kubeconfig_contexts: "{{ [kubeconfig.contexts[0]|combine({ 'context': {'namespace': 'argocd' }}, recursive=True)] | union(kubeconfig.contexts[1:]) }}"
+    kubeconfig_contexts: "{{ [kubeconfig.contexts[0] | combine({'context': {'namespace':
+      'argocd'}}, recursive=True)] | union(kubeconfig.contexts[1:]) }}"
 - name: Set kubectl current context namespace to argocd
   ansible.builtin.copy:
     dest: "{{ (ansible_user_dir, '.kube', 'config') | path_join }}"
-    content: "{{ kubeconfig|combine({'contexts': kubeconfig_contexts})|ansible.builtin.to_nice_yaml}}"
+    content: "{{ kubeconfig | combine({'contexts': kubeconfig_contexts}) | ansible.builtin.to_nice_yaml
+      }}"
     owner: "{{ ansible_user }}"
     mode: u=rw,g=,o=
 - name: Configure ArgoCD for the cluster
   ansible.builtin.command:
     cmd: argocd login --core
-    creates: "{{ (ansible_user_dir, '.config','argocd','config') | path_join }}"
+    creates: "{{ (ansible_user_dir, '.config', 'argocd', 'config') | path_join }}"
 - name: List Configured Repositories in ArgoCD
   ansible.builtin.command: >-
     argocd repo list -o json
   register: argocd_repos
+  changed_when: true
 # Note: This makes argocd able to use the above ssh key, but the ssh key still needs to be added by hand as a deploy key to the github repo.
 - name: Configure ArgoCD with SSH Key
   become: true
   ansible.builtin.command: >-
     argocd repo add "{{ k3s_git_repo }}"
-  when: argocd_repos.stdout.find(k3s_git_repo)
+  changed_when: argocd_repos.stdout.find(k3s_git_repo)

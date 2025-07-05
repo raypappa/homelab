@@ -43,7 +43,10 @@ jobs:
         uses: docker://certbot/dns-route53
         with:
           args: >
-            certonly --non-interactive --agree-tos --email ${{ secrets.CERTBOT_EMAIL }} --dns-route53 --domains ${{ secrets.CERTBOT_DOMAINS }} --config-dir /github/workspace/certbot-config --work-dir /github/workspace/certbot-work --logs-dir /github/workspace/certbot-logs --keep-until-expiring --quiet
+            certonly --non-interactive --agree-tos --email ${{ secrets.CERTBOT_EMAIL
+            }} --dns-route53 --domains ${{ secrets.CERTBOT_DOMAINS }} --config-dir
+            /github/workspace/certbot-config --work-dir /github/workspace/certbot-work
+            --logs-dir /github/workspace/certbot-logs --keep-until-expiring --quiet
 
       - name: Fix file permissions
         uses: docker://certbot/dns-route53
@@ -102,7 +105,8 @@ jobs:
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_ed25519
           printf "Host *\n  StrictHostKeyChecking no\n  UserKnownHostsFile /dev/null\n" > ~/.ssh/config
       - name: SSH Test
-        run: ssh ${{ vars.BASTION_USER }}@${{ vars.BASTION_HOST }} -p ${{ vars.BASTION_PORT }} echo "SSH Test"
+        run: ssh ${{ vars.BASTION_USER }}@${{ vars.BASTION_HOST }} -p ${{ vars.BASTION_PORT
+          }} echo "SSH Test"
       - uses: stoneydavis/ssh-port-forward-action@v1.0.1
         with:
           ssh_key: ${{ secrets.SSH_PRIVATE_KEY }}

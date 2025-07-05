@@ -9,7 +9,8 @@
     record: puma.stoneydavis.com
     type: A
     ttl: 7200
-    value: "{{ hostvars['kubernetes-node-0001.stoneydavis.local']['ansible_facts']['ipify_public_ip'] }}"
+    value: "{{ hostvars['kubernetes-node-0001.stoneydavis.local']['ansible_facts']['ipify_public_ip']
+      }}"
     overwrite: true
   delegate_to: localhost
 - name: Set R53 Hosted Zone Record for Panda
@@ -19,6 +20,7 @@
     record: panda.stoneydavis.com
     type: A
     ttl: 7200
-    value: "{{ hostvars['kubernetes-node-0001.stoneydavis.local']['ansible_facts']['ipify_public_ip'] }}"
+    value: "{{ hostvars['kubernetes-node-0001.stoneydavis.local']['ansible_facts']['ipify_public_ip']
+      }}"
     overwrite: true
   delegate_to: localhost

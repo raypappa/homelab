@@ -22,6 +22,7 @@ repos:
         args:
           - --unsafe # required for cfn or yaml with custom import (!)
       - id: trailing-whitespace
+        exclude: ".*.yaml"
       - id: check-symlinks
       - id: check-builtin-literals
       - id: check-ast
@@ -37,7 +38,8 @@ repos:
       - id: check-dependabot
       - id: check-taskfile
       - id: check-renovate
-        additional_dependencies: ["json5"]
+        additional_dependencies:
+          - "json5"
     repo: https://github.com/python-jsonschema/check-jsonschema
     rev: 0.33.1
   - hooks:
@@ -53,21 +55,26 @@ repos:
     rev: v9.0.1
     hooks:
       - id: cspell
+  - hooks:
+      - id: yamlfmt
+    repo: https://github.com/google/yamlfmt
+    rev: v0.17.2
   - repo: https://github.com/adrienverge/yamllint.git
     rev: v1.37.1
     hooks:
       - id: yamllint
-  - hooks:
-      - id: yamlfmt
-    repo: https://github.com/google/yamlfmt
-    rev: v0.17.1
+        exclude: .github/workflows
+        args:
+          - --no-warnings
   - repo: local
     hooks:
       - id: local-biome-check
         name: biome check
-        entry: npx  --package @biomejs/biome biome check --write --files-ignore-unknown=true --no-errors-on-unmatched
+        entry: npx  --package @biomejs/biome biome check --write --files-ignore-unknown=true
+          --no-errors-on-unmatched
         language: system
-        types: [text]
+        types:
+          - text
         files: "\\.(jsx?|tsx?|c(js|ts)|m(js|ts)|d\\.(ts|cts|mts)|jsonc?|css)$"
   - repo: https://github.com/astral-sh/uv-pre-commit
     # uv version.

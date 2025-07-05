@@ -10,7 +10,8 @@
     owner: root
     group: root
     mode: "0644"
-  when: ansible_facts['os_family'] == "Debian" and ansible_facts['distribution_major_version'] == "12"
+  when: ansible_facts['os_family'] == "Debian" and ansible_facts['distribution_major_version']
+    == "12"
 - name: Upgrade the OS (apt-get dist-upgrade)
   become: true
   ansible.builtin.apt:
@@ -87,7 +88,10 @@
 # ideally this should be conditional if the headscale pre-auth key is present, but for now I'll disable to bootstrap headscale
 - name: Install tailscale
   ansible.builtin.include_role:
-    name: artis3n.tailscale
+    name: artis3n.tailscale.machine
+  when:
+    - tailscale_authkey is defined
+    - tailscale_authkey | length > 0
 - name: Set hostname if specified
   become: true
   when: hostname is defined
