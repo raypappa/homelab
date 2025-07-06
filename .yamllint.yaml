@@ -9,9 +9,7 @@ rules:
     present: true
     level: error
   # Don't warn on line length
-  line-length:
-    max: 80
-    level: warning
+  line-length: false
   # Certain systems (e.g. ansible) document yes/no as valid values
   truthy: enable
   comments-indentation: false
