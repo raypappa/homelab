@@ -1,6 +1,6 @@
 ---
 name: "Kustomize GitHub Actions"
-on:
+on: # yamllint disable-line rule:truthy
   - pull_request
 jobs:
   kustomize:
