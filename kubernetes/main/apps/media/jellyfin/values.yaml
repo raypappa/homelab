@@ -38,11 +38,11 @@ controllers:
             - 100
         resources:
           requests:
-            #gpu.intel.com/i915: 1
+            # gpu.intel.com/i915: 1
             cpu: 500m
             memory: 1000Mi
           limits:
-            #gpu.intel.com/i915: 1
+            # gpu.intel.com/i915: 1
             memory: 8000Mi
 persistence:
   config:
@@ -54,7 +54,7 @@ persistence:
   transcode:
     enabled: true
     type: emptyDir
-    #medium: "Memory"
+    # medium: "Memory"
     sizeLimit: 10Gi
   library:
     enabled: true

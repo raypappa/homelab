@@ -9,7 +9,7 @@
     dest: /etc/apt/sources.list
     owner: root
     group: root
-    mode: "0644"
+    mode: '0644'
   when: ansible_facts['os_family'] == "Debian" and ansible_facts['distribution_major_version']
     == "12"
 - name: Upgrade the OS (apt-get dist-upgrade)
@@ -83,8 +83,8 @@
 - name: Ensure all user homedir's are configured
   ansible.builtin.include_tasks: user.yaml
   vars:
-    user: "{{ item }}"
-  loop: "{{ users }}"
+    user: '{{ item }}'
+  loop: '{{ users }}'
 # ideally this should be conditional if the headscale pre-auth key is present, but for now I'll disable to bootstrap headscale
 - name: Install tailscale
   ansible.builtin.include_role:
@@ -97,5 +97,5 @@
   when: hostname is defined
   notify: reboot
   ansible.builtin.hostname:
-    name: "{{ hostname }}"
+    name: '{{ hostname }}'
     use: debian
