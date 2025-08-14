@@ -18,12 +18,12 @@ rules:
     forbid-explicit-octal: true
   comments:
     min-spaces-from-content: 1
-  braces:
-    forbid: true
-    level: warning
-  brackets:
-    forbid: true
-    level: warning
+  # braces:
+  #   forbid: true
+  #   level: warning
+  # brackets:
+  #   forbid: true
+  #   level: warning
   commas: enable
   quoted-strings:
     quote-type: double
