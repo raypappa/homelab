@@ -12,10 +12,6 @@ prod_k8s_controlplane:
 # Non-Controlplane nodes
 # prod_k8s_nodes:
 #   hosts:
-prod_k8s_cluster:
-  children:
-    prod_k8s_controlplane:
-    # prod_k8s_nodes:
 # games:
 #   hosts:
 #     bob:

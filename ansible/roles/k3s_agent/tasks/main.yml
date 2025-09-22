@@ -1,22 +1,18 @@
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/ansible/ansible-lint/main/src/ansiblelint/schemas/ansible.json#/$defs/tasks
+- name: k3s pre-requisites
+  ansible.builtin.import_role:
+    name: _k3s_prereq
 # NON-SINGLETON cluster - 2nd and after HA masters.
 
 # The singleton is any already running k3s controlplane node.  Mostly we
 # just need to have the correct node token to use on any other control
-# plane node, because we initialize everything on the first one and then
-# all other control plane nodes will join on the running node for the
-# initial setup.
+# plane or worker node, because we initialize everything on the first
+# one and then all other control plane nodes will join on the running
+# node for the initial setup.
 #
 # Otherwise they won't be able to communicate and you'd have three
 # isolated control planes, not a single HA control plane.
-- name: Example from an Ansible Playbook
-  ansible.builtin.ping:
-- name: Create /etc/rancher/k3s/ directory
-  ansible.builtin.file:
-    path: /etc/rancher/k3s/
-    state: directory
-    mode: "0700"
 - name: Copy Jinja template
   ansible.builtin.template:
     src: config.yaml.j2
@@ -24,6 +20,7 @@
     owner: root
     group: root
     mode: "0600"
+  register: k3s_agents_copied_k3s_config
 - name: Copy K3s service file
   register: k3s_service
   ansible.builtin.template:
@@ -32,21 +29,14 @@
     owner: root
     group: root
     mode: "0644"
-- name: Copy kubelet.config
-  ansible.builtin.template:
-    src: kubelet.config.j2
-    dest: /etc/rancher/k3s/kubelet.config
-    owner: root
-    group: root
-    mode: "0644"
 - name: Enable and check K3s service
-  any_errors_fatal: true
   ansible.builtin.systemd:
     name: k3s
     daemon_reload: true
-    state: restarted
     enabled: true
-- name: Remove K3s config file
-  ansible.builtin.file:
-    path: /etc/rancher/k3s/config.yaml
-    state: absent
+- name: Restart k3s service
+  ansible.builtin.systemd:
+    name: k3s
+    state: restarted
+  when: k3s_agents_copied_k3s_config.changed and k3s_service.changed
+  # vim:  filetype=ansible.yaml:

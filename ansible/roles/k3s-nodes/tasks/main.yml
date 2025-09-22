@@ -1,5 +1,0 @@
----
-# yaml-language-server: $schema=https://raw.githubusercontent.com/ansible/ansible-lint/main/src/ansiblelint/schemas/ansible.json#/$defs/tasks
-- name: Setup Cluster Node
-  ansible.builtin.import_tasks: cluster.yml
-  become: true

@@ -114,3 +114,4 @@ kustomizeconfig
 verdana
 dashlist
 threashold
+controlplanes

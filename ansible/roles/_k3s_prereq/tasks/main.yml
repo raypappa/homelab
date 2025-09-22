@@ -1,7 +1,10 @@
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/ansible/ansible-lint/main/src/ansiblelint/schemas/ansible.json#/$defs/tasks
-- name: Example from an Ansible Playbook
-  ansible.builtin.ping:
+- name: Create /etc/rancher/k3s/ directory
+  ansible.builtin.file:
+    path: /etc/rancher/k3s/
+    state: directory
+    mode: "0700"
 - name: Enable IPv4 forwarding
   ansible.posix.sysctl:
     name: net.ipv4.ip_forward
