@@ -34,7 +34,7 @@
     state: reloaded
   # running this on ovh hosts causes them to break.
   when: hostvars[inventory_hostname]['ansible_default_ipv4']['address'] is ansible.utils.private
-- name: Ensure that Bookworm /etc/apt/sources.list is sane
+- name: remove legacy apt sources.list
   become: true
   ansible.builtin.file:
     dest: /etc/apt/sources.list
@@ -80,7 +80,7 @@
           - non-free
           - non-free-firmware
           - contrib
-        signed_by: https://ftp-master.debian.org/keys/archive-key-13.asc
+        signed_by: https://ftp-master.debian.org/keys/archive-key-13-security.asc
         uris: http://security.debian.org/debian-security/
         suites: trixie-security
 
