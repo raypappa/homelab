@@ -22,11 +22,6 @@
     path: "{{ (ansible_user_dir, '.ssh', 'id_ed25519_backup') | path_join }}"
     type: ed25519
     mode: "0600"
-- name: Create /etc/rancher/k3s/ directory
-  ansible.builtin.file:
-    path: /etc/rancher/k3s/
-    state: directory
-    mode: "0700"
 - name: Copy Jinja template
   ansible.builtin.template:
     src: singleton.config.yaml.j2
@@ -92,87 +87,16 @@
     remote_src: true
     owner: "{{ ansible_user }}"
     mode: u=rw,g=,o=
+  register: k3s_controlplanes_copied_user_kube_config
 # Update the namespace in the "{{ (ansible_user_dir, '.kube', 'config') | path_join }}" to argocd.
 - name: Replace https://localhost:6443 by https://master-ip:6443
   ansible.builtin.command: >-
     k3s kubectl config set-cluster default --server=https://{{ inventory_hostname
     }}:6443 --kubeconfig "{{ (ansible_user_dir, '.kube', 'config') | path_join }}"
-  changed_when: true
-- name: Create kubectl symlink
-  ansible.builtin.file:
-    src: /usr/local/bin/k3s
-    dest: /usr/local/bin/kubectl
-    state: link
-- name: Create crictl symlink
-  ansible.builtin.file:
-    src: /usr/local/bin/k3s
-    dest: /usr/local/bin/crictl
-    state: link
-- name: Create ArgoCD NameSpace
-  become: false
-  kubernetes.core.k8s:
-    host: https://localhost:6443
-    name: argocd
-    kind: Namespace
-    state: present
+  changed_when: k3s_controlplanes_copied_user_kube_config.changed
 - name: Wait for k3s to stabilize
   ansible.builtin.wait_for:
     port: 6443
     delay: 10
     timeout: 300
     state: started
-- name: Apply ArgoCD Kustomize # this is not the right way to do it but using kubernetes.core.k8s was failing for some reason.
-  ansible.builtin.shell:
-    cmd: >-
-      set -o pipefail &&
-      k3s kubectl kustomize
-      --enable-helm=True https://github.com/raypappa/homelab.git/kubernetes/{{ git_sub_path
-      }}/bootstrap/argocd |
-      k3s kubectl apply -f -
-    executable: /bin/bash
-  changed_when: true
-- name: Wait for ArgoCD to be ready
-  become: false
-  retries: 10
-  until: argocd_server_check is not failed
-  delay: 5
-  register: argocd_server_check
-  kubernetes.core.k8s_info:
-    host: https://localhost:6443
-    label_selectors:
-      - name = argocd-repo-server
-    kind: pod
-    namespace: argocd
-- name: Read kubeconfig
-  ansible.builtin.slurp:
-    src: "{{ (ansible_user_dir, '.kube', 'config') | path_join }}"
-  register: kubeconfig_b64
-- name: Parse kubeconfig
-  ansible.builtin.set_fact:
-    kubeconfig: "{{ kubeconfig_b64['content'] | b64decode | from_yaml }}"
-- name: First Context in kubeconfig
-  ansible.builtin.set_fact:
-    kubeconfig_contexts: "{{ [kubeconfig.contexts[0] | combine({'context': {'namespace':
-      'argocd'}}, recursive=True)] | union(kubeconfig.contexts[1:]) }}"
-- name: Set kubectl current context namespace to argocd
-  ansible.builtin.copy:
-    dest: "{{ (ansible_user_dir, '.kube', 'config') | path_join }}"
-    content: "{{ kubeconfig | combine({'contexts': kubeconfig_contexts}) | ansible.builtin.to_nice_yaml
-      }}"
-    owner: "{{ ansible_user }}"
-    mode: u=rw,g=,o=
-- name: Configure ArgoCD for the cluster
-  ansible.builtin.command:
-    cmd: argocd login --core
-    creates: "{{ (ansible_user_dir, '.config', 'argocd', 'config') | path_join }}"
-- name: List Configured Repositories in ArgoCD
-  ansible.builtin.command: >-
-    argocd repo list -o json
-  register: argocd_repos
-  changed_when: true
-# Note: This makes argocd able to use the above ssh key, but the ssh key still needs to be added by hand as a deploy key to the github repo.
-- name: Configure ArgoCD with SSH Key
-  become: true
-  ansible.builtin.command: >-
-    argocd repo add "{{ k3s_git_repo }}"
-  changed_when: argocd_repos.stdout.find(k3s_git_repo)

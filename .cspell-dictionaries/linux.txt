@@ -75,3 +75,4 @@ rpcsec
 unexporting
 chezmoi
 oomkilled
+trixie

@@ -5,7 +5,7 @@
   ansible.builtin.fail:
     msg: '"Support for Bullseye has been removed, upgrade to Bookworm."'
   when: ansible_facts['os_family'] == "Debian" and ansible_facts['distribution_major_version']
-    == "11"
+    < "12"
 - name: Apply networkd.conf to enable using dns from dhcp
   become: true
   register: networkd
@@ -34,6 +34,56 @@
     state: reloaded
   # running this on ovh hosts causes them to break.
   when: hostvars[inventory_hostname]['ansible_default_ipv4']['address'] is ansible.utils.private
+- name: Ensure that Bookworm /etc/apt/sources.list is sane
+  become: true
+  ansible.builtin.file:
+    dest: /etc/apt/sources.list
+    state: absent
+- name: Configure Trixie sources
+  block:
+    - name: Configure apt trixie
+      ansible.builtin.deb822_repository:
+        name: trixie
+        types:
+          - deb
+          - deb-src
+        uris: http://deb.debian.org/debian/
+        suites: trixie
+        components:
+          - main
+          - non-free
+          - non-free-firmware
+          - contrib
+        signed_by: https://ftp-master.debian.org/keys/archive-key-13.asc
+    - name: Configure apt trixie-updates
+      ansible.builtin.deb822_repository:
+        name: trixie-updates
+        types:
+          - deb
+          - deb-src
+        uris: http://deb.debian.org/debian/
+        suites: trixie-updates
+        components:
+          - main
+          - non-free
+          - non-free-firmware
+          - contrib
+        signed_by: https://ftp-master.debian.org/keys/archive-key-13.asc
+    - name: Configure apt trixie-security
+      ansible.builtin.deb822_repository:
+        name: trixie-security
+        types:
+          - deb
+          - deb-src
+        components:
+          - main
+          - non-free
+          - non-free-firmware
+          - contrib
+        signed_by: https://ftp-master.debian.org/keys/archive-key-13.asc
+        uris: http://security.debian.org/debian-security/
+        suites: trixie-security
+
 - name: Upgrade the OS (apt-get dist-upgrade)
   become: true
   ansible.builtin.apt:

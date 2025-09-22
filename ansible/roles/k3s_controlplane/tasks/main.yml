@@ -1,5 +1,18 @@
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/ansible/ansible-lint/main/src/ansiblelint/schemas/ansible.json#/$defs/tasks
+- name: k3s pre-requisites
+  ansible.builtin.import_role:
+    name: _k3s_prereq
+- name: Create kubectl symlink
+  ansible.builtin.file:
+    src: /usr/local/bin/k3s
+    dest: /usr/local/bin/kubectl
+    state: link
+- name: Create crictl symlink
+  ansible.builtin.file:
+    src: /usr/local/bin/k3s
+    dest: /usr/local/bin/crictl
+    state: link
 - name: Download and install ArgoCD CLI
   become: true
   ansible.builtin.get_url:
@@ -29,3 +42,10 @@
   ansible.builtin.import_tasks: cluster.yml
   become: true
   when: inventory_hostname != singleton_host
+
+# TODO: Check that the number of available nodes in k3s matches the number of hosts in inventory
+
+- name: Bootstrap ArgoCD
+  ansible.builtin.import_tasks: argocd.yml
+  run_once: true
+  become: true
