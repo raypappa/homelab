@@ -5,7 +5,7 @@
   become: true
   ansible.builtin.user:
     name: "{{ user }}"
-    shell: /bin/bash
+    shell: /usr/bin/zsh
     groups: libvirt, dialout, audio, video
     append: true
 # - name: Chezmoi user
