@@ -1,5 +1,13 @@
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/ansible/ansible-lint/main/src/ansiblelint/schemas/ansible.json#/$defs/playbook
+- name: Headscale
+  hosts: headscale
+  become: true
+  roles:
+    - common_critical
+    - common
+    - ovh
+    - headscale
 - name: Common
   hosts: all
   roles:
@@ -54,9 +62,3 @@
     - nfs_server
   roles:
     - nfs_server
-- name: Headscale
-  hosts: headscale
-  become: true
-  roles:
-    - ovh
-    - headscale
