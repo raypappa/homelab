@@ -73,3 +73,21 @@
     enabled: true
     daemon_reload: true
     state: restarted
+- name: Generate pre-authkey
+  when: not tailscale_authkey
+  block:
+    - name: Create user
+      ansible.builtin.command:
+        cmd: headscale users create -o json stoney
+    - name: Generate pre-auth-key
+      register: headscale_pre_auth_key
+      no_log: true
+      ansible.builtin.command:
+        cmd: headscale preauthkeys create --reusable -u stoney -e 99y -o json
+    - name: Set secret for pre-authkey
+      no_log: true
+      community.aws.secretsmanager_secret:
+        name: weasel.stoneydavis.com/headscale/pre-auth-key
+        secret_type: string
+        secret: "{{ headscale_pre_auth_key.stdout | from_json | json_query('.key')
+          }}"
