@@ -115,3 +115,4 @@ verdana
 dashlist
 threashold
 controlplanes
+preauthkeys
