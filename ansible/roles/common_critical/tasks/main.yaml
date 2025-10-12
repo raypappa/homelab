@@ -5,7 +5,7 @@
   ansible.builtin.fail:
     msg: '"Support for Bullseye has been removed, upgrade to Bookworm."'
   when: ansible_facts['os_family'] == "Debian" and ansible_facts['distribution_major_version']
-    < "12"
+    < "13"
 - name: Apply networkd.conf to enable using dns from dhcp
   become: true
   register: networkd
