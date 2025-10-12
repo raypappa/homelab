@@ -23,10 +23,10 @@
     - prod_k8s_controlplane
   roles:
     - k3s_controlplane
-- name: Production Kubernetes Nodes
+- name: Production Kubernetes Agents
   order: sorted
   hosts:
-    - prod_k8s_nodes
+    - prod_k8s_agent
   roles:
     - k3s_agent
 - name: Faerun Public
@@ -41,10 +41,6 @@
     - game_server
   roles:
     - game-server
-# - name: Development Kubernetes Cluster
-#   hosts: dev_k8s_cluster
-#   roles:
-#     - k3s-prereq
 # - name: Development Kubernetes Control Plane
 #   hosts: dev_k8s_controlplane
 #   roles:

@@ -41,7 +41,7 @@
 - name: Setup Remaining Cluster Nodes
   ansible.builtin.import_tasks: cluster.yml
   become: true
-  when: inventory_hostname != singleton_host
+  when: inventory_hostname != k3s_controlplane_singleton_host
 
 # TODO: Check that the number of available nodes in k3s matches the number of hosts in inventory
 

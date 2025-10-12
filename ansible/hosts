@@ -2,8 +2,8 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/ansible/ansible-lint/main/src/ansiblelint/schemas/inventory.json
 # faerun:
 #   hosts:
-    # panda.stoneydavis.local:
-    # warthog.stoneydavis.local:
+# panda.stoneydavis.local:
+# warthog.stoneydavis.local:
 prod_k8s_controlplane:
   hosts:
     kubernetes-node-0001.stoneydavis.local:
@@ -12,6 +12,11 @@ prod_k8s_controlplane:
 # Non-Controlplane nodes
 # prod_k8s_nodes:
 #   hosts:
+prod_k8s_cluster:
+  children:
+    prod_k3s_controlplane:
+    prod_k3s_agents:
+
 # games:
 #   hosts:
 #     bob:
@@ -38,3 +43,5 @@ nfs_server:
 headscale:
   hosts:
     weasel.stoneydavis.com:
+
+# vim: ft=yaml
