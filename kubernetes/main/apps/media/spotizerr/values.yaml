@@ -21,7 +21,7 @@ controllers:
         image:
           repository: cooldockerizer93/spotizerr
           # renovate: datasource=docker depName=cooldockerizer93/spotizerr
-          tag: "2.5"
+          tag: "2.5.1"
         # env:
         #   PUID: "1000"
         #   PGID: "1000"
