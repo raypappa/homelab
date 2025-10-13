@@ -9,6 +9,9 @@
     update_cache: true
     cache_valid_time: 3600
     autoclean: true
+- name: AutoRemove
+  ansible.builtin.apt:
+    autoremove: true
 - name: Ensure required packages are installed
   become: true
   ansible.builtin.apt:

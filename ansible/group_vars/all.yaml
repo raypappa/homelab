@@ -2,6 +2,7 @@
 # yaml-language server: $schema=https://raw.githubusercontent.com/ansible/ansible-lint/main/src/ansiblelint/schemas/vars.json
 # version increment: 1 # this is being used to trigger the changed files check in CI
 k3s_git_repo: https://github.com/raypappa/homelab.git
+k3s_git_secret_name: raypappa-homelab
 k3s_server_location: /var/lib/rancher/k3s
 k3s_env_tz: America/Los_Angeles
 k3s_env_puid: "1000"

@@ -1,8 +1,37 @@
-cluster-init: true
 token: {{ k3s_master_token }}
 server: https://{{ k3s_controlplane_singleton_host }}:6443
 disable:
   - servicelb
   - traefik
+etcd-snapshot-retention: 60
+etcd-snapshot-schedule-cron: 0 */12 * * *
+etcd-s3-endpoint: "{{ lookup("community.general.onepassword","backblaze-etcd", field="endpoint", service_account_token=op_sa_token, subdomain="my", vault=op_vault_id) }}"
+etcd-s3-access-key: "{{ lookup("community.general.onepassword","backblaze-etcd", field="access_key", service_account_token=op_sa_token, subdomain="my", vault=op_vault_id) }}"
+etcd-s3-secret-key: "{{ lookup("community.general.onepassword","backblaze-etcd", field="secret_key", service_account_token=op_sa_token, subdomain="my", vault=op_vault_id) }}"
+etcd-s3-bucket: "{{ lookup("community.general.onepassword","backblaze-etcd", field="bucket", service_account_token=op_sa_token, subdomain="my", vault=op_vault_id) }}"
+etcd-s3-region: "{{ lookup("community.general.onepassword","backblaze-etcd", field="region", service_account_token=op_sa_token, subdomain="my", vault=op_vault_id) }}"
+etcd-s3-folder: "{{ lookup("community.general.onepassword","backblaze-etcd", field="folder", service_account_token=op_sa_token, subdomain="my", vault=op_vault_id) }}"
+etcd-s3: true
 tls-san:
   - {{ inventory_hostname }}
+secrets-encryption: true
+# https://kubernetes.io/docs/tasks/administer-cluster/encrypt-data/#providers
+# Secretbox is strong; kms runs as a pod and can have issues
+# https://github.com/k3s-io/k3s/issues/10058
+secrets-encryption-provider: secretbox
+kube-apiserver-arg:
+  - 'enable-admission-plugins=NodeRestriction,EventRateLimit,AlwaysPullImages'
+  - 'admission-control-config-file=/var/lib/rancher/k3s/server/psa.yaml'
+  - 'audit-log-path=/var/lib/rancher/k3s/server/logs/audit.log'
+  - 'audit-policy-file=/var/lib/rancher/k3s/server/audit.yaml'
+  - 'audit-log-maxage=30'
+  - 'audit-log-maxbackup=10'
+
+  - 'audit-log-maxsize=100'
+kube-controller-manager-arg:
+  - 'terminated-pod-gc-threshold=10'
+kubelet-arg:
+  - 'pod-max-pids=2097152'
+  - 'streaming-connection-idle-timeout=1h'
+  - 'tls-cipher-suites=TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305'
+# vim: ft=yaml

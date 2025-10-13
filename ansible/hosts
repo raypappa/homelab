@@ -14,15 +14,11 @@ prod_k8s_controlplane:
 #   hosts:
 prod_k8s_cluster:
   children:
-    prod_k3s_controlplane:
-    prod_k3s_agents:
+    prod_k8s_controlplane:
+    prod_k8s_agents:
 
 # games:
 #   hosts:
-#     bob:
-#       ansible_host: 172.17.40.73
-#     abaobox:
-#       ansible_host: 172.17.40.98
 game_server:
   hosts:
     panda.stoneydavis.local:

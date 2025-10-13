@@ -1,14 +1,36 @@
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/ansible/ansible-lint/main/src/ansiblelint/schemas/ansible.json#/$defs/tasks
-- name: Create ArgoCD NameSpace
-  become: false
+- name: argocd | Wait for k3s to stabilize
+  ansible.builtin.wait_for:
+    port: 6443
+    delay: 10
+    timeout: 300
+    state: started
+- name: Create ArgoCD namespace
   kubernetes.core.k8s:
-    host: https://localhost:6443
-    name: argocd
-    kind: Namespace
+    kubeconfig: /etc/rancher/k3s/k3s.yaml
     state: present
+    definition:
+      apiVersion: v1
+      kind: Namespace
+      metadata:
+        name: argocd
+        labels:
+          name: argocd
+          pod-security.kubernetes.io/audit: baseline
+          pod-security.kubernetes.io/enforce: baseline
+          pod-security.kubernetes.io/warn: baseline
+- name: argocd | Apply default Network Policies for argocd namespace
+  ansible.builtin.template:
+    src: "netpols.yaml.j2"
+    dest: /var/lib/rancher/k3s/server/manifests/argocd-netpols.yaml
+    owner: root
+    group: root
+    mode: '0600'
+  vars:
+    namespace: argocd
 # Apply argoCD deployment manifest same as what ArgoCD itself is manged with, this eliminates changes during Ansible deploys.
-- name: Apply ArgoCD Kustomize # this is not the right way to do it but using kubernetes.core.k8s was failing for some reason.
+- name: argocd | Apply ArgoCD Kustomize # this is not the right way to do it but using kubernetes.core.k8s was failing for some reason.
   ansible.builtin.shell:
     cmd: >-
       set -o pipefail &&
@@ -18,48 +40,37 @@
       k3s kubectl apply -f -
     executable: /bin/bash
   changed_when: true
-- name: Wait for ArgoCD to be ready
+- name: argocd | Wait for ArgoCD to be ready
   become: false
   retries: 10
   until: argocd_server_check is not failed
   delay: 5
   register: argocd_server_check
   kubernetes.core.k8s_info:
+    kubeconfig: /etc/rancher/k3s/k3s.yaml
     host: https://localhost:6443
     label_selectors:
       - name = argocd-repo-server
     kind: pod
     namespace: argocd
-- name: Read kubeconfig
-  ansible.builtin.slurp:
-    src: "{{ (ansible_user_dir, '.kube', 'config') | path_join }}"
-  register: kubeconfig_b64
-- name: Parse kubeconfig
-  ansible.builtin.set_fact:
-    kubeconfig: "{{ kubeconfig_b64['content'] | b64decode | from_yaml }}"
-- name: First Context in kubeconfig
-  ansible.builtin.set_fact:
-    kubeconfig_contexts: "{{ [kubeconfig.contexts[0] | combine({'context': {'namespace':
-      'argocd'}}, recursive=True)] | union(kubeconfig.contexts[1:]) }}"
-- name: Set kubectl current context namespace to argocd
-  ansible.builtin.copy:
-    dest: "{{ (ansible_user_dir, '.kube', 'config') | path_join }}"
-    content: "{{ kubeconfig | combine({'contexts': kubeconfig_contexts}) | ansible.builtin.to_nice_yaml
-      }}"
-    owner: "{{ ansible_user }}"
-    mode: u=rw,g=,o=
-- name: Configure ArgoCD for the cluster
-  ansible.builtin.command:
-    cmd: argocd login --core
-    creates: "{{ (ansible_user_dir, '.config', 'argocd', 'config') | path_join }}"
-- name: List Configured Repositories in ArgoCD
-  ansible.builtin.command: >-
-    argocd repo list -o json
-  register: argocd_repos
-  changed_when: true
+- name: argocd | Slurp ssh key
+  slurp:
+    src: ~/.ssh/id_ed25519
+  register: k3s_controlplane_ssh_key
 # Note: This makes argocd able to use the above ssh key, but the ssh key still needs to be added by hand as a deploy key to the github repo.
-- name: Configure ArgoCD with SSH Key
-  become: true
-  ansible.builtin.command: >-
-    argocd repo add "{{ k3s_git_repo }}"
-  changed_when: argocd_repos.stdout.find(k3s_git_repo)
+- name: argocd | Configure ArgoCD with SSH Key
+  kubernetes.core.k8s:
+    kubeconfig: /etc/rancher/k3s/k3s.yaml
+    state: present
+    definition:
+      apiVersion: v1
+      kind: Secret
+      metadata:
+        name: argocd-git-{{ k3s_git_secret_name }}
+        namespace: argocd
+        labels:
+          argocd.argoproj.io/secret-type: repository
+      stringData:
+        type: git
+        url: "{{ k3s_git_repo }}"
+        sshPrivateKey: "{{ k3s_controlplane_ssh_key['content'] | b64decode }}"

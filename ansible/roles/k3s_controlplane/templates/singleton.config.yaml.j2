@@ -13,3 +13,24 @@ etcd-s3-folder: "{{ lookup("community.general.onepassword","backblaze-etcd", fie
 etcd-s3: true
 tls-san:
   - {{ inventory_hostname }}
+secrets-encryption: true
+# https://kubernetes.io/docs/tasks/administer-cluster/encrypt-data/#providers
+# Secretbox is strong; kms runs as a pod and can have issues
+# https://github.com/k3s-io/k3s/issues/10058
+secrets-encryption-provider: secretbox
+kube-apiserver-arg:
+  - 'enable-admission-plugins=NodeRestriction,EventRateLimit,AlwaysPullImages'
+  - 'admission-control-config-file=/var/lib/rancher/k3s/server/psa.yaml'
+  - 'audit-log-path=/var/lib/rancher/k3s/server/logs/audit.log'
+  - 'audit-policy-file=/var/lib/rancher/k3s/server/audit.yaml'
+  - 'audit-log-maxage=30'
+  - 'audit-log-maxbackup=10'
+
+  - 'audit-log-maxsize=100'
+kube-controller-manager-arg:
+  - 'terminated-pod-gc-threshold=10'
+kubelet-arg:
+  - 'pod-max-pids=2097152'
+  - 'streaming-connection-idle-timeout=1h'
+  - 'tls-cipher-suites=TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305'
+# vim: ft=yaml:

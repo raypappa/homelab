@@ -13,13 +13,6 @@
     src: /usr/local/bin/k3s
     dest: /usr/local/bin/crictl
     state: link
-- name: Download and install ArgoCD CLI
-  become: true
-  ansible.builtin.get_url:
-    url: https://github.com/argoproj/argo-cd/releases/download/v{{ argocd_version
-      }}/argocd-linux-amd64
-    dest: /usr/local/bin/argocd
-    mode: "0555"
 - name: Download and install Helm
   become: true
   ansible.builtin.unarchive:
@@ -34,13 +27,16 @@
     owner: root
     group: root
     dest: /usr/local/bin
+- name: Harden the things we can before creating the cluster
+  ansible.builtin.import_tasks: harden.yaml
+  become: true
 - name: Setup Cluster Singleton
   ansible.builtin.import_tasks: singleton.yml
   run_once: true
   become: true
 - name: Setup Remaining Cluster Nodes
-  ansible.builtin.import_tasks: cluster.yml
-  become: true
+  ansible.builtin.include_tasks:
+    file: cluster.yml
   when: inventory_hostname != k3s_controlplane_singleton_host
 
 # TODO: Check that the number of available nodes in k3s matches the number of hosts in inventory

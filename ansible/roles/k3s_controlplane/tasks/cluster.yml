@@ -10,14 +10,14 @@
 #
 # Otherwise they won't be able to communicate and you'd have three
 # isolated control planes, not a single HA control plane.
-- name: Copy Jinja template
+- name: cluster | Copy Jinja template
   ansible.builtin.template:
     src: config.yaml.j2
     dest: /etc/rancher/k3s/config.yaml
     owner: root
     group: root
     mode: "0600"
-- name: Copy K3s service file
+- name: cluster | Copy K3s service file
   register: k3s_service
   ansible.builtin.template:
     src: k3s.service.j2
@@ -25,21 +25,31 @@
     owner: root
     group: root
     mode: "0644"
-- name: Copy kubelet.config
+- name: cluster | Copy kubelet.config
   ansible.builtin.template:
     src: kubelet.config.j2
     dest: /etc/rancher/k3s/kubelet.config
     owner: root
     group: root
     mode: "0644"
-- name: Enable and check K3s service
+- name: cluster | Enable and check K3s service
   any_errors_fatal: true
   ansible.builtin.systemd:
     name: k3s
     daemon_reload: true
     state: restarted
     enabled: true
-- name: Remove K3s config file
+- name: cluster | Remove K3s config file
   ansible.builtin.file:
     path: /etc/rancher/k3s/config.yaml
     state: absent
+- name: Get list of certs
+  ansible.builtin.find:
+    paths: /var/lib/rancher/k3s/server/tls
+    patterns: "*.crt"
+  register: controlplane_k3s_certs
+- name: Chmod 0600 /var/lib/rancher/k3s/server/tls/*.crt
+  ansible.builtin.file:
+    path: "{{ item.path }}"
+    mode: '0600'
+  with_items: "{{ controlplane_k3s_certs.files }}"
