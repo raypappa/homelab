@@ -9,7 +9,7 @@ controllers:
         image:
           repository: tiredofit/lemonldap
           # renovate: datasource=docker depName=tiredofit/lemonldap
-          tag: 2.0.82
+          tag: 2.0.84
           pullPolicy: IfNotPresent
         env:
           TZ: America/Los_Angeles
