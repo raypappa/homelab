@@ -12,7 +12,7 @@ jobs:
     runs-on: ${{ vars.RUNS_ON }}
     steps:
       - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v4
+        uses: aws-actions/configure-aws-credentials@v5
         with:
           role-to-assume: ${{ vars.AWS_ASSUME_ROLE_ARN }}
           aws-region: ${{ vars.AWS_DEFAULT_REGION }}
@@ -86,7 +86,7 @@ jobs:
     steps:
       - uses: actions/checkout@v5
       - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v4
+        uses: aws-actions/configure-aws-credentials@v5
         with:
           role-to-assume: ${{ vars.AWS_ASSUME_ROLE_ARN }}
           aws-region: ${{ vars.AWS_DEFAULT_REGION }}
