@@ -1,7 +1,7 @@
 ---
 image:
   # renovate: datasource=docker depName=cloudflare/cloudflared
-  tag: 2025.6.1
+  tag: 2025.9.1
 cloudflare:
   secretName: "prowlarr-tunnel-credentials"
   tunnelName: "faerun-prowlarr"
