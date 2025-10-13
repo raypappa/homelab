@@ -19,7 +19,7 @@ jobs:
           fetch-depth: 2
       - name: Get Changed Files
         id: changed-files
-        uses: tj-actions/changed-files@v46
+        uses: tj-actions/changed-files@v47
         with:
           path: ansible
       - name: Checkout output
