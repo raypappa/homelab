@@ -26,6 +26,8 @@ jobs:
         uses: astral-sh/setup-uv@v6
         with:
           version: "0.5.24"
+      - name: Install 1Password CLI
+        uses: 1password/install-cli-action@v2
       - run: task configure
       - name: Create extra vars file
         run: echo "${{ secrets.ANSIBLE_EXTRA_VAR_JSON }}" |base64 -d > ansible/ansible_extra_vars.json
