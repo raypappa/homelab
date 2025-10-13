@@ -6,7 +6,7 @@ namespace: monitoring
 helmCharts:
   - name: prometheus-smartctl-exporter
     repo: oci://ghcr.io/prometheus-community/charts
-    version: 0.15.3
+    version: 0.16.0
     namespace: monitoring
     releaseName: smartctl-exporter
     valuesFile: smartctl-exporter-values.yaml
