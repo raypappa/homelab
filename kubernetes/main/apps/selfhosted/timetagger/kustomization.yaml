@@ -11,7 +11,7 @@ helmCharts:
     valuesInline:
       image:
         # renovate: datasource=docker depName=cloudflare/cloudflared
-        tag: 2025.6.1
+        tag: 2025.9.1
       cloudflare:
         secretName: "timetagger-tunnel-credentials"
         tunnelName: "faerun-timetagger"
