@@ -15,7 +15,7 @@ controllers:
         image:
           repository: ghcr.io/home-operations/radarr
           # renovate: datasource=docker depName=ghcr.io/home-operations/radarr
-          tag: 5.27.0
+          tag: 5.28.0
           pullPolicy: IfNotPresent
         env:
           COMPlus_EnableDiagnostics: "0"
