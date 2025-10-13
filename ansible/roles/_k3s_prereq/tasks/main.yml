@@ -1,10 +1,6 @@
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/ansible/ansible-lint/main/src/ansiblelint/schemas/ansible.json#/$defs/tasks
-- name: Create /etc/rancher/k3s/ directory
-  ansible.builtin.file:
-    path: /etc/rancher/k3s/
-    state: directory
-    mode: "0700"
+# vim: filetype=ansible.yaml
 - name: Enable IPv4 forwarding
   ansible.posix.sysctl:
     name: net.ipv4.ip_forward
@@ -23,13 +19,30 @@
     value: "524288"
     state: present
     reload: true
+
 - name: Enable IPv6 forwarding
   ansible.posix.sysctl:
     name: net.ipv6.conf.all.forwarding
     value: "1"
     state: present
     reload: true
-  when: ansible_all_ipv6_addresses
+  when: ansible_all_ipv6_addresses | length > 0
+
+# https://github.com/quic-go/quic-go/wiki/UDP-Buffer-Sizes
+- name: Enable set wmem for QUIC
+  ansible.posix.sysctl:
+    name: net.core.wmem_max
+    value: "7500000"
+    state: present
+    reload: true
+
+- name: Enable set rmem for QUIC
+  ansible.posix.sysctl:
+    name: net.core.rmem_max
+    value: "7500000"
+    state: present
+    reload: true
+
 - name: Download k3s binary x64
   ansible.builtin.get_url:
     url: https://github.com/k3s-io/k3s/releases/download/{{ k3s_version }}/k3s
@@ -38,18 +51,122 @@
     dest: /usr/local/bin/k3s
     owner: root
     group: root
-    mode: "0755"
+    mode: '0755'
   when: ansible_facts.architecture == "x86_64"
+
+- name: Create kubectl symlink
+  ansible.builtin.file:
+    src: /usr/local/bin/k3s
+    dest: /usr/local/bin/kubectl
+    state: link
+
+- name: Create crictl symlink
+  ansible.builtin.file:
+    src: /usr/local/bin/k3s
+    dest: /usr/local/bin/crictl
+    state: link
+
+- name: Create /etc/rancher/k3s/ directory
+  ansible.builtin.file:
+    path: /etc/rancher/k3s/
+    state: directory
+    mode: '0700'
+
+- name: Create /var/lib/rancher/k3s/server/logs directory
+  ansible.builtin.file:
+    path: /var/lib/rancher/k3s/server/logs
+    state: directory
+    mode: '0700'
+
+- name: Create /var/lib/rancher/k3s/server/manifests directory
+  ansible.builtin.file:
+    path: /var/lib/rancher/k3s/server/manifests
+    state: directory
+    mode: '0700'
+
+- name: Create /var/lib/rancher/k3s/agent/etc/ directory
+  ansible.builtin.file:
+    path: /var/lib/rancher/k3s/agent/etc
+    state: directory
+    mode: '0755'
+
+- name: Create /var/lib/rancher/k3s/server/ directory
+  ansible.builtin.file:
+    path: /var/lib/rancher/k3s/server
+    state: directory
+    mode: '0700'
+
+- name: Create /var/lib/rancher/k3s/agent/etc/kubelet.conf.d restricted directory
+  ansible.builtin.file:
+    path: /var/lib/rancher/k3s/agent/etc/kubelet.conf.d
+    state: directory
+    mode: '0700'
+
+- name: Install kubelet config file for graceful shutdown
+  ansible.builtin.copy:
+    src: 10-k3s-graceful-shutdown.conf
+    dest: /var/lib/rancher/k3s/agent/etc/kubelet.conf.d/10-k3s-graceful-shutdown.conf
+    owner: root
+    group: root
+    mode: '0600'
+
 - name: Ensure interfaces DHCP
-  become: true
   ansible.builtin.copy:
     src: dhcp_all_network_interfaces
     dest: /etc/network/interfaces
     owner: root
     group: root
-    mode: "0644"
+    mode: '0644'
 - name: Ensure required packages are installed
   become: true
   ansible.builtin.apt:
     pkg:
       - nfs-common
+
+- name: Install required packages
+  ansible.builtin.apt:
+    update_cache: true
+    autoclean: true
+    pkg:
+      - python3-kubernetes
+    state: latest
+
+- name: CIS hardening - disable panic_on_oom
+  ansible.posix.sysctl:
+    name: vm.panic_on_oom
+    value: "0"
+    sysctl_file: /etc/sysctl.d/90-kubelet.conf
+    state: present
+    reload: true
+
+- name: CIS hardening - enable memory overcommit
+  ansible.posix.sysctl:
+    name: vm.overcommit_memory
+    value: "1"
+    sysctl_file: /etc/sysctl.d/90-kubelet.conf
+    state: present
+    reload: true
+
+- name: CIS hardening - enable reboot on panic
+  ansible.posix.sysctl:
+    name: kernel.panic
+    value: "10"
+    sysctl_file: /etc/sysctl.d/90-kubelet.conf
+    state: present
+    reload: true
+
+- name: CIS hardening - Enable panic on oops
+  ansible.posix.sysctl:
+    name: kernel.panic_on_oops
+    value: "1"
+    sysctl_file: /etc/sysctl.d/90-kubelet.conf
+    state: present
+    reload: true
+
+- name: CIS hardening - Install kubelet config file to protect kernel defaults
+  ansible.builtin.copy:
+    src: 20-k3s-protect-kernel-defaults.conf
+    dest: /var/lib/rancher/k3s/agent/etc/kubelet.conf.d/20-k3s-protect-kernel-defaults.conf
+    owner: root
+    group: root
+    mode: '0600'

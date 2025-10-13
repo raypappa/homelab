@@ -76,3 +76,5 @@ unexporting
 chezmoi
 oomkilled
 trixie
+wmem
+rmem
