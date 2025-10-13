@@ -12,7 +12,7 @@ jobs:
       - uses: syntaqx/setup-kustomize@v1
         with:
           kustomize-version: 5.3.0
-      - uses: azure/setup-helm@v4.3.0
+      - uses: azure/setup-helm@v4.3.1
         with:
           version: 3.17.0
         id: install
