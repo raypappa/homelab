@@ -17,7 +17,7 @@
     "@cspell/dict-k8s": "^1.0.5",
     "@types/jest": "^30.0.0",
     "@types/node": "22.18.10",
-    "aws-cdk": "2.1019.1",
+    "aws-cdk": "2.1030.0",
     "cspell": "^9.0.0",
     "jest": "^30.0.0",
     "ts-jest": "^29.1.2",
