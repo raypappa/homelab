@@ -9,7 +9,7 @@ redis:
   enabled: true
 image:
   # renovate: datasource=docker depName=ghcr.io/immich-app/immich-server
-  tag: v1.135.3
+  tag: v2.0.1
 env:
   TZ: America/Los_Angeles
   DB_HOSTNAME:
