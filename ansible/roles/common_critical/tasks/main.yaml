@@ -98,6 +98,10 @@
     pkg:
       - systemd-resolved
     state: latest
+- name: Remove legacy repositories
+  ansible.builtin.file:
+    path: /etc/apt/sources.list.d/debian.sources
+    state: absent
 - name: Apply resolved.conf to configure systemd-resolved
   become: true
   register: networkd

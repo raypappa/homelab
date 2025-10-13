@@ -8,28 +8,28 @@
 #
 # Otherwise they won't be able to communicate and you'd have three
 # isolated control planes, not a single HA control plane.
-- name: Create Primary Deploy Key
+- name: singleton | Create Primary Deploy Key
   become: false
   community.crypto.openssh_keypair:
     force: false # flip to true to rotate keys
     path: "{{ (ansible_user_dir, '.ssh', 'id_ed25519') | path_join }}"
     type: ed25519
     mode: "0600"
-- name: Create Secondary Deploy Key
+- name: singleton | Create Secondary Deploy Key
   become: false
   community.crypto.openssh_keypair:
     force: false # flip to true to rotate keys
     path: "{{ (ansible_user_dir, '.ssh', 'id_ed25519_backup') | path_join }}"
     type: ed25519
     mode: "0600"
-- name: Copy Jinja template
+- name: singleton | Copy Jinja template
   ansible.builtin.template:
     src: singleton.config.yaml.j2
     dest: /etc/rancher/k3s/config.yaml
     owner: root
     group: root
     mode: "0600"
-- name: Copy K3s service file
+- name: singleton | Copy K3s service file
   register: k3s_service
   ansible.builtin.template:
     src: k3s.service.j2
@@ -37,66 +37,56 @@
     owner: root
     group: root
     mode: "0644"
-- name: Copy kubelet.config
+- name: singleton | Copy kubelet.config
   ansible.builtin.template:
     src: kubelet.config.j2
     dest: /etc/rancher/k3s/kubelet.config
     owner: root
     group: root
     mode: "0600"
-- name: Enable and check K3s service
+- name: singleton | Enable and check K3s service
   any_errors_fatal: true
   ansible.builtin.systemd:
     name: k3s
     daemon_reload: true
     state: restarted
     enabled: true
-- name: Wait for node-token
+- name: singleton | Wait for node-token
   ansible.builtin.wait_for:
     path: "{{ k3s_server_location }}/server/node-token"
-- name: Register node-token file access mode
+- name: singleton | Register node-token file access mode
   ansible.builtin.stat:
     path: "{{ k3s_server_location }}/server/node-token"
   register: p
-- name: Change file access node-token
+- name: singleton | Change file access node-token
   ansible.builtin.file:
     path: "{{ k3s_server_location }}/server/node-token"
     mode: g+rx,o+rx
-- name: Read node-token from master
+- name: singleton | Read node-token from master
   ansible.builtin.slurp:
     path: "{{ k3s_server_location }}/server/node-token"
   register: node_token
-- name: Store Master node-token and IP address
+- name: singleton | Store Master node-token and IP address
   ansible.builtin.set_fact:
     k3s_master_token: "{{ node_token.content | b64decode | regex_replace('\n', '')
       }}"
-- name: Restore node-token file access
+- name: singleton | Restore node-token file access
   ansible.builtin.file:
     path: "{{ k3s_server_location }}/server/node-token"
     mode: "{{ p.stat.mode }}"
-- name: Create directory .kube
-  ansible.builtin.file:
-    path: "{{ (ansible_user_dir, '.kube') | path_join }}"
-    state: directory
-    owner: "{{ ansible_user }}"
-    mode: u=rwx,g=rx,o=
-- name: Copy config file to user home directory
-  ansible.builtin.copy:
-    src: /etc/rancher/k3s/k3s.yaml
-    dest: "{{ (ansible_user_dir, '.kube', 'config') | path_join }}"
-    remote_src: true
-    owner: "{{ ansible_user }}"
-    mode: u=rw,g=,o=
-  register: k3s_controlplanes_copied_user_kube_config
-# Update the namespace in the "{{ (ansible_user_dir, '.kube', 'config') | path_join }}" to argocd.
-- name: Replace https://localhost:6443 by https://master-ip:6443
-  ansible.builtin.command: >-
-    k3s kubectl config set-cluster default --server=https://{{ inventory_hostname
-    }}:6443 --kubeconfig "{{ (ansible_user_dir, '.kube', 'config') | path_join }}"
-  changed_when: k3s_controlplanes_copied_user_kube_config.changed
-- name: Wait for k3s to stabilize
+- name: singleton | Wait for k3s to stabilize
   ansible.builtin.wait_for:
     port: 6443
     delay: 10
     timeout: 300
     state: started
+- name: Get list of certs
+  ansible.builtin.find:
+    paths: /var/lib/rancher/k3s/server/tls
+    patterns: "*.crt"
+  register: controlplane_k3s_certs
+- name: Chmod 0600 /var/lib/rancher/k3s/server/tls/*.crt
+  ansible.builtin.file:
+    path: "{{ item.path }}"
+    mode: '0600'
+  with_items: "{{ controlplane_k3s_certs.files }}"

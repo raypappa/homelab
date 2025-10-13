@@ -1,0 +1,38 @@
+---
+# vim: filetype=ansible.yaml
+# https://docs.k3s.io/security/hardening-guide
+- name: CIS hardening | Ensure prereqs are correct
+  ansible.builtin.import_role:
+    name: _k3s_prereq
+  become: true
+
+- name: CIS hardening | Install Pod Security Admissions
+  ansible.builtin.copy:
+    src: psa.yaml
+    dest: /var/lib/rancher/k3s/server/psa.yaml
+    owner: root
+    group: root
+
+- name: CIS hardening | Install Event Rate Limit config
+  ansible.builtin.copy:
+    src: eventconfig.yaml
+    dest: /var/lib/rancher/k3s/server/eventconfig.yaml
+    owner: root
+    group: root
+    mode: '0600'
+
+- name: CIS hardening | Install Pod Security Admissions
+  ansible.builtin.copy:
+    src: kube-system-network-policies.yaml
+    dest: /var/lib/rancher/k3s/server/manifests/kube-system-network-policies.yaml
+    owner: root
+    group: root
+    mode: '0600'
+
+- name: CIS hardening | Install audit log policy
+  ansible.builtin.copy:
+    src: audit.yaml
+    dest: /var/lib/rancher/k3s/server/audit.yaml
+    owner: root
+    group: root
+    mode: '0600'
