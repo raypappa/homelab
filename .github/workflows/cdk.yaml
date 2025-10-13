@@ -11,7 +11,7 @@ jobs:
   check:
     runs-on: ${{ vars.RUNS_ON }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           fetch-depth: 2
       - name: Get Changed Files
@@ -48,7 +48,7 @@ jobs:
         with:
           role-to-assume: ${{ vars.AWS_ASSUME_ROLE_ARN }}
           aws-region: ${{ vars.AWS_DEFAULT_REGION }}
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: arduino/setup-task
         uses: arduino/setup-task@v2.0.0
         with:
