@@ -3,30 +3,30 @@ kind: NetworkPolicy
 apiVersion: networking.k8s.io/v1
 metadata:
   name: intra-namespace
-  namespace: {{ namespace }}
+  namespace: argocd
 spec:
   podSelector: {}
   ingress:
     - from:
-      - namespaceSelector:
-          matchLabels:
-            kubernetes.io/metadata.name: {{ namespace }}
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: argocd
 ---
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
   name: default-network-dns-policy
-  namespace: {{ namespace }}
+  namespace: argocd
 spec:
   ingress:
-  - ports:
-    - port: 53
-      protocol: TCP
-    - port: 53
-      protocol: UDP
+    - ports:
+        - port: 53
+          protocol: TCP
+        - port: 53
+          protocol: UDP
   podSelector:
     matchLabels:
       k8s-app: kube-dns
   policyTypes:
-  - Ingress
-# vim: ft=yaml:
+    - Ingress
+  # vim: ft=yaml:
