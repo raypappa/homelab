@@ -48,7 +48,7 @@
   community.crypto.openssh_keypair:
     path: "{{ (ansible_user_dir, '.ssh', 'argocd') | path_join }}"
     type: ed25519
-    mode: "0600"
+    mode: "0400"
 - name: argocd | Slurp ssh key
   slurp:
     src: "{{ (ansible_user_dir, '.ssh', 'argocd') | path_join }}"
