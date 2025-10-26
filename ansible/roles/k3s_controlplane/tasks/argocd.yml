@@ -55,7 +55,7 @@
     namespace: argocd
 - name: argocd | Slurp ssh key
   slurp:
-    src: ~/.ssh/id_ed25519
+    src: ~/.ssh/argocd
   register: k3s_controlplane_ssh_key
 # Note: This makes argocd able to use the above ssh key, but the ssh key still needs to be added by hand as a deploy key to the github repo.
 - name: argocd | Configure ArgoCD with SSH Key
@@ -72,5 +72,5 @@
           argocd.argoproj.io/secret-type: repository
       stringData:
         type: git
-        url: "{{ k3s_git_repo }}"
+        url: git@github.com:raypappa/homelab.git
         sshPrivateKey: "{{ k3s_controlplane_ssh_key['content'] | b64decode }}"
