@@ -20,24 +20,14 @@
           pod-security.kubernetes.io/audit: baseline
           pod-security.kubernetes.io/enforce: baseline
           pod-security.kubernetes.io/warn: baseline
-- name: argocd | Apply default Network Policies for argocd namespace
-  ansible.builtin.template:
-    src: "netpols.yaml.j2"
-    dest: /var/lib/rancher/k3s/server/manifests/argocd-netpols.yaml
-    owner: root
-    group: root
-    mode: '0600'
-  vars:
-    namespace: argocd
 # Apply argoCD deployment manifest same as what ArgoCD itself is manged with, this eliminates changes during Ansible deploys.
 - name: argocd | Apply ArgoCD Kustomize # this is not the right way to do it but using kubernetes.core.k8s was failing for some reason.
   ansible.builtin.shell:
     cmd: >-
       set -o pipefail &&
       k3s kubectl kustomize
-      --enable-helm=True https://github.com/raypappa/homelab.git/kubernetes/{{ git_sub_path
-      }}/bootstrap/argocd |
-      k3s kubectl apply -f -
+      --enable-helm=True {{ k3s_git_repo }}/kubernetes/{{ git_sub_path }}/bootstrap/argocd
+      | k3s kubectl apply -f -
     executable: /bin/bash
   changed_when: true
 - name: argocd | Wait for ArgoCD to be ready
@@ -53,10 +43,16 @@
       - name = argocd-repo-server
     kind: pod
     namespace: argocd
+- name: argocd | create deploy key
+  become: false
+  community.crypto.openssh_keypair:
+    path: "{{ (ansible_user_dir, '.ssh', 'argocd') | path_join }}"
+    type: ed25519
+    mode: "0600"
 - name: argocd | Slurp ssh key
   slurp:
-    src: ~/.ssh/argocd
-  register: k3s_controlplane_ssh_key
+    src: "{{ (ansible_user_dir, '.ssh', 'argocd') | path_join }}"
+  register: k3s_controlplane_argocd_ssh_key
 # Note: This makes argocd able to use the above ssh key, but the ssh key still needs to be added by hand as a deploy key to the github repo.
 - name: argocd | Configure ArgoCD with SSH Key
   kubernetes.core.k8s:
@@ -72,5 +68,6 @@
           argocd.argoproj.io/secret-type: repository
       stringData:
         type: git
-        url: git@github.com:raypappa/homelab.git
-        sshPrivateKey: "{{ k3s_controlplane_ssh_key['content'] | b64decode }}"
+        url: "{{ k3s_git_git_repo }}"
+        sshPrivateKey: "{{ k3s_controlplane_argocd_ssh_key['content'] | b64decode
+          }}"
