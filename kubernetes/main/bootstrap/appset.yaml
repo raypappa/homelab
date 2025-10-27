@@ -30,6 +30,11 @@ spec:
             - key: deployGroup
               operator: In
               values:
+                - secrets
+        - matchExpressions:
+            - key: deployGroup
+              operator: In
+              values:
                 - storage-operator
         - matchExpressions:
             - key: deployGroup

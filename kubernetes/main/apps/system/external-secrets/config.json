@@ -3,5 +3,5 @@
   "appName": "external-secrets",
   "serverSideApply": false,
   "ignoreDifferences": [],
-  "group": "controller"
+  "group": "secrets"
 }
