@@ -6,6 +6,8 @@ image:
 storage:
   enabled: true
   requests: 10Gi # Set a desired volume size for PVC.
+  storageClassName: ceph-filesystem
+
 extraArgs:
   - --dbfilename=my-dump-{timestamp} # Only the filename without any file extensions.
   - --snapshot_cron=10 * * * * # Set a valid cron schedule.
