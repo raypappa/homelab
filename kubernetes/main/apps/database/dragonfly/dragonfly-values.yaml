@@ -18,6 +18,6 @@ securityContext:
     drop:
       - ALL
   readOnlyRootFilesystem: true
-
+  allowPrivilegeEscalation: false
   runAsNonRoot: true
   runAsUser: 1000
