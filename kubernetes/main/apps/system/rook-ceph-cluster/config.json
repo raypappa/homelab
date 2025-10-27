@@ -3,5 +3,5 @@
   "appName": "rook-ceph-cluster-app",
   "serverSideApply": false,
   "ignoreDifferences": [],
-  "group": "controller"
+  "group": "storage-controller"
 }

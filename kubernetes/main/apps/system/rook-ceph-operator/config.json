@@ -3,5 +3,5 @@
   "appName": "rook-ceph-operator-app",
   "serverSideApply": true,
   "ignoreDifferences": [],
-  "group": "operator"
+  "group": "storage-operator"
 }
