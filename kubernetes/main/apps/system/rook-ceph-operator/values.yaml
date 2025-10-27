@@ -10,3 +10,4 @@ csi:
 containerSecurityContext:
   seccompProfile:
     type: RuntimeDefault
+  allowPrivilegeEscalation: false
