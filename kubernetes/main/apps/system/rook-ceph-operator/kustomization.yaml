@@ -9,3 +9,6 @@ helmCharts:
     repo: https://charts.rook.io/release
     version: v1.18.4
     valuesFile: values.yaml
+
+patches:
+  - path: patches/ceph-csi-controller-manager.yaml

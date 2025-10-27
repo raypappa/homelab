@@ -7,3 +7,6 @@ csi:
   disableHolderPods: true
   enableCSIHostNetwork: true
   enableVolumeGroupSnapshot: false
+containerSecurityContext:
+  seccompProfile:
+    type: RuntimeDefault
