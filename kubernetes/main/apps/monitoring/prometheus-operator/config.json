@@ -1,7 +1,7 @@
 {
   "destNamespace": "monitoring",
   "appName": "prometheus-operator",
-  "serverSideApply": false,
+  "serverSideApply": true,
   "ignoreDifferences": [],
   "group": "monitoring"
 }
