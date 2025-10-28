@@ -3,5 +3,5 @@
   "appName": "sonarr",
   "serverSideApply": false,
   "ignoreDifferences": [],
-  "group": "selfhosted"
+  "group": "downloads"
 }

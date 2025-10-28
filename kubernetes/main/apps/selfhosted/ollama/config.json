@@ -3,5 +3,5 @@
   "appName": "ollama",
   "serverSideApply": false,
   "ignoreDifferences": [],
-  "group": "system"
+  "group": "selfhosted"
 }

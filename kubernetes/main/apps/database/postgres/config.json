@@ -3,5 +3,5 @@
   "appName": "postgres",
   "serverSideApply": true,
   "ignoreDifferences": [],
-  "group": "operator"
+  "group": "database"
 }

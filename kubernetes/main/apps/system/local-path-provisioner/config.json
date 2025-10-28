@@ -3,5 +3,5 @@
   "appName": "local-path-provisioner",
   "serverSideApply": false,
   "ignoreDifferences": [],
-  "group": "controller"
+  "group": "storage-controller"
 }
