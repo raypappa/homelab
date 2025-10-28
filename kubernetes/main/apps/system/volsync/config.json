@@ -3,5 +3,5 @@
   "appName": "volsync",
   "serverSideApply": false,
   "ignoreDifferences": [],
-  "group": "controller"
+  "group": "storage-operator"
 }
