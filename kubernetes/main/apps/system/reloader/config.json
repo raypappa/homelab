@@ -3,5 +3,5 @@
   "appName": "reloader",
   "serverSideApply": false,
   "ignoreDifferences": [],
-  "group": "operator"
+  "group": "secrets"
 }

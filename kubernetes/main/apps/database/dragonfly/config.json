@@ -3,5 +3,5 @@
   "appName": "dragonfly",
   "serverSideApply": false,
   "ignoreDifferences": [],
-  "group": "operator"
+  "group": "database"
 }

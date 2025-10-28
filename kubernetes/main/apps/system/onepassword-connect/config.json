@@ -3,5 +3,5 @@
   "appName": "onepassword-connect",
   "serverSideApply": false,
   "ignoreDifferences": [],
-  "group": "controller"
+  "group": "secrets"
 }

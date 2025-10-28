@@ -30,6 +30,11 @@ spec:
             - key: deployGroup
               operator: In
               values:
+                - post-monitoring
+        - matchExpressions:
+            - key: deployGroup
+              operator: In
+              values:
                 - secrets
         - matchExpressions:
             - key: deployGroup
@@ -60,32 +65,17 @@ spec:
             - key: deployGroup
               operator: In
               values:
+                - database
+        - matchExpressions:
+            - key: deployGroup
+              operator: In
+              values:
                 - downloads
         - matchExpressions:
             - key: deployGroup
               operator: In
               values:
-                - post-monitoring
-        - matchExpressions:
-            - key: deployGroup
-              operator: In
-              values:
                 - selfhosted
-        - matchExpressions:
-            - key: deployGroup
-              operator: In
-              values:
-                - F
-        - matchExpressions:
-            - key: deployGroup
-              operator: In
-              values:
-                - G
-        - matchExpressions:
-            - key: deployGroup
-              operator: In
-              values:
-                - H
   template:
     metadata:
       name: "{{.appName}}"
