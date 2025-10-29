@@ -3,4 +3,10 @@
 reloader:
   podMonitor:
     enabled: true
+  deployment:
+    securityContext:
+      allowPrivilegeEscalation: false
+      capabilities:
+        drop:
+          - ALL
 fullnameOverride: reloader
