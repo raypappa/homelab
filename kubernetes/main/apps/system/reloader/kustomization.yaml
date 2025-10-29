@@ -4,6 +4,10 @@ kind: Kustomization
 namespace: reloader
 helmCharts:
   - name: reloader
+    namespace: reloader
     repo: https://stakater.github.io/stakater-charts
     version: 2.2.3
     valuesFile: values.yaml
+
+patches:
+  - path: patches/reloader.yaml
