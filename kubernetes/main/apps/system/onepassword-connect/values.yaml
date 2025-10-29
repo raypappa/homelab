@@ -1,6 +1,0 @@
----
-connect:
-  api:
-    serviceMonitor:
-      enabled: true
-  serviceType: ClusterIP
