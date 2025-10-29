@@ -1,6 +1,6 @@
 {
   "destNamespace": "external-secrets",
-  "appName": "onepassword-connect",
+  "appName": "onepassword",
   "serverSideApply": false,
   "ignoreDifferences": [],
   "group": "secrets"
