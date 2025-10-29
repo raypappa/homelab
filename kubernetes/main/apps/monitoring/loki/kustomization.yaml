@@ -5,8 +5,8 @@ kind: Kustomization
 namespace: monitoring
 helmCharts:
   - name: loki
-    repo: oci://ghcr.io/home-operations/charts-mirror
-    version: 6.30.0
+    repo: https://grafana.github.io/helm-charts
+    version: 6.44.0
     namespace: monitoring
     releaseName: loki
     valuesFile: loki-values.yaml
