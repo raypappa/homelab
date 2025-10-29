@@ -9,4 +9,6 @@ reloader:
       capabilities:
         drop:
           - ALL
+      seccompProfile:
+        type: RuntimeDefault
 fullnameOverride: reloader
