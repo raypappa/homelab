@@ -4,7 +4,8 @@ controller:
     create: true
   securityContext:
     allowPrivilegeEscalation: false
-    seccompProfile: "RuntimeDefault"
+    seccompProfile:
+      type: "RuntimeDefault"
     capabilities:
       drop:
         - ALL
