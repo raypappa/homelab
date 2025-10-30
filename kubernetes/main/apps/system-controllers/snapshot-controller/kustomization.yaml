@@ -9,11 +9,6 @@ helmCharts:
     repo: https://piraeus.io/helm-charts/
     version: 4.1.1
     includeCRDs: false
-    valuesInline:
-      controller:
-        serviceMonitor:
-          create: true
-      webhook:
-        enabled: true
+    valuesFile: values.yaml
 resources:
   - https://github.com/kubernetes-csi/external-snapshotter/client/config/crd?ref=master

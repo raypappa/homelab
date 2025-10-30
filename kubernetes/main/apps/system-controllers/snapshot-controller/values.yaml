@@ -1,0 +1,15 @@
+---
+controller:
+  serviceMonitor:
+    create: true
+  securityContext:
+    allowPrivilegeEscalation: false
+    seccompProfile: "RuntimeDefault"
+    capabilities:
+      drop:
+        - ALL
+    readOnlyRootFilesystem: true
+    runAsNonRoot: true
+    runAsUser: 1000
+webhook:
+  enabled: true
