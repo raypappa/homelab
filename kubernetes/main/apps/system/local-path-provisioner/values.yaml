@@ -1,0 +1,18 @@
+---
+helperImage:
+  repository: alpine
+  tag: latest
+configmap:
+  helperPod:
+    namespaceOverride: local-path-provisioner
+securityContext:
+  allowPrivilegeEscalation: false
+  seccompProfile:
+    type: RuntimeDefault
+  capabilities:
+    drop:
+      - "ALL"
+  runAsUser: 65534
+  runAsGroup: 65534
+  runAsNonRoot: true
+  readOnlyRootFilesystem: true
