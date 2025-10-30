@@ -9,3 +9,7 @@ helmCharts:
     releaseName: openebs
     includeCRDs: true
     valuesFile: values.yaml
+    namespace: openebs
+
+patches:
+  - path: patches/openebs-pre-upgrade-hook.yaml
