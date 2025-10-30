@@ -9,10 +9,4 @@ helmCharts:
     releaseName: local-path-provisioner
     version: 0.0.33
     includeCRDs: true
-    valuesInline:
-      helperImage:
-        repository: alpine
-        tag: latest
-      configmap:
-        helperPod:
-          namespaceOverride: local-path-provisioner
+    valuesFile: values.yaml
