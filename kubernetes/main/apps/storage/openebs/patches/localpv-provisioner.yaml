@@ -1,0 +1,16 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: openebs-localpv-provisioner
+spec:
+  template:
+    spec:
+      securityContext:
+        allowPrivilegeEscalation: false
+        capabilities:
+          drop:
+            - "ALL"
+        runAsNonRoot: true
+        seccompProfile:
+          type: RuntimeDefault
