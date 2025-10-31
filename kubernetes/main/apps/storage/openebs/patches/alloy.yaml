@@ -1,0 +1,20 @@
+---
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: openebs-alloy
+  namespace: openebs
+spec:
+  template:
+    spec:
+      securityContext:
+        allowPrivilegeEscalation: false
+        capabilities:
+          drop:
+            - "ALL"
+        runAsNonRoot: true
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+        - name: alloy
+        - name: config-reloader
