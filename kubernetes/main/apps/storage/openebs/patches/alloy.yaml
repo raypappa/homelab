@@ -7,14 +7,22 @@ metadata:
 spec:
   template:
     spec:
-      securityContext:
-        allowPrivilegeEscalation: false
-        capabilities:
-          drop:
-            - "ALL"
-        runAsNonRoot: true
-        seccompProfile:
-          type: RuntimeDefault
       containers:
         - name: alloy
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - "ALL"
+            runAsNonRoot: true
+            seccompProfile:
+              type: RuntimeDefault
         - name: config-reloader
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - "ALL"
+            runAsNonRoot: true
+            seccompProfile:
+              type: RuntimeDefault
