@@ -8,3 +8,9 @@ cloudflare:
   ingress:
     - hostname: "rook.fieldsofbears.com"
       service: "http://rook-ceph-mgr-dashboard.rook-ceph.svc.cluster.local:7000"
+podSecurityContext:
+  runAsNonRoot: true
+  runAsUser: 65532
+  seccompProfile:
+    type: "RuntimeDefault"
+  allowprivilegeescalation: false
