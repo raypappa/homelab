@@ -4,16 +4,6 @@ monitoring:
   createPrometheusRules: true
 toolbox:
   enabled: true
-  containerSecurityContext:
-    capabilities:
-      drop:
-        - ALL
-    runAsGroup: 2016
-    runAsNonRoot: true
-    runAsUser: 2016
-    seccompProfile:
-      type: "RuntimeDefault"
-    allowPrivilegeEscalation: false
 cephClusterSpec:
   resources:
     mgr:
