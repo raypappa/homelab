@@ -11,10 +11,10 @@ helmCharts:
     valuesFile: values.yaml
     namespace: openebs
 
-patches:
-  - path: patches/pre-upgrade-hook.yaml
-  - path: patches/alloy.yaml
-  - path: patches/localpv-provisioner.yaml
-  - path: patches/loki.yaml
-  - path: patches/minio-post-job.yaml
-  - path: patches/minio.yaml
+# patches:
+#   - path: patches/pre-upgrade-hook.yaml
+#   - path: patches/alloy.yaml
+#   - path: patches/localpv-provisioner.yaml
+#   - path: patches/loki.yaml
+#   - path: patches/minio-post-job.yaml
+#   - path: patches/minio.yaml
