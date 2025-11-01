@@ -5,7 +5,8 @@ namespace: argocd
 resources:
   # renovate:github-url
   - https://raw.githubusercontent.com/argoproj/argo-cd/v3.1.9/manifests/install.yaml
-  - base/netpols.yaml
+  - ./base/netpols.yaml
+  - ./base/rook-ceph-namespace.yaml
 helmCharts:
   - name: cloudflare-tunnel
     repo: https://cloudflare.github.io/helm-charts
