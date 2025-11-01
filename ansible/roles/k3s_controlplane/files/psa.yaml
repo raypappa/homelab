@@ -21,3 +21,4 @@ plugins:
         namespaces:
           - kube-system
           - cis-operator-system
+          - openebs
