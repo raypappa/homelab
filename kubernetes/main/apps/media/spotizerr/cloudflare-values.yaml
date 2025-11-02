@@ -3,10 +3,8 @@ image:
   # renovate: datasource=docker depName=cloudflare/cloudflared
   tag: 2025.9.1
 cloudflare:
-  secretName: "immich-tunnel-credentials"
-  tunnelName: "faerun-immich"
+  secretName: "spotizerr-tunnel-credentials"
+  tunnelName: "faerun-spotizerr"
   ingress:
-    - hostname: "immich.fieldsofbears.com"
-      service: "http://immich-server.immich.svc.cluster.local:2283"
-    - hostname: "immich-app.fieldsofbears.com"
-      service: "http://immich-server.immich.svc.cluster.local:2283"
+    - hostname: "spotizerr.fieldsofbears.com"
+      service: "http://spotizerr-server.immich.svc.cluster.local:80"
