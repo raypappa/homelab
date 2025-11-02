@@ -21,3 +21,13 @@ controller:
     privileged: false
     seccompProfile:
       type: "RuntimeDefault"
+speaker:
+  securityContext:
+    runAsNonRoot: true
+    allowPrivilegeEscalation: false
+    capabilities:
+      drop:
+        - ALL
+    privileged: false
+    seccompProfile:
+      type: "RuntimeDefault"
