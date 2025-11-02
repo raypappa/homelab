@@ -11,3 +11,4 @@ helmCharts:
 resources:
   - ./base/ippool.yaml
   - ./base/l2config.yaml
+  - ./base/namespace.yaml
