@@ -17,11 +17,3 @@ spec:
             runAsNonRoot: true
             seccompProfile:
               type: "RuntimeDefault"
-      securityContext:
-        capabilities:
-          drop:
-            - ALL
-        privileged: false
-        runAsNonRoot: true
-        seccompProfile:
-          type: "RuntimeDefault"
