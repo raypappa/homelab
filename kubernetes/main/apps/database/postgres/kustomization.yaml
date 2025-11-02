@@ -19,9 +19,12 @@ helmCharts:
     repo: https://drummyfloyd.github.io/crunchy-userinit-controller
     valuesFile: ./userinit-controller-values.yaml
 resources:
-  - ./rbac.yaml
-  - ./secret-store.yaml
-  - ./pod-monitor.yaml
-  - ./external-secret.yaml
-  - ./postgres-cluster.yaml
-  - ./postgres-admin.yaml
+  - ./base/rbac.yaml
+  - ./base/secret-store.yaml
+  - ./base/pod-monitor.yaml
+  - ./base/external-secret.yaml
+  - ./base/postgres-cluster.yaml
+  - ./base/postgres-admin.yaml
+
+patches:
+  - path: ./patches/userinit-controller.yaml
