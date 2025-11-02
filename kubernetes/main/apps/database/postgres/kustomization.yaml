@@ -17,8 +17,7 @@ helmCharts:
     releaseName: crunchy-userinit-controller
     version: 1.0.1
     repo: https://drummyfloyd.github.io/crunchy-userinit-controller
-    valuesInline:
-      fullnameOverride: crunchy-userinit-controller
+    valuesFile: ./userinit-controller-values.yaml
 resources:
   - ./rbac.yaml
   - ./secret-store.yaml
