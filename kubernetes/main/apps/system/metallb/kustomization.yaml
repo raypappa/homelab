@@ -7,17 +7,7 @@ helmCharts:
     repo: https://metallb.github.io/metallb
     releaseName: metallb
     version: 0.15.2
-    valuesInline:
-      prometheus:
-        scrapeAnnotations: true
-        serviceAccount: "monitoring-prometheus-kube-prometheus"
-        namespace: monitoring
-        podMonitor:
-          enabled: false
-        serviceMonitor:
-          enabled: false
-        prometheusRule:
-          enabled: true
+    valuesFile: ./values.yaml
 resources:
-  - ippool.yaml
-  - l2config.yaml
+  - ./base/ippool.yaml
+  - ./base/l2config.yaml
