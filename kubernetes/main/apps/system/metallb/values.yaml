@@ -9,15 +9,3 @@ prometheus:
     enabled: false
   prometheusRule:
     enabled: true
-controller:
-  securityContext:
-    runAsNonRoot: true
-    runAsUser: 65534
-    fsGroup: 65534
-    allowPrivilegeEscalation: false
-    capabilities:
-      drop:
-        - ALL
-    privileged: false
-    seccompProfile:
-      type: "RuntimeDefault"
