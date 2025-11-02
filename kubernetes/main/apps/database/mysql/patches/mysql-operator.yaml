@@ -1,0 +1,24 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysql-operator
+  namespace: database
+spec:
+  template:
+    spec:
+      containers:
+        - name: mysql-operator
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+            privileged: false
+            readOnlyRootFilesystem: true
+            runAsNonRoot: true
+            runAsUser: 2
+            seccompProfile:
+              type: "RuntimeDefault"
+      securityContext:
+        runAsNonRoot: true
