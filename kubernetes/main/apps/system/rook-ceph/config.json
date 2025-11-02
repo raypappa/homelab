@@ -1,0 +1,7 @@
+{
+  "destNamespace": "rook-ceph",
+  "appName": "rook-ceph",
+  "serverSideApply": true,
+  "ignoreDifferences": [],
+  "group": "post-monitoring"
+}
