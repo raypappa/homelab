@@ -3,5 +3,5 @@
   "appName": "metallb",
   "serverSideApply": false,
   "ignoreDifferences": [],
-  "group": "operator"
+  "group": "post-monitoring"
 }
