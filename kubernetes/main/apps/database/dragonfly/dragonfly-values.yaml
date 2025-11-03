@@ -14,6 +14,14 @@ extraArgs:
 
 podSecurityContext:
   fsGroup: 2000
+  capabilities:
+    drop:
+      - ALL
+  readOnlyRootFilesystem: true
+  allowPrivilegeEscalation: false
+  runAsNonRoot: true
+  seccompProfile:
+    type: RuntimeDefault
 
 securityContext:
   capabilities:
@@ -23,3 +31,5 @@ securityContext:
   allowPrivilegeEscalation: false
   runAsNonRoot: true
   runAsUser: 1000
+  seccompProfile:
+    type: RuntimeDefault
