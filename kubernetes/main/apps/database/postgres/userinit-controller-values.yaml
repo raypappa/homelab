@@ -5,6 +5,8 @@ podSecurityContext:
     type: "RuntimeDefault"
 securityContext:
   runAsNonRoot: true
+  runAsGroup: 65534
+  runAsUser: 65534
   seccompProfile:
     type: "RuntimeDefault"
   allowPrivilegeEscalation: false
