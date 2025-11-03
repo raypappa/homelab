@@ -2,6 +2,15 @@
   "destNamespace": "database",
   "appName": "postgres",
   "serverSideApply": true,
-  "ignoreDifferences": [],
+  "ignoreDifferences": [
+    {
+      "kind": "PodMonitor",
+      "name": "cpgo-postgres",
+      "group": "monitoring.coreos.com",
+      "jqPathExpressions": [
+        ".spec.podMetricsEndpoints[].relabelings[].replacement"
+      ]
+    }
+  ],
   "group": "database"
 }
