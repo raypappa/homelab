@@ -26,5 +26,5 @@ resources:
   - ./base/postgres-cluster.yaml
   - ./base/postgres-admin.yaml
 
-patches:
-  - path: ./patches/userinit-controller.yaml
+# patches:
+#   - path: ./patches/userinit-controller.yaml
