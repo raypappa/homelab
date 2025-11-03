@@ -7,4 +7,8 @@ securityContext:
   runAsNonRoot: true
   seccompProfile:
     type: "RuntimeDefault"
+  allowPrivilegeEscalation: false
+  capabilities:
+    drop:
+      - ALL
 fullnameOverride: crunchy-userinit-controller
