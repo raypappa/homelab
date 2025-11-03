@@ -6,6 +6,9 @@ defaultPodOptions:
     runAsGroup: 1001
     fsGroup: 1001
     fsGroupChangePolicy: OnRootMismatch
+    runAsNonRoot: true
+    seccompProfile:
+      type: RuntimeDefault
 controllers:
   main:
     pod:
@@ -13,6 +16,11 @@ controllers:
         kubernetes.io/hostname: puma
     containers:
       main:
+        securityContext:
+          capabilities:
+            drop:
+              - ALL
+          allowPrivilegeEscalation: false
         image:
           repository: ghcr.io/home-operations/radarr
           # renovate: datasource=docker depName=ghcr.io/home-operations/radarr
