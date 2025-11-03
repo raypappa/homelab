@@ -20,13 +20,13 @@ jobs:
         with:
           files_yaml: |
             cdk:
-              - bin/**
-              - lib/**
-              - test/**
-              - cdk.json
-              - tsconfig.json
-              - package.json
-              - package-lock.json
+              - cdk/bin/**
+              - cdk/lib/**
+              - cdk/test/**
+              - cdk/cdk.json
+              - cdk/tsconfig.json
+              - cdk/package.json
+              - cdk/pnpm-lock.yaml
               - .github/workflows/cdk.yaml
     outputs:
       execute: ${{ steps.changed-files.outputs.cdk_all_changed_files_count > 0 }}
