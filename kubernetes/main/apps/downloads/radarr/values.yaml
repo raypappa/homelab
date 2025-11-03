@@ -11,9 +11,6 @@ defaultPodOptions:
       type: RuntimeDefault
 controllers:
   main:
-    pod:
-      nodeSelector:
-        kubernetes.io/hostname: puma
     containers:
       main:
         securityContext:
@@ -58,6 +55,6 @@ persistence:
     size: 5Gi
   library:
     enabled: true
-    type: hostPath
-    hostPathType: Directory
-    hostPath: /library
+    type: nfs
+    server: storage-0001.stoneydavis.local
+    path: /library
