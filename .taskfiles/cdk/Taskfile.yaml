@@ -4,7 +4,7 @@ tasks:
   cdk:
     desc: Execute CDK
     cmds:
-      - pnpm exec aws-cdk {{.CLI_ARGS}}
+      - pnpm exec cdk {{.CLI_ARGS}}
   synth:
     desc: Synthesize CDK
     cmds:

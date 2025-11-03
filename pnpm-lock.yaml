@@ -30,6 +30,9 @@ importers:
 
   cdk:
     dependencies:
+      aws-cdk:
+        specifier: 2.1030.0
+        version: 2.1030.0
       aws-cdk-lib:
         specifier: 2.220.0
         version: 2.220.0(constructs@10.4.2)
@@ -46,9 +49,6 @@ importers:
       '@types/node':
         specifier: 22.18.12
         version: 22.18.12
-      aws-cdk:
-        specifier: 2.1030.0
-        version: 2.1030.0
       jest:
         specifier: ^30.0.0
         version: 30.2.0(@types/node@22.18.12)(ts-node@10.9.2(@types/node@22.18.12)(typescript@5.9.3))
