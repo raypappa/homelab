@@ -36,7 +36,7 @@ tasks:
     desc: Configure project including installing dependencies from npm/uv
     silent: true
     cmds:
-      - pnpm install
+      - task: cdk:configure
       - task: configure:uv
       - task: ansible:configure
   argocd:install:
