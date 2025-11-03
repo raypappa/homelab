@@ -7,9 +7,7 @@
       "kind": "PodMonitor",
       "name": "cpgo-postgres",
       "group": "monitoring.coreos.com",
-      "jqPathExpressions": [
-        ".spec.podMetricsEndpoints[].relabelings[].replacement"
-      ]
+      "jqPathExpressions": [".spec.podMetricsEndpoints[].relabelings[].action"]
     }
   ],
   "group": "database"
