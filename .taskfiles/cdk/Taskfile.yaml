@@ -45,3 +45,7 @@ tasks:
     desc: Execute Tests
     cmds:
       - pnpm run test
+  configure:
+    desc: Configure cdk
+    cmds:
+      - pnpm install

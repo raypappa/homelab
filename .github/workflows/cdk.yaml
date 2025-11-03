@@ -64,7 +64,7 @@ jobs:
         with:
           cache: "pnpm"
       - name: Setting up CDK
-        run: task configure
+        run: task cdk:configure
       - name: Bootstrapping CDK
         run: task cdk:bootstrap
       - name: CDK Unit Tests
