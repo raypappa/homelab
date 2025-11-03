@@ -8,6 +8,7 @@ includes:
     dir: ansible
   cdk:
     taskfile: .taskfiles/cdk/Taskfile.yaml
+    dir: cdk
   argocd:
     taskfile: .taskfiles/argocd/Taskfile.yaml
     dir: kubernetes
