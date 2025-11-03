@@ -28,6 +28,15 @@ jobs:
           version: "0.9.5"
       - name: Install 1Password CLI
         uses: 1password/install-cli-action@v2
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: "pnpm"
       - run: task configure
       - name: Create extra vars file
         run: echo "${{ secrets.ANSIBLE_EXTRA_VAR_JSON }}" |base64 -d > ansible/ansible_extra_vars.json
