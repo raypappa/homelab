@@ -55,6 +55,5 @@ persistence:
     size: 5Gi
   library:
     enabled: true
-    type: nfs
-    server: storage-0001.stoneydavis.local
-    path: /library
+    type: persistentVolumeClaim
+    existingClaim: radarr-library-nfs
