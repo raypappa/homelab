@@ -1,0 +1,5 @@
+---
+controller:
+  replicas: 2
+storageClass:
+  create: true
