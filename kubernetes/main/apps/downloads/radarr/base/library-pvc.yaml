@@ -23,3 +23,16 @@ spec:
     volumeAttributes:
       server: storage-0001.stoneydavis.local
       share: /library
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: radarr-library-nfs
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 100Ti
+  storageClassName: nfs
+  volumeName: radarr-library-nfs
