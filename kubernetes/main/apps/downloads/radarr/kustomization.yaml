@@ -17,6 +17,7 @@ helmCharts:
     version: 4.4.0
     valuesFile: values.yaml
 resources:
+  - ./base/library-pvc.yaml
   - ./base/volsync-external-secret.yaml
   - ./base/volsync-replication-source.yaml
   - ./base/volsync-replication-destination.yaml
