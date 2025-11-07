@@ -1,0 +1,7 @@
+{
+  "destNamespace": "kube-system",
+  "appName": "csi-driver-nfs",
+  "serverSideApply": false,
+  "ignoreDifferences": [],
+  "group": "storage-controller"
+}
