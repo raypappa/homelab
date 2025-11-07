@@ -3,3 +3,11 @@ controller:
   replicas: 2
 storageClass:
   create: true
+  name: nfs
+  parameters:
+    server: storage-0001.stoneydavis.local
+    share: /library
+  reclaimPolicy: Retain
+  volumeBindingMode: Immediate
+  mountOptions:
+    - nfsvers=4.1
