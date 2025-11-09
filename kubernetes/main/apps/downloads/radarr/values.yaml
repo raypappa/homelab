@@ -40,6 +40,9 @@ controllers:
           PUID: 1001
           PGID: 1001
           UMASK: "022"
+        ports:
+          - protocol: TCP
+            containerPort: *port
 service:
   main:
     controller: main
@@ -56,6 +59,7 @@ service:
       http:
         targetPort: *port
         port: 80
+        protocol: HTTP
 persistence:
   config:
     enabled: true
