@@ -7,6 +7,14 @@ metadata:
 spec:
   template:
     spec:
+      containers:
+        - name: external-dns
+        - name: webhook
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
       securityContext:
         allowPrivilegeEscalation: false
         capabilities:
