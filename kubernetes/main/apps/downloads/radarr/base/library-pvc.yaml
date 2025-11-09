@@ -12,7 +12,6 @@ spec:
     - ReadWriteMany
   persistentVolumeReclaimPolicy: Retain
   storageClassName: nfs
-
   mountOptions:
     - nfsvers=4.1
   csi:
@@ -23,7 +22,6 @@ spec:
     volumeAttributes:
       server: storage-0001.stoneydavis.local
       share: /library
-      mountPermissions: "1001"
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
