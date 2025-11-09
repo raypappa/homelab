@@ -43,7 +43,10 @@ controllers:
 service:
   main:
     controller: main
-    type: ClusterIP
+    type: LoadBalancer
+    annotations:
+      metallb.universe.tf/address-pool: metalpool
+    externalTrafficPolicy: Cluster
     ports:
       http:
         port: *port

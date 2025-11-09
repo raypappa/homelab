@@ -1,5 +1,3 @@
 # vi: ft=exports
-# {{ansible_managed }}
-{% for dir in nfs_server_export_dirs %}
-{{ dir }}  *(rw,async,no_subtree_check)
-{% endfor %}
+# Ansible managed
+/library  *(rw,async,no_subtree_check,root_squash,anonuid=1001,anongid=1001,mp)
