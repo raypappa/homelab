@@ -1,11 +1,19 @@
 ---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/refs/heads/main/charts/other/app-template/values.schema.json
+defaultPodOptions:
+  securityContext:
+    runAsUser: 1001
+    runAsGroup: 1001
+    fsGroup: 1001
+    fsGroupChangePolicy: OnRootMismatch
+    runAsNonRoot: true
+    seccompProfile:
+      type: RuntimeDefault
 controllers:
-  prowlarr:
+  main:
     annotations:
       reloader.stakater.com/auto: "true"
     pod:
-      nodeSelector:
-        kubernetes.io/hostname: puma
       securityContext:
         runAsUser: 1001
         runAsGroup: 1001
@@ -54,14 +62,14 @@ controllers:
           limits:
             memory: 256Mi
         securityContext:
-          allowPrivilegeEscalation: false
-          readOnlyRootFilesystem: true
           capabilities:
             drop:
               - ALL
+          allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: true
 service:
   app:
-    controller: prowlarr
+    controller: main
     ports:
       http:
         port: *port
@@ -77,8 +85,7 @@ persistence:
     size: 5Gi
   library:
     enabled: true
-    type: hostPath
-    hostPathType: Directory
-    hostPath: /library
+    type: persistentVolumeClaim
+    existingClaim: prowlarr-library-nfs
   tmp:
     type: emptyDir
