@@ -40,9 +40,6 @@ controllers:
           PUID: 1001
           PGID: 1001
           UMASK: "022"
-        ports:
-          - protocol: TCP
-            containerPort: *port
 service:
   main:
     controller: main
@@ -57,9 +54,7 @@ service:
     externalTrafficPolicy: Cluster
     ports:
       http:
-        targetPort: *port
-        port: 80
-        protocol: HTTP
+        port: *port
 persistence:
   config:
     enabled: true
