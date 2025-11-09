@@ -8,6 +8,7 @@ helmCharts:
     releaseName: external-dns
     version: 1.18.0
     valuesFile: ./values.yaml
+    includeCRDs: true
     namespace: external-dns
 
 resources:
