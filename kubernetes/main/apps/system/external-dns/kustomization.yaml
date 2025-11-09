@@ -8,6 +8,10 @@ helmCharts:
     releaseName: external-dns
     version: 1.18.0
     valuesFile: ./values.yaml
+    namespace: external-dns
 
 resources:
   - ./base/external-secret.yaml
+
+patches:
+  - path: ./patches/deploy.yaml
