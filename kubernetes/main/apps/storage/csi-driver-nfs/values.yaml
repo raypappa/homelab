@@ -1,6 +1,6 @@
 ---
 controller:
-  replicas: 2
+  replicas: 3
 storageClass:
   create: true
   name: nfs
