@@ -1,0 +1,7 @@
+{
+  "destNamespace": "external-dns",
+  "appName": "external-dns",
+  "serverSideApply": false,
+  "ignoreDifferences": [],
+  "group": "post-monitoring"
+}
