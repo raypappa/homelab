@@ -316,3 +316,5 @@ headscales
 ethernets
 darp
 hujson
+anonuid
+anongid
