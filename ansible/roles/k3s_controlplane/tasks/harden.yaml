@@ -12,6 +12,7 @@
     dest: /var/lib/rancher/k3s/server/runtime.yaml
     owner: root
     group: root
+    mode: '0600'
 
 - name: CIS hardening | Install Pod Security Admissions
   ansible.builtin.copy:

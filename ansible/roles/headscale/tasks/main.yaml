@@ -14,7 +14,7 @@
     value: "1"
     state: present
     reload: true
-  when: ansible_all_ipv6_addresses
+  when: ansible_all_ipv6_addresses | length > 0
 - name: Ensure undesired packages are not installed
   become: true
   ansible.builtin.apt:
