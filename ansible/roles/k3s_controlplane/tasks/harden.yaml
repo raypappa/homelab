@@ -6,6 +6,13 @@
     name: _k3s_prereq
   become: true
 
+- name: CIS hardening | Install VolSync Runtime Class
+  ansible.builtin.copy:
+    src: runtime.yaml
+    dest: /var/lib/rancher/k3s/server/runtime.yaml
+    owner: root
+    group: root
+
 - name: CIS hardening | Install Pod Security Admissions
   ansible.builtin.copy:
     src: psa.yaml

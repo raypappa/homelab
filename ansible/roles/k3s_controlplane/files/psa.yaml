@@ -17,7 +17,8 @@ plugins:
         warn-version: "latest"
       exemptions:
         usernames: []
-        runtimeClasses: []
+        runtimeClasses:
+          - volsync
         namespaces:
           - kube-system
           - cis-operator-system
