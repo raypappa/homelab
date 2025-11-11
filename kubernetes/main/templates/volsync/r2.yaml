@@ -5,6 +5,7 @@ kind: ExternalSecret
 metadata:
   name: "${APP}-volsync-r2"
 spec:
+  refreshInterval: 24h
   secretStoreRef:
     kind: ClusterSecretStore
     name: onepassword-connect

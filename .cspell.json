@@ -86,7 +86,9 @@
     "tags.temp",
     "authorized_keys",
     ".gitignore",
-    "**/pnpm-lock.yaml"
+    "**/pnpm-lock.yaml",
+    "**/*external-secret.yaml",
+    "**/cluster-secret-store.yaml"
   ],
   "import": [
     "@cspell/dict-k8s/cspell-ext.json",
