@@ -21,7 +21,7 @@ spec:
     capacity: 5Gi
     moverSecurityContext:
       runAsNonRoot: true
-      runAsGroup: 65534
-      runAsUser: 65534
+      runAsGroup: 1001
+      runAsUser: 1001
       seccompProfile:
         type: RuntimeDefault
