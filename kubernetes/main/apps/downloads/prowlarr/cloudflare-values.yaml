@@ -8,3 +8,8 @@ cloudflare:
   ingress:
     - hostname: "prowlarr.fieldsofbears.com"
       service: "http://prowlarr.prowlarr.svc.cluster.local:9696"
+podSecurityContext:
+  runAsNonRoot: true
+  runAsUser: 65532
+  seccompProfile:
+    type: "RuntimeDefault"
