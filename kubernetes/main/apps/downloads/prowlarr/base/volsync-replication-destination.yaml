@@ -19,9 +19,3 @@ spec:
     accessModes:
       - ReadWriteOnce
     capacity: 5Gi
-    moverSecurityContext:
-      runAsNonRoot: true
-      runAsGroup: 1001
-      runAsUser: 1001
-      seccompProfile:
-        type: RuntimeDefault
