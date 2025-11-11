@@ -1,5 +1,5 @@
 ---
-name: DNS
+name: SSL
 on: # yamllint disable-line rule:truthy
   schedule:
     - cron: "0 10 21 * *" # Runs on the 21st of every month at 10 AM UTC
