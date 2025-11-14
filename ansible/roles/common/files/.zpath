@@ -29,10 +29,11 @@ add2path "$HOME/.krew/bin" "front"
 add2path "$HOME/.git-plugins/bin" "front"
 add2path "$HOME/.git-extras/bin" "front"
 
-if type complete >/dev/null 2>&1;then
-if [[ -e /usr/local/bin/aws_completer ]];then
-  complete -C '/usr/local/bin/aws_completer' aws
-fi
+if [[ -e /usr/local/bin/aws_completer ]]; then
+  if type compdef &>/dev/null; then
+    autoload -Uz bashcompinit && bashcompinit
+    complete -C '/usr/local/bin/aws_completer' aws
+  fi
 fi
 
 if type mise &>/dev/null;then
