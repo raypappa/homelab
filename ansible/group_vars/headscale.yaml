@@ -1,3 +1,4 @@
 ---
 headscale_version: 0.23.0-alpha9
 tailscale_args: "--login-server='http://weasel.stoneydavis.com' --advertise-exit-node"
+tailscale_authkey: ""

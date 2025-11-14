@@ -111,6 +111,14 @@
     mode: "0644"
     owner: root
     group: root
+- name: create /etc/dhcp/dhclient-enter-hooks.d
+  become: true
+  ansible.builtin.file:
+    state: directory
+    path: /etc/dhcp/dhclient-enter-hooks.d
+    owner: root
+    group: root
+    mode: '0755'
 - name: Remove dhclient's ability to overwrite systemd-resolved's /etc/resolv.conf
   become: true
   register: dhclient

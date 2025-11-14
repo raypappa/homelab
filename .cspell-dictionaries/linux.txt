@@ -78,3 +78,4 @@ oomkilled
 trixie
 wmem
 rmem
+zpath

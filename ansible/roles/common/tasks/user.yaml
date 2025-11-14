@@ -1,19 +1,14 @@
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/ansible/ansible-lint/main/src/ansiblelint/schemas/ansible.json#/$defs/tasks
 # vim: filetype=ansible.yaml
-- name: Create a configured account for "{{ user }}"
+- name: user | {{ user }} | Create a account
   become: true
   ansible.builtin.user:
     name: "{{ user }}"
     shell: /usr/bin/zsh
     groups: libvirt, dialout, audio, video
     append: true
-# - name: Chezmoi user
-#   ansible.builtin.import_role:
-#     name: hussainweb.chezmoi
-#   vars:
-#     chezmoi_init_url: "https://github.com/raypappa/chezmoi-dotfiles.git"
-- name: Create .ssh dir if it doesn't exist for "{{ user }}"
+- name: user | {{ user }} | Create .ssh dir
   become: true
   become_user: "{{ user }}"
   ansible.builtin.file:
@@ -22,7 +17,7 @@
     owner: "{{ user }}"
     group: "{{ user }}"
     mode: "0700"
-- name: Ensure that authorized_keys is up to date for "{{ user }}"
+- name: user | {{ user }} | authorized_keys
   become: true
   become_user: "{{ user }}"
   ansible.builtin.copy:
@@ -31,3 +26,42 @@
     owner: "{{ user }}"
     group: "{{ user }}"
     mode: "0600"
+- name: user | {{ user }} | zsh files
+  become: true
+  become_user: "{{ user }}"
+  ansible.builtin.copy:
+    src: "{{ path }}"
+    dest: "$HOME/{{ path }}"
+    owner: "{{ user }}"
+    group: "{{ user }}"
+    mode: "0640"
+  loop_control:
+    loop_var: path
+  loop:
+    - .zpath
+    - .zprofile
+    - .zshenv
+    - .zshrc
+- name: user | {{ user }} | create .local/bin
+  ansible.builtin.file:
+    path: "$HOME/.local/bin"
+    owner: "{{ user }}"
+    group: "{{ user }}"
+    mode: "0755"
+    state: directory
+- name: Get starship install script
+  ansible.builtin.get_url:
+    url: https://starship.rs/install.sh
+    dest: /tmp/starship_install.sh
+    mode: '0755'
+  register: common_starship_installation_script
+# if the previous task hasn't changed, the shell script is already there
+# and we have already installed starship
+# we check this to satisfy idempotence
+- name: Install starship with installation script
+  become: true
+  become_user: "{{ user }}"
+  ansible.builtin.shell:
+    cmd: /tmp/starship_install.sh --yes --bin-dir ~/.local/bin
+    executable: /bin/sh
+  when: common_starship_installation_script.changed

@@ -19,6 +19,8 @@
     - common
 - name: Production Kubernetes Control Plane
   order: sorted
+  tags:
+    - prod_k8s_controlplane
   hosts:
     - prod_k8s_controlplane
   roles:
@@ -29,13 +31,6 @@
     - prod_k8s_agent
   roles:
     - k3s_agent
-- name: Faerun Public
-  hosts:
-    - kubernetes-node-0001.stoneydavis.local
-  roles:
-    - faerun-public
-  tags:
-    - faerun
 - name: Game Server
   hosts:
     - game_server

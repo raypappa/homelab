@@ -3,5 +3,6 @@
   "appName": "cert-manager",
   "serverSideApply": false,
   "ignoreDifferences": [],
-  "group": "operator"
+  "group": "operator",
+  "dependencies": ["external-secrets", "prometheus-operator"]
 }

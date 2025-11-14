@@ -88,7 +88,8 @@
     ".gitignore",
     "**/pnpm-lock.yaml",
     "**/*external-secret.yaml",
-    "**/cluster-secret-store.yaml"
+    "**/cluster-secret-store.yaml",
+    "ansible/roles/common/files/*"
   ],
   "import": [
     "@cspell/dict-k8s/cspell-ext.json",

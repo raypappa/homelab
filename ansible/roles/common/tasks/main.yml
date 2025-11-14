@@ -58,7 +58,6 @@
       - rsync
       - sudo
       - smartmontools
-      - software-properties-common
       - strace
       - sysstat
       - tk-dev
@@ -77,7 +76,8 @@
   ansible.builtin.include_tasks: user.yaml
   vars:
     user: '{{ item }}'
-  loop: '{{ users }}'
+  loop:
+    - root
 # ideally this should be conditional if the headscale pre-auth key is present, but for now I'll disable to bootstrap headscale
 - name: Install tailscale
   ansible.builtin.include_role:
