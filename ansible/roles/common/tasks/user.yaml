@@ -1,7 +1,7 @@
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/ansible/ansible-lint/main/src/ansiblelint/schemas/ansible.json#/$defs/tasks
 # vim: filetype=ansible.yaml
-- name: user | {{ user }} | Create a account
+- name: user | {{ user }} | Create an account
   become: true
   ansible.builtin.user:
     name: "{{ user }}"
@@ -43,6 +43,8 @@
     - .zshenv
     - .zshrc
 - name: user | {{ user }} | create .local/bin
+  become: true
+  become_user: "{{ user }}"
   ansible.builtin.file:
     path: "$HOME/.local/bin"
     owner: "{{ user }}"
