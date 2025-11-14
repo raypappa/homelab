@@ -37,10 +37,6 @@
 - name: Setup Remaining Cluster Nodes
   ansible.builtin.include_tasks:
     file: cluster.yml
-  when: inventory_hostname != k3s_controlplane_singleton_host
-
-# TODO: Check that the number of available nodes in k3s matches the number of hosts in inventory
-
 - name: Bootstrap ArgoCD
   ansible.builtin.import_tasks: argocd.yml
   run_once: true

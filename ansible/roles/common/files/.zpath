@@ -1,0 +1,44 @@
+add2path() {
+  if ! (($path[(Ie)$1])); then
+    if [[ $2 == "front" ]]; then
+      path=($1 $path)
+    else
+      path+=($1)
+    fi
+
+    export PATH
+  fi
+}
+# The $PATH should be in zshenv, but can be reset in /etc/zprofile, so we also set it in .zprofile...
+# Without repeating ourselves.
+if [[ -e /opt/homebrew/bin/brew ]]; then
+  eval "$(/opt/homebrew/bin/brew shellenv)"
+fi;
+
+# Be safe with MacOS paths.. yeah
+if [[ -e "${HOME}/Library/Python" ]]; then
+  for entry in $(find "${HOME}/Library/Python" -maxdepth 2 -iname 'bin' -type d); do
+    add2path "${entry}" "front"
+  done
+fi
+
+
+
+add2path "$HOME/.local/bin" "front"
+add2path "$HOME/.krew/bin" "front"
+add2path "$HOME/.git-plugins/bin" "front"
+add2path "$HOME/.git-extras/bin" "front"
+
+if type complete >/dev/null 2>&1;then
+if [[ -e /usr/local/bin/aws_completer ]];then
+  complete -C '/usr/local/bin/aws_completer' aws
+fi
+fi
+
+if type mise &>/dev/null;then
+  eval "$(mise activate zsh)"
+fi
+if [[ -e "$HOME/.zpath.local" ]];then
+  source "$HOME/.zpath.local"
+fi
+
