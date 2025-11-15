@@ -1,0 +1,15 @@
+---
+version: "3"
+tasks:
+  up:
+    desc: Pulumi up
+    cmds:
+      - uv run pulumi up {{.CLI_ARGS}}
+  preview:
+    desc: Pulumi preview
+    cmds:
+      - uv run pulumi preview {{.CLI_ARGS}}
+  destroy:
+    desc: Pulumi destroy
+    cmds:
+      - uv run pulumi destroy {{.CLI_ARGS}}

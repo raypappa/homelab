@@ -12,6 +12,9 @@ includes:
   argocd:
     taskfile: .taskfiles/argocd/Taskfile.yaml
     dir: kubernetes
+  pulumi:
+    taskfile: .taskfiles/pulumi/Taskfile.yaml
+    dir: pulumi
 tasks:
   default:
     desc: "List tasks"
