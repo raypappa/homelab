@@ -19,3 +19,6 @@ dev = [
     "commitizen==4.9.1",
     "pre-commit<5.0.0,>=4.0.1",
 ]
+
+[tool.uv.workspace]
+members = ["pulumi"]

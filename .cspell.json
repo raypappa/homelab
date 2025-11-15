@@ -13,9 +13,14 @@
     "node",
     "k8s-local",
     "ansible",
-    "linux"
+    "linux",
+    "pulumi"
   ],
   "dictionaryDefinitions": [
+    {
+      "name": "pulumi",
+      "path": "./.cspell-dictionaries/pulumi.txt"
+    },
     {
       "name": "sphinx",
       "path": "./.cspell-dictionaries/sphinx.txt"
