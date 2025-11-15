@@ -85,6 +85,7 @@
   when:
     - tailscale_authkey is defined
     - tailscale_authkey | length > 0
+    - inventory_hostname not in groups['headscale']
   tags:
     - tailscale
 - name: Set hostname if specified
