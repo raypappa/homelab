@@ -3,5 +3,11 @@
   "appName": "rook-ceph-cluster",
   "serverSideApply": false,
   "ignoreDifferences": [],
-  "group": "storage-controller"
+  "group": "storage-controller",
+  "dependencies": [
+    "rook-ceph-operator",
+    "external-secrets",
+    "prometheus-operator",
+    "snapshot-controller"
+  ]
 }

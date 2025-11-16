@@ -3,5 +3,6 @@
   "appName": "volsync",
   "serverSideApply": false,
   "ignoreDifferences": [],
-  "group": "storage-operator"
+  "group": "storage-operator",
+  "dependencies": ["prometheus-operator"]
 }

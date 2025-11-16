@@ -3,5 +3,8 @@
   "appName": "homepage",
   "serverSideApply": false,
   "ignoreDifferences": [],
-  "group": "selfhosted"
+  "group": "selfhosted",
+  "dependencies": [
+    "external-secrets"
+  ]
 }

@@ -12,5 +12,6 @@
       ]
     }
   ],
-  "group": "database"
+  "group": "database",
+  "dependencies": ["cert-manager", "rook-ceph-cluster"]
 }

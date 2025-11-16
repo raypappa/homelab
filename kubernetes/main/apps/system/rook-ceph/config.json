@@ -3,5 +3,6 @@
   "appName": "rook-ceph",
   "serverSideApply": true,
   "ignoreDifferences": [],
-  "group": "post-monitoring"
+  "group": "post-monitoring",
+  "dependencies": []
 }

@@ -1,6 +1,6 @@
 {
-  "destNamespace": "plex",
-  "appName": "plex",
+  "destNamespace": "spotizerr",
+  "appName": "spotizerr",
   "serverSideApply": false,
   "ignoreDifferences": [],
   "group": "media",

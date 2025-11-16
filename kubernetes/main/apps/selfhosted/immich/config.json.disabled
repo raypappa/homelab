@@ -3,5 +3,12 @@
   "appName": "immich",
   "serverSideApply": false,
   "ignoreDifferences": [],
-  "group": "selfhosted"
+  "group": "selfhosted",
+  "dependencies": [
+    "external-secrets",
+    "volsync",
+    "rook-ceph-cluster",
+    "postgres",
+    "openebs"
+  ]
 }

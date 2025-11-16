@@ -3,5 +3,6 @@
   "appName": "external-dns",
   "serverSideApply": false,
   "ignoreDifferences": [],
-  "group": "post-monitoring"
+  "group": "post-monitoring",
+  "dependencies": ["prometheus-operator", "external-secrets"]
 }

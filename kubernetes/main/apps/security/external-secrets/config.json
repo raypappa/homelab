@@ -3,5 +3,6 @@
   "appName": "external-secrets",
   "serverSideApply": true,
   "ignoreDifferences": [],
-  "group": "secrets"
+  "group": "secrets",
+  "dependencies": ["prometheus-operator"]
 }

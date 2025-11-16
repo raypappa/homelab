@@ -3,5 +3,6 @@
   "appName": "timetagger",
   "serverSideApply": false,
   "ignoreDifferences": [],
-  "group": "selfhosted"
+  "group": "selfhosted",
+  "dependencies": ["external-secrets", "volsync", "openebs", "rook-ceph-cluster"]
 }

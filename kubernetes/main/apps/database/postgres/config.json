@@ -10,5 +10,10 @@
       "jqPathExpressions": [".spec.podMetricsEndpoints[].relabelings[].action"]
     }
   ],
-  "group": "database"
+  "group": "database",
+  "dependencies": [
+    "external-secrets",
+    "prometheus-operator",
+    "rook-ceph-cluster"
+  ]
 }

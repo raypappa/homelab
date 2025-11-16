@@ -3,5 +3,12 @@
   "appName": "lemonldap",
   "serverSideApply": false,
   "ignoreDifferences": [],
-  "group": "system"
+  "group": "system",
+  "dependencies": [
+    "external-secrets",
+    "volsync",
+    "openebs",
+    "rook-ceph-cluster",
+    "metallb"
+  ]
 }

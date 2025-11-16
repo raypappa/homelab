@@ -3,5 +3,6 @@
   "appName": "rook-ceph-operator",
   "serverSideApply": true,
   "ignoreDifferences": [],
-  "group": "storage-operator"
+  "group": "storage-operator",
+  "dependencies": ["prometheus-operator"]
 }

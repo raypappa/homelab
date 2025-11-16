@@ -3,5 +3,6 @@
   "appName": "csi-driver-nfs",
   "serverSideApply": false,
   "ignoreDifferences": [],
-  "group": "storage-controller"
+  "group": "storage-controller",
+  "dependencies": []
 }

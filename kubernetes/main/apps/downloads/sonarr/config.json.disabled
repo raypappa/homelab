@@ -3,5 +3,14 @@
   "appName": "sonarr",
   "serverSideApply": false,
   "ignoreDifferences": [],
-  "group": "downloads"
+  "group": "downloads",
+  "dependencies": [
+    "external-secrets",
+    "rook-ceph-cluster",
+    "volsync",
+    "csi-driver-nfs",
+    "prometheus-operator",
+    "metallb",
+    "openebs"
+  ]
 }
