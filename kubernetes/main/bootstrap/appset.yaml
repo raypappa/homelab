@@ -82,6 +82,7 @@ spec:
       namespace: argocd
       labels:
         deployGroup: "{{.group}}"
+        appName: "{{.appName}}"
     spec:
       project: default
       syncPolicy:
