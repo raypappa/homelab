@@ -69,8 +69,8 @@ def update_app_config(groups: dict[int, set[str]], dependencies: dict[str, Depen
             with dependencies[app]['file'].open('r') as fr:
                 raw = fr.read()
                 app_config = json.loads(raw)
-            if group != app_config.get("wave"):
-                app_config["wave"] = group
+            if str(group) != app_config.get("wave"):
+                app_config["wave"] = str(group)
                 with dependencies[app]["file"].open("w") as fw:
                     json.dump(app_config, fw)
 
