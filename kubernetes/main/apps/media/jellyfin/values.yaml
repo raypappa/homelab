@@ -23,7 +23,7 @@ controllers:
         image:
           repository: docker.io/jellyfin/jellyfin
           # renovate: datasource=docker depName=docker.io/jellyfin/jellyfin
-          tag: 2025102005
+          tag: 2025111005
         env:
           TZ: "UTC"
           JELLYFIN_CACHE_DIR: "/config/cache"
