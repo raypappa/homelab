@@ -12,5 +12,6 @@
     "prometheus-operator",
     "metallb",
     "openebs"
-  ]
+  ],
+  "wave": 4
 }

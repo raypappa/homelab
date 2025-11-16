@@ -4,5 +4,6 @@
   "serverSideApply": false,
   "ignoreDifferences": [],
   "group": "post-monitoring",
-  "dependencies": ["prometheus-operator", "external-secrets"]
+  "dependencies": ["prometheus-operator", "external-secrets"],
+  "wave": 3
 }

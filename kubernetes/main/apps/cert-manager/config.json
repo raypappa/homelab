@@ -4,5 +4,6 @@
   "serverSideApply": false,
   "ignoreDifferences": [],
   "group": "operator",
-  "dependencies": ["external-secrets", "prometheus-operator"]
+  "dependencies": ["external-secrets", "prometheus-operator"],
+  "wave": 3
 }

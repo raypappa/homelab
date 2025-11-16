@@ -22,60 +22,40 @@ spec:
     rollingSync:
       steps:
         - matchExpressions:
-            - key: deployGroup
+            - key: configWave
               operator: In
               values:
-                - monitoring
+                - "1"
         - matchExpressions:
-            - key: deployGroup
+            - key: configWave
               operator: In
               values:
-                - post-monitoring
+                - "2"
         - matchExpressions:
-            - key: deployGroup
+            - key: configWave
               operator: In
               values:
-                - secrets
+                - "3"
         - matchExpressions:
-            - key: deployGroup
+            - key: configWave
               operator: In
               values:
-                - storage-operator
+                - "4"
         - matchExpressions:
-            - key: deployGroup
+            - key: configWave
               operator: In
               values:
-                - storage-controller
+                - "5"
         - matchExpressions:
-            - key: deployGroup
+            - key: configWave
               operator: In
               values:
-                - operator
+                - "6"
         - matchExpressions:
-            - key: deployGroup
+            - key: configWave
               operator: In
               values:
-                - controller
-        - matchExpressions:
-            - key: deployGroup
-              operator: In
-              values:
-                - system
-        - matchExpressions:
-            - key: deployGroup
-              operator: In
-              values:
-                - database
-        - matchExpressions:
-            - key: deployGroup
-              operator: In
-              values:
-                - downloads
-        - matchExpressions:
-            - key: deployGroup
-              operator: In
-              values:
-                - selfhosted
+                - "7"
   template:
     metadata:
       name: "{{.appName}}"
@@ -83,6 +63,7 @@ spec:
       labels:
         deployGroup: "{{.group}}"
         appName: "{{.appName}}"
+        configWave: "{{.wave}}"
     spec:
       project: default
       syncPolicy:

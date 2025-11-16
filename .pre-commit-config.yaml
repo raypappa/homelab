@@ -78,6 +78,16 @@ repos:
         types:
           - text
         files: "\\.(jsx?|tsx?|c(js|ts)|m(js|ts)|d\\.(ts|cts|mts)|jsonc?|css|json.disabled)$"
+      - id: local-config-change
+        name: config.json check
+        pass_filenames: false
+        entry: scripts/dependency_graph.py
+        additional_dependencies:
+          - pyyaml
+        language: python
+        types:
+          - json
+        files: "config\\.json(\\.disabled)?"
   - repo: https://github.com/astral-sh/uv-pre-commit
     # uv version.
     rev: 0.9.5

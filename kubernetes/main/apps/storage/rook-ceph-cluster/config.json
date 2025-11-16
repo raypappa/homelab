@@ -9,5 +9,6 @@
     "external-secrets",
     "prometheus-operator",
     "snapshot-controller"
-  ]
+  ],
+  "wave": 3
 }

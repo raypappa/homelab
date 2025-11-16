@@ -1,8 +1,1 @@
-{
-  "destNamespace": "home-assistant",
-  "appName": "wyoming-piper",
-  "serverSideApply": false,
-  "ignoreDifferences": [],
-  "group": "selfhosted",
-  "dependencies": ["metallb"]
-}
+{"destNamespace": "home-assistant", "appName": "wyoming-piper", "serverSideApply": false, "ignoreDifferences": [], "group": "selfhosted", "dependencies": ["metallb"], "wave": 3}

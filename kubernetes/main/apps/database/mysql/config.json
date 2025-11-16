@@ -13,5 +13,6 @@
     }
   ],
   "group": "database",
-  "dependencies": ["cert-manager", "rook-ceph-cluster"]
+  "dependencies": ["cert-manager", "rook-ceph-cluster"],
+  "wave": 4
 }

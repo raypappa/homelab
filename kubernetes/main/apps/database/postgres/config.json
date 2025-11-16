@@ -15,5 +15,6 @@
     "external-secrets",
     "prometheus-operator",
     "rook-ceph-cluster"
-  ]
+  ],
+  "wave": 4
 }
