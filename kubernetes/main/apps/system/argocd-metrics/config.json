@@ -4,5 +4,6 @@
   "serverSideApply": false,
   "ignoreDifferences": [],
   "group": "post-monitoring",
-  "dependencies": ["prometheus-operator"]
+  "dependencies": ["prometheus-operator"],
+  "wave": 2
 }

@@ -4,5 +4,6 @@
   "serverSideApply": false,
   "ignoreDifferences": [],
   "group": "storage-controller",
-  "dependencies": []
+  "dependencies": [],
+  "wave": 1
 }

@@ -1,16 +1,1 @@
-{
-  "destNamespace": "plex",
-  "appName": "plex",
-  "serverSideApply": false,
-  "ignoreDifferences": [],
-  "group": "media",
-  "dependencies": [
-    "external-secrets",
-    "rook-ceph-cluster",
-    "volsync",
-    "csi-driver-nfs",
-    "prometheus-operator",
-    "metallb",
-    "openebs"
-  ]
-}
+{"destNamespace": "plex", "appName": "plex", "serverSideApply": false, "ignoreDifferences": [], "group": "media", "dependencies": ["external-secrets", "rook-ceph-cluster", "volsync", "csi-driver-nfs", "prometheus-operator", "metallb", "openebs"], "wave": 4}

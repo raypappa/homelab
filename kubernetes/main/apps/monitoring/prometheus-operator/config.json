@@ -3,5 +3,6 @@
   "appName": "prometheus-operator",
   "serverSideApply": true,
   "ignoreDifferences": [],
-  "group": "monitoring"
+  "group": "monitoring",
+  "wave": 1
 }

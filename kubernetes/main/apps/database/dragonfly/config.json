@@ -4,5 +4,6 @@
   "serverSideApply": false,
   "ignoreDifferences": [],
   "group": "database",
-  "dependencies": ["rook-ceph-cluster"]
+  "dependencies": ["rook-ceph-cluster"],
+  "wave": 4
 }

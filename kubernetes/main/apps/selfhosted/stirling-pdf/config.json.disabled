@@ -1,9 +1,1 @@
-{
-  "destNamespace": "stirling-pdf",
-  "appName": "stirling-pdf",
-  "serverSideApply": false,
-  "ignoreDifferences": [],
-  "group": "selfhosted",
-  "dependencies": [
-  "external-secrets"]
-}
+{"destNamespace": "stirling-pdf", "appName": "stirling-pdf", "serverSideApply": false, "ignoreDifferences": [], "group": "selfhosted", "dependencies": ["external-secrets"], "wave": 3}
