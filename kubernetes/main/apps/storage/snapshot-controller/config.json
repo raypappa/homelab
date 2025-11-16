@@ -3,5 +3,6 @@
   "appName": "snapshot-controller",
   "serverSideApply": false,
   "ignoreDifferences": [],
-  "group": "storage-operator"
+  "group": "storage-operator",
+  "dependencies": ["prometheus-operator"]
 }

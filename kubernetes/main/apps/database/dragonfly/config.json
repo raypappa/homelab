@@ -3,5 +3,6 @@
   "appName": "dragonfly",
   "serverSideApply": false,
   "ignoreDifferences": [],
-  "group": "database"
+  "group": "database",
+  "dependencies": ["rook-ceph-cluster"]
 }

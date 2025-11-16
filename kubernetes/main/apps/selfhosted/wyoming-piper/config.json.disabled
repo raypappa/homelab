@@ -3,5 +3,6 @@
   "appName": "wyoming-piper",
   "serverSideApply": false,
   "ignoreDifferences": [],
-  "group": "selfhosted"
+  "group": "selfhosted",
+  "dependencies": ["metallb"]
 }

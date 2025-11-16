@@ -3,5 +3,7 @@
   "appName": "stirling-pdf",
   "serverSideApply": false,
   "ignoreDifferences": [],
-  "group": "selfhosted"
+  "group": "selfhosted",
+  "dependencies": [
+  "external-secrets"]
 }

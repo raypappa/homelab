@@ -3,5 +3,6 @@
   "appName": "argocd-metrics",
   "serverSideApply": false,
   "ignoreDifferences": [],
-  "group": "post-monitoring"
+  "group": "post-monitoring",
+  "dependencies": ["prometheus-operator"]
 }

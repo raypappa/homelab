@@ -3,5 +3,6 @@
   "appName": "wyoming-whisper",
   "serverSideApply": false,
   "ignoreDifferences": [],
-  "group": "selfhosted"
+  "group": "selfhosted",
+  "dependencies": ["metallb"]
 }

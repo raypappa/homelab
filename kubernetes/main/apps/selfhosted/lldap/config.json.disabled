@@ -3,5 +3,6 @@
   "appName": "lldap",
   "serverSideApply": false,
   "ignoreDifferences": [],
-  "group": "system"
+  "group": "system",
+  "dependencies": ["rook-ceph-cluster", "openebs", "volsync"]
 }

@@ -3,5 +3,6 @@
   "appName": "openebs",
   "serverSideApply": false,
   "ignoreDifferences": [],
-  "group": "storage-controller"
+  "group": "storage-controller",
+  "dependencies": []
 }
