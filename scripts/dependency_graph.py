@@ -75,6 +75,11 @@ def update_app_config(groups: dict[int, set[str]], dependencies: dict[str, Depen
                     json.dump(app_config, fw)
 
 
+def check_appset_sync_strategy(max_wave: int, appset_file_path: pathlib.Path):
+    with appset_file_path.open('r') as fh:
+        app_set = load(fh, Loader=Loader)
+    if int(app_set['spec']['strategy']['rollingSync']['steps'][-1]['matchExpressions'][-1]['values'][-1]) < max_wave:
+        raise ValueError(f"max wave {max_wave} is missing from the rollingSync strategy matches")
 
 
 def validate_dependencies(dependencies: dict[str, DependencyFile]):
@@ -97,6 +102,7 @@ def main():
     #         print(f"    {app_name}")
     # update_appset(results, pathlib.Path("kubernetes/main/bootstrap/appset.yaml"))
     update_app_config(results, dependencies)
+    check_appset_sync_strategy(list(results.keys())[-1], pathlib.Path("kubernetes/main/bootstrap/appset.yaml"))
 
 
 if __name__ == "__main__":
