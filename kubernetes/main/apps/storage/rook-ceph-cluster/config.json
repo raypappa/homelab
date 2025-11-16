@@ -10,5 +10,5 @@
     "prometheus-operator",
     "snapshot-controller"
   ],
-  "wave": 3
+  "wave": "3"
 }
