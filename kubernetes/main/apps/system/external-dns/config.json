@@ -5,5 +5,5 @@
   "ignoreDifferences": [],
   "group": "post-monitoring",
   "dependencies": ["prometheus-operator", "external-secrets"],
-  "wave": 3
+  "wave": "3"
 }

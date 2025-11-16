@@ -1,1 +1,1 @@
-{"destNamespace": "it-tools", "appName": "it-tools", "serverSideApply": false, "ignoreDifferences": [], "group": "selfhosted", "dependencies": ["external-secrets"], "wave": 3}
+{"destNamespace": "it-tools", "appName": "it-tools", "serverSideApply": false, "ignoreDifferences": [], "group": "selfhosted", "dependencies": ["external-secrets"], "wave": "3"}

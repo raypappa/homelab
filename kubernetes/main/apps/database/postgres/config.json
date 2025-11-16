@@ -16,5 +16,5 @@
     "prometheus-operator",
     "rook-ceph-cluster"
   ],
-  "wave": 4
+  "wave": "4"
 }
