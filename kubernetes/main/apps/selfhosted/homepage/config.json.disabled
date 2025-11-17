@@ -1,1 +1,0 @@
-{"destNamespace": "homepage", "appName": "homepage", "serverSideApply": false, "ignoreDifferences": [], "group": "selfhosted", "dependencies": ["external-secrets"], "wave": "3"}

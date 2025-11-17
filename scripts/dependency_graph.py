@@ -114,6 +114,10 @@ def main():
     check_appset_sync_strategy(
         list(results.keys())[-1], pathlib.Path("kubernetes/main/bootstrap/appset.yaml")
     )
+    for wave, apps in results.items():
+        print(wave)
+        for app in apps:
+            print(f"    {app}")
 
 
 if __name__ == "__main__":

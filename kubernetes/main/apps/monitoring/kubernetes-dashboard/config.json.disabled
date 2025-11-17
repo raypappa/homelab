@@ -1,1 +1,1 @@
-{"destNamespace": "kubernetes-dashboard", "appName": "kubernetes-dashboard", "serverSideApply": false, "ignoreDifferences": [], "group": "monitoring", "wave": "1"}
+{"destNamespace": "kubernetes-dashboard", "appName": "kubernetes-dashboard", "serverSideApply": false, "ignoreDifferences": [], "group": "monitoring", "wave": "1", "dependencies": []}
