@@ -1,1 +1,0 @@
-{"destNamespace": "immich", "appName": "immich", "serverSideApply": false, "ignoreDifferences": [], "group": "selfhosted", "dependencies": ["external-secrets", "volsync", "rook-ceph-cluster", "postgres", "openebs"], "wave": "5"}

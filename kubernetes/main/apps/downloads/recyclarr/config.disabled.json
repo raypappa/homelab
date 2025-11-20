@@ -1,0 +1,17 @@
+{
+  "destNamespace": "recyclarr",
+  "appName": "recyclarr",
+  "serverSideApply": false,
+  "ignoreDifferences": [],
+  "group": "downloads",
+  "dependencies": [
+    "external-secrets",
+    "rook-ceph-cluster",
+    "volsync",
+    "csi-driver-nfs",
+    "prometheus-operator",
+    "metallb",
+    "openebs"
+  ],
+  "wave": "4"
+}

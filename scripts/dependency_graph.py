@@ -29,7 +29,7 @@ def load_dependencies() -> dict[str, DependencyFile]:
         pathlib.Path("kubernetes/main/apps").resolve().walk()
     ):
         for filename in filenames:
-            if filename in ("config.json", "config.json.disabled"):
+            if filename in ("config.json", "config.disabled.json"):
                 with (dirpath / filename).open("r") as file:
                     raw = file.read()
                     data = json.loads(raw)

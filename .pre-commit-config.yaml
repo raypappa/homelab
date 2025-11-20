@@ -77,7 +77,8 @@ repos:
         language: system
         types:
           - text
-        files: "\\.(jsx?|tsx?|c(js|ts)|m(js|ts)|d\\.(ts|cts|mts)|jsonc?|css|json.disabled)$"
+        files: "\\.(jsx?|tsx?|c(js|ts)|m(js|ts)|d\\.(ts|cts|mts)|jsonc?|css)$"
+        verbose: true
       - id: local-config-change
         name: config.json check
         pass_filenames: false

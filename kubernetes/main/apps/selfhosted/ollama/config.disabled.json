@@ -1,0 +1,9 @@
+{
+  "destNamespace": "ollama",
+  "appName": "ollama",
+  "serverSideApply": false,
+  "ignoreDifferences": [],
+  "group": "selfhosted",
+  "dependencies": ["external-secrets"],
+  "wave": "3"
+}

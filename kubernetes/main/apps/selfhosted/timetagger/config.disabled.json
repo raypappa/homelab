@@ -1,0 +1,14 @@
+{
+  "destNamespace": "timetagger",
+  "appName": "timetagger",
+  "serverSideApply": false,
+  "ignoreDifferences": [],
+  "group": "selfhosted",
+  "dependencies": [
+    "external-secrets",
+    "volsync",
+    "openebs",
+    "rook-ceph-cluster"
+  ],
+  "wave": "4"
+}

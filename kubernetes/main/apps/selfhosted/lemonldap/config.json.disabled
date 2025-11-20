@@ -1,1 +1,0 @@
-{"destNamespace": "ldap", "appName": "lemonldap", "serverSideApply": false, "ignoreDifferences": [], "group": "system", "dependencies": ["external-secrets", "volsync", "openebs", "rook-ceph-cluster", "metallb"], "wave": "4"}
