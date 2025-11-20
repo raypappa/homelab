@@ -41,7 +41,7 @@ pulumi.export("home_assistant_secret_access_key", ha_user_access_key.secret)
 
 org = pulumi.get_organization()
 proj = pulumi.get_project()
-oidc_aud = f"aws:{org}"
+oidc_aud = org
 
 default = iam.OpenIdConnectProvider(
     "default", url="https://api.pulumi.com/oidc", client_id_lists=[oidc_aud]
