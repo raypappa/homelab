@@ -8,3 +8,8 @@ cloudflare:
   ingress:
     - hostname: "fieldsofbears.com"
       service: "http://homepage.homepage.svc.cluster.local:3000"
+podSecurityContext:
+  runAsNonRoot: true
+  runAsUser: 65532
+  seccompProfile:
+    type: "RuntimeDefault"

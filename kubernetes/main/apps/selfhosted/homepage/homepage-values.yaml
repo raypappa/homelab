@@ -1,5 +1,21 @@
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/refs/heads/main/charts/other/app-template/values.schema.json
+podSecurityContext:
+  runAsUser: 65534
+  runAsGroup: 65534
+  fsGroupChangePolicy: OnRootMismatch
+  runAsNonRoot: true
+  allowPrivilegeEscalation: false
+  seccompProfile:
+    type: RuntimeDefault
+securityContext:
+  runAsUser: 65534
+  runAsGroup: 65534
+  fsGroupChangePolicy: OnRootMismatch
+  runAsNonRoot: true
+  allowPrivilegeEscalation: false
+  seccompProfile:
+    type: RuntimeDefault
 controller:
   annotations:
     reloader.stakater.com/auto: "true"
