@@ -38,18 +38,43 @@ iam.UserPolicy(
 pulumi.export("home_assistant_access_key_id", ha_user_access_key.id)
 pulumi.export("home_assistant_secret_access_key", ha_user_access_key.secret)
 
-# ha_user_access_key_dict = config.get_object("home_assistant_access_key")
-# if ha_user_access_key_dict is None:
-#     ha_user_access_key_dict = {
-#         "access_key_id": ha_user_access_key.id,
-#         "secret_access_key": ha_user_access_key.secret
-#     }
-#
-# secretsmanager.SecretVersion(
-#     "home_assistant_key_secret_version",
-#     secret_id=secretsmanager.Secret(
-#         "home_assistant_key_secret", name="/home-assistant/access-key"
-#     ).id,
-#     secret_string=std.jsonencode(ha_user_access_key_dict
-#     ),
-# )
+
+org = pulumi.get_organization()
+proj = pulumi.get_project()
+oidc_aud = f"aws:{org}"
+
+default = iam.OpenIdConnectProvider(
+    "default", url="https://api.pulumi.com/oidc", client_id_lists=[oidc_aud]
+)
+
+pulumi_role = iam.Role(
+    "pulumi_oidc",
+    name_prefix="pulumi-oidc",
+    assume_role_policy=iam.get_policy_document(
+        statements=[
+            {
+                "effect": "Allow",
+                "actions": ["sts:AssumeRoleWithWebIdentity"],
+                "principals": [{"type": "Federated", "identifiers": [default.arn]}],
+                "conditions": [
+                    {
+                        "test": "StringEquals",
+                        "variable": "api.pulumi.com/oidc:aud",
+                        "values": [oidc_aud],
+                    },
+                    {
+                        "test": "StringEquals",
+                        "variable": "api.pulumi.com/oidc:sub",
+                        "values": [f"pulumi:deploy:org:{org}:project:{proj}:*"],
+                    },
+                ],
+            }
+        ]
+    ).json,
+)
+iam.RolePolicyAttachment(
+    "pulumi_oidc_role_admin",
+    role=pulumi_role.name,
+    policy_arn=iam.get_policy(name="AdministratorAccess").arn,
+)
+
