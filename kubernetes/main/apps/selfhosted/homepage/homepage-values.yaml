@@ -8,9 +8,6 @@ podSecurityContext:
   allowPrivilegeEscalation: false
   seccompProfile:
     type: RuntimeDefault
-  capabilities:
-    drop:
-      - ALL
 securityContext:
   runAsUser: 65534
   runAsGroup: 65534
