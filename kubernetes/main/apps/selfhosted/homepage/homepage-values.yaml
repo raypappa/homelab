@@ -8,6 +8,9 @@ podSecurityContext:
   allowPrivilegeEscalation: false
   seccompProfile:
     type: RuntimeDefault
+  capabilities:
+    drop:
+      - all
 securityContext:
   runAsUser: 65534
   runAsGroup: 65534
@@ -16,6 +19,9 @@ securityContext:
   allowPrivilegeEscalation: false
   seccompProfile:
     type: RuntimeDefault
+  capabilities:
+    drop:
+      - all
 controller:
   annotations:
     reloader.stakater.com/auto: "true"
