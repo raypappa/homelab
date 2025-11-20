@@ -1,1 +1,0 @@
-{"destNamespace": "gitea", "appName": "gitea", "serverSideApply": false, "ignoreDifferences": [], "group": "selfhosted", "dependencies": ["external-secrets", "postgres", "dragonfly", "prometheus-operator"], "wave": "5"}

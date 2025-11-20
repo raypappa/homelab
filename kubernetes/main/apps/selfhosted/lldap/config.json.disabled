@@ -1,1 +1,0 @@
-{"destNamespace": "ldap", "appName": "lldap", "serverSideApply": false, "ignoreDifferences": [], "group": "system", "dependencies": ["rook-ceph-cluster", "openebs", "volsync"], "wave": "4"}

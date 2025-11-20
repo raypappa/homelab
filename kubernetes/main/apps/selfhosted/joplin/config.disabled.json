@@ -1,0 +1,9 @@
+{
+  "destNamespace": "joplin",
+  "appName": "joplin",
+  "serverSideApply": false,
+  "ignoreDifferences": [],
+  "group": "selfhosted",
+  "dependencies": ["external-secrets", "postgres"],
+  "wave": "5"
+}
