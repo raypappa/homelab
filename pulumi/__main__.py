@@ -63,7 +63,7 @@ pulumi_role = iam.Role(
                         "values": [oidc_aud],
                     },
                     {
-                        "test": "StringEquals",
+                        "test": "StringLike",
                         "variable": "api.pulumi.com/oidc:sub",
                         "values": [f"pulumi:deploy:org:{org}:project:{proj}:*"],
                     },
