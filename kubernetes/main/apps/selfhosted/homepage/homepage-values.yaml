@@ -10,7 +10,7 @@ podSecurityContext:
     type: RuntimeDefault
   capabilities:
     drop:
-      - all
+      - ALL
 securityContext:
   runAsUser: 65534
   runAsGroup: 65534
@@ -21,7 +21,7 @@ securityContext:
     type: RuntimeDefault
   capabilities:
     drop:
-      - all
+      - ALL
 controller:
   annotations:
     reloader.stakater.com/auto: "true"
