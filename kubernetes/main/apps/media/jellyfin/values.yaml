@@ -20,13 +20,9 @@ controllers:
         fsGroup: 1001
         fsGroupChangePolicy: "OnRootMismatch"
         runAsNonRoot: true
-        supplementalGroups:
-          - 44
-          - 109
-          - 65542 # gladius:external-services
-          - 44
-          - 109
-          - 100
+        # supplementalGroups:
+        #   - 44
+        #   - 105
     containers:
       app:
         image:
@@ -44,14 +40,13 @@ controllers:
           readOnlyRootFilesystem: true
           seccompProfile:
             type: RuntimeDefault
-          supplementalGroups:
-            #   # Hardware acceleration using an Intel iGPU w/ QuickSync
-            #   # These IDs below should be matched to your `video` and `render` group on the host
-            #   # To obtain those IDs run the following grep statement on the host:
-            #   # $ cat /etc/group | grep "video\|render"
-            - 44
-            - 109
-            - 100
+            # supplementalGroups:
+            #   #   # Hardware acceleration using an Intel iGPU w/ QuickSync
+            #   #   # These IDs below should be matched to your `video` and `render` group on the host
+            #   #   # To obtain those IDs run the following grep statement on the host:
+            #   #   # $ cat /etc/group | grep "video\|render"
+            #   - 44
+            #   - 105
         resources:
           requests:
             # gpu.intel.com/i915: 1
