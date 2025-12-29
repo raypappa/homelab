@@ -27,8 +27,6 @@ controllers:
           - 44
           - 109
           - 100
-      nodeSelector:
-        kubernetes.io/hostname: puma
     containers:
       app:
         image:
