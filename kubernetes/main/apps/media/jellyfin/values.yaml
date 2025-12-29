@@ -58,9 +58,7 @@ persistence:
     sizeLimit: 10Gi
   library:
     enabled: true
-    type: hostPath
-    hostPathType: Directory
-    hostPath: /library
+    existingClaim: jellyfin-library-nfs
     globalMounts:
       - path: /library
         readOnly: true
@@ -69,7 +67,6 @@ service:
     controller: main
     type: LoadBalancer
     annotations:
-      metallb.universe.tf/loadBalancerIPs: 172.17.42.206
       metallb.universe.tf/address-pool: metalpool
     externalTrafficPolicy: Cluster
     ports:
