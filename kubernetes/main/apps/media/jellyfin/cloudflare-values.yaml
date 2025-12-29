@@ -8,3 +8,8 @@ cloudflare:
   ingress:
     - hostname: "jellyfin.fieldsofbears.com"
       service: "http://jellyfin.jellyfin.svc.cluster.local:8096"
+podSecurityContext:
+  runAsNonRoot: true
+  runAsUser: 65532
+  seccompProfile:
+    type: "RuntimeDefault"
