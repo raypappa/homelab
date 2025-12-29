@@ -1,4 +1,14 @@
 ---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/refs/heads/main/charts/other/app-template/values.schema.json
+defaultPodOptions:
+  securityContext:
+    runAsUser: 1001
+    runAsGroup: 1001
+    fsGroup: 1001
+    fsGroupChangePolicy: OnRootMismatch
+    runAsNonRoot: true
+    seccompProfile:
+      type: RuntimeDefault
 controllers:
   main:
     annotations:
@@ -9,6 +19,7 @@ controllers:
         runAsGroup: 1001
         fsGroup: 1001
         fsGroupChangePolicy: "OnRootMismatch"
+        runAsNonRoot: true
         supplementalGroups:
           - 44
           - 109
@@ -28,6 +39,13 @@ controllers:
           TZ: "UTC"
           JELLYFIN_CACHE_DIR: "/config/cache"
         securityContext:
+          capabilities:
+            drop:
+              - ALL
+          allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: true
+          seccompProfile:
+            type: RuntimeDefault
           supplementalGroups:
             #   # Hardware acceleration using an Intel iGPU w/ QuickSync
             #   # These IDs below should be matched to your `video` and `render` group on the host
@@ -68,6 +86,11 @@ service:
     type: LoadBalancer
     annotations:
       metallb.universe.tf/address-pool: metalpool
+      external-dns.alpha.kubernetes.io/hostname: jellyfin.stoneydavis.local
+      external-dns.alpha.kubernetes.io/ttl: "1800"
+      external-dns.alpha.kubernetes.io/webhook-comment: "k8s_managed"
+      external-dns.alpha.kubernetes.io/webhook-match-subdomain: "true"
+      external-dns.alpha.kubernetes.io/webhook-disabled: "false"
     externalTrafficPolicy: Cluster
     ports:
       http:
