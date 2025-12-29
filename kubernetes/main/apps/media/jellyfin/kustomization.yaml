@@ -19,6 +19,5 @@ resources:
   - ./base/external-secret.yaml
   - ./base/pvc/config/volsync-replication-source.yaml
   - ./base/pvc/config/volsync-external-secret.yaml
-  - ./base/pvc/config/pvc.yaml
   - ./base/pvc/config/volsync-replication-destination.yaml
   - ./base/library-pvc.yaml
