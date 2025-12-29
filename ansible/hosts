@@ -6,7 +6,6 @@
 # warthog.stoneydavis.local:
 prod_k8s_controlplane:
   hosts:
-    kubernetes-node-0001.stoneydavis.local:
     kubernetes-node-0002.stoneydavis.local:
     kubernetes-node-0003.stoneydavis.local:
     kubernetes-node-0004.stoneydavis.local:
@@ -34,7 +33,7 @@ game_server:
 #     dev_k8s_nodes:
 nfs_server:
   hosts:
-    kubernetes-node-0001.stoneydavis.local:
+    storage-0001.stoneydavis.local:
       nfs_server_export_dirs:
         - /library
 headscale:

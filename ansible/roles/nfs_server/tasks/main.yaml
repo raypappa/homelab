@@ -58,13 +58,8 @@
     - nfs-idmapd
   ansible.builtin.systemd_service:
     name: "{{ item }}"
-    state: stopped
-    masked: false
-    enabled: false
-- name: Start NFS server
-  ansible.builtin.sysvinit:
-    name: nfs-kernel-server
     state: started
+    masked: false
     enabled: true
   environment:
     SYSTEMCTL_SKIP_REDIRECT: "1"
