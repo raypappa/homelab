@@ -96,3 +96,4 @@ service:
     ports:
       http:
         port: 8096
+        targetPort: 80
