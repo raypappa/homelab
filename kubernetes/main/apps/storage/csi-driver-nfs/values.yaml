@@ -1,6 +1,7 @@
 ---
 controller:
   replicas: 1
+  dnsPolicy: Default
 storageClass:
   create: true
   name: nfs
@@ -11,3 +12,5 @@ storageClass:
   volumeBindingMode: Immediate
   mountOptions:
     - nfsvers=4.1
+node:
+  dnsPolicy: Default
