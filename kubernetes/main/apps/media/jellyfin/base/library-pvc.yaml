@@ -9,7 +9,7 @@ spec:
   capacity:
     storage: 100Ti
   accessModes:
-    - ReadWriteMany
+    - ReadOnlyMany
   persistentVolumeReclaimPolicy: Retain
   storageClassName: nfs
   mountOptions:
@@ -29,7 +29,7 @@ metadata:
   name: jellyfin-library-nfs
 spec:
   accessModes:
-    - ReadWriteMany
+    - ReadOnlyMany
   resources:
     requests:
       storage: 100Ti
