@@ -2,15 +2,23 @@
 controller:
   replicas: 1
   dnsPolicy: Default
-storageClass:
-  create: true
-  name: nfs
-  parameters:
-    server: 10.49.49.140
-    share: /library
-  reclaimPolicy: Retain
-  volumeBindingMode: Immediate
-  mountOptions:
-    - nfsvers=4.2
+storageClasses:
+  - name: nfs-ip
+    parameters:
+      server: 10.49.49.140
+      share: /library
+    reclaimPolicy: Retain
+    volumeBindingMode: Immediate
+    mountOptions:
+      - nfsvers=4.2
+  - name: nfs
+    parameters:
+      server: storage-0001.stoneydavis.local
+      share: /library
+    reclaimPolicy: Retain
+    volumeBindingMode: Immediate
+    mountOptions:
+      - nfsvers=4.2
+
 node:
   dnsPolicy: Default
