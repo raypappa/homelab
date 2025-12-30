@@ -18,9 +18,9 @@ spec:
     driver: nfs.csi.k8s.io
     # volumeHandle format: {nfs-server-address}#{sub-dir-name}#{share-name}
     # make sure this value is unique for every share in the cluster
-    volumeHandle: "storage-0001.stoneydavis.local/library##"
+    volumeHandle: "10.49.49.140/library##"
     volumeAttributes:
-      server: storage-0001.stoneydavis.local
+      server: 10.49.49.140
       share: /library
 ---
 apiVersion: v1
