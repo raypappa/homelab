@@ -6,7 +6,7 @@ storageClass:
   create: true
   name: nfs
   parameters:
-    server: storage-0001.stoneydavis.local
+    server: 10.49.49.140
     share: /library
   reclaimPolicy: Retain
   volumeBindingMode: Immediate
