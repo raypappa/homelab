@@ -33,5 +33,5 @@ spec:
   resources:
     requests:
       storage: 100Ti
-  storageClassName: nfs
+  storageClassName: nfs-ip
   volumeName: jellyfin-library-nfs
