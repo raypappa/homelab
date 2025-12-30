@@ -75,6 +75,8 @@ persistence:
     enabled: true
     type: emptyDir
     sizeLimit: 10Gi
+    globalMounts:
+      - path: /config/cache/transcodes
   library:
     enabled: true
     existingClaim: jellyfin-library-nfs
