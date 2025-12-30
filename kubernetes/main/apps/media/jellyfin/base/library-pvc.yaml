@@ -11,7 +11,7 @@ spec:
   accessModes:
     - ReadOnlyMany
   persistentVolumeReclaimPolicy: Retain
-  storageClassName: nfs
+  storageClassName: nfs-ip
   mountOptions:
     - nfsvers=4.1
   csi:
