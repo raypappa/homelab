@@ -11,16 +11,16 @@ spec:
   accessModes:
     - ReadWriteMany
   persistentVolumeReclaimPolicy: Retain
-  storageClassName: nfs
+  storageClassName: nfs-ip
   mountOptions:
-    - nfsvers=4.1
+    - nfsvers=4.2
   csi:
     driver: nfs.csi.k8s.io
     # volumeHandle format: {nfs-server-address}#{sub-dir-name}#{share-name}
     # make sure this value is unique for every share in the cluster
-    volumeHandle: "storage-0001.stoneydavis.local/library##"
+    volumeHandle: "10.49.49.140/library##"
     volumeAttributes:
-      server: storage-0001.stoneydavis.local
+      server: 10.49.49.140
       share: /library
 ---
 apiVersion: v1
@@ -33,5 +33,5 @@ spec:
   resources:
     requests:
       storage: 100Ti
-  storageClassName: nfs
+  storageClassName: nfs-ip
   volumeName: prowlarr-library-nfs
