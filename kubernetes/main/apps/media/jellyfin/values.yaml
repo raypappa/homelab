@@ -64,7 +64,7 @@ persistence:
       kind: ReplicationDestination
       apiGroup: volsync.backube
       name: jellyfin-config-dst
-    size: 5Gi
+    size: 50Gi
   tmp-jellyfin:
     enabled: true
     type: emptyDir
