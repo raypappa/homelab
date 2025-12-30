@@ -65,6 +65,13 @@ persistence:
       apiGroup: volsync.backube
       name: jellyfin-config-dst
     size: 5Gi
+  tmp_jellyfin:
+    enabled: true
+    type: emptyDir
+    # medium: "Memory"
+    sizeLimit: 1Gi
+    globalMounts:
+      - path: /tmp/jellyfin
   transcode:
     enabled: true
     type: emptyDir
