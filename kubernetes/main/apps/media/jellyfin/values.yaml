@@ -28,7 +28,7 @@ controllers:
         image:
           repository: docker.io/jellyfin/jellyfin
           # renovate: datasource=docker depName=docker.io/jellyfin/jellyfin
-          tag: "2025102005"
+          tag: "2025122905"
         env:
           TZ: "UTC"
           JELLYFIN_CACHE_DIR: "/config/cache"
@@ -68,14 +68,12 @@ persistence:
   tmp-jellyfin:
     enabled: true
     type: emptyDir
-    # medium: "Memory"
-    sizeLimit: 1Gi
+    sizeLimit: 5Gi
     globalMounts:
       - path: /tmp/jellyfin
   transcode:
     enabled: true
     type: emptyDir
-    # medium: "Memory"
     sizeLimit: 10Gi
   library:
     enabled: true
