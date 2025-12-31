@@ -7,7 +7,7 @@ cloudflare:
   tunnelName: "faerun-prowlarr"
   ingress:
     - hostname: "prowlarr.fieldsofbears.com"
-      service: "http://prowlarr.prowlarr.svc.cluster.local:9696"
+      service: "http://prowlarr.prowlarr.svc.cluster.local:80"
 podSecurityContext:
   runAsNonRoot: true
   runAsUser: 65532
