@@ -1,5 +1,14 @@
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/values.schema.json
+defaultPodOptions:
+  securityContext:
+    runAsUser: 1001
+    runAsGroup: 1001
+    fsGroup: 1001
+    fsGroupChangePolicy: OnRootMismatch
+    runAsNonRoot: true
+    seccompProfile:
+      type: RuntimeDefault
 controllers:
   timetagger:
     annotations:
@@ -13,6 +22,12 @@ controllers:
         fsGroupChangePolicy: OnRootMismatch
     containers:
       app:
+        securityContext:
+          allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: true
+          capabilities:
+            drop:
+              - ALL
         image:
           repository: ghcr.io/almarklein/timetagger
           # renovate: datasource=docker depName=ghcr.io/almarklein/timetagger
@@ -43,12 +58,6 @@ controllers:
             memory: 128Mi
           limits:
             memory: 256Mi
-        securityContext:
-          allowPrivilegeEscalation: false
-          readOnlyRootFilesystem: true
-          capabilities:
-            drop:
-              - ALL
 service:
   app:
     controller: timetagger
@@ -56,9 +65,6 @@ service:
       http:
         port: 80
     type: LoadBalancer
-    annotations:
-      metallb.universe.tf/loadBalancerIPs: 172.17.42.203
-      metallb.universe.tf/address-pool: metalpool
     externalTrafficPolicy: Cluster
 persistence:
   config:

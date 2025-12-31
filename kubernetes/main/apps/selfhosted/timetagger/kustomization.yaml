@@ -26,8 +26,8 @@ helmCharts:
     version: 3.7.3
     valuesFile: values.yaml
 resources:
-  - ./tunnel-external-secret.yaml
-  - ./credentials-external-secret.yaml
-  - ./volsync-external-secret.yaml
-  - ./volsync-replication-source.yaml
-  - ./volsync-replication-destination.yaml
+  - ./base/tunnel-external-secret.yaml
+  - ./base/credentials-external-secret.yaml
+  - ./base/volsync-external-secret.yaml
+  - ./base/volsync-replication-source.yaml
+  - ./base/volsync-replication-destination.yaml
