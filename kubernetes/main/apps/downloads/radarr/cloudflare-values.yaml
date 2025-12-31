@@ -7,7 +7,7 @@ cloudflare:
   tunnelName: "faerun-radarr"
   ingress:
     - hostname: "radarr.fieldsofbears.com"
-      service: "http://radarr.radarr.svc.cluster.local:9696"
+      service: "http://radarr.radarr.svc.cluster.local"
 podSecurityContext:
   runAsNonRoot: true
   runAsUser: 65532
