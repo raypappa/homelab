@@ -83,7 +83,8 @@ service:
     externalTrafficPolicy: Cluster
     ports:
       http:
-        port: *port
+        targetPort: *port
+        port: 80
 persistence:
   config:
     enabled: true
