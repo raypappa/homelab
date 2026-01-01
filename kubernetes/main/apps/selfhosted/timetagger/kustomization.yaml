@@ -18,6 +18,11 @@ helmCharts:
         ingress:
           - hostname: "timetagger.fieldsofbears.com"
             service: "http://timetagger.timetagger.svc.cluster.local:80"
+      podSecurityContext:
+        runAsNonRoot: true
+        runAsUser: 65532
+        seccompProfile:
+          type: "RuntimeDefault"
   - name: app-template
     includeCRDs: true
     repo: https://bjw-s-labs.github.io/helm-charts
