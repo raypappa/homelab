@@ -21,4 +21,3 @@ resources:
   - ./base/pvc/config/volsync-external-secret.yaml
   - ./base/pvc/config/volsync-replication-destination.yaml
   - ./base/library-pvc.yaml
-  - ./base/sqlite.yaml
