@@ -8,21 +8,7 @@ helmCharts:
     namespace: timetagger
     releaseName: timetagger
     version: 0.3.2
-    valuesInline:
-      image:
-        # renovate: datasource=docker depName=cloudflare/cloudflared
-        tag: 2025.9.1
-      cloudflare:
-        secretName: "timetagger-tunnel-credentials"
-        tunnelName: "faerun-timetagger"
-        ingress:
-          - hostname: "timetagger.fieldsofbears.com"
-            service: "http://timetagger.timetagger.svc.cluster.local:80"
-      podSecurityContext:
-        runAsNonRoot: true
-        runAsUser: 65532
-        seccompProfile:
-          type: "RuntimeDefault"
+    valuesFile: ./cloudflare-values.yaml
   - name: app-template
     includeCRDs: true
     repo: https://bjw-s-labs.github.io/helm-charts
