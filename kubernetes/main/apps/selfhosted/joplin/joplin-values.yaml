@@ -8,7 +8,7 @@ controllers:
         image:
           repository: joplin/server
           # renovate: datasource=docker depName=joplin/server
-          tag: 3.4.3
+          tag: 3.5.2
         env:
           APP_BASE_URL: https://joplin.fieldsofbears.com
           APP_PORT: &port 8080
