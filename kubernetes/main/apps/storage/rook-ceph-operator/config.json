@@ -4,6 +4,6 @@
   "serverSideApply": true,
   "ignoreDifferences": [],
   "group": "storage-operator",
-  "dependencies": ["prometheus-operator"],
+  "dependencies": ["prometheus-operator", "rook-ceph"],
   "wave": "2"
 }
