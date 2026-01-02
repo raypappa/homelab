@@ -7,7 +7,7 @@ helmCharts:
     includeCRDs: true
     repo: https://helm.openwebui.com
     releaseName: open-webui
-    version: 8.12.2
+    version: 8.22.1
     valuesFile: ollama-values.yaml
   - name: cloudflare-tunnel
     repo: https://cloudflare.github.io/helm-charts
