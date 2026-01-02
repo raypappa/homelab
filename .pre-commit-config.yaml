@@ -91,6 +91,6 @@ repos:
         files: "config\\.json(\\.disabled)?"
   - repo: https://github.com/astral-sh/uv-pre-commit
     # uv version.
-    rev: 0.9.5
+    rev: 0.9.21
     hooks:
       - id: uv-lock
