@@ -8,7 +8,7 @@ helmCharts:
     repo: oci://ghcr.io/grafana/helm-charts
     namespace: monitoring
     releaseName: grafana
-    version: 10.1.2
+    version: 10.4.3
     valuesFile: grafana-values.yaml
 resources:
   - ./externalsecret.yaml
