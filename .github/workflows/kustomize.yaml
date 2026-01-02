@@ -8,7 +8,7 @@ jobs:
     runs-on: ${{ vars.RUNS_ON }}
     steps:
       - name: "Checkout"
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
       - uses: syntaqx/setup-kustomize@v1
         with:
           kustomize-version: 5.3.0
