@@ -8,5 +8,5 @@ helmCharts:
     repo: https://bjw-s-labs.github.io/helm-charts
     namespace: home-assistant
     releaseName: piper
-    version: 3.7.3
+    version: 4.5.0
     valuesFile: values.yaml
