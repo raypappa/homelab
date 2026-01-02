@@ -13,7 +13,7 @@ importers:
         version: 2.3.10
       '@cspell/dict-data-science':
         specifier: ^2.0.1
-        version: 2.0.11
+        version: 2.0.13
       '@cspell/dict-fullstack':
         specifier: ^3.1.8
         version: 3.2.7
@@ -347,9 +347,6 @@ packages:
 
   '@cspell/dict-dart@2.3.2':
     resolution: {integrity: sha512-sUiLW56t9gfZcu8iR/5EUg+KYyRD83Cjl3yjDEA2ApVuJvK1HhX+vn4e4k4YfjpUQMag8XO2AaRhARE09+/rqw==}
-
-  '@cspell/dict-data-science@2.0.11':
-    resolution: {integrity: sha512-Dt+83nVCcF+dQyvFSaZjCKt1H5KbsVJFtH2X7VUfmIzQu8xCnV1fUmkhBzGJ+NiFs99Oy9JA6I9EjeqExzXk7g==}
 
   '@cspell/dict-data-science@2.0.13':
     resolution: {integrity: sha512-l1HMEhBJkPmw4I2YGVu2eBSKM89K9pVF+N6qIr5Uo5H3O979jVodtuwP8I7LyPrJnC6nz28oxeGRCLh9xC5CVA==}
@@ -2229,8 +2226,6 @@ snapshots:
   '@cspell/dict-css@4.0.19': {}
 
   '@cspell/dict-dart@2.3.2': {}
-
-  '@cspell/dict-data-science@2.0.11': {}
 
   '@cspell/dict-data-science@2.0.13': {}
 
