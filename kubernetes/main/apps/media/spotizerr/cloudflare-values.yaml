@@ -7,4 +7,9 @@ cloudflare:
   tunnelName: "faerun-spotizerr"
   ingress:
     - hostname: "spotizerr.fieldsofbears.com"
-      service: "http://spotizerr-server.immich.svc.cluster.local:80"
+      service: "http://spotizerr.spotizerr.svc.cluster.local:80"
+podSecurityContext:
+  runAsNonRoot: true
+  runAsUser: 65532
+  seccompProfile:
+    type: "RuntimeDefault"

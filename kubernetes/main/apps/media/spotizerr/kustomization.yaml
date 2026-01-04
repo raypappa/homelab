@@ -1,6 +1,7 @@
 ---
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
+namespace: spotizerr
 helmCharts:
   - name: app-template
     repo: https://bjw-s-labs.github.io/helm-charts
@@ -14,3 +15,10 @@ helmCharts:
     releaseName: spotizerr
     namespace: spotizerr
     valuesFile: cloudflare-values.yaml
+resources:
+  - ./base/pvc/config/volsync-external-secret.yaml
+  - ./base/pvc/config/volsync-replication-source.yaml
+  - ./base/pvc/config/volsync-replication-destination.yaml
+  - ./base/pvc/progress/volsync-external-secret.yaml
+  - ./base/pvc/progress/volsync-replication-destination.yaml
+  - ./base/pvc/progress/volsync-replication-source.yaml

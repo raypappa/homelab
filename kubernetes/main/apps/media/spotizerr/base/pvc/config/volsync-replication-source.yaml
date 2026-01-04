@@ -1,0 +1,31 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/volsync.backube/replicationsource_v1alpha1.json
+apiVersion: volsync.backube/v1alpha1
+kind: ReplicationSource
+metadata:
+  name: spotizerr-config-backblaze
+spec:
+  sourcePVC: spotizerr-config
+  trigger:
+    schedule: 0 0 * * *
+  restic:
+    copyMethod: Snapshot
+    pruneIntervalDays: 7
+    repository: spotizerr-config-volsync-backblaze-secret
+    volumeSnapshotClassName: ceph-block
+    cacheCapacity: 1Gi
+    cacheStorageClassName: openebs-hostpath
+    cacheAccessModes:
+      - ReadWriteOnce
+    storageClassName: ceph-block
+    accessModes:
+      - ReadWriteOnce
+    moverSecurityContext:
+      runAsUser: 1001
+      runAsGroup: 1001
+      fsGroup: 1001
+      runAsNonRoot: true
+      seccompProfile:
+        type: RuntimeDefault
+    retain:
+      daily: 7

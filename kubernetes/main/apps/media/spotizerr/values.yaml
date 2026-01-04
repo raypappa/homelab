@@ -1,68 +1,84 @@
 ---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/refs/heads/main/charts/other/app-template/values.schema.json
+defaultPodOptions:
+  securityContext:
+    runAsUser: 1001
+    runAsGroup: 1001
+    fsGroup: 1001
+    fsGroupChangePolicy: OnRootMismatch
+    runAsNonRoot: true
+    seccompProfile:
+      type: RuntimeDefault
 controllers:
   spotizerr:
+    annotations:
+      reloader.stakater.com/auto: "true"
+    pod:
+      securityContext:
+        runAsUser: 1001
+        runAsGroup: 1001
+        fsGroup: 1001
+        fsGroupChangePolicy: "OnRootMismatch"
+        runAsNonRoot: true
     strategy: RollingUpdate
     initContainers:
       config-copy:
+        securityContext:
+          capabilities:
+            drop:
+              - ALL
+          allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: true
+          seccompProfile:
+            type: RuntimeDefault
+          runAsUser: 1001
+          runAsGroup: 1001
         image:
           repository: mikefarah/yq
           tag: 4.50.1
-        securityContext:
-          runAsUser: 0
-          runAsGroup: 1000
-          allowPrivilegeEscalation: false
         command:
           - /bin/sh
           - -c
-          - yq -o json /config/main.yaml > /app/config/main.json && chown -R 1000:1000
+          - yq -o json /config/main.yaml > /app/config/main.json && chown -R 1001:1001
             /app/config
     containers:
       app:
+        securityContext:
+          capabilities:
+            drop:
+              - ALL
+          allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: true
+          seccompProfile:
+            type: RuntimeDefault
         image:
           repository: cooldockerizer93/spotizerr
           # renovate: datasource=docker depName=cooldockerizer93/spotizerr
           tag: "3.3.0"
-        # env:
-        #   PUID: "1000"
-        #   PGID: "1000"
+        env:
+          PUID: "1001"
+          PGID: "1001"
         command:
           - /bin/sh
           - -c
           - mkdir -p /app/creds/spotify/MyAccount/ && cp /secrets/spotify.json /app/creds/spotify/MyAccount/credentials.json
-            && chown -R 1000:1000 /app/prgs && chmod +x /app/entrypoint.sh && /app/entrypoint.sh
+            && chown -R 1001:1001 /app/prgs && chmod +x /app/entrypoint.sh && /app/entrypoint.sh
             python app.py
 service:
   spotizerr:
     controller: spotizerr
+    type: LoadBalancer
+    annotations:
+      external-dns.alpha.kubernetes.io/hostname: spotizerr.stoneydavis.local
+      external-dns.alpha.kubernetes.io/ttl: "1800"
+      external-dns.alpha.kubernetes.io/webhook-comment: "k8s_managed"
+      external-dns.alpha.kubernetes.io/webhook-match-subdomain: "true"
+      external-dns.alpha.kubernetes.io/webhook-disabled: "false"
+    externalTrafficPolicy: Cluster
     ports:
       http:
-        port: 7171
-ingress:
-  spotizerr:
-    enabled: true
-    annotations:
-      kubernetes.io/ingress.class: nginx
-      gethomepage.dev/enabled: "true"
-      gethomepage.dev/group: Piracy
-      gethomepage.dev/icon: spotify
-      gethomepage.dev/name: Spotify Downloader
-      gethomepage.dev/description: Download albums or playlists from spotify to the
-        Nas
-      uptimekuma.io/monitor: "true"
-      uptimekuma.io/name: "Spotifzerr"
-      uptimekuma.io/type: "http"
-      uptimekuma.io/interval: "120"
-    hosts:
-      - host: spotdl.herrington.services
-        paths:
-          - path: /
-            service:
-              identifier: spotizerr
-              port: http
-    tls:
-      - secretName: spotizerr
-        hosts:
-          - spotdl.herrington.services
+        targetPort: 7171
+        port: 80
 persistence:
   config:
     type: persistentVolumeClaim
@@ -70,12 +86,20 @@ persistence:
     size: 500Mi
     globalMounts:
       - path: /app/config
+    dataSourceRef:
+      kind: ReplicationDestination
+      apiGroup: volsync.backube
+      name: spotizerr-config-dst
   progress:
     type: persistentVolumeClaim
     accessMode: ReadWriteOnce
     size: 500Mi
     globalMounts:
       - path: /app/prgs
+    dataSourceRef:
+      kind: ReplicationDestination
+      apiGroup: volsync.backube
+      name: spotizerr-progress-dst
   credentials:
     type: secret
     name: credentials
