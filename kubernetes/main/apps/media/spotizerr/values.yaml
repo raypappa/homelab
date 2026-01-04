@@ -83,7 +83,7 @@ persistence:
   config:
     type: persistentVolumeClaim
     accessMode: ReadWriteOnce
-    size: 500Mi
+    size: 1Gi
     globalMounts:
       - path: /app/config
     dataSourceRef:
@@ -93,7 +93,7 @@ persistence:
   progress:
     type: persistentVolumeClaim
     accessMode: ReadWriteOnce
-    size: 500Mi
+    size: 1Gi
     globalMounts:
       - path: /app/prgs
     dataSourceRef:
