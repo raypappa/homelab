@@ -84,7 +84,7 @@ persistence:
     accessMode: ReadWriteOnce
     size: 1Gi
     globalMounts:
-      - path: /data
+      - path: /app/data
     dataSourceRef:
       kind: ReplicationDestination
       apiGroup: volsync.backube
