@@ -79,3 +79,13 @@ persistence:
       - path: /app/downloads
     enabled: true
     existingClaim: spotizerr-library-downloads-nfs
+  data:
+    type: persistentVolumeClaim
+    accessMode: ReadWriteOnce
+    size: 1Gi
+    globalMounts:
+      - path: /data
+    dataSourceRef:
+      kind: ReplicationDestination
+      apiGroup: volsync.backube
+      name: spotizerr-data-dst
