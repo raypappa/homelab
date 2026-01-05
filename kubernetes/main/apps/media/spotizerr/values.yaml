@@ -39,7 +39,8 @@ controllers:
         command:
           - /bin/sh
           - -c
-          - yq -o json /config/main.yaml > /app/config/main.json
+          - yq -o json /config/main.yaml > /app/config/main.json && mkdir -p /app/creds/spotify/MyAccount/
+            && cp /secrets/spotify.json /app/creds/spotify/MyAccount/credentials.json
     containers:
       app:
         securityContext:
@@ -57,12 +58,6 @@ controllers:
         env:
           PUID: "1001"
           PGID: "1001"
-        command:
-          - /bin/sh
-          - -c
-          - mkdir -p /app/creds/spotify/MyAccount/ && cp /secrets/spotify.json /app/creds/spotify/MyAccount/credentials.json
-            && chown -R 1001:1001 /app/prgs && chmod +x /app/entrypoint.sh && /app/entrypoint.sh
-            python app.py
 service:
   spotizerr:
     controller: spotizerr
