@@ -39,8 +39,7 @@ controllers:
         command:
           - /bin/sh
           - -c
-          - yq -o json /config/main.yaml > /app/config/main.json && chown -R 1001:1001
-            /app/config
+          - yq -o json /config/main.yaml > /app/config/main.json
     containers:
       app:
         securityContext:
