@@ -27,7 +27,7 @@ resources:
   - ./base/tunnel-credentials.yaml
 # kustomization.yaml
 configMapGenerator:
-  - name: configuration
+  - name: spotizerr-configuration
     files:
       - config/main.yaml
     options:

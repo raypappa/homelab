@@ -102,12 +102,12 @@ persistence:
       name: spotizerr-progress-dst
   credentials:
     type: secret
-    name: credentials
+    name: spotizerr-credentials
     globalMounts:
       - path: /secrets
   config-map:
     type: configMap
-    name: configuration
+    name: spotizerr-configuration
     globalMounts:
       - path: /config
   downloads:
