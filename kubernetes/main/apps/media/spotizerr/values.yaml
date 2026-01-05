@@ -21,26 +21,6 @@ controllers:
         fsGroupChangePolicy: "OnRootMismatch"
         runAsNonRoot: true
     strategy: RollingUpdate
-    initContainers:
-      config-copy:
-        securityContext:
-          capabilities:
-            drop:
-              - ALL
-          allowPrivilegeEscalation: false
-          readOnlyRootFilesystem: true
-          seccompProfile:
-            type: RuntimeDefault
-          runAsUser: 1001
-          runAsGroup: 1001
-        image:
-          repository: mikefarah/yq
-          tag: 4.50.1
-        command:
-          - /bin/sh
-          - -c
-          - yq -o json /config/main.yaml > /app/config/main.json && mkdir -p /app/creds/spotify/MyAccount/
-            && cp /secrets/spotify.json /app/creds/spotify/MyAccount/credentials.json
     containers:
       app:
         securityContext:
@@ -94,16 +74,6 @@ persistence:
       kind: ReplicationDestination
       apiGroup: volsync.backube
       name: spotizerr-progress-dst
-  credentials:
-    type: secret
-    name: spotizerr-credentials
-    globalMounts:
-      - path: /secrets
-  config-map:
-    type: configMap
-    name: spotizerr-configuration
-    globalMounts:
-      - path: /config
   downloads:
     globalMounts:
       - path: /app/downloads
