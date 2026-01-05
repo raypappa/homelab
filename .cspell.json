@@ -93,6 +93,7 @@
     ".gitignore",
     "**/pnpm-lock.yaml",
     "**/*external-secret.yaml",
+    "**/*tunnel-credentials.yaml",
     "**/cluster-secret-store.yaml",
     "ansible/roles/common/files/*"
   ],

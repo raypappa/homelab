@@ -110,3 +110,8 @@ persistence:
     name: configuration
     globalMounts:
       - path: /config
+  downloads:
+    globalMounts:
+      - path: /app/downloads
+    enabled: true
+    existingClaim: spotizerr-library-downloads-nfs
