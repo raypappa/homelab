@@ -22,3 +22,13 @@ resources:
   - ./base/pvc/progress/volsync-external-secret.yaml
   - ./base/pvc/progress/volsync-replication-destination.yaml
   - ./base/pvc/progress/volsync-replication-source.yaml
+  - ./base/app-credentials.yaml
+  - ./base/library-pvc.yaml
+  - ./base/tunnel-credentials.yaml
+# kustomization.yaml
+configMapGenerator:
+  - name: configuration
+    files:
+      - config/main.yaml
+    options:
+      disableNameSuffixHash: true

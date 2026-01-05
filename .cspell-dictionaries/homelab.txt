@@ -318,3 +318,5 @@ darp
 hujson
 anonuid
 anongid
+deezer
+tracknum
