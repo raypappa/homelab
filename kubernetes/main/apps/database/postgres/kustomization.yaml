@@ -15,7 +15,7 @@ helmCharts:
     valuesFile: operator-values.yaml
   - name: crunchy-userinit-controller
     releaseName: crunchy-userinit-controller
-    version: 1.0.1
+    version: 1.0.2
     repo: https://drummyfloyd.github.io/crunchy-userinit-controller
     valuesFile: ./userinit-controller-values.yaml
 resources:
