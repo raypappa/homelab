@@ -43,7 +43,7 @@ sidecar:
   image:
     repository: ghcr.io/kiwigrid/k8s-sidecar
     # renovate: datasource=docker depName=ghcr.io/kiwigrid/k8s-sidecar
-    tag: 2.3.0
+    tag: 2.5.0
   rules:
     searchNamespace: ALL
 singleBinary:
