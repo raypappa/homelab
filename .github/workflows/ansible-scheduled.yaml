@@ -51,7 +51,11 @@ jobs:
           tags: tag:ci
           authkey: ${{ secrets.TAILSCALE_AUTHKEY }}
           use-cache: true
-          args: --login-server weasel.stoneydavis.com
+          args: --login-server=${{ vars.TAILSCALE_LOGIN_SERVER }} --hostname=github-runner-${{
+            github.run_id }}
+
+      - name: Tailscale Test
+        run: tailscale ping ${{ vars.BASTION_HOST }}
       - name: Setup SSH
         run: |
           install -m 600 -D /dev/null ~/.ssh/id_ed25519
