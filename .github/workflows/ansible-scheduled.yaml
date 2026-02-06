@@ -13,6 +13,15 @@ jobs:
       contents: read # apparently setting permissions is holistic rather than additive.
     steps:
       - uses: actions/checkout@v6
+      - name: Tailscale
+        uses: tailscale/github-action@v4.1.1
+        with:
+          tags: tag:ci
+          authkey: ${{ secrets.TAILSCALE_AUTHKEY }}
+          use-cache: true
+          args: --login-server=${{ vars.TAILSCALE_LOGIN_SERVER }}
+          hostname: github-runner-${{ github.run_id }}
+          ping: "${{ vars.BASTION_HOST }}"
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v5
         with:
@@ -45,15 +54,6 @@ jobs:
           install -m 600 -D /dev/null ~/.kube/config
           echo "${{ secrets.KUBE_CONFIG }}" | base64 -d > ~/.kube/config
           stat ~/.kube/config
-      - name: Tailscale
-        uses: tailscale/github-action@v4.1.1
-        with:
-          tags: tag:ci
-          authkey: ${{ secrets.TAILSCALE_AUTHKEY }}
-          use-cache: true
-          args: --login-server=${{ vars.TAILSCALE_LOGIN_SERVER }}
-          hostname: github-runner-${{ github.run_id }}
-          ping: "${{ vars.BASTION_HOST }}"
       - name: Setup SSH
         run: |
           install -m 600 -D /dev/null ~/.ssh/id_ed25519
