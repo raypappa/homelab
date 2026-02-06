@@ -16,11 +16,12 @@ jobs:
       - name: Tailscale
         uses: tailscale/github-action@v4.1.1
         with:
+          verbose: true
           tags: tag:ci
           authkey: ${{ secrets.TAILSCALE_AUTHKEY }}
           use-cache: true
           version: latest
-          args: --login-server=${{ vars.TAILSCALE_LOGIN_SERVER }}
+          args: --login-server=${{ vars.TAILSCALE_LOGIN_SERVER }} --accept-dns
           hostname: github-runner-${{ github.run_id }}
           ping: "${{ vars.BASTION_HOST }}"
       - name: Configure AWS Credentials
