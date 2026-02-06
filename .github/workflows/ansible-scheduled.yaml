@@ -53,9 +53,7 @@ jobs:
           use-cache: true
           args: --login-server=${{ vars.TAILSCALE_LOGIN_SERVER }} --hostname=github-runner-${{
             github.run_id }}
-
-      - name: Tailscale Test
-        run: tailscale ping ${{ vars.BASTION_HOST }}
+          ping: "${{ vars.BASTION_HOST }}"
       - name: Setup SSH
         run: |
           install -m 600 -D /dev/null ~/.ssh/id_ed25519
