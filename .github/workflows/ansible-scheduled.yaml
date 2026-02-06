@@ -19,6 +19,7 @@ jobs:
           tags: tag:ci
           authkey: ${{ secrets.TAILSCALE_AUTHKEY }}
           use-cache: true
+          version: latest
           args: --login-server=${{ vars.TAILSCALE_LOGIN_SERVER }}
           hostname: github-runner-${{ github.run_id }}
           ping: "${{ vars.BASTION_HOST }}"
