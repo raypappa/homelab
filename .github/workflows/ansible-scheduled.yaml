@@ -49,11 +49,10 @@ jobs:
         uses: tailscale/github-action@v4.1.1
         with:
           tags: tag:ci
-          version: latest
           authkey: ${{ secrets.TAILSCALE_AUTHKEY }}
           use-cache: true
-          args: --login-server=${{ vars.TAILSCALE_LOGIN_SERVER }} --hostname=github-runner-${{
-            github.run_id }}
+          args: --login-server=${{ vars.TAILSCALE_LOGIN_SERVER }}
+          hostname: github-runner-${{ github.run_id }}
           ping: "${{ vars.BASTION_HOST }}"
       - name: Setup SSH
         run: |
