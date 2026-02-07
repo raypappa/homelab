@@ -7,7 +7,7 @@ controllers:
         image:
           repository: rhasspy/wyoming-piper
           # renovate: datasource=docker depName=rhasspy/wyoming-piper
-          tag: 2.1.2
+          tag: 2.2.2
         probes:
           liveness:
             enabled: false
