@@ -7,6 +7,6 @@ helmCharts:
     namespace: kube-system
     repo: https://raw.githubusercontent.com/kubernetes-csi/csi-driver-nfs/master/charts
     releaseName: csi-driver-nfs
-    version: 4.12.1
+    version: 4.13.0
     includeCRDs: true
     valuesFile: values.yaml
