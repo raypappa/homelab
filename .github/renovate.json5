@@ -58,7 +58,4 @@
     "fileFilters": ["**/package.json", "**/pnpm-lock.yaml"],
     "executionMode": "update"
   },
-  allowedCommands: [
-    "^pnpm install --no-frozen-lockfile$"
-  ]
 }
