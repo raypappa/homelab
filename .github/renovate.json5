@@ -11,15 +11,15 @@
     'github>raypappa/homelab//.github/renovate/customManagers.json5',
     'github>raypappa/homelab//.github/renovate/semanticCommits.json5',
     'github>raypappa/homelab//.github/renovate/commitMessage.json5',
-    "group:nodeJs",
-    "group:jestPlusTSJest",
-    "group:jestPlusTypes",
-    "group:kubernetes",
-    "group:remark",
-    "group:socketio",
-    "group:pulumi",
-    "group:linters",
-    "group:aws-cdkMonorepo"
+    'group:nodeJs',
+    'group:jestPlusTSJest',
+    'group:jestPlusTypes',
+    'group:kubernetes',
+    'group:remark',
+    'group:socketio',
+    'group:pulumi',
+    'group:linters',
+    'group:aws-cdkMonorepo',
   ],
   'pre-commit': {
     enabled: true,
@@ -40,22 +40,31 @@
     ],
   },
   postUpdateOptions: [
-    "pnpmDedupe"
+    'pnpmDedupe',
   ],
   lockFileMaintenance: {
-    "enabled": true,
-    "recreateWhen": "always",
-    "automerge": true,
-    "rebaseStalePrs": true,
-    "branchTopic": "lock-file-maintenance",
-    "commitMessageAction": "Lock file maintenance",
-    "schedule": ["before 4am on monday"],
-    "groupName": null,
-    "prBodyDefinitions": {"Change": "All locks refreshed"}
+    enabled: true,
+    recreateWhen: 'always',
+    automerge: true,
+    rebaseWhen: 'behind-base-branch',
+    branchTopic: 'lock-file-maintenance',
+    commitMessageAction: 'Lock file maintenance',
+    schedule: [
+      'before 4am on monday',
+    ],
+    groupName: null,
+    prBodyDefinitions: {
+      Change: 'All locks refreshed',
+    },
   },
   postUpgradeTasks: {
-    "commands": ["pnpm install --no-frozen-lockfile"],
-    "fileFilters": ["**/package.json", "**/pnpm-lock.yaml"],
-    "executionMode": "update"
+    commands: [
+      'pnpm install --no-frozen-lockfile',
+    ],
+    fileFilters: [
+      '**/package.json',
+      '**/pnpm-lock.yaml',
+    ],
+    executionMode: 'update',
   },
 }
