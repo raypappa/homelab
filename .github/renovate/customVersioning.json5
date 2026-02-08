@@ -22,7 +22,7 @@
     {
       "description": "Group aws-cdk",
       "groupName": "aws-cdk",
-      "matchPackagePatterns": ["aws-cdk", "@aws-cdk/aws-lambda-python-alpha"]
+      "matchPackagePatterns": ["aws-cdk", "@aws-cdk/aws-lambda-python-alpha", "aws-cdk-lib"]
     },
     {
       "description": "Group for all immich updates",
