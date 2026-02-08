@@ -20,3 +20,18 @@ controller:
     runAsUser: 1000
 webhook:
   enabled: true
+  securityContext:
+    allowPrivilegeEscalation: false
+    seccompProfile:
+      type: "RuntimeDefault"
+    capabilities:
+      drop:
+        - ALL
+    readOnlyRootFilesystem: true
+    runAsNonRoot: true
+    runAsUser: 1000
+  podSecurityContext:
+    seccompProfile:
+      type: "RuntimeDefault"
+    runAsNonRoot: true
+    runAsUser: 1000
