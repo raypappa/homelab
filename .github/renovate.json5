@@ -57,14 +57,4 @@
       Change: 'All locks refreshed',
     },
   },
-  postUpgradeTasks: {
-    commands: [
-      'pnpm install --no-frozen-lockfile',
-    ],
-    fileFilters: [
-      '**/package.json',
-      '**/pnpm-lock.yaml',
-    ],
-    executionMode: 'update',
-  },
 }
