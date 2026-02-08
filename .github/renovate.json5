@@ -55,7 +55,7 @@
   },
   postUpgradeTasks: {
     "commands": ["pnpm install --no-frozen-lockfile"],
-    "fileFilters": ["cdk/package.json", "package.json", "package-lock.json"],
+    "fileFilters": ["**/package.json", "**/pnpm-lock.yaml"],
     "executionMode": "update"
   },
   allowedCommands: [
