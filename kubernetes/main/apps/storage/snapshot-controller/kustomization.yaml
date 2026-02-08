@@ -8,7 +8,4 @@ helmCharts:
     releaseName: snapshot-controller
     repo: https://piraeus.io/helm-charts/
     version: 5.0.2
-    includeCRDs: false
     valuesFile: values.yaml
-resources:
-  - https://github.com/kubernetes-csi/external-snapshotter/client/config/crd?ref=master
