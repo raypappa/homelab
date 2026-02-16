@@ -1,16 +1,4 @@
 ---
-- name: Create /var/db
-  ansible.builtin.file:
-    state: directory
-    path: /var/db
-    owner: root
-    group: root
-    mode: "0755"
-- name: Create database
-  ansible.builtin.shell:
-    cmd: sqlite3 /var/db/turndb
-    stdin: "{{ lookup('ansible.builtin.file', 'schema.sql') }}"
-    creates: /var/db/turndb
 - name: Update apt cache.
   ansible.builtin.apt:
     update_cache: true
