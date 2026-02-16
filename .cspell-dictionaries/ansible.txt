@@ -22,3 +22,5 @@ lazydocker
 tflint
 tfenv
 hussainweb
+geerlingguy
+ttafsir
