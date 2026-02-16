@@ -35,3 +35,54 @@
 - name: Include raypappa.coturn
   ansible.builtin.import_role:
     name: raypappa.coturn
+- name: Ensure coturn can access letsencrypt live
+  ansible.builtin.file:
+    path: /etc/letsencrypt
+    group: turnserver
+    owner: root
+    mode: u=rwx,g=rx,o=
+  register: coturn_letsencrypt_dir
+- name: Get list of directories
+  ansible.builtin.find:
+    paths:
+      - /etc/letsencrypt
+    file_type: directory
+    recurse: true
+  register: coturn_letsencrypt_dirs
+- name: Debug coturn_letsencrypt_dirs
+  ansible.builtin.debug:
+    var: coturn_letsencrypt_dirs
+- name: Set ssl cert directory for turnserver
+  ansible.builtin.file:
+    path: "{{ item.path }}"
+    mode: u=rwx,g=rx,o=
+    owner: root
+    group: turnserver
+  with_items: "{{ coturn_letsencrypt_dirs.files }}"
+  register: coturn_letsencrypt_dirs_files
+- name: Get list of certs
+  ansible.builtin.find:
+    paths:
+      - /etc/letsencrypt/live/{{ coturn_realm }}
+      - /etc/letsencrypt/archive/{{ coturn_realm }}
+    patterns: "*.pem"
+    file_type: any
+  register: coturn_letsencrypt_certs
+# - name: Debug coturn_letsencrypt_certs
+#   ansible.builtin.debug:
+#     var: coturn_letsencrypt_certs
+- name: Set ssl cert for turnserver
+  ansible.builtin.file:
+    path: "{{ item.path }}"
+    mode: u=rw,g=r,o=
+    owner: root
+    group: turnserver
+  with_items: "{{ coturn_letsencrypt_certs.files }}"
+  register: coturn_letsencrypt_certs_files
+- name: Restart coturn
+  when:
+    - coturn_letsencrypt_certs_files.changed or coturn_letsencrypt_dirs_files.changed
+      or coturn_letsencrypt_dir.changed
+  ansible.builtin.systemd_service:
+    name: coturn
+    state: restarted
