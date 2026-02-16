@@ -23,7 +23,7 @@
     mode: "0600"
   register: k3s_agent_copied_k3s_config
 - name: Copy K3s service file
-  register: k3s_controlplane_k3s_service
+  register: k3s_agent_k3s_service
   ansible.builtin.template:
     src: k3s.service.j2
     dest: "{{ systemd_dir }}/k3s.service"
@@ -39,4 +39,4 @@
   ansible.builtin.systemd:
     name: k3s
     state: restarted
-  when: k3s_agent_copied_k3s_config.changed and k3s_controlplane_k3s_service.changed
+  when: k3s_agent_copied_k3s_config.changed and k3s_agent_k3s_service.changed
