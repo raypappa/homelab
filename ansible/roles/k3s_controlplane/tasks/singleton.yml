@@ -16,7 +16,7 @@
     group: root
     mode: "0600"
 - name: singleton | Copy K3s service file
-  register: k3s_service
+  register: k3s_controlplane_k3s_service
   ansible.builtin.template:
     src: k3s.service.j2
     dest: "{{ systemd_dir }}/k3s.service"
@@ -43,7 +43,7 @@
 - name: singleton | Register node-token file access mode
   ansible.builtin.stat:
     path: "{{ k3s_server_location }}/server/node-token"
-  register: p
+  register: k3s_controlplane_node_token_stat
 - name: singleton | Change file access node-token
   ansible.builtin.file:
     path: "{{ k3s_server_location }}/server/node-token"
@@ -51,15 +51,15 @@
 - name: singleton | Read node-token from master
   ansible.builtin.slurp:
     path: "{{ k3s_server_location }}/server/node-token"
-  register: node_token
+  register: k3s_controlplane_node_token
 - name: singleton | Store Master node-token and IP address
   ansible.builtin.set_fact:
-    k3s_master_token: "{{ node_token.content | b64decode | regex_replace('\n', '')
-      }}"
+    k3s_controlplane_master_token: "{{ k3s_controlplane_node_token.content | b64decode
+      | regex_replace('\n', '') }}"
 - name: singleton | Restore node-token file access
   ansible.builtin.file:
     path: "{{ k3s_server_location }}/server/node-token"
-    mode: "{{ p.stat.mode }}"
+    mode: "{{ k3s_controlplane_node_token_stat.stat.mode }}"
 - name: singleton | Wait for k3s to stabilize
   ansible.builtin.wait_for:
     port: 6443
@@ -70,9 +70,9 @@
   ansible.builtin.find:
     paths: /var/lib/rancher/k3s/server/tls
     patterns: "*.crt"
-  register: controlplane_k3s_certs
+  register: k3s_controlplane_certs
 - name: Chmod 0600 /var/lib/rancher/k3s/server/tls/*.crt
   ansible.builtin.file:
     path: "{{ item.path }}"
     mode: '0600'
-  with_items: "{{ controlplane_k3s_certs.files }}"
+  with_items: "{{ k3s_controlplane_certs.files }}"

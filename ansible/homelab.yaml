@@ -53,3 +53,10 @@
     - nfs_server
   roles:
     - nfs_server
+- name: TURN/STUN server
+  hosts:
+    - weasel.stoneydavis.com
+  roles:
+    - coturn
+  tags:
+    - coturn

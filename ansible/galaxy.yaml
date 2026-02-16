@@ -4,6 +4,12 @@ roles:
   - name: xolyu.mariadb
     version: "0.2.0"
   - name: hussainweb.chezmoi
+    version: main
+  - src: https://github.com/raypappa/ansible-role-coturn.git
+    name: raypappa.coturn
+    version: "main"
+  - name: geerlingguy.certbot
+    version: 5.4.1
 collections:
   - name: community.general
     version: "10.5.0"
@@ -15,3 +21,5 @@ collections:
     version: "1.0.1"
   - name: community.crypto
     version: "3.0.4"
+  - name: ttafsir.sqlite_utils
+    version: "1.4.0"

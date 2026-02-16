@@ -12,6 +12,7 @@
     dest: /var/lib/rancher/k3s/server/psa.yaml
     owner: root
     group: root
+    mode: '0600'
 
 - name: CIS hardening | Install Event Rate Limit config
   ansible.builtin.copy:

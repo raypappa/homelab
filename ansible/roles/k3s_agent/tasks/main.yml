@@ -1,6 +1,7 @@
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/ansible/ansible-lint/main/src/ansiblelint/schemas/ansible.json#/$defs/tasks
-- name: k3s pre-requisites
+# vim:  filetype=ansible.yaml:
+- name: Install k3s pre-requisites
   ansible.builtin.import_role:
     name: _k3s_prereq
 # NON-SINGLETON cluster - 2nd and after HA masters.
@@ -20,9 +21,9 @@
     owner: root
     group: root
     mode: "0600"
-  register: k3s_agents_copied_k3s_config
+  register: k3s_agent_copied_k3s_config
 - name: Copy K3s service file
-  register: k3s_service
+  register: k3s_controlplane_k3s_service
   ansible.builtin.template:
     src: k3s.service.j2
     dest: "{{ systemd_dir }}/k3s.service"
@@ -38,5 +39,4 @@
   ansible.builtin.systemd:
     name: k3s
     state: restarted
-  when: k3s_agents_copied_k3s_config.changed and k3s_service.changed
-  # vim:  filetype=ansible.yaml:
+  when: k3s_agent_copied_k3s_config.changed and k3s_controlplane_k3s_service.changed

@@ -1,5 +1,6 @@
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/ansible/ansible-lint/main/src/ansiblelint/schemas/inventory.json
+# vim: ft=yaml
 # faerun:
 #   hosts:
 # panda.stoneydavis.local:
@@ -39,5 +40,24 @@ nfs_server:
 headscale:
   hosts:
     weasel.stoneydavis.com:
-
-# vim: ft=yaml
+      coturn_static_auth_secret: "{{ lookup('amazon.aws.aws_secret', 'weasel.stoneydavis.com/coturn/auth',
+        region=lookup('env', 'AWS_REGION')) }}"
+      coturn_realm: weasel.stoneydavis.com
+      coturn_install: "src"
+      coturn_listening_port: 3479
+      coturn_tls_cert: /etc/letsencrypt/live/weasel.stoneydavis.com/fullchain.pem
+      coturn_tls_key: /etc/letsencrypt/live/weasel.stoneydavis.com/privkey.pem
+      coturn_alt_listening_port: 0
+      coturn_tls_listening_port: 5349
+      coturn_alt_tls_listening_port: 0
+      coturn_install_src_version: "4.8.0-r1"
+      coturn_tls: False
+      coturn_no_rfc5780: False
+      certbot_admin_email: cdavis@stoneydavis.com
+      certbot_create_if_missing: true
+      certbot_create_standalone_stop_services:
+        - headscale
+      certbot_certs:
+        - name: weasel.stoneydavis.com
+          domains:
+            - weasel.stoneydavis.com

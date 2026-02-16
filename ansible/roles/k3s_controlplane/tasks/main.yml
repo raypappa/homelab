@@ -1,6 +1,6 @@
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/ansible/ansible-lint/main/src/ansiblelint/schemas/ansible.json#/$defs/tasks
-- name: k3s pre-requisites
+- name: Import k3s pre-requisites
   ansible.builtin.import_role:
     name: _k3s_prereq
 - name: Create kubectl symlink

@@ -1,12 +1,12 @@
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/ansible/ansible-lint/main/src/ansiblelint/schemas/ansible.json#/$defs/tasks
-- name: argocd | Wait for k3s to stabilize
+- name: ArgoCD | Wait for k3s to stabilize
   ansible.builtin.wait_for:
     port: 6443
     delay: 10
     timeout: 300
     state: started
-- name: Create ArgoCD namespace
+- name: ArgoCD | Create namespace
   kubernetes.core.k8s:
     kubeconfig: /etc/rancher/k3s/k3s.yaml
     state: present
@@ -21,7 +21,7 @@
           pod-security.kubernetes.io/enforce: baseline
           pod-security.kubernetes.io/warn: baseline
 # Apply argoCD deployment manifest same as what ArgoCD itself is manged with, this eliminates changes during Ansible deploys.
-- name: argocd | Apply ArgoCD Kustomize # this is not the right way to do it but using kubernetes.core.k8s was failing for some reason.
+- name: ArgoCD | Apply Kustomize # this is not the right way to do it but using kubernetes.core.k8s was failing for some reason.
   ansible.builtin.shell:
     cmd: >-
       set -o pipefail &&
@@ -30,12 +30,12 @@
       | k3s kubectl apply -f -
     executable: /bin/bash
   changed_when: true
-- name: argocd | Wait for ArgoCD to be ready
+- name: ArgoCD | Wait for ArgoCD to be ready
   become: false
   retries: 10
-  until: argocd_server_check is not failed
+  until: k3s_controlplane_argocd_server_check is not failed
   delay: 5
-  register: argocd_server_check
+  register: k3s_controlplane_argocd_server_check
   kubernetes.core.k8s_info:
     kubeconfig: /etc/rancher/k3s/k3s.yaml
     host: https://localhost:6443
@@ -43,18 +43,18 @@
       - name = argocd-repo-server
     kind: pod
     namespace: argocd
-- name: argocd | create deploy key
+- name: ArgoCD | Create deploy key
   become: false
   community.crypto.openssh_keypair:
     path: "{{ (ansible_user_dir, '.ssh', 'argocd') | path_join }}"
     type: ed25519
     mode: "0400"
-- name: argocd | Slurp ssh key
-  slurp:
+- name: ArgoCD | Slurp ssh key
+  ansible.builtin.slurp:
     src: "{{ (ansible_user_dir, '.ssh', 'argocd') | path_join }}"
   register: k3s_controlplane_argocd_ssh_key
 # Note: This makes argocd able to use the above ssh key, but the ssh key still needs to be added by hand as a deploy key to the github repo.
-- name: argocd | Configure ArgoCD with SSH Key
+- name: ArgoCD | Configure ArgoCD with SSH Key
   kubernetes.core.k8s:
     kubeconfig: /etc/rancher/k3s/k3s.yaml
     state: present

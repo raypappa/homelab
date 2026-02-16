@@ -18,7 +18,7 @@
     group: root
     mode: "0600"
 - name: cluster | Copy K3s service file
-  register: k3s_service
+  register: k3s_controlplane_k3s_service
   ansible.builtin.template:
     src: k3s.service.j2
     dest: "{{ systemd_dir }}/k3s.service"
@@ -43,9 +43,9 @@
   ansible.builtin.find:
     paths: /var/lib/rancher/k3s/server/tls
     patterns: "*.crt"
-  register: controlplane_k3s_certs
+  register: k3s_controlplane_certs
 - name: Chmod 0600 /var/lib/rancher/k3s/server/tls/*.crt
   ansible.builtin.file:
     path: "{{ item.path }}"
     mode: '0600'
-  with_items: "{{ controlplane_k3s_certs.files }}"
+  with_items: "{{ k3s_controlplane_certs.files }}"
