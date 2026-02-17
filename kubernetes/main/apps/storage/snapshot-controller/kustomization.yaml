@@ -7,5 +7,5 @@ helmCharts:
     namespace: system-controllers
     releaseName: snapshot-controller
     repo: https://piraeus.io/helm-charts/
-    version: 5.0.2
+    version: 5.0.3
     valuesFile: values.yaml
