@@ -17,6 +17,7 @@
 1. [Collabora](https://collaboraonline.github.io/online/)
 1. lidarr
 1. grafana/prometheus for unpackerr
+1. [livekit](https://docs.livekit.io/transport/self-hosting/deployment/) on weasel
 
 ## Migrate to AppSet
 
