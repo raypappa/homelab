@@ -50,7 +50,7 @@ headscale:
       coturn_alt_listening_port: 0
       coturn_tls_listening_port: 5349
       coturn_alt_tls_listening_port: 0
-      coturn_install_src_version: "4.8.0-r1"
+      coturn_install_src_version: "4.8.0"
       coturn_tls: True
       coturn_no_rfc5780: False
       certbot_admin_email: cdavis@stoneydavis.com
