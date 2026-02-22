@@ -325,3 +325,4 @@ coturn
 turnusers
 turndb
 turnserver
+livekit
