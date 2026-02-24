@@ -3,12 +3,12 @@ from pulumi_aws import route53
 from pulumi_aws import iam
 
 class HomeAssistant(pulumi.ComponentResource):
-    def __init__(self, name, hosted_zone_name: str, opts = None):
+    def __init__(self, name, primary_hosted_zone_name: str, opts = None):
         super().__init__('pkg:index:HomeAssistant', name, None, opts)
         ha_user = iam.User("home_assistant_user", name="home-assistant")
         ha_user_access_key = iam.AccessKey("home_assistant_key", user=ha_user.name)
         selected = route53.get_zone(
-            name=hosted_zone_name,
+            name=primary_hosted_zone_name,
             private_zone=False,
         )
         ha_iam_policy_doc = iam.get_policy_document(
