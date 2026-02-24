@@ -1,5 +1,6 @@
 ---
 config:
   aws:region: us-west-2
-  weasel:primary_ipv4: 158.69.224.204
-  weasel:primary_ipv6: 2607:5300:60:95cc::1
+  faerun:weasel:
+    primary_ipv6: 2607:5300:60:95cc::1
+    primary_ipv4: 158.69.224.204
