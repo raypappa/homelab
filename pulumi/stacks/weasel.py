@@ -3,10 +3,10 @@ from pulumi_aws import route53
 
 
 class Weasel(pulumi.ComponentResource):
-    def __init__(self, name, hosted_zone_name: str, opts = None):
+    def __init__(self, name, primary_hosted_zone_name: str, opts = None):
         super().__init__('pkg:index:Weasel', name, None, opts)
         selected = route53.get_zone(
-            name=hosted_zone_name,
+            name=primary_hosted_zone_name,
             private_zone=False,
         )
         route53.Record(
