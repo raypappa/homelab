@@ -2,9 +2,10 @@ import pulumi
 from pulumi_aws import route53
 from pulumi_aws import iam
 
+
 class HomeAssistant(pulumi.ComponentResource):
-    def __init__(self, name, primary_hosted_zone_name: str, opts = None):
-        super().__init__('pkg:index:HomeAssistant', name, None, opts)
+    def __init__(self, name, primary_hosted_zone_name: str, opts=None):
+        super().__init__("pkg:index:HomeAssistant", name, None, opts)
         ha_user = iam.User("home_assistant_user", name="home-assistant")
         ha_user_access_key = iam.AccessKey("home_assistant_key", user=ha_user.name)
         selected = route53.get_zone(
@@ -36,10 +37,8 @@ class HomeAssistant(pulumi.ComponentResource):
             policy=ha_iam_policy_doc.json,
         )
 
-
         pulumi.export("home_assistant_access_key_id", ha_user_access_key.id)
         pulumi.export("home_assistant_secret_access_key", ha_user_access_key.secret)
-
 
         org = pulumi.get_organization()
         proj = pulumi.get_project()
@@ -54,23 +53,27 @@ class HomeAssistant(pulumi.ComponentResource):
             name_prefix="pulumi-oidc",
             assume_role_policy=iam.get_policy_document(
                 statements=[
-                    {
-                        "effect": "Allow",
-                        "actions": ["sts:AssumeRoleWithWebIdentity"],
-                        "principals": [{"type": "Federated", "identifiers": [default.arn]}],
-                        "conditions": [
-                            {
-                                "test": "StringEquals",
-                                "variable": "api.pulumi.com/oidc:aud",
-                                "values": [oidc_aud],
-                            },
-                            {
-                                "test": "StringLike",
-                                "variable": "api.pulumi.com/oidc:sub",
-                                "values": [f"pulumi:deploy:org:{org}:project:{proj}:*"],
-                            },
+                    iam.GetPolicyDocumentStatementArgs(
+                        effect="Allow",
+                        actions=["sts:AssumeRoleWithWebIdentity"],
+                        principals=[
+                            iam.GetPolicyDocumentStatementPrincipalArgs(
+                                type="Federated", identifiers=[default.arn]
+                            )
                         ],
-                    }
+                        conditions=[
+                            iam.GetPolicyDocumentStatementConditionArgs(
+                                test="StringEquals",
+                                variable="api.pulumi.com/oidc:aud",
+                                values=[oidc_aud],
+                            ),
+                            iam.GetPolicyDocumentStatementConditionArgs(
+                                test="StringLike",
+                                variable="api.pulumi.com/oidc:sub",
+                                values=[f"pulumi:deploy:org:{org}:project:{proj}:*"],
+                            ),
+                        ],
+                    )
                 ]
             ).json,
         )
@@ -79,5 +82,3 @@ class HomeAssistant(pulumi.ComponentResource):
             role=pulumi_role.name,
             policy_arn=iam.get_policy(name="AdministratorAccess").arn,
         )
-
-
