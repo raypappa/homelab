@@ -6,8 +6,16 @@ from pulumi_aws import iam
 class HomeAssistant(pulumi.ComponentResource):
     def __init__(self, name, primary_hosted_zone_name: str, opts=None):
         super().__init__("pkg:index:HomeAssistant", name, None, opts)
+
+        org = pulumi.get_organization()
+        proj = pulumi.get_project()
+        oidc_aud = org
+
         ha_user = iam.User("home_assistant_user", name="home-assistant")
         ha_user_access_key = iam.AccessKey("home_assistant_key", user=ha_user.name)
+        self.access_key_id = ha_user_access_key.id
+        self.secret_access_key = ha_user_access_key.secret
+
         selected = route53.get_zone(
             name=primary_hosted_zone_name,
             private_zone=False,
@@ -37,12 +45,6 @@ class HomeAssistant(pulumi.ComponentResource):
             policy=ha_iam_policy_doc.json,
         )
 
-        pulumi.export("home_assistant_access_key_id", ha_user_access_key.id)
-        pulumi.export("home_assistant_secret_access_key", ha_user_access_key.secret)
-
-        org = pulumi.get_organization()
-        proj = pulumi.get_project()
-        oidc_aud = org
 
         default = iam.OpenIdConnectProvider(
             "default", url="https://api.pulumi.com/oidc", client_id_lists=[oidc_aud]
@@ -82,3 +84,7 @@ class HomeAssistant(pulumi.ComponentResource):
             role=pulumi_role.name,
             policy_arn=iam.get_policy(name="AdministratorAccess").arn,
         )
+        self.register_outputs({
+            "access_key_id": self.access_key_id,
+            "secret_access_key": self.secret_access_key,
+        })
