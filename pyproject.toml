@@ -16,7 +16,7 @@ readme = "README.md"
 [dependency-groups]
 dev = [
     "ansible-lint<26.1.2,>=26.1.1; platform_system != \"Windows\"",
-    "commitizen==4.13.6",
+    "commitizen==4.13.9",
     "pre-commit<5.0.0,>=4.0.1",
 ]
 
