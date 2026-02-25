@@ -14,7 +14,7 @@ helmCharts:
     repo: https://bjw-s-labs.github.io/helm-charts
     namespace: whisparr
     releaseName: whisparr
-    version: 3.7.3
+    version: 4.6.2
     valuesFile: values.yaml
 resources:
   - ./volsync-external-secret.yaml

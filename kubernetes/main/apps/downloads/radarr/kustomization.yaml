@@ -14,7 +14,7 @@ helmCharts:
     repo: https://bjw-s-labs.github.io/helm-charts
     namespace: radarr
     releaseName: radarr
-    version: 4.4.0
+    version: 4.6.2
     valuesFile: values.yaml
 resources:
   - ./base/library-pvc.yaml
