@@ -6,7 +6,7 @@ namespace: monitoring
 helmCharts:
   - name: silence-operator
     repo: https://giantswarm.github.io/control-plane-catalog/
-    version: 0.20.0
+    version: 0.20.1
     namespace: monitoring
     releaseName: silence-operator
     valuesFile: silence-operator-values.yaml
