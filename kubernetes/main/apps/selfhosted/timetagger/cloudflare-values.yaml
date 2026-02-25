@@ -1,7 +1,7 @@
 ---
 image:
   # renovate: datasource=docker depName=cloudflare/cloudflared
-  tag: 2025.9.1
+  tag: 2026.2.0
 cloudflare:
   secretName: "timetagger-tunnel-credentials"
   tunnelName: "faerun-timetagger"
