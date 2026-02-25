@@ -54,7 +54,7 @@ repos:
     repo: https://github.com/executablebooks/mdformat
     rev: 0.7.22
   - repo: https://github.com/streetsidesoftware/cspell-cli
-    rev: v9.6.0
+    rev: v9.7.0
     hooks:
       - id: cspell
   - hooks:
