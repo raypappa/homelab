@@ -23,7 +23,7 @@ provider:
     image:
       repository: ghcr.io/mirceanton/external-dns-provider-mikrotik
       # renovate: datasource=docker depName=ghcr.io/mirceanton/external-dns-provider-mikrotik
-      tag: v1.5.9
+      tag: v1.5.12
       pullPolicy: IfNotPresent
     env:
 
