@@ -2,7 +2,7 @@
 image:
   repository: docker.dragonflydb.io/dragonflydb/dragonfly
   # renovate: datasource=docker depName=docker.dragonflydb.io/dragonflydb/dragonfly
-  tag: "v1.36.0"
+  tag: "v1.37.0"
 storage:
   enabled: true
   requests: 10Gi # Set a desired volume size for PVC.
