@@ -16,7 +16,7 @@ class Weasel(pulumi.ComponentResource):
             type=route53.RecordType.A,
             ttl=86400,
             records=[pulumi.Config().require_object("weasel")["primary_ipv4"]],
-            opts=pulumi.ResourceOptions(import_='Z07993151Z48PIABM0XKH_weasel_A')
+            opts=pulumi.ResourceOptions(import_='Z07993151Z48PIABM0XKH_weasel.stoneydavis.com_A')
         )
         route53.Record(
             "weasel_AAAA_record",
