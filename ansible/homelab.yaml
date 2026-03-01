@@ -52,12 +52,18 @@
     - nfs_server
   roles:
     - nfs_server
-- name: TURN/STUN server
+- name: TURN/STUN server(livekit)
   hosts:
     - weasel.stoneydavis.com
   roles:
     - valkey
     - livekit
+  tags:
+    - livekit
+- name: TURN/STUN server
+  hosts:
+    - weasel.stoneydavis.com
+  roles:
     - coturn
   tags:
     - coturn
