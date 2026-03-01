@@ -23,3 +23,6 @@ collections:
     version: "3.0.4"
   - name: ttafsir.sqlite_utils
     version: "1.4.0"
+  - name: https://github.com/raypappa/ansible-role-valkey.git
+    version: "master"
+    type: git

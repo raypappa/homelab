@@ -1,5 +1,7 @@
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/ansible/ansible-lint/main/src/ansiblelint/schemas/ansible.json#/$defs/playbook
+# Headscale should be running first, as deploying tailscale agents on nodes before headscale is working will break a lot of things.
+# Also if needing to re-bootstrap headscale and the rest of the nodes you'll need to use hosts that your local machine will understand how to connect.
 - name: Headscale
   hosts: headscale
   become: true
@@ -17,6 +19,7 @@
     # brand new hosts during the first ansibilization.
     - common_critical
     - common
+    - common_reboot # if any updates to disk are requesting a reboot at the end, ensure we reboot
 - name: Production Kubernetes Control Plane
   order: sorted
   tags:
@@ -39,15 +42,11 @@
 # - name: Development Kubernetes Control Plane
 #   hosts: dev_k8s_controlplane
 #   roles:
-#     - k3s-controlplane
+#     - k3s_controlplane
 # - name: Development Kubernetes Noes
 #   hosts: dev_k8s_nodes
 #   roles:
-#     - k3s-nodes
-- name: Reboot hosts
-  hosts: all
-  roles:
-    - common_reboot # if any updates to disk are requesting a reboot at the end, ensure we reboot
+#     - k3s_agent
 - name: NFS Server
   hosts:
     - nfs_server
@@ -57,6 +56,8 @@
   hosts:
     - weasel.stoneydavis.com
   roles:
+    - valkey
+    - livekit
     - coturn
   tags:
     - coturn
