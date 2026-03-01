@@ -1,0 +1,40 @@
+#SPDX-License-Identifier: MIT-0
+---
+# defaults file for livekit
+livekit_version: "1.9.11"
+livekit_install_config_file: true
+livekit_architecture:
+  aarch64: arm64
+  x86_64: amd64
+
+livekit_config_file: /etc/livekit-server.yaml
+livekit_service_name: livekit-server
+livekit_config:
+  port: 7880
+  bind_addresses:
+    - ""
+  rtc:
+    tcp_port: 7881
+    port_range_start: 50000
+    port_range_end: 60000
+    use_external_ip: true
+    enable_loopback_candidate: false
+  redis:
+    address: localhost:6379
+    username: ""
+    password: ""
+    db: 0
+    use_tls: false
+    sentinel_master_name: ""
+    sentinel_username: ""
+    sentinel_password: ""
+    sentinel_addresses: []
+    cluster_addresses: []
+    max_redirects: null
+  turn:
+    enabled: true
+    domain: weasel.stoneydavis.com
+    tls_port: 5350
+    udp_port: 3480
+    external_tls: true
+  keys: {}

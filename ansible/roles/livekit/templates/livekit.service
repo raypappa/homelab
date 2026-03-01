@@ -1,0 +1,11 @@
+[Unit]
+Description=LiveKit Server Container
+
+[Service]
+LimitNOFILE=500000
+Restart=always
+ExecStart=/usr/local/bin/livekit-server --config {{ livekit_config_file }}
+
+[Install]
+WantedBy=multi-user.target
+
