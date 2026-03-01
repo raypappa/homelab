@@ -1,0 +1,26 @@
+#SPDX-License-Identifier: MIT-0
+---
+# tasks file for livekit
+- name: Install livekit
+  ansible.builtin.unarchive:
+    src: https://github.com/livekit/livekit/releases/download/v${VERSION}/livekit_{{
+      livekit_version }}_linux_{{ livekit_architecture[ansible_facts['architecture']
+      }}.tar.gz
+    dest: /usr/local/bin
+    include:
+      - livekit-server
+- name: Install config file
+  ansible.builtin.template:
+    src: config.yaml.j2
+    dest: "{{ livekit_config_file }}"
+- name: Install service
+  ansible.builtin.template:
+    src: livekit.service
+    dest: /etc/systemd/system/{{ livekit_service_name }}.service
+  notify: "Systemctl reload"
+- name: Flush handlers
+  ansible.builtin.meta: flush_handlers
+- name: Enable livekit-server
+  ansible.builtin.systemd_service:
+    name: "{{ livekit_service_name }}"
+    state: started
