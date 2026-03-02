@@ -3,4 +3,4 @@ pulumi = "latest"
 [tools.node]
 version = "latest"
 [tools."npm:pnpm"]
-version = "10.30.2"
+version = "10.30.3"
