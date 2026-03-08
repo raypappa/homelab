@@ -10,10 +10,15 @@
     dest: /usr/local/bin
     include:
       - livekit-server
+  register: livekit_downloaded
 - name: Install config file
   ansible.builtin.template:
     src: config.yaml.j2
     dest: "{{ livekit_config_file }}"
+    owner: root
+    group: root
+    mode: "0644"
+  register: livekit_task_config_file
 - name: Add service user
   ansible.builtin.user:
     name: "{{ livekit_service_user }}"
@@ -25,13 +30,24 @@
   ansible.builtin.template:
     src: livekit.service
     dest: /etc/systemd/system/{{ livekit_service_name }}.service
-  notify: "Systemctl reload"
-- name: Flush handlers
-  ansible.builtin.meta: flush_handlers
-- name: Enable livekit-server
+  register: livekit_service_installed
+- name: Reload systemctl daemon
+  ansible.builtin.systemd_service:
+    daemon_reload: true
+  when: livekit_service_installed.changed
+- name: Restart livekit
   ansible.builtin.systemd_service:
     name: "{{ livekit_service_name }}"
     state: restarted
+    enabled: true
+  when: livekit_downloaded.changed or livekit_task_config_file.changed or livekit_service_installed.changed
+  register: livekit_restarted
+- name: Enable livekit
+  ansible.builtin.systemd_service:
+    name: "{{ livekit_service_name }}"
+    state: started
+    enabled: true
+  when: livekit_restarted.skipped
 - name: Install lk-jwt-service
   tags:
     - livekit-jwt
