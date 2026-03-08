@@ -4,3 +4,9 @@
 - name: Systemctl reload
   ansible.builtin.systemd_service:
     daemon_reload: true
+- name: Validate Nginx config
+  ansible.builtin.command:
+    cmd: nginx -t
+- name: Nginx reload
+  ansible.builtin.command:
+    cmd: nginx -s reload

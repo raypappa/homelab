@@ -326,3 +326,5 @@ turnusers
 turndb
 turnserver
 livekit
+homeservers
+valkeydb

@@ -9,6 +9,7 @@ livekit_architecture:
 
 livekit_config_file: /etc/livekit-server.yaml
 livekit_service_name: livekit-server
+livekit_service_user: livekit
 livekit_config:
   port: 7880
   bind_addresses:
@@ -33,8 +34,12 @@ livekit_config:
     max_redirects: null
   turn:
     enabled: true
-    domain: weasel.stoneydavis.com
+    domain: ""
+    relay_range_start: 60100
+    relay_range_end: 60200
     tls_port: 5350
     udp_port: 3480
-    external_tls: true
   keys: {}
+livekit_jwt_port: 8956
+livekit_jwt_proxy_port: 8957
+livekit_jwt_homeservers: ""

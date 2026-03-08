@@ -1,0 +1,79 @@
+---
+
+- name: Update apt cache.
+  ansible.builtin.apt:
+    update_cache: true
+    cache_valid_time: 600
+  when: ansible_facts.os_family|lower == 'debian'
+  changed_when: false
+- name: Install certbot dependencies (RedHat)
+  ansible.builtin.package:
+    name:
+      - cronie
+      - epel-release
+    state: present
+  when: ansible_facts.os_family|lower == 'redhat'
+- name: Install cron (Debian).
+  ansible.builtin.package:
+    name: cron
+    state: present
+  when: ansible_facts.os_family|lower == 'debian'
+- name: Include certbot
+  ansible.builtin.import_role:
+    name: geerlingguy.certbot
+- name: Add letsencrypt group
+  ansible.builtin.group:
+    name: letsencrypt
+- name: Ensure group can access letsencrypt live
+  ansible.builtin.file:
+    path: /etc/letsencrypt
+    group: letsencrypt
+    owner: root
+    recurse: true
+- name: Ensure group can access letsencrypt live
+  ansible.builtin.file:
+    path: /etc/letsencrypt
+    mode: u=rwx,g=rx,o=
+  register: letsencrypt_letsencrypt_dir
+- name: Get list of directories
+  ansible.builtin.find:
+    paths:
+      - /etc/letsencrypt
+    file_type: directory
+    recurse: true
+  register: letsencrypt_letsencrypt_dirs
+- name: Debug letsencrypt_letsencrypt_dirs
+  ansible.builtin.debug:
+    var: letsencrypt_letsencrypt_dirs
+- name: Set ssl cert directory for letsencrypt
+  ansible.builtin.file:
+    path: "{{ item.path }}"
+    mode: u=rwx,g=rx,o=
+    owner: root
+    group: letsencrypt
+  with_items: "{{ letsencrypt_letsencrypt_dirs.files }}"
+  register: letsencrypt_letsencrypt_dirs_files
+- name: list letsencrypt domains
+  ansible.builtin.find:
+    paths:
+      - /etc/letsencrypt/live/
+      - /etc/letsencrypt/archive/
+    file_type: directory
+  register: letsencrypt_domain_dirs
+- name: Get list of certs
+  ansible.builtin.find:
+    paths: "{{ letsencrypt_domain_dirs.files | map(attribute='path') }}"
+    patterns: "*.pem"
+    file_type: any
+  register: letsencrypt_letsencrypt_certs
+# - name: Debug letsencrypt_letsencrypt_certs
+#   ansible.builtin.debug:
+#     var: letsencrypt_letsencrypt_certs
+- name: Set ssl cert for letsencrypt
+  ansible.builtin.file:
+    path: "{{ item.path }}"
+    mode: u=rw,g=r,o=
+    owner: root
+    group: letsencrypt
+  with_items: "{{ letsencrypt_letsencrypt_certs.files }}"
+  register: letsencrypt_letsencrypt_certs_files

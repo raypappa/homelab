@@ -1,0 +1,64 @@
+---
+- name: Install lk-jwt-service
+  ansible.builtin.get_url:
+    url: https://github.com/element-hq/lk-jwt-service/releases/latest/download/lk-jwt-service_linux_amd64
+    dest: /usr/local/bin/livekit-jwt
+    owner: "{{ livekit_service_user }}"
+    group: "{{ livekit_service_user }}"
+    mode: "0755"
+  register: livekit_jwt_downloaded
+- name: Install service for lk-jwt-service
+  ansible.builtin.template:
+    src: livekit-jwt.service
+    dest: /etc/systemd/system/livekit-jwt.service
+    owner: root
+    group: root
+    mode: "0644"
+  register: livekit_jwt_service_installed
+- name: Reload systemctl daemon
+  ansible.builtin.systemd_service:
+    daemon_reload: true
+  when: livekit_jwt_service_installed.changed
+- name: Restart livekit-jwt
+  ansible.builtin.systemd_service:
+    name: livekit-jwt
+    state: restarted
+  when: livekit_jwt_downloaded.changed and livekit_jwt_service_installed.changed
+  register: livekit_jwt_restarted
+- name: Enable livekit-jwt
+  ansible.builtin.systemd_service:
+    name: livekit-jwt
+    state: started
+    enabled: true
+  when: livekit_jwt_restarted.skipped
+- name: install nginx
+  ansible.builtin.package:
+    name:
+      - nginx
+- name: disable nginx default site
+  ansible.builtin.file:
+    path: /etc/nginx/sites-enabled/default
+    state: absent
+- name: start nginx
+  ansible.builtin.systemd_service:
+    name: nginx
+    enabled: true
+    state: started
+- name: configure nginx site
+  ansible.builtin.template:
+    src: livekit-jwt-nginx.conf
+    dest: /etc/nginx/sites-available/livekit-jwt
+    owner: root
+    group: root
+    mode: "0644"
+- name: enable nginx site
+  ansible.builtin.file:
+    src: /etc/nginx/sites-available/livekit-jwt
+    dest: /etc/nginx/sites-enabled/livekit-jwt
+    owner: root
+    group: root
+    mode: "0644"
+    state: link
+  notify:
+    - "Nginx reload"
+    - "Validate Nginx config"

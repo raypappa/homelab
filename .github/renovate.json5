@@ -25,16 +25,19 @@
     enabled: true,
   },
   ansible: {
+    enabled: true,
     managerFilePatterns: [
       '/(^|)tasks/[^/]+\\.ya?ml$/',
     ],
   },
   'ansible-galaxy': {
+    enabled: true,
     managerFilePatterns: [
       '/(^|/)(galaxy|requirements)(\\.ansible)?\\.ya?ml$/',
     ],
   },
   argocd: {
+    enabled: true,
     managerFilePatterns: [
       '/(^|/)kubernetes/.+\\.ya?ml(?:\\.j2)?$/',
     ],

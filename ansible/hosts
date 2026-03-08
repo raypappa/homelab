@@ -19,3 +19,6 @@ nfs_server:
 headscale:
   hosts:
     weasel.stoneydavis.com:
+turn_stun:
+  hosts:
+    weasel.stoneydavis.com:

@@ -52,17 +52,27 @@
     - nfs_server
   roles:
     - nfs_server
+- name: Certbot
+  hosts:
+    - turn_stun
+  roles:
+    - certbot
+  tags:
+    - livekit
+    - certbot
+    - coturn
+    - letsencrypt
 - name: TURN/STUN server(livekit)
   hosts:
-    - weasel.stoneydavis.com
+    - turn_stun
   roles:
-    - valkey
+    - stoneydavis.valkey.valkeydb
     - livekit
   tags:
     - livekit
-- name: TURN/STUN server
+- name: TURN/STUN server(coturn)
   hosts:
-    - weasel.stoneydavis.com
+    - turn_stun
   roles:
     - coturn
   tags:

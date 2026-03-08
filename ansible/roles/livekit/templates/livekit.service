@@ -5,6 +5,7 @@ Description=LiveKit Server Container
 LimitNOFILE=500000
 Restart=always
 ExecStart=/usr/local/bin/livekit-server --config {{ livekit_config_file }}
+User={{ livekit_service_user }}
 
 [Install]
 WantedBy=multi-user.target

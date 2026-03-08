@@ -10,9 +10,17 @@ roles:
     version: "main"
   - name: geerlingguy.certbot
     version: 5.4.1
+  - name: nginxinc.nginx
+    src: https://github.com/nginx/ansible-role-nginx.git
+    # renovate: datasource=git-refs packageName=https://github.com/nginx/ansible-role-nginx.git currentValue=main
+    version: 5271d0c6b23f81bbbebed427b460330b2d04158f
+  - name: nginxinc.nginx_config
+    src: https://github.com/nginx/ansible-role-nginx-config.git
+    # renovate: datasource=git-refs packageName=https://github.com/nginx/ansible-role-nginx-config.git currentValue=main
+    version: 2df21603d958a6171c7a7d5d274cfc5e84f85a05
 collections:
   - name: community.general
-    version: "10.5.0"
+    version: "10.7.0"
   - name: https://github.com/stoneydavis/ansible-collection-pterodactyl.git
     type: git
   - name: community.docker
@@ -26,3 +34,5 @@ collections:
   - name: https://github.com/raypappa/ansible-role-valkey.git
     version: "master"
     type: git
+  - name: ansible.posix
+    version: 2.0.0
