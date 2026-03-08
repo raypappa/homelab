@@ -3,8 +3,9 @@
 # tasks file for livekit
 - name: Install livekit
   ansible.builtin.unarchive:
-    src: https://github.com/livekit/livekit/releases/download/v${VERSION}/livekit_{{
-      livekit_version }}_linux_{{ livekit_architecture[ansible_facts['architecture']
+    remote_src: true
+    src: https://github.com/livekit/livekit/releases/download/v{{ livekit_version
+      }}/livekit_{{ livekit_version }}_linux_{{ livekit_architecture[ansible_facts.architecture]
       }}.tar.gz
     dest: /usr/local/bin
     include:
@@ -13,6 +14,13 @@
   ansible.builtin.template:
     src: config.yaml.j2
     dest: "{{ livekit_config_file }}"
+- name: Add service user
+  ansible.builtin.user:
+    name: "{{ livekit_service_user }}"
+    groups:
+      - letsencrypt
+    append: true
+    system: true
 - name: Install service
   ansible.builtin.template:
     src: livekit.service
@@ -23,4 +31,28 @@
 - name: Enable livekit-server
   ansible.builtin.systemd_service:
     name: "{{ livekit_service_name }}"
-    state: started
+    state: restarted
+- name: Install lk-jwt-service
+  tags:
+    - livekit-jwt
+  ansible.builtin.import_tasks:
+    file: livekit-jwt.yaml
+- name: test livekit
+  tags:
+    - never
+    - debug
+  block:
+    - name: livekit test username fact
+      ansible.builtin.set_fact:
+        livekit_test_user: "{{ now(fmt='%s') | int + 3600 }}:test"
+    - name: livekit test password
+      no_log: true
+      ansible.builtin.shell: >
+        echo -n "{{ livekit_test_user }}" | openssl dgst -hmac "{{ livekit_config['keys']
+        | items | first | last }}" -sha1 -binary | base64
+      register: livekit_test_password_out
+    - name: debug livekit test data
+      no_log: true
+      ansible.builtin.debug:
+        msg: "{{ livekit_test_user }} -- {{ livekit_test_password_out.stdout }} --
+          turn:{{ certbot_certs[0].name }}:{{ livekit_jwt_proxy_port }}"
