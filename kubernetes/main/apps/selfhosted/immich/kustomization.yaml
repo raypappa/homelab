@@ -4,7 +4,7 @@ kind: Kustomization
 helmCharts:
   - name: immich
     repo: https://immich-app.github.io/immich-charts
-    version: 0.9.3
+    version: 0.10.3
     namespace: immich
     releaseName: immich
     valuesFile: immich-values.yaml
