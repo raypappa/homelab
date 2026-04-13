@@ -328,3 +328,5 @@ turnserver
 livekit
 homeservers
 valkeydb
+headscale
+juanfont
