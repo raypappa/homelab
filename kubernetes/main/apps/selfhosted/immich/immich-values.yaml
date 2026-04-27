@@ -6,12 +6,13 @@ immich:
     library:
       existingClaim: immich-library
 redis:
-  enabled: true
+  enabled: false
 image:
   # renovate: datasource=docker depName=ghcr.io/immich-app/immich-server
   tag: v2.0.1
 env:
   TZ: America/Los_Angeles
+  REDIS_HOSTNAME: dragonfly.database.svc.cluster.local
   DB_HOSTNAME:
     valueFrom:
       secretKeyRef:

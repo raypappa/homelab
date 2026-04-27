@@ -9,6 +9,7 @@
     "volsync",
     "rook-ceph-cluster",
     "postgres",
+    "dragonfly",
     "openebs"
   ],
   "wave": "5"
