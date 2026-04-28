@@ -7,4 +7,5 @@ helmCharts:
     releaseName: elastic-operator
     repo: https://helm.elastic.co
     version: 3.3.2
+    valuesFile: values.yaml
     includeCRDs: true
