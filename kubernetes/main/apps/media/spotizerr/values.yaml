@@ -32,9 +32,9 @@ controllers:
           seccompProfile:
             type: RuntimeDefault
         image:
-          repository: cooldockerizer93/spotizerr
-          # renovate: datasource=docker depName=cooldockerizer93/spotizerr
-          tag: "3.3.0"
+          repository: spotizerrphoenix/spotizerr
+          # renovate: datasource=docker depName=spotizerrphoenix/spotizerr
+          tag: "4.0.17"
         env:
           PUID: "1001"
           PGID: "1001"
