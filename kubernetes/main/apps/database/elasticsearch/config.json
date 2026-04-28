@@ -1,0 +1,9 @@
+{
+  "destNamespace": "elastic-system",
+  "appName": "elasticsearch",
+  "serverSideApply": true,
+  "ignoreDifferences": [],
+  "group": "database",
+  "dependencies": ["elasticsearch-operator"],
+  "wave": "2"
+}
