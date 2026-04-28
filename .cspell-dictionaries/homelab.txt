@@ -300,6 +300,8 @@ syncthing
 jellyfin
 tooljet
 supabase
+bbilly
+xpack
 DNSSEC
 LLMNR
 netplan

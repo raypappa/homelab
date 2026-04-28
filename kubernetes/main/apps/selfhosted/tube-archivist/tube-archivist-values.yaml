@@ -1,0 +1,170 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/values.schema.json
+controllers:
+  elasticsearch:
+    annotations:
+      reloader.stakater.com/auto: "true"
+    pod:
+      securityContext:
+        runAsUser: 65534
+        runAsGroup: 65534
+        fsGroup: 65534
+        fsGroupChangePolicy: OnRootMismatch
+        runAsNonRoot: true
+        seccompProfile:
+          type: RuntimeDefault
+    containers:
+      elasticsearch:
+        securityContext:
+          seccompProfile:
+            type: RuntimeDefault
+          allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: true
+          capabilities:
+            drop:
+              - ALL
+        image:
+          repository: docker.io/bbilly1/tubearchivist-es
+          # renovate: datasource=docker depName=docker.io/bbilly1/tubearchivist-es
+          tag: 8.19.0
+          pullPolicy: IfNotPresent
+        env:
+          ELASTIC_PASSWORD:
+            valueFrom:
+              secretKeyRef:
+                name: tube-archivist-elastic-credentials
+                key: password
+          ES_JAVA_OPTS: "-Xms1g -Xmx1g"
+          xpack.security.enabled: "true"
+          discovery.type: "single-node"
+          path.repo: "/usr/share/elasticsearch/data/snapshot"
+  tube-archivist:
+    annotations:
+      reloader.stakater.com/auto: "true"
+    pod:
+      securityContext:
+        runAsUser: 1001
+        runAsGroup: 1001
+        runAsNonRoot: true
+        fsGroup: 1001
+        fsGroupChangePolicy: OnRootMismatch
+    containers:
+      app:
+        securityContext:
+          seccompProfile:
+            type: RuntimeDefault
+          allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: true
+          capabilities:
+            drop:
+              - ALL
+        image:
+          repository: docker.io/bbilly1/tubearchivist
+          # renovate: datasource=docker depName=docker.io/bbilly1/tubearchivist
+          tag: v0.5.10
+          pullPolicy: IfNotPresent
+        env:
+          ES_URL: http://tube-archivist-elasticsearch.tube-archivist.svc.cluster.local:9200
+          REDIS_CON: redis://dragonfly.database.svc.cluster.local:6379
+          HOST_UID: 1001
+          HOST_GID: 1001
+          TA_HOST: http://tube-archivist.stoneydavis.local
+          TA_USERNAME:
+            valueFrom:
+              secretKeyRef:
+                name: tube-archivist-svc-credentials
+                key: username
+          TA_PASSWORD:
+            valueFrom:
+              secretKeyRef:
+                name: tube-archivist-svc-credentials
+                key: password
+          ELASTIC_PASSWORD:
+            valueFrom:
+              secretKeyRef:
+                name: tube-archivist-elastic-credentials
+                key: password
+          TZ: America/Los_Angeles
+        probes:
+          liveness:
+            enabled: true
+            spec:
+              httpGet:
+                path: /api/health/
+                port: &port 8000
+              initialDelaySeconds: 30
+              periodSeconds: 120
+              failureThreshold: 3
+          readiness:
+            enabled: true
+          startup:
+            enabled: true
+            spec:
+              failureThreshold: 30
+              periodSeconds: 5
+        resources:
+          requests:
+            cpu: 18m
+            memory: 128Mi
+          limits:
+            memory: 256Mi
+service:
+  app:
+    controller: tube-archivist
+    ports:
+      http:
+        port: 80
+        targetPort: *port
+    type: LoadBalancer
+    annotations:
+      external-dns.alpha.kubernetes.io/hostname: tube-archivist.stoneydavis.local
+      external-dns.alpha.kubernetes.io/ttl: "1800"
+      external-dns.alpha.kubernetes.io/webhook-comment: "k8s_managed"
+      external-dns.alpha.kubernetes.io/webhook-match-subdomain: "true"
+      external-dns.alpha.kubernetes.io/webhook-disabled: "false"
+    externalTrafficPolicy: Cluster
+  elasticsearch:
+    controller: elasticsearch
+    ports:
+      http:
+        port: 9200
+persistence:
+  cache:
+    enabled: true
+    storageClass: ceph-block
+    accessMode: ReadWriteOnce
+    dataSourceRef:
+      kind: ReplicationDestination
+      apiGroup: volsync.backube
+      name: tube-archivist-cache-dst
+    size: 5Gi
+    advancedMounts:
+      tube-archivist:
+        app:
+          - path: /cache
+  tmp:
+    type: emptyDir
+    globalMounts:
+      - path: /tmp
+  es-data:
+    enabled: true
+    size: 25Gi
+    storageClass: ceph-block
+    accessMode: ReadWriteOnce
+    dataSourceRef:
+      kind: ReplicationDestination
+      name: es-data-dst
+      apiGroup: volsync.backube
+    advancedMounts:
+      elasticsearch:
+        elasticsearch:
+          - path: /usr/share/elasticsearch/data
+  library:
+    enabled: true
+    type: persistentVolumeClaim
+    existingClaim: tube-archivist-library-nfs
+    advancedMounts:
+      tube-archivist:
+        app:
+          - path: /youtube
+            readOnly: true

@@ -1,0 +1,19 @@
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+helmCharts:
+  - name: app-template
+    repo: https://bjw-s-labs.github.io/helm-charts
+    version: 3.7.3
+    namespace: tube-archivist
+    releaseName: tube-archivist
+    valuesFile: tube-archivist-values.yaml
+resources:
+  - ./base/es-external-secret.yaml
+  - ./base/ta-external-secret.yaml
+  - ./base/pvc/es-data/volsync-external-secret.yaml
+  - ./base/pvc/es-data/volsync-replication-destination.yaml
+  - ./base/pvc/es-data/volsync-replication-source.yaml
+  - ./base/pvc/ta-cache/volsync-external-secret.yaml
+  - ./base/pvc/ta-cache/volsync-replication-destination.yaml
+  - ./base/pvc/ta-cache/volsync-replication-source.yaml

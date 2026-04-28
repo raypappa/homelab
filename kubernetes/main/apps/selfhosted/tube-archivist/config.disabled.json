@@ -1,0 +1,15 @@
+{
+  "destNamespace": "tube-archivist",
+  "appName": "tube-archivist",
+  "serverSideApply": false,
+  "ignoreDifferences": [],
+  "group": "selfhosted",
+  "dependencies": [
+    "external-secrets",
+    "volsync",
+    "rook-ceph-cluster",
+    "dragonfly",
+    "openebs"
+  ],
+  "wave": "4"
+}
