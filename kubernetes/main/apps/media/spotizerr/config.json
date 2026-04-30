@@ -11,7 +11,8 @@
     "csi-driver-nfs",
     "prometheus-operator",
     "metallb",
-    "openebs"
+    "openebs",
+    "dragonfly"
   ],
-  "wave": "4"
+  "wave": "5"
 }
