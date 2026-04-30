@@ -45,12 +45,12 @@ controllers:
           DEFAULT_ADMIN_USERNAME:
             valueFrom:
               secretKeyRef:
-                name: spotizerr-admin-secret
+                name: spotizerr-admin
                 key: username
           DEFAULT_ADMIN_PASSWORD:
             valueFrom:
               secretKeyRef:
-                name: spotizerr-admin-secret
+                name: spotizerr-admin
                 key: password
 service:
   spotizerr:
