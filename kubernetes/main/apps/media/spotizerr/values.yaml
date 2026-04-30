@@ -38,6 +38,20 @@ controllers:
         env:
           PUID: "1001"
           PGID: "1001"
+          REDIS_HOST: dragonfly.database.svc.cluster.local
+          REDIS_PORT: "6379"
+          REDIS_DB: "0"
+          REDIS_PASSWORD: ""
+          DEFAULT_ADMIN_USERNAME:
+            valueFrom:
+              secretKeyRef:
+                name: spotizerr-admin-secret
+                key: username
+          DEFAULT_ADMIN_PASSWORD:
+            valueFrom:
+              secretKeyRef:
+                name: spotizerr-admin-secret
+                key: password
 service:
   spotizerr:
     controller: spotizerr
