@@ -89,3 +89,7 @@ persistence:
       kind: ReplicationDestination
       apiGroup: volsync.backube
       name: spotizerr-data-dst
+  logs:
+    type: emptyDir
+    globalMounts:
+      - path: /app/logs
