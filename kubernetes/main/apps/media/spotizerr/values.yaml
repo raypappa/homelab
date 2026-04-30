@@ -41,7 +41,6 @@ controllers:
           REDIS_HOST: dragonfly.database.svc.cluster.local
           REDIS_PORT: "6379"
           REDIS_DB: "0"
-          REDIS_PASSWORD: ""
           DEFAULT_ADMIN_USERNAME:
             valueFrom:
               secretKeyRef:
