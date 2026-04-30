@@ -16,7 +16,7 @@ helmCharts:
     namespace: spotizerr
     valuesFile: cloudflare-values.yaml
 resources:
-  - ./base/externalsecret.yaml
+  - ./base/external-secret.yaml
   - ./base/pvc/config/volsync-external-secret.yaml
   - ./base/pvc/config/volsync-replication-source.yaml
   - ./base/pvc/config/volsync-replication-destination.yaml
