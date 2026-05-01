@@ -3,15 +3,18 @@ apiVersion: v1
 kind: Service
 metadata:
   name: argocd-server
-spec:
-  ports:
-    http:
-      port: 80
-  type: LoadBalancer
   annotations:
     external-dns.alpha.kubernetes.io/hostname: argocd.stoneydavis.local
     external-dns.alpha.kubernetes.io/ttl: "1800"
     external-dns.alpha.kubernetes.io/webhook-comment: "k8s_managed"
     external-dns.alpha.kubernetes.io/webhook-match-subdomain: "true"
     external-dns.alpha.kubernetes.io/webhook-disabled: "false"
+spec:
+  type: LoadBalancer
   externalTrafficPolicy: Cluster
+  selector:
+    app.kubernetes.io/name: argocd-server
+  ports:
+    - name: http
+      port: 80
+      targetPort: 8080
