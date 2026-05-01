@@ -187,6 +187,7 @@ Once the cluster exists, Argo CD becomes the desired-state engine.
 The non-obvious part is the sync ordering:
 
 - `config.json` contains a `dependencies` array and a `wave` value.
+- The `dependencies` array lists apps that must deploy before the current app, typically to ensure custom resource definitions (CRDs) are available. For example, an app using a `ReplicationDestination` (from volsync) lists `volsync` as a dependency.
 - `scripts/dependency_graph.py` loads every app config, validates dependency names, computes dependency groups, rewrites each app's `wave`, and verifies that `appset.yaml`'s `rollingSync.steps` include the maximum computed wave.
 - A local pre-commit hook (`local-config-change`) runs this script whenever `config.json` files change.
 
@@ -206,6 +207,30 @@ Observed example:
 - `kubernetes/main/apps/media/jellyfin/config.json` defines `destNamespace`, `appName`, `group`, `dependencies`, `serverSideApply`, `ignoreDifferences`, and `wave`
 - `kubernetes/main/apps/media/jellyfin/values.yaml` uses the bjw-s `app-template` chart style with `controllers`, `persistence`, `service`, and hardened `securityContext` settings
 - `kubernetes/main/apps/selfhosted/tube-archivist/kustomization.yaml` shows the mixed pattern of `helmCharts:` plus many raw `resources:` entries
+
+#### External-DNS integration
+
+Apps that need external DNS records use a LoadBalancer service with external-dns annotations. The pattern is:
+
+```yaml
+service:
+  app:
+    type: LoadBalancer
+    annotations:
+      metallb.universe.tf/address-pool: metalpool
+      external-dns.alpha.kubernetes.io/hostname: radarr.stoneydavis.local
+      external-dns.alpha.kubernetes.io/ttl: '1800'
+      external-dns.alpha.kubernetes.io/webhook-comment: k8s_managed
+      external-dns.alpha.kubernetes.io/webhook-match-subdomain: 'true'
+      external-dns.alpha.kubernetes.io/webhook-disabled: 'false'
+    externalTrafficPolicy: Cluster
+    ports:
+      http:
+        port: 80
+        targetPort: 9696
+```
+
+External-DNS (`kubernetes/main/apps/system/external-dns`) watches for services with these annotations and automatically creates DNS records. It does not need to be listed in app `dependencies` since it works passively by watching service annotations. Examples: `kubernetes/main/apps/downloads/radarr`, `kubernetes/main/apps/downloads/prowlarr`, `kubernetes/main/apps/downloads/readarr`.
 
 ### 4. AWS-side infrastructure
 
