@@ -15,16 +15,3 @@ spec:
           securityContext:
             seccompProfile:
               type: RuntimeDefault
-          containers:
-            - name: elasticsearch
-              securityContext:
-                seccompProfile:
-                  type: RuntimeDefault
-            - name: elastic-internal-init-filesystem
-              securityContext:
-                seccompProfile:
-                  type: RuntimeDefault
-            - name: elastic-internal-suspend
-              securityContext:
-                seccompProfile:
-                  type: RuntimeDefault
