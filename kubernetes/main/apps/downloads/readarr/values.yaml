@@ -54,9 +54,19 @@ controllers:
 service:
   app:
     controller: readarr
+    type: LoadBalancer
+    annotations:
+      metallb.universe.tf/address-pool: metalpool
+      external-dns.alpha.kubernetes.io/hostname: readarr.stoneydavis.local
+      external-dns.alpha.kubernetes.io/ttl: "1800"
+      external-dns.alpha.kubernetes.io/webhook-comment: "k8s_managed"
+      external-dns.alpha.kubernetes.io/webhook-match-subdomain: "true"
+      external-dns.alpha.kubernetes.io/webhook-disabled: "false"
+    externalTrafficPolicy: Cluster
     ports:
       http:
-        port: *port
+        port: 80
+        targetPort: *port
 persistence:
   config:
     enabled: true
