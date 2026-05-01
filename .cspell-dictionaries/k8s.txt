@@ -134,3 +134,4 @@ eventratelimit
 dbfilename
 drummyfloyd
 mirceanton
+kubesec
