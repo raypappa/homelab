@@ -18,6 +18,7 @@ controllers:
             drop:
               - ALL
           allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: true
         image:
           repository: ghcr.io/home-operations/radarr
           # renovate: datasource=docker depName=ghcr.io/home-operations/radarr
