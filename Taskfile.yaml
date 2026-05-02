@@ -68,8 +68,8 @@ tasks:
     cmds:
       - cmd: echo "Building kustomize for {{.dir}}"
       # - cmd: |
-      #     kustomize build --enable-helm "{{.dir}}" | kubesec scan --schema-location ~/.local/opt/schemas - | {{.ROOT_DIR}}/scripts/kubesec-validate.sh
-      - cmd: kustomize build --enable-helm "{{.dir}}"
+      #     kustomize build --enable-helm "{{.dir}}" | kubesec scan --schema-location ~/.local/opt/schemas - | {{.ROOT_DIR}}/scripts/kubesec-validate.sh >/dev/null
+      - cmd: kustomize build --enable-helm "{{.dir}}" >/dev/null
     requires:
       vars:
         - dir
