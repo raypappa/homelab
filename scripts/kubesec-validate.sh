@@ -11,7 +11,7 @@ invalid_count=$(echo "$json" | jq '[.[] | select(.valid == false)] | length')
 
 if [ "$invalid_count" -gt 0 ]; then
   echo "Error: kubesec found $invalid_count invalid items:"
-  echo "$json" | jq '.[] | select(.valid == false) | {object: .object, valid: .valid}'
+  echo "$json" | jq '.[] | select(.valid == false) | {object: .object, valid: .valid, message: .message}'
   exit 1
 fi
 
