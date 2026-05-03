@@ -8,9 +8,11 @@ This repository manages a homelab as infrastructure-as-code across several layer
 - **Argo CD + ApplicationSet** take over ongoing Kubernetes app deployment after bootstrap.
 - **Kubernetes manifests** live under `kubernetes/main`, mostly as Kustomize trees with Helm chart integration.
 - **AWS CDK** provisions AWS-side resources used by the homelab and CI.
-- **Pulumi** exists as a separate Python workspace for AWS resources, but the checked-in code is currently small/scaffold-like compared with the Ansible/Kubernetes/CDK portions.
+- **Pulumi** exists as a separate Python workspace for AWS resources; currently contains minimal checked-in code.
 
-The high-level control flow is explicitly described in `README.md`: Ansible configures hosts and bootstraps Kubernetes and Argo CD first; after that, additional cluster work should be managed by Argo CD.
+**Control Flow**: Ansible configures hosts and bootstraps Kubernetes and Argo CD first. After bootstrap, all cluster deployments are managed by Argo CD (described in `README.md`).
+
+**For newcomers**: Start with the [First places to look](#first-places-to-look) section, then read the [Architecture and control flow](#architecture-and-control-flow) section.
 
 ## First places to look
 
@@ -44,48 +46,57 @@ Run these from the repository root unless the task wrapper changes directories f
 
 ### Setup
 
+Initialize all dependencies (required once per checkout):
+
 ```bash
 task configure
 ```
 
-What it does:
+This runs:
 
 - `task cdk:configure` → `pnpm install` in `cdk/`
 - `task configure:uv` → `uv sync --all-packages`
 - `task ansible:configure` → `uv run ansible-galaxy install -r galaxy.yaml`
 
-If you only need Python deps:
+For Python dependencies only:
 
 ```bash
 task configure:uv
 ```
 
-### Repo-wide checks
+### Validation and Checks
+
+Lint and check all code:
 
 ```bash
 task check
 pre-commit run -a
 ```
 
-`task check` runs Ansible lint plus `pre-commit run -a`.
+What `task check` does:
+
+- Runs `ansible-lint` on Ansible code
+- Runs `pre-commit run -a` (Biome, yamlfmt, cspell, mdformat, etc.)
 
 ### Kubernetes / Kustomize
 
-Build every checked-in kustomization, including Helm-backed ones:
+Build all Kustomize trees with Helm enabled:
 
 ```bash
 task build:kustomize
 ```
 
-Important: this uses:
+Equivalent to:
 
 ```bash
 kustomize build --enable-helm <dir>
 ```
 
-So local verification needs both **kustomize** and **helm** installed.
+**Important**: Local verification requires both **kustomize** and **helm** installed.
 
 ### Argo CD bootstrap
+
+Deploy Argo CD to the cluster:
 
 ```bash
 task argocd:deploy
@@ -93,55 +104,58 @@ task argocd:deploy:argocd
 task argocd:deploy:appset
 ```
 
-These are plain `kubectl apply -f ...` wrappers over `kubernetes/main/bootstrap/argocd.yaml` and `appset.yaml`.
+These are plain `kubectl apply -f ...` wrappers over:
+
+- `kubernetes/main/bootstrap/argocd.yaml` — self-managing Argo CD Application
+- `kubernetes/main/bootstrap/appset.yaml` — ApplicationSet with rolling sync strategy
 
 ### Ansible
 
-Lint:
+Lint Ansible code:
 
 ```bash
 task ansible:check
 ```
 
-Install required roles/collections:
+Install Ansible roles and collections:
 
 ```bash
 task ansible:configure
 ```
 
-Ping hosts:
+Ping all hosts (canary check):
 
 ```bash
 task ansible:deploy:canary
 ```
 
-Run the playbook:
+Run the main playbook:
 
 ```bash
 task ansible:deploy -- <extra ansible-playbook args>
 ```
 
-Dry-run diff:
+Dry-run diff (shows what would change):
 
 ```bash
 task ansible:diff
 ```
 
-CI-oriented variants exist (`deploy:ci`, `deploy:canary:ci`, `diff:ci`) and expect bastion-related vars such as `BASTION_HOST`, `BASTION_PORT`, and `BASTION_USER`.
+**CI variants** exist for bastion-based deployments: `deploy:ci`, `deploy:canary:ci`, `diff:ci`. These expect environment variables: `BASTION_HOST`, `BASTION_PORT`, `BASTION_USER`.
 
 ### AWS CDK
 
 ```bash
-task cdk:configure
-task cdk:test:unit
-task cdk:synth
-task cdk:diff
-task cdk:deploy
-task cdk:deploy:ci
-task cdk:bootstrap
+task cdk:configure      # Install dependencies
+task cdk:test:unit      # Run unit tests
+task cdk:synth          # Generate CloudFormation template
+task cdk:diff           # Show changes (dry-run)
+task cdk:deploy         # Deploy stack
+task cdk:deploy:ci      # Deploy via CI/CD
+task cdk:bootstrap      # Bootstrap AWS account
 ```
 
-Implementation details:
+**Implementation details**:
 
 - `task cdk:configure` runs `pnpm install` in `cdk/`
 - `task cdk:test:unit` runs `pnpm run test`
@@ -150,67 +164,77 @@ Implementation details:
 ### Pulumi
 
 ```bash
-task pulumi:preview
-task pulumi:up
-task pulumi:destroy
+task pulumi:preview     # Show planned changes
+task pulumi:up          # Deploy stack
+task pulumi:destroy     # Destroy stack
 ```
 
-These are wrappers around `uv run pulumi ...` inside `pulumi/`.
+Wrappers around `uv run pulumi ...` executed inside `pulumi/` directory.
 
 ## Architecture and control flow
 
 ### 1. Host bootstrap and cluster creation
 
-`ansible/homelab.yaml` is the orchestration root.
+`ansible/homelab.yaml` orchestrates all host configuration.
 
-Notable behavior:
+**Key behaviors**:
 
-- `headscale` is intentionally deployed first. The playbook comments warn that bringing up Tailscale agents before Headscale is working breaks bootstrap.
-- `common_critical` and `common` are run before broader host configuration.
-- K3s control plane and agents are split into separate roles.
-- TURN/STUN, game server, and NFS are managed as separate role targets.
+- `headscale` is intentionally deployed first—starting Tailscale agents before Headscale is working breaks bootstrap
+- `common_critical` and `common` roles run before other host configuration
+- K3s control plane and agents deployed separately
+- TURN/STUN, game server, and NFS managed as separate role targets
 
-Representative implementation details:
+**Representative implementation details**:
 
-- `ansible/roles/common/tasks/main.yml` installs a large baseline package set, configures users, conditionally installs Tailscale, and can trigger hostname changes.
-- `ansible/roles/k3s_controlplane/tasks/cluster.yml` templates K3s config/service files and restarts/enables the `k3s` systemd service.
-- `ansible/roles/k3s_controlplane/tasks/argocd.yml` waits for K3s, creates the `argocd` namespace, then applies the Argo CD bootstrap using `k3s kubectl kustomize --enable-helm ... | k3s kubectl apply -f -`.
+- `ansible/roles/common/tasks/main.yml` — installs base packages, configures users, conditionally installs Tailscale, can trigger hostname changes
+- `ansible/roles/k3s_controlplane/tasks/cluster.yml` — templates K3s config/service files, restarts/enables `k3s` systemd service
+- `ansible/roles/k3s_controlplane/tasks/argocd.yml` — waits for K3s, creates `argocd` namespace, applies Argo CD bootstrap via: `k3s kubectl kustomize --enable-helm ... | k3s kubectl apply -f -`
 
 ### 2. Argo CD bootstrap and steady-state app delivery
 
 Once the cluster exists, Argo CD becomes the desired-state engine.
 
-- `kubernetes/main/bootstrap/argocd.yaml` defines the self-managing Argo CD `Application` pointed back at this repo.
-- `kubernetes/main/bootstrap/appset.yaml` defines an `ApplicationSet` that scans `kubernetes/main/apps/**/config.json`.
-- Each app directory supplies its own `config.json` metadata plus its own `kustomization.yaml`/values/manifests.
+**Bootstrap manifests**:
 
-The non-obvious part is the sync ordering:
+- `kubernetes/main/bootstrap/argocd.yaml` — defines self-managing Argo CD `Application` pointed at this repo
+- `kubernetes/main/bootstrap/appset.yaml` — defines `ApplicationSet` that discovers apps via `kubernetes/main/apps/**/config.json`
 
-- `config.json` contains a `dependencies` array and a `wave` value.
-- The `dependencies` array lists apps that must deploy before the current app, typically to ensure custom resource definitions (CRDs) are available. For example, an app using a `ReplicationDestination` (from volsync) lists `volsync` as a dependency.
-- `scripts/dependency_graph.py` loads every app config, validates dependency names, computes dependency groups, rewrites each app's `wave`, and verifies that `appset.yaml`'s `rollingSync.steps` include the maximum computed wave.
-- A local pre-commit hook (`local-config-change`) runs this script whenever `config.json` files change.
+**App synchronization and dependency ordering**:
 
-If you add or rename app dependencies, expect wave numbers to be rewritten automatically and `appset.yaml` to become invalid if its rolling sync steps do not cover the new max wave.
+Each app directory provides:
+
+- `config.json` — Argo CD metadata including `dependencies`, `wave`, `destNamespace`, etc.
+- `kustomization.yaml` — resource assembly
+- `values.yaml` or chart-specific values
+
+**Dependency management** (the non-obvious part):
+
+- `config.json` contains a `dependencies` array listing apps that must deploy before the current app (e.g., an app using `ReplicationDestination` from volsync lists `volsync` as a dependency)
+- `config.json` also contains a `wave` value for sync ordering
+- `scripts/dependency_graph.py` loads every app config, validates dependency names, computes dependency groups, **rewrites each app's `wave`**, and verifies that `appset.yaml`'s `rollingSync.steps` cover the maximum computed wave
+- A pre-commit hook (`local-config-change`) enforces this: `config.json` changes trigger automatic wave rewriting
+
+**Critical**: Do not hand-edit `wave` values. The script computes and rewrites them from `dependencies`.
 
 ### 3. Kubernetes app layout
 
-The common Kubernetes pattern is:
+Standard app directory structure:
 
-- one app per directory under `kubernetes/main/apps/<category>/<app>/`
-- `config.json` holds Argo metadata
-- `kustomization.yaml` assembles raw resources and/or Helm charts
-- `values.yaml` or app-specific values files customize charts
+```
+kubernetes/main/apps/<category>/<app>/
+├── config.json         # Argo metadata (dependencies, wave, namespace, etc.)
+├── kustomization.yaml  # Resource assembly and Helm chart integration
+└── values.yaml         # Helm chart values customization
+```
 
-Observed example:
+**Examples**:
 
-- `kubernetes/main/apps/media/jellyfin/config.json` defines `destNamespace`, `appName`, `group`, `dependencies`, `serverSideApply`, `ignoreDifferences`, and `wave`
-- `kubernetes/main/apps/media/jellyfin/values.yaml` uses the bjw-s `app-template` chart style with `controllers`, `persistence`, `service`, and hardened `securityContext` settings
-- `kubernetes/main/apps/selfhosted/tube-archivist/kustomization.yaml` shows the mixed pattern of `helmCharts:` plus many raw `resources:` entries
+- `kubernetes/main/apps/media/jellyfin/` — uses bjw-s `app-template` chart with hardened `securityContext`
+- `kubernetes/main/apps/selfhosted/tube-archivist/` — mixes `helmCharts:` with raw `resources:`
 
 #### External-DNS integration
 
-Apps that need external DNS records use a LoadBalancer service with external-dns annotations. The pattern is:
+Apps needing external DNS records use LoadBalancer services with external-dns annotations:
 
 ```yaml
 service:
@@ -230,19 +254,29 @@ service:
         targetPort: 9696
 ```
 
-External-DNS (`kubernetes/main/apps/system/external-dns`) watches for services with these annotations and automatically creates DNS records. It does not need to be listed in app `dependencies` since it works passively by watching service annotations. Examples: `kubernetes/main/apps/downloads/radarr`, `kubernetes/main/apps/downloads/prowlarr`, `kubernetes/main/apps/downloads/readarr`.
+External-DNS (`kubernetes/main/apps/system/external-dns`) watches for services with these annotations and automatically creates DNS records. **No need to list external-dns in app dependencies**—it works passively by watching service annotations.
+
+Examples: `radarr`, `prowlarr`, `readarr`
 
 ### 4. AWS-side infrastructure
 
-`cdk/` is the active TypeScript AWS CDK project.
+**AWS CDK** (`cdk/` directory) is the active TypeScript IaC surface.
 
-Observed pattern:
+Observed patterns:
 
 - `cdk/cdk.json` runs the app through `pnpm exec ts-node --prefer-ts-exts bin/cdk.ts`
-- context values in `cdk/cdk.json` are important; `githubMap` is consumed in code and many AWS CDK feature flags are set there
-- `cdk/lib/stacks/githubOIDC.ts` uses `this.node.tryGetContext("githubMap")` to create a GitHub OIDC provider and IAM role for GitHub Actions
+- Context values in `cdk/cdk.json` are important; `githubMap` is consumed in code
+- AWS CDK feature flags are set in `cdk.json`
+- `cdk/lib/stacks/githubOIDC.ts` uses `this.node.tryGetContext("githubMap")` to create GitHub OIDC provider and IAM role for GitHub Actions
 
-`pulumi/` is present as a uv workspace package. It currently contains a small amount of real component code (`pulumi/stacks/weasel.py`) alongside template-like files (`pulumi/main.py`, `pulumi/README.md`). Treat it as a separate Python IaC surface, but verify whether a given change belongs in Pulumi or CDK before editing.
+**Pulumi** (`pulumi/` directory) is a separate Python IaC workspace.
+
+Currently contains:
+
+- `pulumi/stacks/weasel.py` — real component code
+- `pulumi/main.py`, `pulumi/README.md` — template/scaffold files
+
+**Guidance**: Verify whether a given change belongs in Pulumi or CDK before editing. Treat Pulumi as a secondary, experimental surface compared with the primary CDK codebase.
 
 ## Style and file conventions
 
@@ -281,51 +315,54 @@ Observed conventions:
 
 ## Testing and validation expectations
 
-Use the narrowest relevant command first, then broader checks.
+Use the narrowest relevant command first, then broaden to build confidence.
 
-- **Ansible changes**: `task ansible:check`
-- **Kubernetes manifest changes**: `task build:kustomize`
-- **CDK changes**: `task cdk:test:unit`, then `task cdk:synth`, optionally `task cdk:diff`
-- **Pulumi changes**: `task pulumi:preview`
-- **Docs / repo-wide / mixed config changes**: `pre-commit run -a` or at minimum the relevant hooks
+| Change Type           | Validation         | Command                                |
+| --------------------- | ------------------ | -------------------------------------- |
+| Ansible               | Linting            | `task ansible:check`                   |
+| Kubernetes manifests  | Kustomize build    | `task build:kustomize`                 |
+| CDK                   | Unit tests + synth | `task cdk:test:unit && task cdk:synth` |
+| Pulumi                | Preview            | `task pulumi:preview`                  |
+| Docs / config / mixed | Repo-wide          | `pre-commit run -a`                    |
 
-Useful CI signals from checked-in workflows:
+**CI signals** (checked-in workflows):
 
-- `.github/workflows/kustomize.yaml` validates all Kustomize trees with Helm enabled
-- `.github/workflows/cdk.yaml` runs CDK configure, bootstrap, unit tests, synth, diff, and deploy-on-main
-- `.github/workflows/biome.yaml` runs `biome ci .`
-- `.github/workflows/ansible.yaml` and `ansible-scheduled.yaml` gate or execute Ansible based on changed files and environment setup
+- `.github/workflows/kustomize.yaml` — validates all Kustomize trees with Helm enabled
+- `.github/workflows/cdk.yaml` — configure, bootstrap, unit tests, synth, diff, deploy-on-main
+- `.github/workflows/biome.yaml` — `biome ci .`
+- `.github/workflows/ansible.yaml` and `ansible-scheduled.yaml` — gate/execute Ansible based on changed files and env
+
+## Important gotchas
 
 ## Important gotchas
 
 ### Argo CD app-of-apps constraints
 
-Per `README.md`:
+Self-referential Argo CD Applications/App-of-Apps must live in the default `AppProject`. Deleting self-referential app-of-apps may require manually removing the finalizer after other resources are cleaned up.
 
-- self-referential Argo CD Applications/App-of-Apps must live in the default `AppProject`
-- deleting a self-referential App-of-Apps may require manually removing the finalizer after other resources are gone
+**Note**: Reconfiguring Argo CD to support [applications in any namespace](https://argo-cd.readthedocs.io/en/stable/operator-manual/app-any-namespace/) would resolve this, but has not been implemented.
 
-### Dependency waves are not manual bookkeeping
+### Dependency waves are automatically managed
 
-Do not hand-edit app `wave` values without understanding `scripts/dependency_graph.py`; the script rewrites them from dependency relationships and pre-commit enforces that behavior.
+**Do not hand-edit `wave` values.** The `scripts/dependency_graph.py` script computes and rewrites them from `dependencies` relationships. Pre-commit enforces this behavior.
 
-Also note the script currently looks for files named `config.json` and `config.disabled.json` in code, while the repo’s pre-commit regex also mentions `config.json.disabled`. Verify the actual filename pattern already used in the target area before introducing disabled configs.
+**Configuration filename patterns**: The script looks for `config.json` and `config.disabled.json`. The pre-commit regex also mentions `config.json.disabled`. Verify the filename pattern already used in the target area before introducing disabled configs.
 
-### Helm-backed Kustomize is standard here
+### Helm-backed Kustomize is standard
 
-`task build:kustomize` and the Ansible Argo CD bootstrap both rely on `--enable-helm`. If a Kustomize build fails locally, missing Helm support is one of the first things to verify.
+Both `task build:kustomize` and the Ansible Argo CD bootstrap rely on `--enable-helm`. If a Kustomize build fails locally, missing Helm support is one of the first things to verify.
 
-### Root `package.json` is mostly tooling, not an app
+### Root `package.json` is tooling-only
 
-The root Node package is for repo tooling (Biome, cspell). The actual TypeScript application code is in `cdk/`.
+The root Node package manages repo tooling (Biome, cspell). The actual TypeScript application code lives in `cdk/`.
 
 ### CI Ansible execution has extra network assumptions
 
-The CI/scheduled workflows set up Tailscale, AWS credentials, a bastion SSH path, and sometimes SSH port forwarding to reach the cluster. A local command that works on the maintainer machine may still fail in CI if it assumes different network reachability.
+CI/scheduled workflows set up Tailscale, AWS credentials, bastion SSH paths, and sometimes SSH port forwarding to reach the cluster. A local command that works on the maintainer machine may still fail in CI if it assumes different network reachability.
 
 ### Tunnel management is partly scripted, partly manual
 
-`README.md` says `scripts/setup-tunnel.sh` handles most tunnel setup steps, but **not** the Cloudflare Application creation step. The script also writes a 1Password document via `op.exe`, so it assumes that CLI/tooling environment.
+`scripts/setup-tunnel.sh` handles most tunnel setup steps, but **not** the Cloudflare Application creation (auth/authorization policy). The script also uses 1Password CLI (`op.exe`), so it assumes that tooling environment.
 
 ## What not to assume
 

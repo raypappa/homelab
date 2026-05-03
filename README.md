@@ -1,129 +1,93 @@
 # Homelab
 
-This is the CI/CD and infrastructure for my home network.
+Infrastructure-as-code for a home network, managed through layered automation with no hand-holding.
 
-The idea behind this is to manage all(or as many as I can accomplish) using infrastructure as code with no hand holding.
+Built with: [AWS CDK](https://docs.aws.amazon.com/cdk/v2/guide/home.html), [Ansible](https://www.ansible.com/), [Kubernetes](https://kubernetes.io/), [Argo CD](https://argo-cd.readthedocs.io/en/stable/), [Taskfile](https://taskfile.dev/), [GitHub Actions](https://docs.github.com/en/actions), [Dependabot](https://docs.github.com/en/code-security/dependabot/working-with-dependabot), [Renovate](https://docs.renovatebot.com/), [Cloudflare](https://www.cloudflare.com/).
 
-I accomplish this with [AWS CDK](https://docs.aws.amazon.com/cdk/v2/guide/home.html), [Ansible](https://www.ansible.com/), [Kubernetes](https://kubernetes.io/), [ArgoCD](https://argo-cd.readthedocs.io/en/stable/), [Taskfile](https://taskfile.dev/), [Dependabot](https://docs.github.com/en/code-security/dependabot/working-with-dependabot), [Renovate](https://docs.renovatebot.com/), [Github Actions](https://docs.github.com/en/actions), [Cloudflare](https://www.cloudflare.com/).
+For technical architecture and implementation details, see [AGENTS.md](./AGENTS.md).
 
 ______________________________________________________________________
 
-## Kubernetes
+## Quick Start
 
-Ansible configures the hosts and bootstraps Kubernetes and ArgoCD. After that any additional work should be managed by ArgoCD.
+See [AGENTS.md](./AGENTS.md) for detailed command reference and architecture overview.
 
-### ArgoCD
+Essential setup:
 
-#### App of Apps
+```bash
+task configure
+task check
+```
 
-If you're deploying an app of apps or any Application which is self-referential it must be within the default AppProject.
+______________________________________________________________________
 
-In order to resolve this issue we would need to reconfigure ArgoCD to support [applications in any namespace](https://argo-cd.readthedocs.io/en/stable/operator-manual/app-any-namespace/)
+## Kubernetes Deployment Strategy
 
-When deleting the App of Apps that is self referential you'll need to remove the finalizer once all other resources are removed.
+Ansible configures hosts, bootstraps Kubernetes (K3s), and deploys Argo CD. After bootstrap, Argo CD manages all application deployments.
 
-#### Deployment Strategies
+### Argo CD
 
-Many strategies were tried and some worked okay others didn't work at all.
+#### App-of-Apps Pattern
 
-Presently I'm using a straight `kubectl apply -f` by hand, my plan is to re-orchestrate things to be in AppSet's with ArgoCD, then I should be able to deploy 1 app to bootstrap the full cluster without lifting a hand.
+Self-referential Argo CD Applications must live in the default `AppProject`. Deleting self-referential app-of-apps requires removing the finalizer after dependent resources are cleared.
 
-##### Ansible using kubernetes.core.k8s and an inline definition
+See [AGENTS.md](./AGENTS.md) for detailed app dependency, wave ordering, and ApplicationSet configuration.
 
-This has the benefit of having the apps define in one place but doesn't allow for a very DRY or touch once approach.
-
-No need for files in the roots like argocd/metallb/metallb-app.yaml just the manifests.
-
-Variation can use src or templated files and pass them in. This will help with an array of files.
-
-This does support multiple sources as this is just moving the app declaration to another yaml file really.
-
-Possible issue with using real sources is where does the file exist. I'd rather the deploy server not have the infra repo on it.
-
-##### Ansible using argocd
-
-Call argocd app create and pass in all of the arguments.
-
-This is nice because like the above no need for extra files to define the apps themselves.
-
-There is a kind of nasty aspect of this which doesn't support multiple sources.
-
-Variation is using github actions instead of ansible, which is worse as i can't leverage yaml and iterative code in ansible.
-
-##### kubectl apply github actions
-
-This is by far the simplest solution so far and would be just adding a new entry in the workflow to add a new app.
-
-`kubectl apply -n argocd -f argocd/metallb/metallb-app.yaml`
-
-##### kubectl
-
-This is by far the simplest solution and would be just running once per new app.
-
-`kubectl apply -n argocd -f argocd/metallb/metallb-app.yaml`
-
-### Application Notes
-
-I will store notes I find helpful in making sure I don't break things.
+### Operational Notes
 
 #### Rook/Ceph
 
-Deploy the operator first then the cluster
+Deploy the operator first, then the cluster. Check cluster status:
 
-If you need to check on the status from cli use the following command
-
-```
+```bash
 kubectl -n rook-ceph exec -it deploy/rook-ceph-tools -- bash
 ```
 
 #### Flood/rTorrent
 
-If you need to reconfigure flood to talk to rTorrent the socket path is `/config/.local/share/rtorrent/rtorrent.sock`
+Configure Flood to talk to rTorrent using socket path: `/config/.local/share/rtorrent/rtorrent.sock`
 
-#### Whisparr
+#### \*Arr Services (Radarr, Sonarr, Whisparr, etc.)
 
-After creating the application, you will need to populate the secret `whisparr_token` for use by other applications.
+Extract API keys from running containers:
 
-```shell
+```bash
 api_key=$(kubectl -n homelab exec -it deploy/whisparr-svc -- cat /config/config.xml | grep -oP '<ApiKey>\K[^<]+' | tr -d '\n')
-kubectl -n homelab create secret generic --from-literal="api_key=${api_key}" whisparr-secret
+kubectl -n homelab create secret generic whisparr-secret --from-literal="api_key=${api_key}"
 ```
 
-It's a similar command for most of the \*arr services
+Repeat for other \*arr services as needed.
 
-______________________________________________________________________
+## External Access
 
-## External Accessibility
+### Cloudflare Tunnel
 
-Making use of [Cloudflare Tunnel](https://www.cloudflare.com/products/tunnel/) to expose endpoints. Each application which should be exposed has it's own tunnel and secret in most cases. They are grouped by the ArgoCD application, so the combined monitoring stack exposes both grafana and prometheus.
+Applications are exposed via [Cloudflare Tunnel](https://www.cloudflare.com/products/tunnel/). Each application has its own tunnel and credentials secret.
 
-In order to ensure tunnels are managed with the config specified and not in the dashboard it's important to not create any items in the Cloudflare dashboard.
+To maintain infrastructure-as-code discipline, **do not create resources in the Cloudflare dashboard**. Use the setup script:
 
-1. Determine application name
-1. Determine namespace
-1. Determine tunnel name
-1. Create tunnel
-1. Get tunnel secret and make credentials file
-1. Create secret in kubernetes
-1. Create DNS entry in Cloudflare
-1. Create Application in Cloudflare so the endpoint is protected.
+```bash
+scripts/setup-tunnel.sh
+```
 
-All steps except creation of the Application in Cloudflare are accomplished with the [create-secret](./scripts/setup-tunnel.sh) script.
+The script automates tunnel creation, credential management, and Kubernetes secret generation. **Note:** Cloudflare Application creation (authentication/authorization policy) is manual—not scripted.
 
-## Github Actions
+See [AGENTS.md](./AGENTS.md) for detailed setup steps and configuration patterns.
 
-In order to have a functioning pipeline and make it easier for others I have some variables and secrets defined.
+## GitHub Actions
+
+Configuration and secrets for CI/CD pipeline:
 
 ### Variables
 
-| NAME                    | VALUE              |
+| Name                    | Value              |
 | ----------------------- | ------------------ |
 | ANSIBLE_STDOUT_CALLBACK | gha                |
-| AWS_ASSUME_ROLE_ARN     | <cdk creates this> |
+| AWS_ASSUME_ROLE_ARN     | (generated by CDK) |
 | AWS_DEFAULT_REGION      | us-west-2          |
 | AWS_REGION              | us-west-2          |
-| BASTION_HOST            | <REDACTED>         |
-| BASTION_PORT            | <REDACTED>         |
+| BASTION_HOST            | (configured)       |
+| BASTION_PORT            | (configured)       |
 | NODE_VERSION            | 20                 |
 | PYTHON_VERSION          | 3.10.13            |
 | RUNS_ON                 | ubuntu-latest      |
@@ -131,25 +95,38 @@ In order to have a functioning pipeline and make it easier for others I have som
 
 ### Secrets
 
-| Name                     | Description                                                          |
-| ------------------------ | -------------------------------------------------------------------- |
-| ANSIBLE_EXTRA_VAR_JSON   | json document for extra vars, holds op_connect_token and op_vault_id |
-| OP_SERVICE_ACCOUNT_TOKEN | 1password Service Account Auth Token: GitHub Actions                 |
+| Name                     | Purpose                                                         |
+| ------------------------ | --------------------------------------------------------------- |
+| ANSIBLE_EXTRA_VAR_JSON   | Extra Ansible vars (includes `op_connect_token`, `op_vault_id`) |
+| OP_SERVICE_ACCOUNT_TOKEN | 1Password Service Account token for GitHub Actions              |
 
 ______________________________________________________________________
-
-## Icons
-
-I'm going to make an effort to source any icons I need from https://selfh.st/icons/
 
 ## Development
 
-Run the following commands from the project directory
+See [AGENTS.md](./AGENTS.md) for detailed development guidance, command reference, and troubleshooting.
 
-<!-- TODO: replace with uv instructions -->
+Setup:
 
-## :handshake: Thanks
+```bash
+task configure
+```
 
-Thanks to all the people who donate their time to the [Kubernetes @Home](https://discord.gg/k8s-at-home) Discord community. A lot of inspiration for my cluster comes from the people that have shared their clusters using the [k8s-at-home](https://github.com/topics/k8s-at-home) GitHub topic. Be sure to check out the [Kubernetes @Home search](https://nanne.dev/k8s-at-home-search/) for ideas on how to deploy applications or get ideas on what you can deploy. Also a fantastic resource was [bjw-s](https://github.com/bjw-s) own homelab [repo](https://github.com/bjw-s/home-ops/tree/main) and [helm charts](https://github.com/bjw-s/helm-charts) of which without the community would be worse for.
+Validation:
+
+```bash
+task check
+pre-commit run -a
+```
 
 ______________________________________________________________________
+
+## Resources & Thanks
+
+Icons sourced from [selfh.st/icons](https://selfh.st/icons/) — a curated collection of self-hosted service icons
+
+Thanks to the [Kubernetes @Home](https://discord.gg/k8s-at-home) community, especially:
+
+- [Kubernetes @Home Search](https://nanne.dev/k8s-at-home-search/) for deployment ideas
+- [bjw-s](https://github.com/bjw-s) for [home-ops](https://github.com/bjw-s/home-ops/tree/main) and [helm-charts](https://github.com/bjw-s/helm-charts)
+- All contributors to the [k8s-at-home](https://github.com/topics/k8s-at-home) community
