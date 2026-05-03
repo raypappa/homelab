@@ -1,11 +1,22 @@
 ---
 controllers:
   main:
+    pod:
+      securityContext:
+        seccompProfile:
+          type: RuntimeDefault
     containers:
       main:
         image:
           # renovate: datasource=docker depName=ghcr.io/immich-app/immich-server
           tag: v2.7.5
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+              - ALL
+          runAsNonRoot: true
+          runAsUser: 1000
         env:
           TZ: America/Los_Angeles
           REDIS_HOSTNAME: dragonfly.database.svc.cluster.local
