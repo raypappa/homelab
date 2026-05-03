@@ -13,5 +13,6 @@ spec:
       podTemplate:
         spec:
           securityContext:
+            fsGroup: 1000
             seccompProfile:
               type: RuntimeDefault
