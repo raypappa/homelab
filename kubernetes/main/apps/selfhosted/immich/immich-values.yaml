@@ -52,5 +52,22 @@ immich:
   persistence:
     library:
       existingClaim: immich-library
+  machine-learning:
+    enabled: true
+    controllers:
+      main:
+        pod:
+          securityContext:
+            seccompProfile:
+              type: RuntimeDefault
+        containers:
+          main:
+            securityContext:
+              allowPrivilegeEscalation: false
+              capabilities:
+                drop:
+                  - ALL
+              runAsNonRoot: true
+              runAsUser: 1000
 valkey:
   enabled: false
