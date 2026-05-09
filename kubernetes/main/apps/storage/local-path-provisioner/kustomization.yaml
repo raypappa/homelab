@@ -7,6 +7,6 @@ helmCharts:
     namespace: local-path-provisioner
     repo: https://charts.containeroo.ch
     releaseName: local-path-provisioner
-    version: 0.0.35
+    version: 0.0.36
     includeCRDs: true
     valuesFile: values.yaml
