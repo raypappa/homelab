@@ -1,6 +1,6 @@
 [tools]
 pulumi = "latest"
 [tools.node]
-version = "latest"
+version = "25.9.0"
 [tools."npm:pnpm"]
 version = "11.0.9"
