@@ -39,7 +39,7 @@ jobs:
       - name: Install 1Password CLI
         uses: 1password/install-cli-action@v2
       - name: Install pnpm
-        uses: pnpm/action-setup@v4
+        uses: pnpm/action-setup@v6
       - name: Use Node.js
         uses: actions/setup-node@v6
         with:
