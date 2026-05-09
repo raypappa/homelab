@@ -127,7 +127,7 @@ spec:
           app.kubernetes.io/name: crunchy-postgres-pgbouncer
       config:
         global:
-          pool_mode: "transaction" # pgBouncer is set to transaction for Authentik. Grafana requires session https://github.com/grafana/grafana/issues/74260#issuecomment-1702795311. Everything else is happy with transaction
+          pool_mode: "session" # pgBouncer session mode supports Immich, Grafana, and most applications. Authentik works with session mode as well.
           client_tls_sslmode: prefer
       topologySpreadConstraints:
         - maxSkew: 1
