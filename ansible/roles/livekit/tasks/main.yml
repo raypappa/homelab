@@ -1,4 +1,4 @@
-#SPDX-License-Identifier: MIT-0
+# SPDX-License-Identifier: MIT-0
 ---
 # tasks file for livekit
 - name: Install livekit
@@ -30,11 +30,11 @@
   ansible.builtin.template:
     src: livekit.service
     dest: /etc/systemd/system/{{ livekit_service_name }}.service
+    owner: root
+    group: root
+    mode: '0644'
   register: livekit_service_installed
-- name: Reload systemctl daemon
-  ansible.builtin.systemd_service:
-    daemon_reload: true
-  when: livekit_service_installed.changed
+  notify: Systemctl reload
 - name: Restart livekit
   ansible.builtin.systemd_service:
     name: "{{ livekit_service_name }}"
@@ -53,21 +53,24 @@
     - livekit-jwt
   ansible.builtin.import_tasks:
     file: livekit-jwt.yaml
-- name: test livekit
+- name: Test livekit
   tags:
     - never
     - debug
   block:
-    - name: livekit test username fact
+    - name: LiveKit test username fact
       ansible.builtin.set_fact:
         livekit_test_user: "{{ now(fmt='%s') | int + 3600 }}:test"
-    - name: livekit test password
+    - name: LiveKit test password
       no_log: true
-      ansible.builtin.shell: >
-        echo -n "{{ livekit_test_user }}" | openssl dgst -hmac "{{ livekit_config['keys']
-        | items | first | last }}" -sha1 -binary | base64
+      ansible.builtin.shell:
+        cmd: |
+          set -o pipefail
+          echo -n "{{ livekit_test_user }}" | openssl dgst -hmac "{{ livekit_config['keys']
+          | items | first | last }}" -sha1 -binary | base64
       register: livekit_test_password_out
-    - name: debug livekit test data
+      changed_when: false
+    - name: Debug livekit test data
       no_log: true
       ansible.builtin.debug:
         msg: "{{ livekit_test_user }} -- {{ livekit_test_password_out.stdout }} --

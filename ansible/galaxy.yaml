@@ -2,6 +2,7 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/ansible/ansible-lint/main/src/ansiblelint/schemas/requirements.json
 roles:
   - name: xolyu.mariadb
+    # renovate: datasource=galaxy packageName=xolyu.mariadb
     version: "0.2.0"
   - name: hussainweb.chezmoi
     version: main
@@ -9,6 +10,7 @@ roles:
     name: raypappa.coturn
     version: "main"
   - name: geerlingguy.certbot
+    # renovate: datasource=galaxy packageName=geerlingguy.certbot
     version: 5.4.1
   - name: nginxinc.nginx
     src: https://github.com/nginx/ansible-role-nginx.git
@@ -20,19 +22,25 @@ roles:
     version: 2df21603d958a6171c7a7d5d274cfc5e84f85a05
 collections:
   - name: community.general
+    # renovate: datasource=galaxy-collection packageName=community.general
     version: "10.7.0"
   - name: https://github.com/stoneydavis/ansible-collection-pterodactyl.git
     type: git
   - name: community.docker
+    # renovate: datasource=galaxy-collection packageName=community.docker
     version: "4.5.2"
   - name: artis3n.tailscale
+    # renovate: datasource=galaxy-collection packageName=artis3n.tailscale
     version: "1.0.1"
   - name: community.crypto
+    # renovate: datasource=galaxy-collection packageName=community.crypto
     version: "3.0.4"
   - name: ttafsir.sqlite_utils
+    # renovate: datasource=galaxy-collection packageName=ttafsir.sqlite_utils
     version: "1.4.0"
   - name: https://github.com/raypappa/ansible-role-valkey.git
     version: "master"
     type: git
   - name: ansible.posix
+    # renovate: datasource=galaxy-collection packageName=ansible.posix
     version: 2.0.0

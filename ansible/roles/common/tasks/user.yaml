@@ -1,14 +1,14 @@
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/ansible/ansible-lint/main/src/ansiblelint/schemas/ansible.json#/$defs/tasks
 # vim: filetype=ansible.yaml
-- name: user | {{ user }} | Create an account
+- name: Create an account | user {{ user }}
   become: true
   ansible.builtin.user:
     name: "{{ user }}"
     shell: /usr/bin/zsh
     groups: libvirt, dialout, audio, video
     append: true
-- name: user | {{ user }} | Create .ssh dir
+- name: Create .ssh dir | user {{ user }}
   become: true
   become_user: "{{ user }}"
   ansible.builtin.file:
@@ -17,7 +17,7 @@
     owner: "{{ user }}"
     group: "{{ user }}"
     mode: "0700"
-- name: user | {{ user }} | authorized_keys
+- name: Authorized_keys | user {{ user }}
   become: true
   become_user: "{{ user }}"
   ansible.builtin.copy:
@@ -26,7 +26,7 @@
     owner: "{{ user }}"
     group: "{{ user }}"
     mode: "0600"
-- name: user | {{ user }} | zsh files
+- name: Zsh files | user {{ user }}
   become: true
   become_user: "{{ user }}"
   ansible.builtin.copy:
@@ -42,7 +42,7 @@
     - .zprofile
     - .zshenv
     - .zshrc
-- name: user | {{ user }} | create .local/bin
+- name: Create .local/bin | user {{ user }}
   become: true
   become_user: "{{ user }}"
   ansible.builtin.file:
@@ -60,10 +60,11 @@
 # if the previous task hasn't changed, the shell script is already there
 # and we have already installed starship
 # we check this to satisfy idempotence
-- name: Install starship with installation script
+- name: Install starship with installation script # noqa no-handler
   become: true
   become_user: "{{ user }}"
   ansible.builtin.shell:
     cmd: /tmp/starship_install.sh --yes --bin-dir ~/.local/bin
     executable: /bin/sh
   when: common_starship_installation_script.changed
+  changed_when: false
