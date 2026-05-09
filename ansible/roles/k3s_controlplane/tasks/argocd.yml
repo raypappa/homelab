@@ -20,8 +20,14 @@
           pod-security.kubernetes.io/audit: baseline
           pod-security.kubernetes.io/enforce: baseline
           pod-security.kubernetes.io/warn: baseline
-# Apply argoCD deployment manifest same as what ArgoCD itself is manged with, this eliminates changes during Ansible deploys.
-- name: ArgoCD | Apply Kustomize # this is not the right way to do it but using kubernetes.core.k8s was failing for some reason.
+- name: ArgoCD | Check if argocd-server deployment exists
+  kubernetes.core.k8s_info:
+    kubeconfig: /etc/rancher/k3s/k3s.yaml
+    kind: Deployment
+    name: argocd-server
+    namespace: argocd
+  register: k3s_controlplane_argocd_server_deployment
+- name: ArgoCD | Apply Kustomize
   ansible.builtin.shell:
     cmd: >-
       set -o pipefail &&
@@ -29,6 +35,7 @@
       --enable-helm=True {{ k3s_git_repo }}/kubernetes/{{ git_sub_path }}/bootstrap/argocd
       | k3s kubectl apply --server-side=true -f -
     executable: /bin/bash
+  when: k3s_controlplane_argocd_server_deployment.resources | length == 0
   changed_when: true
 - name: ArgoCD | Wait for ArgoCD to be ready
   become: false
