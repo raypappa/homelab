@@ -1,4 +1,4 @@
-#SPDX-License-Identifier: MIT-0
+# SPDX-License-Identifier: MIT-0
 ---
 # handlers file for livekit
 - name: Systemctl reload
@@ -7,6 +7,8 @@
 - name: Validate Nginx config
   ansible.builtin.command:
     cmd: nginx -t
+  changed_when: false
 - name: Nginx reload
   ansible.builtin.command:
     cmd: nginx -s reload
+  changed_when: false

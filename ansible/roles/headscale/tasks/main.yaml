@@ -79,12 +79,13 @@
     - name: Create user
       ansible.builtin.command:
         cmd: headscale users create -o json stoney
+      changed_when: false
     - name: Generate pre-auth-key
       register: headscale_pre_auth_key
       no_log: true
       ansible.builtin.command:
         cmd: headscale preauthkeys create --reusable -u stoney -e 99y -o json
-      when: not tailscale_authkey
+      changed_when: false
     - name: Set secret for pre-authkey
       no_log: true
       community.aws.secretsmanager_secret:

@@ -34,38 +34,38 @@
   ansible.builtin.file:
     path: /etc/letsencrypt
     mode: u=rwx,g=rx,o=
-  register: letsencrypt_letsencrypt_dir
+  register: certbot_letsencrypt_dir
 - name: Get list of directories
   ansible.builtin.find:
     paths:
       - /etc/letsencrypt
     file_type: directory
     recurse: true
-  register: letsencrypt_letsencrypt_dirs
+  register: certbot_letsencrypt_dirs
 - name: Debug letsencrypt_letsencrypt_dirs
   ansible.builtin.debug:
-    var: letsencrypt_letsencrypt_dirs
+    var: certbot_letsencrypt_dirs
 - name: Set ssl cert directory for letsencrypt
   ansible.builtin.file:
     path: "{{ item.path }}"
     mode: u=rwx,g=rx,o=
     owner: root
     group: letsencrypt
-  with_items: "{{ letsencrypt_letsencrypt_dirs.files }}"
-  register: letsencrypt_letsencrypt_dirs_files
-- name: list letsencrypt domains
+  with_items: "{{ certbot_letsencrypt_dirs.files }}"
+  register: certbot_letsencrypt_dirs_files
+- name: List letsencrypt domains
   ansible.builtin.find:
     paths:
       - /etc/letsencrypt/live/
       - /etc/letsencrypt/archive/
     file_type: directory
-  register: letsencrypt_domain_dirs
+  register: certbot_domain_dirs
 - name: Get list of certs
   ansible.builtin.find:
-    paths: "{{ letsencrypt_domain_dirs.files | map(attribute='path') }}"
+    paths: "{{ certbot_domain_dirs.files | map(attribute='path') }}"
     patterns: "*.pem"
     file_type: any
-  register: letsencrypt_letsencrypt_certs
+  register: certbot_letsencrypt_certs
 # - name: Debug letsencrypt_letsencrypt_certs
 #   ansible.builtin.debug:
 #     var: letsencrypt_letsencrypt_certs
@@ -75,5 +75,5 @@
     mode: u=rw,g=r,o=
     owner: root
     group: letsencrypt
-  with_items: "{{ letsencrypt_letsencrypt_certs.files }}"
-  register: letsencrypt_letsencrypt_certs_files
+  with_items: "{{ certbot_letsencrypt_certs.files }}"
+  register: certbot_letsencrypt_certs_files

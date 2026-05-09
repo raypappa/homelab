@@ -8,7 +8,7 @@
     < "13"
 - name: Apply networkd.conf to enable using dns from dhcp
   become: true
-  register: networkd
+  register: common_critical_networkd
   ansible.builtin.copy:
     src: networkd.conf
     dest: /etc/systemd/networkd.conf
@@ -18,7 +18,7 @@
   when: hostvars[inventory_hostname]['ansible_default_ipv4']['address'] is ansible.utils.private
 - name: Apply dhcp.network to enable using dns from dhcp
   become: true
-  register: networkd
+  register: common_critical_networkd
   ansible.builtin.copy:
     src: dhcp.network
     dest: /etc/systemd/network/dhcp.network
@@ -34,7 +34,7 @@
     state: reloaded
   # running this on ovh hosts causes them to break.
   when: hostvars[inventory_hostname]['ansible_default_ipv4']['address'] is ansible.utils.private
-- name: remove legacy apt sources.list
+- name: Remove legacy apt sources.list
   become: true
   ansible.builtin.file:
     dest: /etc/apt/sources.list
@@ -93,7 +93,7 @@
     autoclean: true
 - name: Ensure required packages are installed which require a reboot
   become: true
-  register: packages
+  register: common_critical_packages
   ansible.builtin.apt:
     pkg:
       - systemd-resolved
@@ -104,14 +104,14 @@
     state: absent
 - name: Apply resolved.conf to configure systemd-resolved
   become: true
-  register: networkd
+  register: common_critical_networkd
   ansible.builtin.copy:
     src: resolved.conf
     dest: /etc/systemd/resolved.conf
     mode: "0644"
     owner: root
     group: root
-- name: create /etc/dhcp/dhclient-enter-hooks.d
+- name: Create /etc/dhcp/dhclient-enter-hooks.d
   become: true
   ansible.builtin.file:
     state: directory
@@ -121,7 +121,7 @@
     mode: '0755'
 - name: Remove dhclient's ability to overwrite systemd-resolved's /etc/resolv.conf
   become: true
-  register: dhclient
+  register: common_critical_dhclient
   ansible.builtin.copy:
     dest: /etc/dhcp/dhclient-enter-hooks.d/no-resolv-conf
     content: |
@@ -136,6 +136,6 @@
 - name: Forced immediate reboot
   become: true
   throttle: 1
-  when: packages.changed or dhclient.changed or networkd.changed
+  when: common_critical_packages.changed or common_critical_dhclient.changed or common_critical_networkd.changed
   ansible.builtin.reboot:
     reboot_timeout: 600

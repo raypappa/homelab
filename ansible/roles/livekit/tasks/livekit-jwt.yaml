@@ -15,10 +15,7 @@
     group: root
     mode: "0644"
   register: livekit_jwt_service_installed
-- name: Reload systemctl daemon
-  ansible.builtin.systemd_service:
-    daemon_reload: true
-  when: livekit_jwt_service_installed.changed
+  notify: Systemctl reload
 - name: Restart livekit-jwt
   ansible.builtin.systemd_service:
     name: livekit-jwt
@@ -31,27 +28,27 @@
     state: started
     enabled: true
   when: livekit_jwt_restarted.skipped
-- name: install nginx
+- name: Install nginx
   ansible.builtin.package:
     name:
       - nginx
-- name: disable nginx default site
+- name: Disable nginx default site
   ansible.builtin.file:
     path: /etc/nginx/sites-enabled/default
     state: absent
-- name: start nginx
+- name: Start nginx
   ansible.builtin.systemd_service:
     name: nginx
     enabled: true
     state: started
-- name: configure nginx site
+- name: Configure nginx site
   ansible.builtin.template:
     src: livekit-jwt-nginx.conf
     dest: /etc/nginx/sites-available/livekit-jwt
     owner: root
     group: root
     mode: "0644"
-- name: enable nginx site
+- name: Enable nginx site
   ansible.builtin.file:
     src: /etc/nginx/sites-available/livekit-jwt
     dest: /etc/nginx/sites-enabled/livekit-jwt
