@@ -22,7 +22,7 @@ jobs:
           version: latest
           args: --login-server=${{ vars.TAILSCALE_LOGIN_SERVER }} --accept-dns
           hostname: github-runner-${{ github.run_id }}
-          ping: "${{ vars.TAILSCALE_PING_HOST }}"
+          ping: "${{ vars.BASTION_HOST }}"
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v6
         with:
