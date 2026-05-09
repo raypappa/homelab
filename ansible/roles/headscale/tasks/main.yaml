@@ -44,8 +44,8 @@
     mode: '0755'
 - name: Add headscale config
   become: true
-  ansible.builtin.copy:
-    src: config.yaml
+  ansible.builtin.template:
+    src: config.yaml.j2
     dest: "/etc/headscale/config.yaml"
     owner: root
     group: root

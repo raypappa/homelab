@@ -298,3 +298,7 @@ logtail:
 # default static port 41641. This option is intended as a workaround for some buggy
 # firewall devices. See https://tailscale.com/kb/1181/firewalls/ for more information.
 randomize_client_port: false
+oidc:
+  issuer: https://accounts.google.com
+  client_id: "{{ lookup('amazon.aws.aws_secret', 'weasel.stoneydavis.com/oidc/client-id', region=lookup('env', 'AWS_REGION')) }}"
+  client_secret: "{{ lookup('amazon.aws.aws_secret', 'weasel.stoneydavis.com/oidc/client-secret', region=lookup('env', 'AWS_REGION')) }}"
