@@ -27,7 +27,7 @@
       set -o pipefail &&
       k3s kubectl kustomize
       --enable-helm=True {{ k3s_git_repo }}/kubernetes/{{ git_sub_path }}/bootstrap/argocd
-      | k3s kubectl apply -f -
+      | k3s kubectl apply --server-side=true -f -
     executable: /bin/bash
   changed_when: true
 - name: ArgoCD | Wait for ArgoCD to be ready
