@@ -1,4 +1,4 @@
 ---
 # renovate: datasource=github-releases depName=juanfont/headscale
-headscale_version: v0.28.0
+headscale_version: 0.28.0
 tailscale_args: "--login-server='http://weasel.stoneydavis.com' --advertise-exit-node"
