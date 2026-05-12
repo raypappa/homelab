@@ -58,18 +58,13 @@ spec:
       options: "SUPERUSER"
       password:
         type: AlphaNumeric
-    # Applications
-    - name: joplin
-      databases:
-        - joplin
-      password:
-        type: AlphaNumeric
-    - name: immich
-      options: "SUPERUSER"
-      databases:
-        - immich
-      password:
-        type: AlphaNumeric
+        # Applications
+        # - name: immich
+        #   options: "SUPERUSER"
+        #   databases:
+        #     - immich
+        #   password:
+        #     type: AlphaNumeric
   backups:
     pgbackrest:
       configuration: &backupConfig
