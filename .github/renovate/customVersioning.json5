@@ -5,7 +5,7 @@
       "matchPackageNames": ["juanfont/headscale"],
       "matchDatasources": ["github-releases"],
       "extractVersion": "^v(?<version>.*)$"
-    }
+    },
     {
       "description": "Custom versioning for immich",
       "matchDatasources": ["docker"],
