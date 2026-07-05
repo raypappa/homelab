@@ -42,6 +42,14 @@
       '/(^|/)kubernetes/.+\\.ya?ml(?:\\.j2)?$/',
     ],
   },
+  packageRules: [
+    {
+      matchManagers: ['github-actions'],
+      automerge: true,
+      automergeType: 'pr',
+      automergeStrategy: 'squash',
+    },
+  ],
   postUpdateOptions: [
     'pnpmDedupe',
   ],
