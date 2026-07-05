@@ -49,6 +49,12 @@
       automergeType: 'pr',
       automergeStrategy: 'squash',
     },
+    {
+      matchManagers: ['devcontainer'],
+      automerge: true,
+      automergeType: 'pr',
+      automergeStrategy: 'squash',
+    },
   ],
   postUpdateOptions: [
     'pnpmDedupe',
