@@ -50,7 +50,7 @@ jobs:
           aws-region: ${{ vars.AWS_DEFAULT_REGION }}
       - uses: actions/checkout@v7
       - name: arduino/setup-task
-        uses: arduino/setup-task@v2.0.0
+        uses: arduino/setup-task@v3.0.0
         with:
           version: ${{ vars.TASK_VERSION}}
       - name: Install uv
