@@ -95,3 +95,4 @@ persistence:
       main:
         tailscale:
           - path: /var/lib/tailscale
+          - path: /tmp
