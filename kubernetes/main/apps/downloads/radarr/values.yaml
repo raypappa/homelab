@@ -44,7 +44,7 @@ controllers:
       tailscale:
         image:
           repository: ghcr.io/tailscale/tailscale
-          tag: v1.96.5
+          tag: v1.98.8
           pullPolicy: IfNotPresent
         env:
           TS_AUTHKEY:
