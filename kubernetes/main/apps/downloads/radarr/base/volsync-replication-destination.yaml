@@ -19,3 +19,11 @@ spec:
     accessModes:
       - ReadWriteOnce
     capacity: 5Gi
+    moverSecurityContext:
+      runAsUser: 65534
+      runAsGroup: 65534
+      fsGroup: 65534
+      fsGroupChangePolicy: "OnRootMismatch"
+      runAsNonRoot: true
+      seccompProfile:
+        type: RuntimeDefault
