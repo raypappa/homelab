@@ -1,9 +1,0 @@
-{
-  "destNamespace": "tailscale",
-  "appName": "tailscale",
-  "serverSideApply": false,
-  "ignoreDifferences": [],
-  "group": "networking",
-  "dependencies": ["external-secrets"],
-  "wave": "3"
-}
