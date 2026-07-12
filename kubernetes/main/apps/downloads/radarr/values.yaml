@@ -1,7 +1,6 @@
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/refs/heads/main/charts/other/app-template/values.schema.json
 defaultPodOptions:
-  automountServiceAccountToken: true
   securityContext:
     runAsUser: 1001
     runAsGroup: 1001
@@ -54,6 +53,7 @@ controllers:
                 name: tailscale-auth
                 key: TS_AUTHKEY
           TS_EXTRA_ARGS: "--login-server=https://weasel.stoneydavis.com --hostname=radarr"
+          TS_KUBE_SECRET: ""
           TS_USERSPACE: "true"
           TS_STATE_DIR: "/var/lib/tailscale"
         securityContext:
