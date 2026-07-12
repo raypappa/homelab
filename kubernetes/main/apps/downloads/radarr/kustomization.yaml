@@ -22,3 +22,4 @@ resources:
   - ./base/volsync-replication-source.yaml
   - ./base/volsync-replication-destination.yaml
   - ./base/external-secret.yaml
+  - ./base/tailscale-external-secret.yaml
