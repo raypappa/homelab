@@ -61,7 +61,6 @@ controllers:
           capabilities:
             drop:
               - ALL
-          readOnlyRootFilesystem: true
 service:
   main:
     controller: main
@@ -95,4 +94,5 @@ persistence:
       main:
         tailscale:
           - path: /var/lib/tailscale
+          - path: /var/run/tailscale
           - path: /tmp
