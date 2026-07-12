@@ -40,3 +40,6 @@
     name: k3s
     state: restarted
   when: k3s_agent_copied_k3s_config.changed and k3s_agent_k3s_service.changed
+- name: Configure node taints
+  ansible.builtin.include_tasks:
+    file: taints.yml
