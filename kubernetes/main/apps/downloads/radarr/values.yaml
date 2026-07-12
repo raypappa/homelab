@@ -83,7 +83,7 @@ persistence:
     enabled: true
     storageClass: ceph-filesystem
     accessMode: ReadWriteOnce
-    size: 5Gi
+    size: 20Gi
   library:
     enabled: true
     type: persistentVolumeClaim
