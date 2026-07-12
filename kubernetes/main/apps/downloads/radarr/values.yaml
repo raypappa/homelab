@@ -53,10 +53,14 @@ controllers:
                 name: tailscale-auth
                 key: TS_AUTHKEY
           TS_EXTRA_ARGS: "--login-server=https://weasel.stoneydavis.com --hostname=radarr"
-          TS_USERSPACE: "false"
+          TS_USERSPACE: "true"
           TS_STATE_DIR: "/var/lib/tailscale"
         securityContext:
-          privileged: true
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+              - ALL
+          readOnlyRootFilesystem: true
 service:
   main:
     controller: main
