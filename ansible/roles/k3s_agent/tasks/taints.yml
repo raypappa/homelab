@@ -1,0 +1,9 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/ansible/ansible-lint/main/src/ansiblelint/schemas/ansible.json#/$defs/tasks
+- name: k3s_agent | Apply node taints via Kubernetes API
+  kubernetes.core.k8s_taint:
+    state: present
+    name: "{{ inventory_hostname }}"
+    taints: "{{ k3s_agent_node_taints }}"
+  delegate_to: "{{ k3s_controlplane_singleton_host }}"
+  when: k3s_agent_node_taints is defined and k3s_agent_node_taints | length > 0
