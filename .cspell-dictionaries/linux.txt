@@ -82,3 +82,6 @@ zpath
 hmackey
 cronie
 epel
+DAC_OVERRIDE
+FOWNER
+tailscaled
