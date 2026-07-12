@@ -55,12 +55,14 @@ controllers:
           TS_EXTRA_ARGS: "--login-server=https://weasel.stoneydavis.com --hostname=radarr"
           TS_KUBE_SECRET: ""
           TS_USERSPACE: "true"
-          TS_STATE_DIR: "/var/lib/tailscale"
+          TS_STATE_DIR: "/tmp/tailscale/state"
+          TS_SOCKET: "/tmp/tailscale/run/tailscaled.sock"
         securityContext:
           allowPrivilegeEscalation: false
           capabilities:
             drop:
               - ALL
+          readOnlyRootFilesystem: false
 service:
   main:
     controller: main
@@ -93,6 +95,4 @@ persistence:
     advancedMounts:
       main:
         tailscale:
-          - path: /var/lib/tailscale
-          - path: /var/run/tailscale
           - path: /tmp
