@@ -31,6 +31,7 @@
 1. Immich - update to use dragonfly
 1. ollama nginx ingress
 1. rtorrent image is using an old image from blade2005.
+1. Update PSA config (`ansible/roles/k3s_controlplane/files/psa.yaml`) from `v1beta1` to `v1` API (deprecated since K8s 1.25)
 
 ## Physical
 
