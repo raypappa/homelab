@@ -52,7 +52,8 @@ controllers:
               secretKeyRef:
                 name: tailscale-auth
                 key: TS_AUTHKEY
-          TS_EXTRA_ARGS: "--login-server=https://weasel.stoneydavis.com --hostname=radarr"
+          TS_EXTRA_ARGS: "--login-server=https://weasel.stoneydavis.com --hostname=radarr
+            --ephemeral"
           TS_KUBE_SECRET: ""
           TS_USERSPACE: "true"
           TS_STATE_DIR: "/tmp/tailscale/state"
