@@ -1,0 +1,7 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/ansible/ansible-lint/refs/heads/main/src/ansiblelint/schemas/vars.json
+# vim: ft=yaml
+k3s_agent_node_taints:
+  - key: dedicated
+    value: gpu
+    effect: NoExecute
