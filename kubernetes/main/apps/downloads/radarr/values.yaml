@@ -90,9 +90,18 @@ persistence:
     enabled: true
     type: persistentVolumeClaim
     existingClaim: radarr-library-nfs
+  tmp:
+    enabled: true
+    type: emptyDir
+    sizeLimit: 128Mi
+    advancedMounts:
+      main:
+        main:
+          - path: /tmp
   tailscale-state:
     enabled: true
     type: emptyDir
+    sizeLimit: 128Mi
     advancedMounts:
       main:
         tailscale:
