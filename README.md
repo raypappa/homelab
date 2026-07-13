@@ -35,6 +35,16 @@ See [AGENTS.md](./AGENTS.md) for detailed app dependency, wave ordering, and App
 
 ### Operational Notes
 
+#### Headscale
+
+Clean up offline K8s nodes from Headscale:
+
+```bash
+headscale nodes list -o json | jq '.[] | select(.online != true and .pre_auth_key.user.name == "k8s") | .id' | while read node_id; do headscale nodes del --force -i "${node_id}"; done
+```
+
+This removes nodes that are offline and were registered with a `k8s` pre-auth key — typically nodes that have been deleted from the cluster but left behind in Headscale.
+
 #### Rook/Ceph
 
 Deploy the operator first, then the cluster. Check cluster status:
