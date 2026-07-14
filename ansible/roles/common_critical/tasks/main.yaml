@@ -34,6 +34,14 @@
     state: reloaded
   # running this on ovh hosts causes them to break.
   when: hostvars[inventory_hostname]['ansible_default_ipv4']['address'] is ansible.utils.private
+- name: Mask networking.service
+  become: true
+  register: common_critical_networking
+  ansible.builtin.systemd_service:
+    name: networking.service
+    masked: true
+    state: stopped
+  when: hostvars[inventory_hostname]['ansible_default_ipv4']['address'] is ansible.utils.private
 - name: Remove legacy apt sources.list
   become: true
   ansible.builtin.file:
@@ -137,5 +145,6 @@
   become: true
   throttle: 1
   when: common_critical_packages.changed or common_critical_dhclient.changed or common_critical_networkd.changed
+    or common_critical_networking.changed
   ansible.builtin.reboot:
     reboot_timeout: 600
