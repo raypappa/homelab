@@ -30,12 +30,13 @@ cephClusterSpec:
     disable: true
   cephConfig:
     global:
-      osd_pool_default_size: "3"
+      osd_pool_default_size: "2"
       # bdev_flock_retry: "20"
       # bluefs_buffered_io: "false"
       # mon_data_avail_warn: "10"
   disruptionManagement:
     managePodBudgets: false
+  removeOSDsIfOutAndSafeToRemove: true
 cephFileSystemVolumeSnapshotClass:
   enabled: true
 cephBlockPoolsVolumeSnapshotClass:
