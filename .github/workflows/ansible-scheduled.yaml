@@ -35,7 +35,7 @@ jobs:
       - name: Install uv
         uses: astral-sh/setup-uv@v8.3.2
         with:
-          version: "0.11.28"
+          version: "0.11.29"
       - name: Install 1Password CLI
         uses: 1password/install-cli-action@v4
       - name: Install pnpm
