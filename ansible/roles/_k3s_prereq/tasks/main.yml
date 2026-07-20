@@ -26,7 +26,7 @@
     value: "1"
     state: present
     reload: true
-  when: ansible_all_ipv6_addresses | length > 0
+  when: ansible_facts.all_ipv6_addresses | length > 0
 
 # https://github.com/quic-go/quic-go/wiki/UDP-Buffer-Sizes
 - name: Enable set wmem for QUIC
@@ -51,7 +51,7 @@
     dest: /usr/local/bin/k3s
     owner: root
     group: root
-    mode: '0755'
+    mode: "0755"
   when: ansible_facts.architecture == "x86_64"
 
 - name: Create kubectl symlink
@@ -70,37 +70,37 @@
   ansible.builtin.file:
     path: /etc/rancher/k3s/
     state: directory
-    mode: '0700'
+    mode: "0700"
 
 - name: Create /var/lib/rancher/k3s/server/logs directory
   ansible.builtin.file:
     path: /var/lib/rancher/k3s/server/logs
     state: directory
-    mode: '0700'
+    mode: "0700"
 
 - name: Create /var/lib/rancher/k3s/server/manifests directory
   ansible.builtin.file:
     path: /var/lib/rancher/k3s/server/manifests
     state: directory
-    mode: '0700'
+    mode: "0700"
 
 - name: Create /var/lib/rancher/k3s/agent/etc/ directory
   ansible.builtin.file:
     path: /var/lib/rancher/k3s/agent/etc
     state: directory
-    mode: '0755'
+    mode: "0755"
 
 - name: Create /var/lib/rancher/k3s/server/ directory
   ansible.builtin.file:
     path: /var/lib/rancher/k3s/server
     state: directory
-    mode: '0700'
+    mode: "0700"
 
 - name: Create /var/lib/rancher/k3s/agent/etc/kubelet.conf.d restricted directory
   ansible.builtin.file:
     path: /var/lib/rancher/k3s/agent/etc/kubelet.conf.d
     state: directory
-    mode: '0700'
+    mode: "0700"
 
 - name: Install kubelet config file for graceful shutdown
   ansible.builtin.copy:
@@ -108,7 +108,7 @@
     dest: /var/lib/rancher/k3s/agent/etc/kubelet.conf.d/10-k3s-graceful-shutdown.conf
     owner: root
     group: root
-    mode: '0600'
+    mode: "0600"
 
 - name: Ensure interfaces DHCP
   ansible.builtin.copy:
@@ -116,7 +116,7 @@
     dest: /etc/network/interfaces
     owner: root
     group: root
-    mode: '0644'
+    mode: "0644"
 - name: Ensure required packages are installed
   become: true
   ansible.builtin.apt:
@@ -169,4 +169,4 @@
     dest: /var/lib/rancher/k3s/agent/etc/kubelet.conf.d/20-k3s-protect-kernel-defaults.conf
     owner: root
     group: root
-    mode: '0600'
+    mode: "0600"
