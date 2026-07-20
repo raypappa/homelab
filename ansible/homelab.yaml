@@ -5,6 +5,8 @@
 - name: Headscale
   hosts: headscale
   become: true
+  tags:
+    - headscale
   roles:
     - common_critical
     - common
@@ -12,6 +14,8 @@
     - headscale
 - name: Common
   hosts: all
+  tags:
+    - common
   roles:
     # It's just one package... it's just that it'll break DNS resolution until
     # things get restarted, and a reboot is the easy way to do this. If DNS
@@ -30,12 +34,16 @@
     - k3s_controlplane
 - name: Production Kubernetes Agents
   order: sorted
+  tags:
+    - prod_k8s_agent
   hosts:
     - prod_k8s_agent
   roles:
     - k3s_agent
 - name: Game Server
   hosts:
+    - game_server
+  tags:
     - game_server
   roles:
     - game-server
@@ -50,10 +58,14 @@
 - name: NFS Server
   hosts:
     - nfs_server
+  tags:
+    - nfs_server
   roles:
     - nfs_server
 - name: TURN/STUN server
   hosts:
+    - turn_stun
+  tags:
     - turn_stun
   roles:
     - role: certbot
