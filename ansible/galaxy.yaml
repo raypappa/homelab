@@ -31,7 +31,7 @@ collections:
     version: "4.5.2"
   - name: artis3n.tailscale
     # renovate: datasource=galaxy-collection packageName=artis3n.tailscale
-    version: "1.0.1"
+    version: "1.2.1"
   - name: community.crypto
     # renovate: datasource=galaxy-collection packageName=community.crypto
     version: "3.0.4"
@@ -43,4 +43,4 @@ collections:
     type: git
   - name: ansible.posix
     # renovate: datasource=galaxy-collection packageName=ansible.posix
-    version: 2.0.0
+    version: "2.1.0"
