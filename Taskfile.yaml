@@ -71,3 +71,13 @@ tasks:
     requires:
       vars:
         - dir
+  health:check:
+    desc: "Run Kubernetes and Argo CD health checks"
+    silent: true
+    cmds:
+      - uv run python scripts/health_check.py {{.CLI_ARGS}}
+  health:check:json:
+    desc: "Run Kubernetes and Argo CD health checks (JSON output)"
+    silent: true
+    cmds:
+      - uv run python scripts/health_check.py --json {{.CLI_ARGS}}
