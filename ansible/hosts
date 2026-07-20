@@ -6,13 +6,13 @@ prod_k8s_controlplane:
     kubernetes-node-0002.stoneydavis.local:
     kubernetes-node-0003.stoneydavis.local:
     kubernetes-node-0004.stoneydavis.local:
-prod_k8s_agents:
+prod_k8s_agent:
   hosts:
     panda.stoneydavis.local:
 prod_k8s_cluster:
   children:
     prod_k8s_controlplane:
-    prod_k8s_agents:
+    prod_k8s_agent:
 game_server:
   hosts:
     panda.stoneydavis.local:
