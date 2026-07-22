@@ -96,6 +96,18 @@
         uris: http://security.debian.org/debian-security/
         suites: trixie-security
 
+- name: Stat tailscale.sources
+  become: true
+  ansible.builtin.stat:
+    path: /etc/apt/sources.list.d/tailscale.sources
+  register: tailscale_sources
+  when: ansible_facts['os_family'] == "Debian"
+- name: Remove legacy tailscale.list if tailscale.sources exists
+  become: true
+  ansible.builtin.file:
+    path: /etc/apt/sources.list.d/tailscale.list
+    state: absent
+  when: ansible_facts['os_family'] == "Debian" and tailscale_sources.stat.exists
 - name: Upgrade the OS (apt-get dist-upgrade)
   become: true
   ansible.builtin.apt:
