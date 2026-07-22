@@ -164,25 +164,75 @@ def check_nodes(v1: client.CoreV1Api) -> CheckResult:
     return result
 
 
+UNHEALTHY_CONTAINER_REASONS = frozenset(
+    {
+        "CrashLoopBackOff",
+        "ImagePullBackOff",
+        "ErrImagePull",
+        "InvalidImageName",
+        "CreateContainerConfigError",
+        "CreateContainerError",
+        "RunContainerError",
+        "PreStartHookError",
+        "ExceededGracePeriod",
+    }
+)
+
+
+def _container_has_issues(pod: V1Pod) -> list[str]:
+    """Return list of container status strings for unhealthy containers."""
+    issues: list[str] = []
+    if not pod.status:
+        return issues
+    for c in pod.status.container_statuses or []:
+        if (
+            c.state
+            and c.state.waiting
+            and c.state.waiting.reason in UNHEALTHY_CONTAINER_REASONS
+        ):
+            issues.append(f"{c.name}: {c.state.waiting.reason}")
+        if c.state and c.state.terminated and c.state.terminated.exit_code != 0:
+            issues.append(
+                f"{c.name}: {c.state.terminated.reason or 'exit code ' + str(c.state.terminated.exit_code)}"
+            )
+    for c in pod.status.init_container_statuses or []:
+        if (
+            c.state
+            and c.state.waiting
+            and c.state.waiting.reason in UNHEALTHY_CONTAINER_REASONS
+        ):
+            issues.append(f"{c.name}: {c.state.waiting.reason}")
+    return issues
+
+
 def check_system_pods(v1: client.CoreV1Api) -> CheckResult:
     """Check that kube-system pods are running and ready."""
     result = CheckResult(name="System Pods", status=Status.OK)
     try:
         pods: list[V1Pod] = v1.list_namespaced_pod(
             namespace=SYSTEM_NAMESPACE,
-            field_selector="status.phase!=Running,status.phase!=Succeeded",
         ).items
     except ApiException as exc:
         result.status = Status.FAIL
         result.details.append(f"API error: {exc.reason}")
         return result
 
-    if pods:
+    unhealthy: list[str] = []
+    for pod in pods:
+        phase = pod.status.phase if pod.status else "Unknown"
+        pod_name = pod.metadata.name if pod.metadata else "<unknown>"
+        if phase == "Succeeded":
+            continue
+        if phase not in ("Running",):
+            unhealthy.append(f"{pod_name}: phase={phase}")
+            continue
+        container_issues = _container_has_issues(pod)
+        if container_issues:
+            unhealthy.append(f"{pod_name}: {', '.join(container_issues)}")
+
+    if unhealthy:
         result.status = Status.FAIL
-        for pod in pods:
-            phase = pod.status.phase if pod.status else "Unknown"
-            pod_name = pod.metadata.name if pod.metadata else "<unknown>"
-            result.details.append(f"{pod_name}: {phase}")
+        result.details.extend(unhealthy)
     else:
         result.details.append(f"All pods running in {SYSTEM_NAMESPACE}")
     return result
@@ -261,12 +311,12 @@ def check_app_pods(
 
     # Collect unique namespaces from config (exclude system namespaces)
     namespaces = {
-        app["destNamespace"]
+        app.get("destNamespace")
         for app in config_apps.values()
-        if app.get("destNamespace") not in (SYSTEM_NAMESPACE, ARGOCD_NAMESPACE)
+        if app.get("destNamespace") not in (SYSTEM_NAMESPACE, ARGOCD_NAMESPACE, None)
     }
 
-    for ns in sorted(namespaces):
+    for ns in sorted(ns for ns in namespaces if ns is not None):
         try:
             pods: list[V1Pod] = v1.list_namespaced_pod(
                 namespace=ns,
