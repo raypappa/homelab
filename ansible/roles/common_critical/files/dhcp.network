@@ -2,7 +2,9 @@
 Name=en*
 
 [Network]
-DHCP=yes
+DHCP=ipv4
+IPv6AcceptRA=false
+KeepConfiguration=yes
 
 [DHCPv4]
 UseDomains=true
