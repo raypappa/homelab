@@ -27,5 +27,8 @@ spec:
       runAsNonRoot: true
       seccompProfile:
         type: RuntimeDefault
+    resources:
+      limits:
+        memory: 1Gi
     retain:
       daily: 7

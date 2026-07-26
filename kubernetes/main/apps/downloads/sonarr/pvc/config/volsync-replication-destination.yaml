@@ -19,3 +19,6 @@ spec:
     accessModes:
       - ReadWriteMany
     capacity: 2Gi
+    resources:
+      limits:
+        memory: 1Gi

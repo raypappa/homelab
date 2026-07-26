@@ -49,6 +49,9 @@ spec:
       runAsUser: 1001
       runAsGroup: 1001
       fsGroup: 1001
+    resources:
+      limits:
+        memory: 1Gi
     retain:
       daily: 7
 ---
@@ -68,6 +71,9 @@ spec:
     cacheAccessModes:
       - "${VOLSYNC_CACHE_ACCESSMODES:-ReadWriteOnce}"
     cacheCapacity: 1Gi
+    resources:
+      limits:
+        memory: 1Gi
     storageClassName: "${VOLSYNC_STORAGECLASS:-ceph-block}"
     accessModes:
       - "${VOLSYNC_ACCESSMODES:-ReadWriteOnce}"

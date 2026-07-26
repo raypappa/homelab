@@ -19,6 +19,9 @@ spec:
     accessModes:
       - ReadWriteOnce
     capacity: 5Gi
+    resources:
+      limits:
+        memory: 1Gi
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/volsync.backube/replicationdestination_v1alpha1.json
 apiVersion: volsync.backube/v1alpha1
@@ -40,6 +43,9 @@ spec:
     accessModes:
       - ReadWriteOnce
     capacity: 5Gi
+    resources:
+      limits:
+        memory: 1Gi
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/volsync.backube/replicationdestination_v1alpha1.json
 apiVersion: volsync.backube/v1alpha1
@@ -61,6 +67,9 @@ spec:
     accessModes:
       - ReadWriteOnce
     capacity: 5Gi
+    resources:
+      limits:
+        memory: 1Gi
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/volsync.backube/replicationdestination_v1alpha1.json
 apiVersion: volsync.backube/v1alpha1
@@ -82,3 +91,6 @@ spec:
     accessModes:
       - ReadWriteOnce
     capacity: 5Gi
+    resources:
+      limits:
+        memory: 1Gi
