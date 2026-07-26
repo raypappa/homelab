@@ -30,6 +30,6 @@ spec:
         type: RuntimeDefault
     moverResources:
       limits:
-        memory: 10Gi
+        memory: 20Gi
     retain:
       daily: 7
