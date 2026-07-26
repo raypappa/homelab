@@ -19,7 +19,7 @@ spec:
     accessModes:
       - ReadWriteMany
     capacity: 5Gi
-    resources:
+    moverResources:
       limits:
         memory: 1Gi
     moverSecurityContext:

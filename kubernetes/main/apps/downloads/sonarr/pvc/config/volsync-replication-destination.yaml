@@ -19,6 +19,6 @@ spec:
     accessModes:
       - ReadWriteMany
     capacity: 2Gi
-    resources:
+    moverResources:
       limits:
         memory: 1Gi

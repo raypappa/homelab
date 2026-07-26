@@ -27,7 +27,7 @@ spec:
       runAsNonRoot: true
       seccompProfile:
         type: RuntimeDefault
-    resources:
+    moverResources:
       limits:
         memory: 1Gi
     retain:
