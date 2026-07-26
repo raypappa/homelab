@@ -18,6 +18,12 @@ helmCharts:
     version: 1.0.6
     repo: https://drummyfloyd.github.io/crunchy-userinit-controller
     valuesFile: ./userinit-controller-values.yaml
+  - name: cloudnative-pg
+    releaseName: cnpg
+    version: 0.29.0
+    repo: https://cloudnative-pg.github.io/charts
+    includeCRDs: true
+    valuesFile: ./cnpg-values.yaml
 resources:
   - ./base/rbac.yaml
   - ./base/secret-store.yaml
@@ -25,3 +31,4 @@ resources:
   - ./base/external-secret.yaml
   - ./base/postgres-cluster.yaml
   - ./base/postgres-admin.yaml
+  - ./base/cnpg-cluster.yaml
