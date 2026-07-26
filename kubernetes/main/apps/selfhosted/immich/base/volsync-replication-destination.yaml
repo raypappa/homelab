@@ -19,6 +19,9 @@ spec:
     accessModes:
       - ReadWriteMany
     capacity: 5Gi
+    resources:
+      limits:
+        memory: 1Gi
     moverSecurityContext:
       runAsUser: 65534
       runAsGroup: 65534

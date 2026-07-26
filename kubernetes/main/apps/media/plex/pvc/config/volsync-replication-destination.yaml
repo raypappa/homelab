@@ -19,3 +19,6 @@ spec:
     accessModes:
       - ReadWriteOnce
     capacity: 1Gi
+    resources:
+      limits:
+        memory: 1Gi

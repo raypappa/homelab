@@ -49,5 +49,8 @@ spec:
       runAsUser: 1001
       runAsGroup: 1001
       fsGroup: 1001
+    resources:
+      limits:
+        memory: 1Gi
     retain:
       daily: 7
