@@ -8,14 +8,14 @@ namespace: database
 helmCharts:
   - name: pgo
     releaseName: crunchy-postgres-operator
-    version: 6.0.1
+    version: 6.0.2
     # helm show chart oci://registry.developers.crunchydata.com/crunchydata/pgo
     repo: oci://registry.developers.crunchydata.com/crunchydata
     includeCRDs: true
     valuesFile: operator-values.yaml
   - name: crunchy-userinit-controller
     releaseName: crunchy-userinit-controller
-    version: 1.0.4
+    version: 1.0.6
     repo: https://drummyfloyd.github.io/crunchy-userinit-controller
     valuesFile: ./userinit-controller-values.yaml
 resources:
