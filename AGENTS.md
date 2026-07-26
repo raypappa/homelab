@@ -360,6 +360,10 @@ The root Node package manages repo tooling (Biome, cspell). The actual TypeScrip
 
 CI/scheduled workflows set up Tailscale, AWS credentials, bastion SSH paths, and sometimes SSH port forwarding to reach the cluster. A local command that works on the maintainer machine may still fail in CI if it assumes different network reachability.
 
+### Never use `git add -A`
+
+Do not use `git add -A` — it stages untracked files (like `jellyfin.yaml`, `.crush.json`, `client-setup.sh`) that are not part of the intended change. Always stage specific files with `git add <paths...>` or let pre-commit only check staged changes.
+
 ### Tunnel management is partly scripted, partly manual
 
 `scripts/setup-tunnel.sh` handles most tunnel setup steps, but **not** the Cloudflare Application creation (auth/authorization policy). The script also uses 1Password CLI (`op.exe`), so it assumes that tooling environment.
