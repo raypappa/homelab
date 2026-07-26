@@ -364,6 +364,10 @@ CI/scheduled workflows set up Tailscale, AWS credentials, bastion SSH paths, and
 
 Do not use `git add -A` — it stages untracked files (like `jellyfin.yaml`, `.crush.json`, `client-setup.sh`) that are not part of the intended change. Always stage specific files with `git add <paths...>` or let pre-commit only check staged changes.
 
+### Never merge to main directly
+
+Always open a PR instead: `gh pr create -f`. Never push directly to `main`.
+
 ### Tunnel management is partly scripted, partly manual
 
 `scripts/setup-tunnel.sh` handles most tunnel setup steps, but **not** the Cloudflare Application creation (auth/authorization policy). The script also uses 1Password CLI (`op.exe`), so it assumes that tooling environment.
