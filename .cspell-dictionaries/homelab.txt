@@ -341,3 +341,6 @@ valkeydb
 headscale
 juanfont
 spotizerrphoenix
+cloudnative
+cloudnativepg
+cnpg
