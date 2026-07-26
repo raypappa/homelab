@@ -5,7 +5,7 @@ kind: ReplicationSource
 metadata:
   name: jellyfin-config-backblaze
 spec:
-  sourcePVC: jellyfin-config
+  sourcePVC: jellyfin
   trigger:
     schedule: 0 0 * * *
   restic:
@@ -24,6 +24,7 @@ spec:
       runAsUser: 1001
       runAsGroup: 1001
       fsGroup: 1001
+      fsGroupChangePolicy: OnRootMismatch
       runAsNonRoot: true
       seccompProfile:
         type: RuntimeDefault
