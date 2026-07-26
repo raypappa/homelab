@@ -19,7 +19,7 @@ spec:
     accessModes:
       - ReadWriteOnce
     capacity: 5Gi
-    resources:
+    moverResources:
       limits:
         memory: 1Gi
 ---
@@ -43,7 +43,7 @@ spec:
     accessModes:
       - ReadWriteOnce
     capacity: 5Gi
-    resources:
+    moverResources:
       limits:
         memory: 1Gi
 ---
@@ -67,7 +67,7 @@ spec:
     accessModes:
       - ReadWriteOnce
     capacity: 5Gi
-    resources:
+    moverResources:
       limits:
         memory: 1Gi
 ---
@@ -91,6 +91,6 @@ spec:
     accessModes:
       - ReadWriteOnce
     capacity: 5Gi
-    resources:
+    moverResources:
       limits:
         memory: 1Gi

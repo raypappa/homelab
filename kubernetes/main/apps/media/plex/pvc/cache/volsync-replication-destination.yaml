@@ -15,7 +15,7 @@ spec:
     cleanupTempPVC: true
     enableFileDeletion: true
     capacity: 1Gi
-    resources:
+    moverResources:
       limits:
         memory: 1Gi
     cacheStorageClassName: openebs-hostpath
