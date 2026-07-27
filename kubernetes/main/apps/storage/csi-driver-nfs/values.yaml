@@ -2,6 +2,11 @@
 controller:
   replicas: 1
   dnsPolicy: Default
+  tolerations:
+    - key: dedicated
+      operator: Equal
+      value: gpu
+      effect: NoExecute
 storageClasses:
   - name: nfs-ip
     parameters:
@@ -22,3 +27,5 @@ storageClasses:
 
 node:
   dnsPolicy: Default
+  tolerations:
+    - operator: Exists

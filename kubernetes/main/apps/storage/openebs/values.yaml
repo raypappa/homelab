@@ -6,6 +6,11 @@ localpv-provisioner:
     image:
       registry: quay.io/
       repository: openebs/provisioner-localpv
+    tolerations:
+      - key: dedicated
+        operator: Equal
+        value: gpu
+        effect: NoExecute
   hostpathClass:
     enabled: true
     name: openebs-hostpath

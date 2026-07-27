@@ -9,3 +9,15 @@ prometheus:
     enabled: false
   prometheusRule:
     enabled: true
+speaker:
+  tolerations:
+    - key: dedicated
+      operator: Equal
+      value: gpu
+      effect: NoExecute
+controller:
+  tolerations:
+    - key: dedicated
+      operator: Equal
+      value: gpu
+      effect: NoExecute
