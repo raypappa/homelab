@@ -37,6 +37,13 @@ cephClusterSpec:
   disruptionManagement:
     managePodBudgets: false
   removeOSDsIfOutAndSafeToRemove: true
+  placement:
+    all:
+      tolerations:
+        - key: dedicated
+          operator: Equal
+          value: gpu
+          effect: NoExecute
 cephFileSystemVolumeSnapshotClass:
   enabled: true
 cephBlockPoolsVolumeSnapshotClass:
