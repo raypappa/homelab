@@ -7,3 +7,13 @@ csi:
   disableHolderPods: true
   enableCSIHostNetwork: true
   enableVolumeGroupSnapshot: false
+  pluginTolerations:
+    - key: dedicated
+      operator: Equal
+      value: gpu
+      effect: NoExecute
+  provisionerTolerations:
+    - key: dedicated
+      operator: Equal
+      value: gpu
+      effect: NoExecute
