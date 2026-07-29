@@ -1,0 +1,20 @@
+---
+apiVersion: postgresql.cnpg.io/v1
+kind: Database
+metadata:
+  name: immich
+spec:
+  # "app"/"app" is auto-generated via cnpg in each cluster, adjust to your user/database
+  name: immich
+  owner: immich
+  cluster:
+    name: faerun-cnpg-001
+  extensions:
+    - name: vector
+      ensure: present
+    - name: vchord
+      ensure: present
+    - name: earthdistance
+      ensure: present
+    - name: cube
+      ensure: present

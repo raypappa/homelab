@@ -344,3 +344,5 @@ spotizerrphoenix
 cloudnative
 cloudnativepg
 cnpg
+earthdistance
+vchord
