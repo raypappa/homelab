@@ -5,7 +5,7 @@ kind: ReplicationSource
 metadata:
   name: timetagger-config-backblaze
 spec:
-  sourcePVC: timetagger-config
+  sourcePVC: timetagger
   trigger:
     schedule: 0 0 * * *
   restic:
