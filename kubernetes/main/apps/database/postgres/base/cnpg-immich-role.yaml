@@ -1,0 +1,14 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/postgresql.cnpg.io/databaserole_v1.json
+apiVersion: postgresql.cnpg.io/v1
+kind: DatabaseRole
+metadata:
+  name: immich
+spec:
+  name: immich
+  cluster:
+    name: faerun-cnpg-001
+  login: true
+  ensure: present
+  passwordSecret:
+    name: cnpg-immich-password

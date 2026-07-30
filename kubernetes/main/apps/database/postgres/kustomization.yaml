@@ -32,3 +32,6 @@ resources:
   - ./base/postgres-cluster.yaml
   - ./base/postgres-admin.yaml
   - ./base/cnpg-cluster.yaml
+  - ./base/cnpg-immich-role.yaml
+  - ./base/cnpg-immich-password.yaml
+  - ./base/cnpg-immich-database.yaml

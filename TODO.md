@@ -24,6 +24,10 @@
 1. leantime
 1. pterodactyl
 
+## Migrations
+
+1. CNPG cluster `faerun-cnpg-001` — add backups: pgBackRest + S3 to Backblaze, scheduled full/incremental
+
 ## Fix
 
 1. Dashboard and ArgoCD Dashboard are deploying cert-manager, get them to stop.
