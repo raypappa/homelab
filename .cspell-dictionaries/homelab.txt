@@ -348,3 +348,5 @@ earthdistance
 vchord
 izgrqebrzrkusffs
 gvqxkdu
+initdb
+vectorchord
