@@ -11,4 +11,4 @@ spec:
   login: true
   ensure: present
   passwordSecret:
-    name: cnpg-immich-password
+    name: faerun-cnpg-001-immich
