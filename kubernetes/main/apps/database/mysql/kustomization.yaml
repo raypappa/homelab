@@ -6,7 +6,7 @@ helmCharts:
   - name: mysql-operator
     includeCRDs: true
     repo: https://mysql.github.io/mysql-operator/
-    version: 2.2.8
+    version: 2.3.0
     namespace: database
     # - name: mysql-innodbcluster
     #   repo: https://mysql.github.io/mysql-operator/
