@@ -366,7 +366,7 @@ Do not use `git add -A` — it stages untracked files (like `jellyfin.yaml`, `.c
 
 ### Never merge to main directly
 
-Always open a PR instead: `gh pr create -f`. Never push directly to `main`.
+Always open a PR instead: `gh pr create -f`. Preferred merge command: `gh pr merge -rd`. Never push directly to `main`.
 
 ### Tunnel management is partly scripted, partly manual
 
