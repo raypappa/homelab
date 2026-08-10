@@ -6,6 +6,6 @@ helmCharts:
   - name: eck-operator
     releaseName: elastic-operator
     repo: https://helm.elastic.co
-    version: 3.4.0
+    version: 3.5.0
     valuesFile: values.yaml
     includeCRDs: true
