@@ -270,7 +270,7 @@ lvm
 gitea
 raypappa
 lemonldap
-tiredofit
+nfrastack
 psessions
 llng
 tensorchord
