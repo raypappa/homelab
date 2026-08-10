@@ -7,13 +7,12 @@ controllers:
     containers:
       app:
         image:
-          repository: tiredofit/lemonldap
-          # renovate: datasource=docker depName=tiredofit/lemonldap
-          tag: 2.0.84
+          repository: ghcr.io/nfrastack/container-lemonldap
+          # renovate: datasource=docker depName=ghcr.io/nfrastack/container-lemonldap
+          tag: "3.3.6"
           pullPolicy: IfNotPresent
         env:
           TZ: America/Los_Angeles
-          CONTAINER_NAME: lemonldap-app
           SETUP_TYPE: AUTO
           API_HOSTNAME: api.manager.sso.stoneydavis.lan
           MANAGER_HOSTNAME: manager.sso.stoneydavis.lan
@@ -48,7 +47,7 @@ persistence:
     advancedMounts:
       lemonldap-app:
         app:
-          - path: /etc/lemonldap-ng
+          - path: /config
   var-lib-lemonldap-ng-conf:
     enabled: true
     storageClass: ceph-block
@@ -61,7 +60,7 @@ persistence:
     advancedMounts:
       lemonldap-app:
         app:
-          - path: /var/lib/lemonldap-ng/conf
+          - path: /data/conf
   var-lib-lemonldap-ng-sessions:
     enabled: true
     storageClass: ceph-block
@@ -74,7 +73,7 @@ persistence:
     advancedMounts:
       lemonldap-app:
         app:
-          - path: /var/lib/lemonldap-ng/sessions
+          - path: /data/sessions
   var-lib-lemonldap-ng-psessions:
     enabled: true
     storageClass: ceph-block
@@ -87,4 +86,4 @@ persistence:
     advancedMounts:
       lemonldap-app:
         app:
-          - path: /var/lib/lemonldap-ng/psessions
+          - path: /data/psessions
