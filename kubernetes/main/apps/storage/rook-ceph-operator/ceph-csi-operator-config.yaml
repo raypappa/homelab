@@ -1,0 +1,20 @@
+---
+apiVersion: csi.ceph.io/v1
+kind: OperatorConfig
+metadata:
+  name: rook-ceph
+  namespace: rook-ceph
+spec:
+  driverSpecDefaults:
+    controllerPlugin:
+      tolerations:
+        - key: dedicated
+          operator: Equal
+          value: gpu
+          effect: NoExecute
+    nodePlugin:
+      tolerations:
+        - key: dedicated
+          operator: Equal
+          value: gpu
+          effect: NoExecute
