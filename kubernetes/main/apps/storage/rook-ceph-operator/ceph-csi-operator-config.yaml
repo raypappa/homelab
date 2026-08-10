@@ -2,7 +2,7 @@
 apiVersion: csi.ceph.io/v1
 kind: OperatorConfig
 metadata:
-  name: rook-ceph
+  name: ceph-csi-operator-config
   namespace: rook-ceph
 spec:
   driverSpecDefaults:
