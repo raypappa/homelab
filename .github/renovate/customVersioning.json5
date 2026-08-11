@@ -40,6 +40,11 @@
       ]
     },
     {
+      "description": "Group pnpm across mise and packageManager fields",
+      "groupName": "pnpm",
+      "matchPackageNames": ["pnpm", "npm:pnpm"]
+    },
+    {
       "description": "Group rook-ceph",
       "groupName": "rook-ceph",
       "matchPackagePatterns": ["rook-ceph", "rook-ceph-cluster"]
