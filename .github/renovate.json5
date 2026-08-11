@@ -5,6 +5,7 @@
     ':semanticCommits',
     ':disableRateLimiting',
     ':dependencyDashboard',
+    ':separateMultipleMajorReleases',
     'docker:enableMajor',
     'customManagers:biomeVersions',
     'github>raypappa/homelab//.github/renovate/customVersioning.json5',
@@ -21,6 +22,7 @@
     'group:linters',
     'group:aws-cdkMonorepo',
   ],
+  minimumReleaseAge: '7d',
   'pre-commit': {
     enabled: true,
   },
