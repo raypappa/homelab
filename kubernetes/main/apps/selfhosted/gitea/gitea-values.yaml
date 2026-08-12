@@ -1,6 +1,7 @@
 ---
 image:
   repository: gitea/gitea
+  # datasource=docker depName=gitea/gitea
   tag: 1.22.2
   rootless: true
 replicaCount: 1
