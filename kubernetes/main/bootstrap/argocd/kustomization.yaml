@@ -20,7 +20,7 @@ helmCharts:
         tunnelName: faerun-argocd
       image:
         # renovate: datasource=docker depName=cloudflare/cloudflared
-        tag: 2025.9.1
+        tag: 2025.11.1
     version: 0.3.2
 patches:
   - path: patches/argocd-cm.yaml
