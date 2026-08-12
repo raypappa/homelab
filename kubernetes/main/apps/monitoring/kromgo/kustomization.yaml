@@ -5,7 +5,7 @@ kind: Kustomization
 helmCharts:
   - name: app-template
     repo: https://bjw-s-labs.github.io/helm-charts
-    version: 5.0.0
+    version: 5.0.1
     namespace: kromgo
     releaseName: kromgo
     valuesFile: kromgo-values.yaml
