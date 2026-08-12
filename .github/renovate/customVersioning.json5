@@ -24,11 +24,7 @@
       "versioning": "regex:^RELEASE\\.(?<major>\\d+)-(?<minor>\\d+)-(?<patch>\\d+)T.*Z$",
       "matchPackagePatterns": ["minio"]
     },
-    {
-      "description": "Group aws-cdk",
-      "groupName": "aws-cdk",
-      "matchPackagePatterns": ["aws-cdk", "@aws-cdk/aws-lambda-python-alpha", "aws-cdk-lib"]
-    },
+
     {
       "description": "Group for all immich updates",
       "groupName": "immich-app",
@@ -54,6 +50,7 @@
         "monorepo:aws-cdk"
       ],
       "groupName": "aws-cdk monorepo",
+      "matchPackageNames": ["aws-cdk", "@aws-cdk/aws-lambda-python-alpha"],
       "matchUpdateTypes": [
         "digest",
         "patch",
