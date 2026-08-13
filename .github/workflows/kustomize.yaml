@@ -11,7 +11,7 @@ jobs:
         uses: actions/checkout@v7
       - uses: syntaqx/setup-kustomize@v1
         with:
-          # renovate: datasource=github-tags depName=kubernetes-sigs/kustomize versioning="regex:^kustomize/(?<major>\\d+)(\\.(?<minor>\\d+))?(\\.(?<patch>\\d+))?(-(?<compatibility>.*))?$"
+          # renovate: datasource=github-tags depName=kubernetes-sigs/kustomize extractVersion="^kustomize/v(?<version>.*)$" versioning=semver-coerced
           kustomize-version: 5.8.1
       - uses: azure/setup-helm@v5
         with:
