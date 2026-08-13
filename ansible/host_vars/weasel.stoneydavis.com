@@ -23,7 +23,7 @@ coturn_install_src_version: "4.8.0"
 coturn_tls: True
 coturn_no_rfc5780: False
 # renovate: datasource=github-releases depName=livekit/livekit
-livekit_version: "1.9.11"
+livekit_version: "1.13.5"
 livekit_config:
   port: 7880
   bind_addresses:
