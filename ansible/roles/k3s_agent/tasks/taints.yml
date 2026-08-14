@@ -3,7 +3,7 @@
 - name: k3s_agent | Apply node taints via Kubernetes API
   kubernetes.core.k8s_taint:
     state: present
-    name: "{{ inventory_hostname }}"
+    name: "{{ ansible_hostname }}"
     taints: "{{ k3s_agent_node_taints }}"
     kubeconfig: /etc/rancher/k3s/k3s.yaml
   delegate_to: "{{ k3s_controlplane_singleton_host }}"
