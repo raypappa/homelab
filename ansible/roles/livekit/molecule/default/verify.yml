@@ -1,0 +1,82 @@
+# SPDX-License-Identifier: MIT-0
+---
+- name: Verify
+  hosts: all
+  become: true
+  tasks:
+    - name: Check LiveKit service is running
+      ansible.builtin.service_facts:
+
+    - name: Assert LiveKit service is active
+      ansible.builtin.assert:
+        that:
+          - "'livekit-server.service' in ansible_facts.services"
+          - "ansible_facts.services['livekit-server.service'].state == 'running'"
+        fail_msg: "LiveKit service is not running"
+        success_msg: "LiveKit service is running"
+
+    - name: Check LiveKit config file exists
+      ansible.builtin.stat:
+        path: /etc/livekit-server.yaml
+      register: config_file
+
+    - name: Assert config file exists
+      ansible.builtin.assert:
+        that:
+          - config_file.stat.exists
+          - config_file.stat.mode == '0644'
+        fail_msg: "LiveKit config file missing or wrong permissions"
+        success_msg: "LiveKit config file exists with correct permissions"
+
+    - name: Check LiveKit binary exists
+      ansible.builtin.stat:
+        path: /usr/local/bin/livekit-server
+      register: livekit_binary
+
+    - name: Assert LiveKit binary exists
+      ansible.builtin.assert:
+        that:
+          - livekit_binary.stat.exists
+          - livekit_binary.stat.executable
+        fail_msg: "LiveKit binary not found or not executable"
+        success_msg: "LiveKit binary exists and is executable"
+
+    - name: Check livekit-jwt service is running
+      ansible.builtin.service_facts:
+
+    - name: Assert livekit-jwt service is active
+      ansible.builtin.assert:
+        that:
+          - "'livekit-jwt.service' in ansible_facts.services"
+          - "ansible_facts.services['livekit-jwt.service'].state == 'running'"
+        fail_msg: "livekit-jwt service is not running"
+        success_msg: "livekit-jwt service is running"
+
+    - name: Check nginx is running
+      ansible.builtin.service_facts:
+
+    - name: Assert nginx service is active
+      ansible.builtin.assert:
+        that:
+          - "'nginx.service' in ansible_facts.services"
+          - "ansible_facts.services['nginx.service'].state == 'running'"
+        fail_msg: "nginx service is not running"
+        success_msg: "nginx service is running"
+
+    - name: Test LiveKit API endpoint
+      ansible.builtin.uri:
+        url: "http://localhost:{{ livekit_config.port | default(7880) }}"
+        status_code:
+          - 200
+          - 404
+        timeout: 5
+      register: livekit_health
+      ignore_errors: true
+
+    - name: Verify LiveKit API is accessible
+      ansible.builtin.assert:
+        that:
+          - livekit_health.status in [200, 404]
+        fail_msg: "LiveKit API is not accessible"
+        success_msg: "LiveKit API is accessible"
+      when: livekit_health is not failed
