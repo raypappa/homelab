@@ -1,6 +1,45 @@
+[settings]
+experimental = true
+auto_install = true
+lockfile = true
+minimum_release_age = "3d"
+pin = true
+
+[settings.pipx]
+uvx = true
+
 [tools]
 pulumi = "latest"
+"pipx:molecule" = { version = "26.6.0", uvx_args = "--with=molecule-plugins[docker],ansible-lint" }
+taplo = "latest"
+fnox = "latest"
+age = "latest"
 [tools.node]
 version = "25.9.0"
 [tools."npm:pnpm"]
 version = "11.22.0"
+[tools."github:astral-sh/ruff"]
+version = "latest"
+[tools.uv]
+version = "latest"
+[tools."github:go-task/task"]
+version = "latest"
+
+[tools."github:darksworm/argonaut"]
+version = "latest"
+
+[tools.kubectl]
+version = "latest"
+[tools."github:derailed/k9s"]
+version = "latest"
+[tools."github:argoproj/argo-cd"]
+version = "latest"
+[tools.kustomize]
+version = "latest"
+
+[tools.helm]
+version = "latest"
+[tools."pipx:yamllint"]
+version = "latest"
+[tools."github:google/yamlfmt"]
+version = "latest"
