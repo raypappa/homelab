@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: MIT-0
 ---
-- hosts: localhost
-  remote_user: root
+- name: Converge
+  hosts: all
   become: true
   vars:
     livekit_config:
@@ -31,4 +31,4 @@
       keys:
         devkey: secret
   roles:
-    - livekit
+    - role: livekit
