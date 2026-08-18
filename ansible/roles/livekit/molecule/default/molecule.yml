@@ -17,9 +17,8 @@ platforms:
       - /tmp
 provisioner:
   name: ansible
-  config_options:
-    defaults:
-      roles_path: ../../..
+  env:
+    ANSIBLE_ROLES_PATH: ../../../
   playbooks:
     converge: converge.yml
     verify: verify.yml
