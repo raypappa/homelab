@@ -347,6 +347,7 @@ cloudnativepg
 cnpg
 earthdistance
 vchord
+cgroupns
 izgrqebrzrkusffs
 gvqxkdu
 initdb
