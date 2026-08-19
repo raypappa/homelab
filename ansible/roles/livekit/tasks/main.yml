@@ -48,6 +48,7 @@
     state: started
     enabled: true
   when: livekit_restarted is skipped
+  changed_when: false
 - name: Install lk-jwt-service
   tags:
     - livekit-jwt

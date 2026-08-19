@@ -25,9 +25,9 @@
 - name: Enable livekit-jwt
   ansible.builtin.systemd_service:
     name: livekit-jwt
-    state: started
     enabled: true
   when: livekit_jwt_restarted is skipped
+  changed_when: false
 - name: Install nginx
   ansible.builtin.package:
     name:
