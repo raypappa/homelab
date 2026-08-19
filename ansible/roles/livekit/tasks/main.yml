@@ -47,7 +47,7 @@
     name: "{{ livekit_service_name }}"
     state: started
     enabled: true
-  when: livekit_restarted.skipped
+  when: livekit_restarted is skipped
 - name: Install lk-jwt-service
   tags:
     - livekit-jwt
