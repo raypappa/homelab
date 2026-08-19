@@ -348,6 +348,7 @@ cnpg
 earthdistance
 vchord
 cgroupns
+snakeoil
 izgrqebrzrkusffs
 gvqxkdu
 initdb
