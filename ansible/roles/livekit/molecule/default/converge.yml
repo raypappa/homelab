@@ -3,6 +3,11 @@
 - name: Converge
   hosts: all
   become: true
+  pre_tasks:
+    - name: Create letsencrypt group
+      ansible.builtin.group:
+        name: letsencrypt
+        state: present
   vars:
     livekit_config:
       port: 7880
