@@ -8,6 +8,9 @@
       ansible.builtin.group:
         name: letsencrypt
         state: present
+    - name: Update apt cache
+      ansible.builtin.apt:
+        update_cache: true
   vars:
     certbot_certs:
       - name: test.example.com
