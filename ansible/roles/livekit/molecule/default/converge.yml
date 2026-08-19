@@ -11,6 +11,14 @@
     - name: Update apt cache
       ansible.builtin.apt:
         update_cache: true
+    - name: Create nginx log format
+      ansible.builtin.copy:
+        dest: /etc/nginx/conf.d/log-format.conf
+        content: |
+          log_format main '$remote_addr - $remote_user [$time_local] "$request" '
+                          '$status $body_bytes_sent "$http_referer" '
+                          '"$http_user_agent" "$http_x_forwarded_for"';
+        mode: "0644"
   vars:
     certbot_certs:
       - name: test.example.com
