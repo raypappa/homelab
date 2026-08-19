@@ -38,6 +38,9 @@
         max_redirects: null
       turn:
         enabled: false
+        domain: livekit.example.com
+        cert_file: /etc/ssl/certs/ssl-cert-snakeoil.pem
+        key_file: /etc/ssl/private/ssl-cert-snakeoil.key
       keys:
         devkey: secret
   roles:
