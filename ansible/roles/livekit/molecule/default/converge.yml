@@ -9,6 +9,8 @@
         name: letsencrypt
         state: present
   vars:
+    certbot_certs:
+      - name: test.example.com
     livekit_config:
       port: 7880
       bind_addresses:
