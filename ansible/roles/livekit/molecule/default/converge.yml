@@ -23,6 +23,25 @@
                           '$status $body_bytes_sent "$http_referer" '
                           '"$http_user_agent" "$http_x_forwarded_for"';
         mode: "0644"
+    - name: Create SSL certificate directory
+      ansible.builtin.file:
+        path: /etc/ssl/certs
+        state: directory
+        mode: "0755"
+    - name: Create SSL private directory
+      ansible.builtin.file:
+        path: /etc/ssl/private
+        state: directory
+        mode: "0700"
+    - name: Create snakeoil self-signed cert
+      ansible.builtin.command: >
+        openssl req -x509 -nodes -days 365
+        -newkey rsa:2048
+        -keyout /etc/ssl/private/ssl-cert-snakeoil.key
+        -out /etc/ssl/certs/ssl-cert-snakeoil.pem
+        -subj "/CN=localhost"
+      args:
+        creates: /etc/ssl/certs/ssl-cert-snakeoil.pem
   vars:
     certbot_certs:
       - name: test.example.com
