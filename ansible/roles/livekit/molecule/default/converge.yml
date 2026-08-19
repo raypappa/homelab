@@ -11,6 +11,10 @@
     - name: Update apt cache
       ansible.builtin.apt:
         update_cache: true
+    - name: Install nginx
+      ansible.builtin.apt:
+        name: nginx
+        state: present
     - name: Create nginx log format
       ansible.builtin.copy:
         dest: /etc/nginx/conf.d/log-format.conf
