@@ -27,7 +27,7 @@
     name: livekit-jwt
     state: started
     enabled: true
-  when: livekit_jwt_restarted.skipped
+  when: livekit_jwt_restarted is skipped
 - name: Install nginx
   ansible.builtin.package:
     name:
