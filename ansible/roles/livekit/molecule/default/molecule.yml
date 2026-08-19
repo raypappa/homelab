@@ -6,9 +6,9 @@ driver:
   name: docker
 platforms:
   - name: ubuntu2404
-    image: ubuntu:24.04
+    image: geerlingguy/docker-ubuntu2404-ansible:latest
     pre_build_image: true
-    command: /bin/systemd
+    command: /lib/systemd/systemd
     privileged: true
     volumes:
       - /sys/fs/cgroup:/sys/fs/cgroup:rw
