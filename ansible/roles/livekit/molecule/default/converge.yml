@@ -1,9 +1,11 @@
 # SPDX-License-Identifier: MIT-0
 ---
-- hosts: localhost
-  remote_user: root
+- name: Converge
+  hosts: all
   become: true
   vars:
+    certbot_certs:
+      - name: test.example.com
     livekit_config:
       port: 7880
       bind_addresses:
@@ -28,7 +30,10 @@
         max_redirects: null
       turn:
         enabled: false
+        domain: livekit.example.com
+        cert_file: /etc/ssl/certs/ssl-cert-snakeoil.pem
+        key_file: /etc/ssl/private/ssl-cert-snakeoil.key
       keys:
         devkey: secret
   roles:
-    - livekit
+    - role: livekit

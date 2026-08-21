@@ -337,6 +337,7 @@ turndb
 turnserver
 livekit
 homeservers
+devkey
 valkeydb
 headscale
 juanfont
@@ -346,8 +347,13 @@ cloudnativepg
 cnpg
 earthdistance
 vchord
+cgroupns
+snakeoil
+keyout
 izgrqebrzrkusffs
 gvqxkdu
 initdb
 vectorchord
 openssf
+taplo
+fnox
