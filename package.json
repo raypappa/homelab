@@ -8,5 +8,5 @@
     "@cspell/dict-k8s": "^1.0.5",
     "cspell": "^10.0.0"
   },
-  "packageManager": "pnpm@11.21.0"
+  "packageManager": "pnpm@11.22.0"
 }
