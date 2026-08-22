@@ -5,7 +5,7 @@
   become: true
   vars:
     certbot_certs:
-      - name: test.example.com
+      - name: localhost
     livekit_config:
       port: 7880
       bind_addresses:
