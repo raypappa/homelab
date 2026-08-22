@@ -4,6 +4,10 @@
   hosts: all
   become: true
   tasks:
+    - name: Wait for services to stabilize
+      ansible.builtin.pause:
+        seconds: 5
+
     - name: Check LiveKit service is running
       ansible.builtin.service_facts:
 

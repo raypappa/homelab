@@ -4,6 +4,7 @@
   hosts: all
   become: true
   vars:
+    livekit_jwt_scheme: ws
     certbot_certs:
       - name: localhost
     livekit_config:

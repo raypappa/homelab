@@ -20,7 +20,8 @@
   ansible.builtin.systemd_service:
     name: livekit-jwt
     state: restarted
-  when: livekit_jwt_downloaded.changed and livekit_jwt_service_installed.changed
+    daemon_reload: true
+  when: livekit_jwt_downloaded.changed or livekit_jwt_service_installed.changed
   register: livekit_jwt_restarted
 - name: Enable livekit-jwt
   ansible.builtin.systemd_service:

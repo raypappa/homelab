@@ -4,7 +4,7 @@ Description=LiveKit Server Container
 [Service]
 LimitNOFILE=500000
 Restart=always
-Environment=LIVEKIT_URL=wss://{{ certbot_certs[0].name }}:{{ livekit_config.port }}
+Environment=LIVEKIT_URL={{ livekit_jwt_scheme | default('wss') }}://{{ certbot_certs[0].name }}:{{ livekit_config.port }}
 Environment=LIVEKIT_KEY={{ livekit_config['keys'] | items | first | first }}
 Environment=LIVEKIT_SECRET={{ livekit_config['keys'] | items | first | last }}
 Environment=LIVEKIT_JWT_BIND=127.0.0.1:{{ livekit_jwt_port }}
