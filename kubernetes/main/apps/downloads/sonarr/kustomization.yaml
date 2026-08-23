@@ -5,7 +5,7 @@ helmCharts:
   - name: app-template
     # Ugh please replace this with using bjw-s
     repo: https://bjw-s-labs.github.io/helm-charts
-    version: 5.0.1
+    version: 5.1.0
     namespace: sonarr
     releaseName: sonarr
     valuesFile: sonarr-values.yaml
