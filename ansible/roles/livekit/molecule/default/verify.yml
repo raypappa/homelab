@@ -45,16 +45,30 @@
         fail_msg: "LiveKit binary not found or not executable"
         success_msg: "LiveKit binary exists and is executable"
 
-    - name: Check livekit-jwt service is running
-      ansible.builtin.service_facts:
+    - name: Check livekit-jwt service file exists
+      ansible.builtin.stat:
+        path: /etc/systemd/system/livekit-jwt.service
+      register: jwt_service_file
 
-    - name: Assert livekit-jwt service is active
+    - name: Assert livekit-jwt service file exists and is configured
       ansible.builtin.assert:
         that:
-          - "'livekit-jwt.service' in ansible_facts.services"
-          - "ansible_facts.services['livekit-jwt.service'].state == 'running'"
-        fail_msg: "livekit-jwt service is not running"
-        success_msg: "livekit-jwt service is running"
+          - jwt_service_file.stat.exists
+        fail_msg: "livekit-jwt service file not found"
+        success_msg: "livekit-jwt service file exists"
+
+    - name: Read livekit-jwt service file
+      ansible.builtin.slurp:
+        src: /etc/systemd/system/livekit-jwt.service
+      register: jwt_service_content
+
+    - name: Assert livekit-jwt service has correct configuration
+      ansible.builtin.assert:
+        that:
+          - "'LIVEKIT_URL=ws://localhost:7880' in (jwt_service_content.content | b64decode)"
+          - "'/usr/local/bin/livekit-jwt' in (jwt_service_content.content | b64decode)"
+        fail_msg: "livekit-jwt service has incorrect configuration"
+        success_msg: "livekit-jwt service is correctly configured"
 
     - name: Check nginx is running
       ansible.builtin.service_facts:
