@@ -21,7 +21,10 @@ jobs:
         id: changed-files
         uses: tj-actions/changed-files@v47
         with:
-          path: ansible
+          files: |
+            ansible/**
+            pyproject.toml
+            uv.lock
       - name: Checkout output
         run: |
           echo "${{ steps.changed-files.outputs.all_changed_files_count > 0 || contains(github.event.head_commit.message, '[run ansible]') }}";
