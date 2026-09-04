@@ -492,7 +492,7 @@ version = "11.21.0"
 backend = "npm:pnpm"
 
 [[tools."pipx:molecule"]]
-version = "26.6.0"
+version = "26.8.0"
 backend = "pipx:molecule"
 
 [tools."pipx:molecule".options]
