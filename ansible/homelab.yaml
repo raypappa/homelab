@@ -27,6 +27,7 @@
 - name: Hermes
   hosts:
     - panda.stoneydavis.local
+  become: true
   vars:
     hermes_use_mise: true
     hermes_install_ffmpeg: false
