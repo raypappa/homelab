@@ -17,7 +17,7 @@ age = "latest"
 [tools.node]
 version = "25.9.0"
 [tools."npm:pnpm"]
-version = "11.22.0"
+version = "11.25.0"
 [tools."github:astral-sh/ruff"]
 version = "latest"
 [tools.uv]
