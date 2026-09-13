@@ -1,6 +1,14 @@
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/ansible/ansible-lint/main/src/ansiblelint/schemas/requirements.json
 roles:
+  - src: https://github.com/raypappa/ansible-role-hermes.git
+    name: raypappa.hermes
+    # renovate: datasource=git-refs packageName=https://github.com/raypappa/ansible-role-hermes.git
+    version: "0.3.1"
+  - src: https://github.com/raypappa/ansible-role-mise.git
+    name: raypappa.mise
+    # renovate: datasource=git-refs packageName=https://github.com/raypappa/ansible-role-mise.git
+    version: "main"
   - name: xolyu.mariadb
     # renovate: datasource=galaxy packageName=xolyu.mariadb
     version: "0.2.0"
