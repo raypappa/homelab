@@ -47,7 +47,7 @@ url_api = "https://api.github.com/repos/FiloSottile/age/releases/assets/53554193
 provenance = "github-attestations"
 
 [[tools.fnox]]
-version = "1.33.0"
+version = "1.33.1"
 backend = "github:jdx/fnox"
 
 [tools.fnox."platforms.linux-arm64"]
