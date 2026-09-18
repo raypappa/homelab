@@ -108,12 +108,15 @@
     path: /etc/apt/sources.list.d/tailscale.list
     state: absent
   when: ansible_facts['os_family'] == "Debian" and tailscale_sources.stat.exists
+- name: Update apt cache
+  become: true
+  ansible.builtin.apt:
+    update_cache: true
+    cache_valid_time: 3600
 - name: Upgrade the OS (apt-get dist-upgrade)
   become: true
   ansible.builtin.apt:
     upgrade: dist
-    update_cache: true
-    # cache_valid_tie: 3600
     autoclean: true
 - name: Ensure required packages are installed which require a reboot
   become: true
