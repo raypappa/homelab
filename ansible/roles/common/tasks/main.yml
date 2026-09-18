@@ -2,12 +2,15 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/ansible/ansible-lint/main/src/ansiblelint/schemas/ansible.json#/$defs/tasks
 - name: Get my public IP
   community.general.ipify_facts:
+- name: Update apt cache
+  become: true
+  ansible.builtin.apt:
+    update_cache: true
+    cache_valid_time: 3600
 - name: Upgrade the OS (apt-get dist-upgrade)
   become: true
   ansible.builtin.apt:
     upgrade: dist
-    update_cache: true
-    cache_valid_time: 3600
     autoclean: true
 - name: AutoRemove
   ansible.builtin.apt:
