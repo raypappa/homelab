@@ -29,11 +29,16 @@
 - name: Get debian architecture
   ansible.builtin.command: dpkg --print-architecture
   register: headscale_debian_arch
-  changed_when: headscale_debian_arch.rc != 0
+  changed_when: false
+  failed_when: false
+  check_mode: false
 - name: Set debian Arch fact
   ansible.builtin.set_fact:
     cacheable: true
-    headscale_dpkg_architecture: "{{ headscale_debian_arch.stdout }}"
+    headscale_dpkg_architecture: >-
+      {{ headscale_debian_arch.stdout | trim | default('amd64', true)
+         | regex_replace('x86_64', 'amd64')
+         | regex_replace('aarch64', 'arm64') }}
 - name: Create headscale config directory
   become: true
   ansible.builtin.file:
