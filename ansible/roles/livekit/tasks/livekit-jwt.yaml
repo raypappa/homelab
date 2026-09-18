@@ -33,15 +33,18 @@
   ansible.builtin.package:
     name:
       - nginx
+- name: Create nginx log format
+  ansible.builtin.copy:
+    dest: /etc/nginx/conf.d/log-format.conf
+    content: |
+      log_format main '$remote_addr - $remote_user [$time_local] "$request" '
+                      '$status $body_bytes_sent "$http_referer" '
+                      '"$http_user_agent" "$http_x_forwarded_for"';
+    mode: "0644"
 - name: Disable nginx default site
   ansible.builtin.file:
     path: /etc/nginx/sites-enabled/default
     state: absent
-- name: Start nginx
-  ansible.builtin.systemd_service:
-    name: nginx
-    enabled: true
-    state: started
 - name: Configure nginx site
   ansible.builtin.template:
     src: livekit-jwt-nginx.conf
@@ -49,6 +52,8 @@
     owner: root
     group: root
     mode: "0644"
+  notify:
+    - "Validate Nginx config"
 - name: Enable nginx site
   ansible.builtin.file:
     src: /etc/nginx/sites-available/livekit-jwt
@@ -60,3 +65,12 @@
   notify:
     - "Nginx reload"
     - "Validate Nginx config"
+- name: Validate nginx configuration
+  ansible.builtin.command:
+    cmd: nginx -t
+  changed_when: false
+- name: Start nginx
+  ansible.builtin.systemd_service:
+    name: nginx
+    enabled: true
+    state: started
