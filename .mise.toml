@@ -10,7 +10,7 @@ uvx = true
 
 [tools]
 pulumi = "latest"
-"pipx:molecule" = { version = "26.6.0", uvx_args = "--with=molecule-plugins[docker],ansible-lint" }
+"pipx:molecule" = { version = "26.8.0", uvx_args = "--with=molecule-plugins[docker],ansible-lint" }
 taplo = "latest"
 fnox = "latest"
 age = "latest"
