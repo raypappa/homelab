@@ -15,5 +15,5 @@ helmCharts:
     repo: https://bjw-s-labs.github.io/helm-charts
     namespace: monitoring
     releaseName: alertmanager
-    version: 5.1.0
+    version: 5.2.1
     valuesFile: alertmanager-values.yaml
