@@ -383,36 +383,36 @@ checksum = "sha256:38cbdab1c7d4f0412d571c3aeefc700bcdc7b663be481832a11dfed01ee67
 url = "https://get.helm.sh/helm-v4.2.4-windows-amd64.tar.gz"
 
 [[tools.kubectl]]
-version = "1.36.4"
+version = "1.36.5"
 backend = "aqua:kubernetes/kubernetes/kubectl"
 
 [tools.kubectl."platforms.linux-arm64"]
-checksum = "sha256:0ecf44450ee6063bf19dd166a103ee6df4a9034455c2abce626e6eea657d73fb"
-url = "https://dl.k8s.io/v1.36.4/bin/linux/arm64/kubectl"
+checksum = "sha256:88fc1aca8fd0c1b44fe379f67c39bd6858bdfc50241dc55775f84d0f5b31da3a"
+url = "https://dl.k8s.io/v1.36.5/bin/linux/arm64/kubectl"
 
 [tools.kubectl."platforms.linux-arm64-musl"]
-checksum = "sha256:0ecf44450ee6063bf19dd166a103ee6df4a9034455c2abce626e6eea657d73fb"
-url = "https://dl.k8s.io/v1.36.4/bin/linux/arm64/kubectl"
+checksum = "sha256:88fc1aca8fd0c1b44fe379f67c39bd6858bdfc50241dc55775f84d0f5b31da3a"
+url = "https://dl.k8s.io/v1.36.5/bin/linux/arm64/kubectl"
 
 [tools.kubectl."platforms.linux-x64"]
-checksum = "sha256:8b8f088da2dab964f853b38464033b1be15ede2839eca751482357c45abdd05a"
-url = "https://dl.k8s.io/v1.36.4/bin/linux/amd64/kubectl"
+checksum = "sha256:33bc88a24c3b09cf55bfd59e6ca977881b61fc3f25ab65bc80c65b430248648e"
+url = "https://dl.k8s.io/v1.36.5/bin/linux/amd64/kubectl"
 
 [tools.kubectl."platforms.linux-x64-musl"]
-checksum = "sha256:8b8f088da2dab964f853b38464033b1be15ede2839eca751482357c45abdd05a"
-url = "https://dl.k8s.io/v1.36.4/bin/linux/amd64/kubectl"
+checksum = "sha256:33bc88a24c3b09cf55bfd59e6ca977881b61fc3f25ab65bc80c65b430248648e"
+url = "https://dl.k8s.io/v1.36.5/bin/linux/amd64/kubectl"
 
 [tools.kubectl."platforms.macos-arm64"]
-checksum = "sha256:c9e4f713d6fee0043a3d835cca13077cda2bc0973840eb9779360df0b5bdfc69"
-url = "https://dl.k8s.io/v1.36.4/bin/darwin/arm64/kubectl"
+checksum = "sha256:c5850a4a6b9469b26cce47c1ab456285f58e308283dcdf72b4ddda3db49b0ec0"
+url = "https://dl.k8s.io/v1.36.5/bin/darwin/arm64/kubectl"
 
 [tools.kubectl."platforms.macos-x64"]
-checksum = "sha256:71a3aa7c2ee2c974d9fbb462cba0c5c04a4df2e8d85eee94714fd819ea3c4e63"
-url = "https://dl.k8s.io/v1.36.4/bin/darwin/amd64/kubectl"
+checksum = "sha256:03338828c3ba74c37bf5964573fbfbab132eb5bb15da2f821c25a4043d6eb3f0"
+url = "https://dl.k8s.io/v1.36.5/bin/darwin/amd64/kubectl"
 
 [tools.kubectl."platforms.windows-x64"]
-checksum = "sha256:31947857be7583f3e4e6d889a3fb781ca813a45c20f11ccb3ef309714d01a9f3"
-url = "https://dl.k8s.io/v1.36.4/bin/windows/amd64/kubectl.exe"
+checksum = "sha256:5e87156aa0b20e3c1c66db22a11d898f9a5f787513a3bbd8df2633c207a5a855"
+url = "https://dl.k8s.io/v1.36.5/bin/windows/amd64/kubectl.exe"
 
 [[tools.kustomize]]
 version = "5.8.1"
