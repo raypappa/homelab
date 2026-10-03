@@ -20,7 +20,7 @@ helmCharts:
     valuesFile: ./userinit-controller-values.yaml
   - name: cloudnative-pg
     releaseName: cnpg
-    version: 0.29.0
+    version: 0.29.1
     repo: https://cloudnative-pg.github.io/charts
     includeCRDs: true
     valuesFile: ./cnpg-values.yaml
