@@ -200,38 +200,38 @@ url_api = "https://api.github.com/repos/astral-sh/ruff/releases/assets/603827051
 provenance = "github-attestations"
 
 [[tools."github:darksworm/argonaut"]]
-version = "2.19.0"
+version = "2.20.0"
 backend = "github:darksworm/argonaut"
 
 [tools."github:darksworm/argonaut"."platforms.linux-arm64"]
-checksum = "sha256:3358ec287066dabec53d917d8c0e9bd03b8dc33cfb629884d50b7d69799c5358"
-url = "https://github.com/darksworm/argonaut/releases/download/v2.19.0/argonaut-2.19.0-linux-arm64.tar.gz"
-url_api = "https://api.github.com/repos/darksworm/argonaut/releases/assets/507685424"
+checksum = "sha256:52135b9e144d56d06b7705939e679b722bdf64c73a8b06ce12d449678f13c4c5"
+url = "https://github.com/darksworm/argonaut/releases/download/v2.20.0/argonaut-2.20.0-linux-arm64.tar.gz"
+url_api = "https://api.github.com/repos/darksworm/argonaut/releases/assets/585750729"
 
 [tools."github:darksworm/argonaut"."platforms.linux-arm64-musl"]
-checksum = "sha256:3358ec287066dabec53d917d8c0e9bd03b8dc33cfb629884d50b7d69799c5358"
-url = "https://github.com/darksworm/argonaut/releases/download/v2.19.0/argonaut-2.19.0-linux-arm64.tar.gz"
-url_api = "https://api.github.com/repos/darksworm/argonaut/releases/assets/507685424"
+checksum = "sha256:52135b9e144d56d06b7705939e679b722bdf64c73a8b06ce12d449678f13c4c5"
+url = "https://github.com/darksworm/argonaut/releases/download/v2.20.0/argonaut-2.20.0-linux-arm64.tar.gz"
+url_api = "https://api.github.com/repos/darksworm/argonaut/releases/assets/585750729"
 
 [tools."github:darksworm/argonaut"."platforms.linux-x64"]
-checksum = "sha256:3ae737107bc0927942c59b83849b508825be2e184b7ee59f8f4c80bd595eebf8"
-url = "https://github.com/darksworm/argonaut/releases/download/v2.19.0/argonaut-2.19.0-linux-amd64.tar.gz"
-url_api = "https://api.github.com/repos/darksworm/argonaut/releases/assets/507685419"
+checksum = "sha256:ca0a9db61f5f9e6b8b03b2ddd556cecb74da8512cf6af3a4c2af7ce0d4ca4a8c"
+url = "https://github.com/darksworm/argonaut/releases/download/v2.20.0/argonaut-2.20.0-linux-amd64.tar.gz"
+url_api = "https://api.github.com/repos/darksworm/argonaut/releases/assets/585750728"
 
 [tools."github:darksworm/argonaut"."platforms.linux-x64-musl"]
-checksum = "sha256:3ae737107bc0927942c59b83849b508825be2e184b7ee59f8f4c80bd595eebf8"
-url = "https://github.com/darksworm/argonaut/releases/download/v2.19.0/argonaut-2.19.0-linux-amd64.tar.gz"
-url_api = "https://api.github.com/repos/darksworm/argonaut/releases/assets/507685419"
+checksum = "sha256:ca0a9db61f5f9e6b8b03b2ddd556cecb74da8512cf6af3a4c2af7ce0d4ca4a8c"
+url = "https://github.com/darksworm/argonaut/releases/download/v2.20.0/argonaut-2.20.0-linux-amd64.tar.gz"
+url_api = "https://api.github.com/repos/darksworm/argonaut/releases/assets/585750728"
 
 [tools."github:darksworm/argonaut"."platforms.macos-arm64"]
-checksum = "sha256:18eece1883fe6591f2eef2385946ed2828e3ad76fd2d3bf618383ad1cc477370"
-url = "https://github.com/darksworm/argonaut/releases/download/v2.19.0/argonaut-2.19.0-darwin-arm64.tar.gz"
-url_api = "https://api.github.com/repos/darksworm/argonaut/releases/assets/507685420"
+checksum = "sha256:d1c4ad691bd8f36481535fb19ed8a8365c7318b19cd1436a6dcd929a87d0589b"
+url = "https://github.com/darksworm/argonaut/releases/download/v2.20.0/argonaut-2.20.0-darwin-arm64.tar.gz"
+url_api = "https://api.github.com/repos/darksworm/argonaut/releases/assets/585750730"
 
 [tools."github:darksworm/argonaut"."platforms.macos-x64"]
-checksum = "sha256:c14eaacf0d5e63889245f268a87b52b270adff80997e47891ba5940459995edd"
-url = "https://github.com/darksworm/argonaut/releases/download/v2.19.0/argonaut-2.19.0-darwin-amd64.tar.gz"
-url_api = "https://api.github.com/repos/darksworm/argonaut/releases/assets/507685426"
+checksum = "sha256:d37651302554948836f3efd28bf8fb51d7cbceb54480a4ee9e68efa29517694f"
+url = "https://github.com/darksworm/argonaut/releases/download/v2.20.0/argonaut-2.20.0-darwin-amd64.tar.gz"
+url_api = "https://api.github.com/repos/darksworm/argonaut/releases/assets/585750732"
 
 [[tools."github:derailed/k9s"]]
 version = "0.51.0"
