@@ -39,3 +39,11 @@
 # --- Active connections / interfaces ---------------------------------------
 /ip route print where !dynamic
 /interface print stats
+
+# --- IPv6 (only if vlan10-ipv6.rsc has been imported) ---------------------
+/ipv6 address print
+/ipv6 nd print
+/ipv6 dhcp-server print
+/ipv6 dhcp-server lease print where server~"dhcpv6"
+/ipv6 firewall filter print where chain=forward
+/ipv6 route print
