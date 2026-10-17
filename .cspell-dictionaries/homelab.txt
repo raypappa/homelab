@@ -360,3 +360,11 @@ fnox
 mktxp
 routeros
 worktrees
+capsman
+mgmt
+pvid
+srcnat
+sfpplus
+onlyg
+onlyac
+datapath
