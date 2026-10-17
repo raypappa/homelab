@@ -15,26 +15,23 @@ RouterOS v7 `.rsc` scripts for the homelab fleet. Applied incrementally with
                     │ 1G (or 2.5G; hAP has 5x 2.5G copper, no SFP)
               ┌─────▼─────┐
               │  RB5009   │  gateway / NAT / CAPsMAN / DHCP / firewall
-              └─┬──────┬──┘
-                │      │
-         trunk  │      │  PoE  (AP2 daisy-chains off AP1)
-                │      │
-            ┌───▼─┐  ┌─▼────┐
-            │ AP1 │  │ AP2  │  cAP ac (CAPsMAN-controlled)
-            └─────┘  └──────┘
-                │
-                │ trunk
-        ┌───────▼────────┐
-        │   CCR2004      │  L2 core, 10G (rack 1)
-        └─┬──────┬──────┬┘
-          │      │      │
-      10G │ 10G  │ 10G  │ 10G
-   ┌──────┘      │      └──────┐
-   │             │             │
-┌──▼─────┐  ┌────▼─────┐  ┌────▼─────┐
-│ CRS326 │  │ RB960PGS │  │ CRS-317  │
-│ rack 2 │  │ desktop  │  │ raven    │
-└────────┘  └────────┘  └──────────┘
+              └──┬────┬──┘
+                 │    │
+       trunk ───┘    └── PoE ──→ AP1 ──→ AP2 (daisy-chain)
+                 │              (cAP ac, CAPsMAN-controlled from RB5009)
+                 │
+                 │ trunk (10G)
+            ┌────▼─────────┐
+            │   CCR2004    │  L2 core, 10G (rack 1)
+            └─┬──────┬─────┬┘
+              │      │     │
+          10G │ 10G  │ 10G │ 10G
+     ┌────────┘      │     └────────┐
+     │               │              │
+┌────▼─────┐    ┌────▼─────┐    ┌────▼─────┐
+│ CRS326   │    │ RB960PGS │    │ CRS-317  │
+│ rack 2   │    │ desktop  │    │ raven    │
+└──────────┘    └──────────┘    └──────────┘
 ```
 
 ## VLANs
