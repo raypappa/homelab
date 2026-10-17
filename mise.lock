@@ -525,6 +525,18 @@ url = "https://github.com/pulumi/pulumi/releases/download/v3.256.0/pulumi-v3.256
 url_api = "https://api.github.com/repos/pulumi/pulumi/releases/assets/501681813"
 provenance = "cosign"
 
+[[tools."pypi:mikrotik-rsc-auditor"]]
+version = "0.2.0"
+backend = "pypi:mikrotik-rsc-auditor"
+
+[[tools."pypi:mktxp"]]
+version = "2.1.0"
+backend = "pypi:mktxp"
+
+[[tools."pypi:routeros-lsp"]]
+version = "0.2.1"
+backend = "pypi:routeros-lsp"
+
 [[tools.taplo]]
 version = "0.10.0"
 backend = "aqua:tamasfe/taplo"
