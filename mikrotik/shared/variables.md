@@ -31,12 +31,28 @@ This file documents the variables that recur across the fleet.
 
 ## IPv6 (ULAs only for now; switch to GUA if/when ISP does v6)
 
-| Variable      | Example         | Notes                     |
-| ------------- | --------------- | ------------------------- |
-| `vlan1V6`     | `fd00:1::1/64`  | ULA /64 for VLAN 1        |
-| `vlan10V6`    | `fd00:10::1/64` | ULA /64 for VLAN 10       |
-| `vlan1V6Net`  | `fd00:1::/64`   | Used in v6 firewall rules |
-| `vlan10V6Net` | `fd00:10::/64`  | Used in v6 firewall rules |
+| Variable          | Example                                     | Notes                                |
+| ----------------- | ------------------------------------------- | ------------------------------------ |
+| `vlan1SviName`    | `vlan1-svc`                                 | Must match the SVI name in v4 config |
+| `vlan10SviName`   | `vlan10-svc`                                | Must match the SVI name in v4 config |
+| `vlan1V6Prefix`   | `fd00:1::/64`                               | ULA /64 for VLAN 1                   |
+| `vlan1V6Address`  | `fd00:1::1`                                 | Router's v6 on VLAN 1                |
+| `vlan10V6Prefix`  | `fd00:10::/64`                              | ULA /64 for VLAN 10                  |
+| `vlan10V6Address` | `fd00:10::1`                                | Router's v6 on VLAN 10               |
+| `vlan1V6Range`    | `fd00:1::10-fd00:1::ffff`                   | DHCPv6 pool (first 16 reserved)      |
+| `vlan10V6Range`   | `fd00:10::10-fd00:10::ffff`                 | DHCPv6 pool                          |
+| `dnsServersV6`    | `2606:4700:4700::1111,2001:4860:4860::8888` | Cloudflare + Google v6               |
+
+## DHCPv6 static leases (DUID-EN, derived from MAC)
+
+DUID-EN format: `00030001` + MAC bytes (no colons, lowercase).
+
+| Variable         | Example                | Notes                   |
+| ---------------- | ---------------------- | ----------------------- |
+| `staticIot1Duid` | `0003000144b7d0e65310` | MAC `44:B7:D0:E6:53:10` |
+| `staticIot1V6Ip` | `fd00:10::20`          | Pinned v6 address       |
+| `staticIot2Duid` | `00030001fc4ceaf9710f` | MAC `FC:4C:EA:F9:71:0F` |
+| `staticIot2V6Ip` | `fd00:10::21`          | Pinned v6 address       |
 
 ## Physical
 
