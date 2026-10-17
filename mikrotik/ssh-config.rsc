@@ -16,7 +16,7 @@
 #     6. Restricts SSH source to the management subnet
 #
 # After this script imports, log out and reconnect:
-#   ssh -p 2200 -i ~/.ssh/raypappa raypappa@<device-ip>
+#   ssh -p 2200 -i ~/.ssh/<your-key> <user>@<device-ip>
 #
 # If you run this over SSH (chicken-and-egg), the existing session stays
 # up but new connections require the key. Don't disconnect until you've
@@ -26,6 +26,7 @@
 # ============ VARIABLES — EDIT THIS BLOCK ====================================
 :local sshPort         2200
 :local sshUser         "raypappa"
+:local keyFile         "raypappa.pub"
 :local mgmtSubnet      "10.49.48.0/23"
 :local publicKey       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBZkWK6/qM78P8WMNMi7CLBdbIlSpSdtFgFDuJIR4f+S"
 # =============================================================================
@@ -46,11 +47,11 @@
 :do {
   :local existing [/user ssh-keys find where user=$sshUser]
   :if ([:len $existing] = 0) do={
-    :local tmpFile ("raypappa.pub")
+    :local tmpFile ($keyFile)
     /file print file=$tmpFile where name=$tmpFile
     :if ([:len [/file find where name=$tmpFile]] = 0) do={
       :put "Paste the public key contents onto the device first:"
-      :put "  /file add name=raypappa.pub contents=<paste-key>"
+      :put ("  /file add name=" . $keyFile . " contents=<paste-key>")
       :put "Then re-run this script."
       :error "public key file not found on device"
     }

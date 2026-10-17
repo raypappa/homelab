@@ -3,11 +3,17 @@
 # These override `all` (which sets ansible_connection: ssh and ansible_user: root
 # for the SSH-based Linux hosts). The `all` group vars are not appropriate for
 # network devices.
+#
+# When BASTION_USER is set, use it as the SSH user and key basename
+# (the CI / bastion case). Otherwise default to `raypappa` (the on-network
+# case). The role's defaults use the same lookup, so a single env var
+# controls both the connection plugin (here) and the role's tasks.
 ansible_connection: ansible.netcommon.network_cli
 ansible_network_os: community.routeros.routeros
-ansible_user: raypappa
+ansible_user: "{{ lookup('env', 'BASTION_USER') | default('raypappa', true) }}"
 ansible_ssh_port: 2200
-ansible_ssh_private_key_file: ~/.ssh/raypappa
+ansible_ssh_private_key_file: "~/.ssh/{{ lookup('env', 'BASTION_USER') | default('raypappa',
+  true) }}"
 ansible_command_timeout: 30
 
 # Bastion / jump host support.
