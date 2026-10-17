@@ -1,0 +1,52 @@
+---
+# tasks/apply-rsc.yml — upload and import .rsc files on the device
+#
+# For each .rsc file in files/<inventory_hostname>/, this task:
+#   1. SCPs the file to /<basename> on the device (using the controller's
+#      system `scp` binary, which uses the standard OpenSSH SCP protocol —
+#      RouterOS supports this via its SSH file subsystem)
+#   2. Runs `/import file=<basename>` to apply it
+#   3. Removes the file from the device (cleanup)
+#
+# Re-running this task is idempotent: the .rsc files themselves are
+# idempotent (they :do { ... } on-error { ... } around every change).
+#
+# Note: the well-known "net_get/net_put with libssh on RouterOS" bug
+# doesn't apply here because we use the controller's native `scp`,
+# not the Ansible netcommon modules.
+
+- name: Mikrotik | list .rsc files to apply on {{ inventory_hostname }}
+  ansible.builtin.set_fact:
+    mikrotik_rsc_files: "{{ mikrotik_apply_files }}"
+
+- name: Mikrotik | SCP each .rsc file to {{ inventory_hostname }}
+  ansible.builtin.command:
+    cmd: "scp -P {{ mikrotik_ssh_port }} -o StrictHostKeyChecking=accept-new -i {{ mikrotik_ssh_key }} {{ item }} {{ mikrotik_ssh_user }}@{{ inventory_hostname }}:/"
+    chdir: "{{ repo_root }}/ansible"
+  loop: "{{ mikrotik_rsc_files }}"
+  loop_control:
+    label: '{{ item | basename }}'
+  vars:
+    repo_root: "{{ playbook_dir }}/.."
+  changed_when: true
+  delegate_to: localhost
+  when: mikrotik_rsc_files | length > 0
+
+- name: Mikrotik | import each .rsc on {{ inventory_hostname }}
+  community.routeros.command:
+    commands: "/import file={{ item | basename }}"
+  loop: "{{ mikrotik_rsc_files }}"
+  loop_control:
+    label: '{{ item | basename }}'
+  changed_when: true
+  when: mikrotik_rsc_files | length > 0
+
+- name: Mikrotik | remove uploaded .rsc files from {{ inventory_hostname }}
+  community.routeros.command:
+    commands: "/file remove [find name={{ item | basename }}]"
+  loop: "{{ mikrotik_rsc_files }}"
+  loop_control:
+    label: '{{ item | basename }}'
+  changed_when: true
+  when: mikrotik_rsc_files | length > 0
+  failed_when: false

@@ -96,3 +96,11 @@
     - role: coturn
       tags:
         - coturn
+- name: Mikrotik fleet (RouterOS .rsc deploy + SSH baseline)
+  hosts: mikrotik
+  gather_facts: false
+  tags:
+    - mikrotik
+    - never # not part of `task ansible:deploy`; opt in with `-t mikrotik`
+  roles:
+    - mikrotik
