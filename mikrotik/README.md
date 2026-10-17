@@ -66,6 +66,14 @@ sequence:
    firewall) without touching existing NAT, port forwards, or CAPsMAN.
    **Safe to apply first.** Test the wired devices before proceeding.
 
+1. **RB5009** — `vlan10-ipv6.rsc` adds ULA, DHCPv6, and v6 isolation
+   firewall. Optional but recommended; skip if you don't want v6 yet.
+
+1. **RB5009** — `dhcp-to-dns-updater.rsc` registers the script and
+   hooks it to `dhcp-vlan10` and `dhcpv6-vlan10`. Creates A and AAAA
+   records under `stoneydavis.internal` for every bound lease with a
+   host-name. Skip if you don't want the DNS sync.
+
 1. **CCR2004** — `core-trunk.rsc` enables VLAN filtering and configures
    trunk ports. Pure L2 changes; no risk to other devices.
 
@@ -97,7 +105,9 @@ mikrotik/
 │   ├── naming-conventions.md
 │   └── variables.md
 ├── RB5009/                    ← currently the active gateway
-│   ├── vlan10-add.rsc         ← adds VLAN 10 SVI, DHCP, isolation FW
+│   ├── vlan10-add.rsc         ← adds VLAN 10 SVI, DHCP, isolation FW (v4)
+│   ├── vlan10-ipv6.rsc        ← adds ULA + DHCPv6 + v6 isolation FW
+│   ├── dhcp-to-dns-updater.rsc← lease-sync script: v4 A + v6 AAAA records
 │   ├── capsman.rsc            ← CAPsMAN controller config
 │   └── verify.rsc
 ├── hAP-be3-media/             ← new edge, in standby
