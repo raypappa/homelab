@@ -36,6 +36,14 @@
 :local lanSubnet       "10.49.48.0/23"
 :local dnsServers      "1.1.1.1,8.8.8.8"
 :local vlan10AccessPorts { "ether2"; "ether3" }
+
+# Static leases for the 3 isolated devices on VLAN 10 (3rd MAC TBD)
+:local staticIot1       "44:B7:D0:E6:53:10"
+:local staticIot1Ip     "10.10.10.20"
+:local staticIot2       "FC:4C:EA:F9:71:0F"
+:local staticIot2Ip     "10.10.10.21"
+# :local staticIot3       "AA:BB:CC:DD:EE:FF"   ; uncomment when known
+# :local staticIot3Ip     "10.10.10.22"
 # =============================================================================
 
 # --- 1. SVI (interface vlan) -------------------------------------------------
@@ -69,6 +77,21 @@
       gateway=$vlan10Gw \
       dns-server=$dnsServers
 }
+
+# --- 3b. Static leases for the 3 isolated devices on VLAN 10 --------------
+:do {
+  /ip dhcp-server lease add address=$staticIot1Ip mac-address=$staticIot1 \
+      server=dhcp-vlan10 comment="static-iot-1"
+} on-error={ :put "static-iot-1 lease already exists" }
+:do {
+  /ip dhcp-server lease add address=$staticIot2Ip mac-address=$staticIot2 \
+      server=dhcp-vlan10 comment="static-iot-2"
+} on-error={ :put "static-iot-2 lease already exists" }
+# When the 3rd device MAC is known, uncomment below and remove this comment
+# :do {
+#   /ip dhcp-server lease add address=$staticIot3Ip mac-address=$staticIot3 \
+#       server=dhcp-vlan10 comment="static-iot-3"
+# } on-error={ :put "static-iot-3 lease already exists" }
 
 # --- 4. Bridge: enable VLAN filtering, tag the bridge port as VLAN 10 -------
 /interface bridge set [find name=bridge] vlan-filtering=yes
