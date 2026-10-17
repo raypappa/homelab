@@ -372,6 +372,10 @@ Always open a PR instead: `gh pr create -f`. Preferred merge command: `gh pr mer
 
 `scripts/setup-tunnel.sh` handles most tunnel setup steps, but **not** the Cloudflare Application creation (auth/authorization policy). The script also uses 1Password CLI (`op.exe`), so it assumes that tooling environment.
 
+### `.mise.toml` entries use the table form
+
+Every tool entry in `.mise.toml` is a `[tools.<name>]` table with a `version` field; do not introduce the bare short form (`name = "X.Y.Z"` at the top of `[tools]`). New tools added with `mise use` come out as the short form by default — convert to table form before committing, so subsequent `mise use` calls on the same tool preserve the form. The pre-existing `pulumi`, `taplo`, `fnox`, `age` entries were migrated from short to table form in the same change that introduced this rule; do not undo that.
+
 ## What not to assume
 
 Only the following are clearly observed:
