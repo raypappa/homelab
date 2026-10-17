@@ -357,3 +357,11 @@ vectorchord
 openssf
 taplo
 fnox
+capsman
+mgmt
+pvid
+srcnat
+sfpplus
+onlyg
+onlyac
+datapath
