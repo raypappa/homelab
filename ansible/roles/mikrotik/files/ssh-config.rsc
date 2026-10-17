@@ -1,1 +1,1 @@
-../../../mikrotik/ssh-config.rsc
+../../../../mikrotik/ssh-config.rsc
