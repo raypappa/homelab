@@ -54,3 +54,13 @@ version = "latest"
 version = "latest"
 [tools."github:google/yamlfmt"]
 version = "latest"
+
+# MikroTik / RouterOS .rsc tooling
+[tools."pypi:mktxp"]
+version = "2.1.0"
+
+[tools."pypi:mikrotik-rsc-auditor"]
+version = "0.2.0"
+
+[tools."pypi:routeros-lsp"]
+version = "0.2.1"

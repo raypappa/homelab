@@ -376,6 +376,20 @@ Always open a PR instead: `gh pr create -f`. Preferred merge command: `gh pr mer
 
 Every tool entry in `.mise.toml` is a `[tools.<name>]` table with a `version` field; do not introduce the bare short form (`name = "X.Y.Z"` at the top of `[tools]`). New tools added with `mise use` come out as the short form by default — convert to table form before committing, so subsequent `mise use` calls on the same tool preserve the form. The pre-existing `pulumi`, `taplo`, `fnox`, `age` entries were migrated from short to table form in the same change that introduced this rule; do not undo that.
 
+### Adding a tool to `.mise.toml` requires a pinned version
+
+`[settings].pin = true` rejects `latest` and bare names without a version; CI fails the install step. Use `mise use pypi:foo` (or `mise use pypi:foo@latest` to be explicit) — under `pin = true`, mise resolves the current version and writes the pin into the config for you, so you do not have to look it up by hand. Follow the table-form rule above for the form of the new entry. Then run `mise trust` (first time only for new checkouts) and `mise lock` — `mise.lock` is committed.
+
+**Lockfile churn on unrelated entries:** `mise lock` regenerates *every* tool's lockfile entry that has drifted from its config pin, even tools you did not touch. Disclose unrelated churn in the PR body; do not hand-edit `mise.lock` to add only the new entry.
+
+### cspell flags new tool names
+
+The pre-commit `cspell` hook runs over `.mise.toml` and similar config. When adding a tool whose name is not in any of the `cspell` dictionaries (`@cspell/dict-*` plus the local `.cspell-dictionaries/*.txt`), add the bare term to `.cspell-dictionaries/homelab.txt` (one per line, sorted along with the other tool names near the bottom of the file). Run `pre-commit run --files <changed files>` to confirm before committing.
+
+### Topic branches live in worktrees, not the main checkout
+
+The main checkout stays parked on whatever branch it was on; topic work happens in a worktree under `/opt/data/workspaces/homelab.worktrees/<topic>/` off `origin/main`. A `git commit` on `main` fails the local `no-commit-to-branch` pre-commit hook — do not bypass it with `--no-verify` to "fix it after." Two in-flight topics sharing one index is a silent merge-conflict hazard, not a small ergonomics issue.
+
 ## What not to assume
 
 Only the following are clearly observed:
