@@ -368,3 +368,5 @@ sfpplus
 onlyg
 onlyac
 datapath
+isol
+defconf
