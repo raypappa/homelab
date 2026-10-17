@@ -3,14 +3,24 @@
 #
 # Per-device overrides happen in host_vars/<device>.yaml.
 
-# SSH connection
-mikrotik_ssh_user: raypappa
+# SSH connection.
+#
+# When running through a bastion, the controller is operating from a CI
+# context where the same SSH user and key are used everywhere (bastion +
+# device). The role reads BASTION_USER (set by the same env vars as the
+# rest of the inventory's PROXY_ARGS / CI_ARGS in
+# .taskfiles/ansible/Taskfile.yaml) and uses it as the device user and
+# the key basename. When BASTION_USER is unset, the on-network default
+# is `raypappa` and `~/.ssh/raypappa`.
+mikrotik_ssh_user: >-
+  {{ lookup('env', 'BASTION_USER') | default('raypappa', true) }}
 mikrotik_ssh_port: 2200
-mikrotik_ssh_key: ~/.ssh/raypappa
+mikrotik_ssh_key: "~/.ssh/{{ mikrotik_ssh_user }}"
 
-# Public key to install (file is in this role's files/keys/raypappa.pub).
-# Override per-device if you need a different key.
-mikrotik_ssh_public_key_file: raypappa.pub
+# Public key to install. The file lives in this role's
+# files/keys/<basename>.pub. The basename follows mikrotik_ssh_user so
+# the device's authorized key always matches the user the role logs in as.
+mikrotik_ssh_public_key_file: "{{ mikrotik_ssh_user }}.pub"
 
 # Source management subnet (for the SSH source-restriction firewall rule)
 mikrotik_mgmt_subnet: 10.49.48.0/23
