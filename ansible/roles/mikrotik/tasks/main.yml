@@ -1,0 +1,16 @@
+---
+# tasks/main.yml — mikrotik role entry point
+
+- name: Mikrotik | include per-host SSH baseline
+  ansible.builtin.include_tasks: ssh.yml
+  when: mikrotik_apply_ssh_baseline | bool
+  tags:
+    - mikrotik
+    - mikrotik_ssh
+
+- name: Mikrotik | include .rsc apply
+  ansible.builtin.include_tasks: apply-rsc.yml
+  when: mikrotik_apply_files | length > 0
+  tags:
+    - mikrotik
+    - mikrotik_apply

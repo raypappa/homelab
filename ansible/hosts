@@ -3,25 +3,51 @@
 # vim: ft=yaml
 prod_k8s_controlplane:
   hosts:
-    kubernetes-node-0002.stoneydavis.local:
-    kubernetes-node-0003.stoneydavis.local:
-    kubernetes-node-0004.stoneydavis.local:
+    kubernetes-node-0002.stoneydavis.internal:
+    kubernetes-node-0003.stoneydavis.internal:
+    kubernetes-node-0004.stoneydavis.internal:
 prod_k8s_agent:
   hosts:
-    panda.stoneydavis.local:
+    panda.stoneydavis.internal:
 prod_k8s_cluster:
   children:
     prod_k8s_controlplane:
     prod_k8s_agent:
 game_server:
   hosts:
-    panda.stoneydavis.local:
+    panda.stoneydavis.internal:
 nfs_server:
   hosts:
-    storage-0001.stoneydavis.local:
+    storage-0001.stoneydavis.internal:
 headscale:
   hosts:
     weasel.stoneydavis.com:
 turn_stun:
   hosts:
     weasel.stoneydavis.com:
+
+# Mikrotik devices. Inventory hostnames match the role's files/ subdirs
+# (e.g. inventory_hostname=rb5009 → files/rb5009/*.rsc applied).
+# Connection vars (ansible_connection, ansible_user, etc.) and bastion
+# ProxyCommand setup live in group_vars/mikrotik.yaml — see that file
+# for the full list.
+#
+# Commented out: the play in homelab.yaml is tagged `never` so it
+# doesn't run during `task ansible:deploy`, but the canary (`task
+# ansible:deploy:canary`) pings `all` and would try to reach these
+# hosts with the wrong user/key (id_ed25519/root) over network_cli.
+# Uncomment when ready to actively deploy or test the mikrotik role.
+# mikrotik:
+#   hosts:
+#     rb5009:
+#       ansible_host: 10.49.48.1
+#     hap-core:
+#       ansible_host: 10.49.48.2
+#     ccr2004:
+#       ansible_host: 10.49.48.7
+#     crs326-rack2:
+#       ansible_host: 10.49.48.8
+#     crs317-raven:
+#       ansible_host: 10.49.48.3
+#     rb960pgs-desktop:
+#       ansible_host: 10.49.48.20

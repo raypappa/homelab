@@ -26,7 +26,7 @@
     - common_reboot # if any updates to disk are requesting a reboot at the end, ensure we reboot
 - name: Hermes
   hosts:
-    - panda.stoneydavis.local
+    - panda.stoneydavis.internal
   become: true
   vars:
     hermes_use_mise: true
@@ -96,3 +96,11 @@
     - role: coturn
       tags:
         - coturn
+- name: Mikrotik fleet (RouterOS .rsc deploy + SSH baseline)
+  hosts: mikrotik
+  gather_facts: false
+  tags:
+    - mikrotik
+    - never # not part of `task ansible:deploy`; opt in with `-t mikrotik`
+  roles:
+    - mikrotik
