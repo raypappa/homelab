@@ -380,3 +380,5 @@ addrs
 SLAAC
 RDNSS
 libssh
+fileglob
+wantlist
