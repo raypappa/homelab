@@ -52,3 +52,6 @@ collections:
   - name: ansible.posix
     # renovate: datasource=galaxy-collection packageName=ansible.posix
     version: "2.1.0"
+  - name: community.routeros
+    # renovate: datasource=galaxy-collection packageName=community.routeros
+    version: "3.5.0"

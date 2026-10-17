@@ -20,9 +20,13 @@
 # Behavior:
 #   - Reads each bound v4 lease; if host-name is set, creates an A record
 #   - Reads each bound v6 lease; if host-name is set, creates an AAAA record
+#   - Works for BOTH static (dynamic=no) and dynamic (dynamic=yes) leases;
+#     static leases get DNS records too, so pinned MACs resolve by name
 #   - Skips leases without a host-name (anonymous devices)
 #   - Skips leases whose host-name matches the ignored list
-#   - Cleans up DNS records whose lease no longer exists
+#   - Cleans up DNS records whose lease is gone (handles static + dynamic
+#     correctly: a static lease that's offline does NOT cause its DNS
+#     record to be removed)
 #   - Idempotent: re-running on a clean state is a no-op
 #
 # To install: paste this file into /file on the device, then:
@@ -49,22 +53,25 @@
 
   :local staticDNScomment ("dynamic_" . $dhcpServerName);
 
-  # Cleanup: drop DNS records whose lease is gone
+  # Cleanup: drop DNS records whose lease is gone (dynamic=yes or no).
+  # Static leases don't have to be bound for the record to be valid; skip
+  # removal if a static lease still exists with this host-name.
   :foreach i in=[/ip dns static find where name~("$zoneExpr") && comment=$staticDNScomment] do={
     :if ([/ip dns static get $i comment] = $staticDNScomment) do={
       :local hostname [/ip dns static get $i name];
       :if ( [ :len $dnsDomain ] > 0 ) do={
         :set hostname [ :pick $hostname 0 ([ :len $hostname ] - ([ :len $dnsDomain ] + 1)) ]
       }
-      :local dhcpnode [/ip dhcp-server lease find where host-name=$hostname && server=$dhcpServerName && status=bound];
-      :if ( [ :len $dhcpnode ] = 0 ) do={
+      :local boundNode [/ip dhcp-server lease find where host-name=$hostname && server=$dhcpServerName && status=bound];
+      :local staticNode [/ip dhcp-server lease find where host-name=$hostname && server=$dhcpServerName && dynamic=no];
+      :if ( [ :len $boundNode ] = 0 && [ :len $staticNode ] = 0 ) do={
         /ip dns static remove $i;
       }
     }
   }
 
-  # Upsert: every bound lease gets an A record
-  :foreach i in=[/ip dhcp-server lease find where server=$dhcpServerName && status=bound && dynamic=yes] do={
+  # Upsert: every bound lease (static or dynamic) gets an A record.
+  :foreach i in=[/ip dhcp-server lease find where server=$dhcpServerName && status=bound] do={
     :local hostname [/ip dhcp-server lease get $i host-name];
     :local dhcpip  [/ip dhcp-server lease get $i address];
 
@@ -104,21 +111,24 @@
 
   :local staticDNScomment ("dynamic6_" . $dhcp6ServerName);
 
-  # Cleanup: drop AAAA records whose lease is gone
+  # Cleanup: drop AAAA records whose lease is gone (static or dynamic).
+  # Static leases don't have to be bound for the record to be valid; skip
+  # removal if a static lease still exists with this host-name.
   :foreach i in=[/ip dns static find where name~("$zoneExpr") && comment=$staticDNScomment && type=AAAA] do={
     :if ([/ip dns static get $i comment] = $staticDNScomment) do={
       :local hostname [/ip dns static get $i name];
       :if ( [ :len $dnsDomain ] > 0 ) do={
         :set hostname [ :pick $hostname 0 ([ :len $hostname ] - ([ :len $dnsDomain ] + 1)) ]
       }
-      :local dhcp6node [/ipv6 dhcp-server lease find where host-name=$hostname && server=$dhcp6ServerName && status=bound];
-      :if ( [ :len $dhcp6node ] = 0 ) do={
+      :local bound6Node [/ipv6 dhcp-server lease find where host-name=$hostname && server=$dhcp6ServerName && status=bound];
+      :local static6Node [/ipv6 dhcp-server lease find where host-name=$hostname && server=$dhcp6ServerName && dynamic=no];
+      :if ( [ :len $bound6Node ] = 0 && [ :len $static6Node ] = 0 ) do={
         /ip dns static remove $i;
       }
     }
   }
 
-  # Upsert: every bound v6 lease gets an AAAA record
+  # Upsert: every bound v6 lease (static or dynamic) gets an AAAA record.
   :foreach i in=[/ipv6 dhcp-server lease find where server=$dhcp6ServerName && status=bound] do={
     :local hostname [/ipv6 dhcp-server lease get $i host-name];
     :local dhcp6ip [/ipv6 dhcp-server lease get $i address];
