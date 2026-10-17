@@ -19,8 +19,16 @@ mikrotik_mgmt_subnet: 10.49.48.0/23
 # files/<inventory_hostname>/ to the device, then imports each one in
 # alphabetical order. To skip a device, leave its directory empty (or
 # don't list the host in the inventory).
-mikrotik_apply_files: "{{ lookup('fileglob', role_path ~ '/files/' ~ inventory_hostname ~ '/*.rsc', wantlist=True) | sort }}"
+mikrotik_apply_files: "{{ lookup('fileglob', role_path ~ '/files/' ~ inventory_hostname
+  ~ '/*.rsc', wantlist=True) | sort }}"
 
 # Should the SSH baseline be applied? Set to false after first run, or
 # if you manage SSH out-of-band.
 mikrotik_apply_ssh_baseline: true
+
+# SCP proxy options. When running through a bastion, the inventory's
+# mikrotik group sets this so scp also honors the proxy. The default
+# below resolves to empty when BASTION_* env vars are not set.
+mikrotik_scp_proxy_args: >-
+  {{ '-o ProxyCommand="' ~ mikrotik_ssh_proxy_command ~ '"'
+     if (mikrotik_ssh_proxy_command | default('') | length) > 0 else '' }}

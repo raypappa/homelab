@@ -28,6 +28,9 @@ turn_stun:
 
 # Mikrotik devices. Inventory hostnames match the role's files/ subdirs
 # (e.g. inventory_hostname=rb5009 → files/rb5009/*.rsc applied).
+# Connection vars (ansible_connection, ansible_user, etc.) and bastion
+# ProxyCommand setup live in group_vars/mikrotik.yaml — see that file
+# for the full list.
 mikrotik:
   hosts:
     rb5009:
@@ -42,10 +45,3 @@ mikrotik:
       ansible_host: 10.49.48.3
     rb960pgs-desktop:
       ansible_host: 10.49.48.20
-  vars:
-    ansible_connection: ansible.netcommon.network_cli
-    ansible_network_os: community.routeros.routeros
-    ansible_user: raypappa
-    ansible_ssh_port: 2200
-    ansible_ssh_private_key_file: ~/.ssh/raypappa
-    ansible_command_timeout: 30
