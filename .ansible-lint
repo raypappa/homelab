@@ -3,3 +3,7 @@ skip_list:
   - package-latest
   - latest[git]
   - role-name[path]
+  # RouterOS .rsc templates frequently contain double-quoted strings and
+  # strings-with-special-chars (e.g. SSH URLs, RouterOS commands). The
+  # yaml[quoted-strings] rule misfires on these.
+  - yaml[quoted-strings]

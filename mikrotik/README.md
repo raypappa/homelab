@@ -62,6 +62,10 @@ These are all safe to apply independently. They do not affect the active
 gateway (RB5009) until you physically move the modem cable. Recommended
 sequence:
 
+1. **All devices** — `ssh-config.rsc` (via the Ansible role, once per
+   device). Hardens SSH, installs the public key, restricts the source
+   to the management subnet.
+
 1. **RB5009** — `vlan10-add.rsc` adds VLAN 10 (SVI, DHCP, isolation
    firewall) without touching existing NAT, port forwards, or CAPsMAN.
    **Safe to apply first.** Test the wired devices before proceeding.
@@ -96,35 +100,82 @@ sequence:
 
 Each step is independently reversible: `/system backup load name=before-vlan-10`.
 
+## Deployment
+
+The Ansible role at `ansible/roles/mikrotik/` deploys these files. Inventory
+hostnames match the per-identity folders in `mikrotik/` (rb5009, hap-core,
+ccr2004, crs326-rack2, crs317-raven, rb960pgs-desktop).
+
+```bash
+# Bootstrap SSH first (one-time, requires the admin password)
+uv run ansible-playbook -i hosts homelab.yaml -t mikrotik \
+  -e ansible_password=<admin-password> \
+  -e "mikrotik_apply_ssh_baseline=true"
+
+# Apply the per-device .rsc files (idempotent)
+uv run ansible-playbook -i hosts homelab.yaml -t mikrotik
+```
+
+The role uses `community.routeros.command` to run RouterOS commands and the
+controller's `scp` to upload `.rsc` files (RouterOS's SCP subsystem works
+fine; the well-known libssh bug only affects Ansible's `net_get`/`net_put`).
+
+For ad-hoc deploys without Ansible, use `scripts/deploy-mikrotik.py`:
+
+```bash
+# Push one .rsc to one device
+./scripts/deploy-mikrotik.py --device 10.49.48.1 \
+  --rsc mikrotik/rb5009/vlan10-add.rsc
+
+# Push to many from a list
+./scripts/deploy-mikrotik.py --inventory mikrotik/hosts.txt \
+  --rsc mikrotik/rb5009/dhcp-to-dns-updater.rsc
+```
+
 ## Files
 
 ```
 mikrotik/
 ├── README.md                  ← this file
+├── hosts.txt                  ← ad-hoc inventory for scripts/deploy-mikrotik.py
 ├── shared/                    ← conventions + variable glossary
 │   ├── naming-conventions.md
 │   └── variables.md
-├── RB5009/                    ← currently the active gateway
+├── keys/                      ← SSH public keys (one per authorized user)
+│   └── raypappa.pub
+├── ssh-config.rsc             ← SSH baseline (apply first on every device)
+├── rb5009/                    ← currently the active gateway
 │   ├── vlan10-add.rsc         ← adds VLAN 10 SVI, DHCP, isolation FW (v4)
 │   ├── vlan10-ipv6.rsc        ← adds ULA + DHCPv6 + v6 isolation FW
 │   ├── dhcp-to-dns-updater.rsc← lease-sync script: v4 A + v6 AAAA records
 │   ├── capsman.rsc            ← CAPsMAN controller config
 │   └── verify.rsc
-├── hAP-be3-media/             ← new edge, in standby
+├── hap-core/                  ← new edge, in standby
 │   ├── edge-gateway.rsc       ← full L3 config; NAT disabled until flip
 │   └── verify.rsc
-├── CCR2004/                   ← L2 10G core
+├── ccr2004/                   ← L2 10G core
 │   ├── core-trunk.rsc
 │   └── verify.rsc
-├── CRS326/                    ← 1G access (rack 2)
+├── crs326-rack2/              ← 1G access (rack 2)
 │   ├── access-vlan1-and-vlan10.rsc
 │   └── verify.rsc
-├── RB960PGS/                  ← 1G access (desktop)
+├── rb960pgs-desktop/          ← 1G access (desktop)
 │   ├── access-vlan1-and-vlan10.rsc
 │   └── verify.rsc
-└── CRS317/                    ← 10G fiber aggregation (raven)
+└── crs317-raven/              ← 10G fiber aggregation (raven)
     ├── trunk-only.rsc
     └── verify.rsc
+
+ansible/roles/mikrotik/        ← deploys the above
+├── defaults/main.yml
+├── meta/main.yml
+├── tasks/{main,ssh,apply-rsc}.yml
+└── files/                     ← symlinks back to mikrotik/
+    ├── ssh-config.rsc
+    ├── keys/raypappa.pub
+    ├── rb5009 -> ../../../mikrotik/rb5009
+    ├── hap-core -> ../../../mikrotik/hap-core
+    └── ...
 ```
 
 ## Conventions

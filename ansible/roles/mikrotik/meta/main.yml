@@ -1,0 +1,15 @@
+---
+# meta/main.yml
+galaxy_info:
+  role_name: mikrotik
+  namespace: stoneydavis
+  author: Stoney Davis
+  description: Deploy RouterOS configuration (.rsc scripts + SSH baseline) to Mikrotik devices
+  license: MIT
+  min_ansible_version: "2.14"
+  galaxy_tags:
+    - networking
+    - mikrotik
+    - routeros
+
+dependencies: []
