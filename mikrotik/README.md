@@ -117,6 +117,29 @@ The role uses `community.routeros.command` to run RouterOS commands and the
 controller's `scp` to upload `.rsc` files (RouterOS's SCP subsystem works
 fine; the well-known libssh bug only affects Ansible's `net_get`/`net_put`).
 
+### Bastion (jump host)
+
+The `mikrotik` group reads `BASTION_HOST`, `BASTION_PORT`, and `BASTION_USER`
+from the environment. When all three are set, the role builds a
+`ProxyCommand` for `network_cli` and for the `scp` upload so both reach
+the device through the bastion. When they're unset, the role runs direct
+(this is the normal case for a controller on the management subnet).
+
+This matches the existing `PROXY_ARGS` / `CI_ARGS` pattern in
+`.taskfiles/ansible/Taskfile.yaml`, so the same env vars you pass to
+`task deploy:ci` will reach the Mikrotik role too.
+
+```bash
+# Direct (no bastion)
+uv run ansible-playbook -i hosts homelab.yaml -t mikrotik
+
+# Through a bastion
+BASTION_HOST=jump.example.com \
+BASTION_PORT=22 \
+BASTION_USER=ansible \
+  uv run ansible-playbook -i hosts homelab.yaml -t mikrotik
+```
+
 For ad-hoc deploys without Ansible, use `scripts/deploy-mikrotik.py`:
 
 ```bash

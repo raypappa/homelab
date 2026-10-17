@@ -14,7 +14,8 @@
   community.routeros.command:
     commands:
       - /file remove [find name=raypappa.pub]
-      - /file add name=raypappa.pub contents="{{ lookup('file', role_path ~ '/files/keys/' ~ mikrotik_ssh_public_key_file) }}"
+      - /file add name=raypappa.pub contents="{{ lookup('file', role_path ~ '/files/keys/'
+        ~ mikrotik_ssh_public_key_file) }}"
   changed_when: true
   when: mikrotik_apply_ssh_baseline | bool
 
