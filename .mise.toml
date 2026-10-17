@@ -9,11 +9,22 @@ pin = true
 uvx = true
 
 [tools]
-pulumi = "latest"
-"pipx:molecule" = { version = "26.6.0", uvx_args = "--with=molecule-plugins[docker],ansible-lint" }
-taplo = "latest"
-fnox = "latest"
-age = "latest"
+[tools.pulumi]
+version = "latest"
+
+[tools."pipx:molecule"]
+uvx_args = "--with=molecule-plugins[docker],ansible-lint"
+version = "26.6.0"
+
+[tools.taplo]
+version = "latest"
+
+[tools.fnox]
+version = "latest"
+
+[tools.age]
+version = "latest"
+
 [tools.node]
 version = "25.9.0"
 [tools."npm:pnpm"]
