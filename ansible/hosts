@@ -3,22 +3,22 @@
 # vim: ft=yaml
 prod_k8s_controlplane:
   hosts:
-    kubernetes-node-0002.stoneydavis.local:
-    kubernetes-node-0003.stoneydavis.local:
-    kubernetes-node-0004.stoneydavis.local:
+    kubernetes-node-0002.stoneydavis.internal:
+    kubernetes-node-0003.stoneydavis.internal:
+    kubernetes-node-0004.stoneydavis.internal:
 prod_k8s_agent:
   hosts:
-    panda.stoneydavis.local:
+    panda.stoneydavis.internal:
 prod_k8s_cluster:
   children:
     prod_k8s_controlplane:
     prod_k8s_agent:
 game_server:
   hosts:
-    panda.stoneydavis.local:
+    panda.stoneydavis.internal:
 nfs_server:
   hosts:
-    storage-0001.stoneydavis.local:
+    storage-0001.stoneydavis.internal:
 headscale:
   hosts:
     weasel.stoneydavis.com:

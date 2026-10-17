@@ -68,7 +68,7 @@ service:
         port: 80
     type: LoadBalancer
     annotations:
-      external-dns.alpha.kubernetes.io/hostname: timetagger.stoneydavis.local
+      external-dns.alpha.kubernetes.io/hostname: timetagger.stoneydavis.internal
       external-dns.alpha.kubernetes.io/ttl: "1800"
       external-dns.alpha.kubernetes.io/webhook-comment: "k8s_managed"
       external-dns.alpha.kubernetes.io/webhook-match-subdomain: "true"
