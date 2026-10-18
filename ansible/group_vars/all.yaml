@@ -19,6 +19,8 @@ ansible_user: root
 tailscale_up_skip: true
 # Internal DNS domain; keep in sync with the split DNS and TLS SANs that use it.
 domain_internal: stoneydavis.internal
+# Public-facing domain used by Headscale/Tailscale (MagicDNS base domain).
+domain_org: stoneydavis.org
 users:
   - 'root'
   - 'stoney'
