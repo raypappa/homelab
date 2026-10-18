@@ -14,7 +14,7 @@ etcd-s3-folder: "{{ lookup("community.general.onepassword","backblaze-etcd", fie
 etcd-s3: true
 tls-san:
   - {{ inventory_hostname }}
-  - {{ inventory_hostname.split('.')[0] }}.stoneydavis.org
+  - {{ inventory_hostname.split('.')[0] }}.{{ domain_org }}
   - {{ inventory_hostname.split('.')[0] }}.{{ domain_internal }}
   - {{ inventory_hostname.split('.')[0] }}.stoneydavis.local
 secrets-encryption: true
