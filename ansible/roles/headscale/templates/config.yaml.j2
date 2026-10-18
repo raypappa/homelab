@@ -239,13 +239,21 @@ log:
 # headscale supports Tailscale's ACL policies.
 # Please have a look to their KB to better
 # understand the concepts: https://tailscale.com/kb/1018/acls/
+#
+# The ACL policy is managed by Ansible:
+#   - Source: ansible/roles/headscale/files/policy.json
+#   - Deployed to: /etc/headscale/policy.json (root:root 0600)
+#   - On change, the headscale service is restarted via a handler.
+#
+# To propose a change, edit files/policy.json and run
+# `task ansible:deploy -- -t headscale`.
 policy:
   # The mode can be "file" or "database" that defines
   # where the ACL policies are stored and read from.
   mode: file
   # If the mode is set to "file", the path to a
   # HuJSON file containing ACL policies.
-  path: ""
+  path: /etc/headscale/policy.json
 
 ## DNS
 #

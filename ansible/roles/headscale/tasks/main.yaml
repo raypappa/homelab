@@ -55,6 +55,15 @@
     owner: root
     group: root
     mode: '0644'
+- name: Deploy headscale ACL policy
+  become: true
+  ansible.builtin.copy:
+    src: policy.json
+    dest: /etc/headscale/policy.json
+    owner: root
+    group: root
+    mode: '0600'
+  notify: Restart headscale
 - name: Install required packages
   become: true
   ansible.builtin.apt:
@@ -77,7 +86,7 @@
     name: headscale.service
     enabled: true
     daemon_reload: true
-    state: restarted
+    state: started
 - name: Generate pre-authkey
   when: not tailscale_authkey
   block:
