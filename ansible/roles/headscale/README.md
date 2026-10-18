@@ -52,16 +52,27 @@ one (idempotency).
 The legacy fleet was registered with pre-auth keys owned by
 `stoney@`. To migrate a node to the new `homelab@`-owned keys:
 
-1. **On weasel**, mint a single-use pre-auth key for the new tag:
+1. **On weasel**, mint a single-use pre-auth key for the new tag. `--single`
+   is the default, so don't pass it; `--tags` bakes the tag into the
+   registration so the client doesn't need `--advertise-tags`:
    ```bash
    KEY=$(headscale preauthkeys create -u homelab \
-     --tags tag:homelab-server --expiration 8760h --single -o json \
+     --tags tag:homelab-server --expiration 8760h -o json \
      | jq -r .key)
    ```
-1. **On the node**, re-register with the new key:
+1. **On the node**, wipe the local tailscaled state and re-register.
+   The client must forget its old machine key (otherwise headscale
+   sees the stale key, returns a misleading "tags invalid" error
+   even though the policy is fine). Then re-register using **only**
+   the auth key — do not pass `--advertise-tags` because headscale
+   already pinned the tag to the key:
    ```bash
-   sudo tailscale up --login-server=https://headscale.<your-domain> \
-     --authkey="$KEY" --advertise-tags=tag:homelab-server
+   sudo systemctl stop tailscaled \
+     && sudo rm -rf /var/lib/tailscale/* \
+     && sudo systemctl start tailscaled \
+     && sleep 3 \
+     && sudo tailscale up --login-server=https://headscale.<your-domain> \
+       --authkey="$KEY"
    ```
 1. **After all nodes have migrated**, expire the old stoney keys:
    ```bash
@@ -74,7 +85,7 @@ The legacy fleet was registered with pre-auth keys owned by
 
 ## CI runner key
 
-The GitHub Action's Tailscale step uses a `homelab@`-owned pre-auth
+The GitHub Action's Tailscale step uses a `ci-node@`-owned pre-auth
 key with `--tags tag:ci` baked in. The key must be marked
 `--reusable` (multiple ephemeral runners may consume it) and live as
 the `TAILSCALE_AUTHKEY` GitHub repository secret.
@@ -83,9 +94,17 @@ To rotate:
 
 1. **On weasel**, mint a fresh CI key:
    ```bash
-   headscale preauthkeys create -u homelab \
+   headscale preauthkeys create -u ci-node \
      --tags tag:ci --expiration 8760h --reusable -o json
    ```
 1. **In GitHub repo settings → Secrets**, replace `TAILSCALE_AUTHKEY`
    with the new value.
-1. The next CI run re-registers as `homelab@` with `tag:ci`.
+1. The next CI run re-registers as `ci-node@` with `tag:ci`. The
+   `tailscale/github-action` correctly omits `--advertise-tags` when
+   the auth key has tags baked in; the tag is set at the headscale
+   layer.
+
+**Important**: never pass `--advertise-tags` on the `tailscale up`
+invocation when the pre-auth key already has `--tags`. v0.28.0
+returns a misleading "tags invalid" error in that case even when
+the policy is correct.
