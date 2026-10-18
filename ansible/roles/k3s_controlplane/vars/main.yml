@@ -1,1 +1,11 @@
 ---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/ansible/ansible-lint/main/src/ansiblelint/schemas/vars.json
+# Names the K3s API server certificate must be valid for. Used both to render
+# tls-san in the K3s config and to detect certificates missing a requested SAN.
+k3s_controlplane_short_hostname: "{{ inventory_hostname.split('.')[0] }}"
+k3s_controlplane_tls_sans:
+  - "{{ inventory_hostname }}"
+  - "{{ k3s_controlplane_short_hostname }}.{{ domain_org }}"
+  - "{{ k3s_controlplane_short_hostname }}.{{ domain_internal }}"
+  - "{{ k3s_controlplane_short_hostname }}.stoneydavis.local"
+k3s_controlplane_apiserver_cert: /var/lib/rancher/k3s/server/tls/serving-kube-apiserver.crt
