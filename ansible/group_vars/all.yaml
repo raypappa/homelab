@@ -17,6 +17,8 @@ extra_server_args: ""
 extra_agent_args: ""
 ansible_user: root
 tailscale_up_skip: true
+# Internal DNS domain; keep in sync with the split DNS and TLS SANs that use it.
+domain_internal: stoneydavis.internal
 users:
   - 'root'
   - 'stoney'
