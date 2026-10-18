@@ -4,7 +4,7 @@ Manages the headscale coordination server and its ACL policy.
 
 ## Layout
 
-- `tasks/main.yaml` — service install, config + policy deploy, pre-auth key mint
+- `tasks/main.yaml` — service install, config + policy deploy, Headscale user setup
 - `templates/config.yaml.j2` — headscale server config (rendered to /etc/headscale/config.yaml)
 - `files/policy.json` — Tailscale ACL policy (rendered to /etc/headscale/policy.json)
 - `handlers/main.yml` — restart handler, fired on policy change
@@ -30,22 +30,11 @@ The current tag layout:
 
 ## Pre-auth keys
 
-The role mints pre-auth keys under the **`homelab`** user, not the
-personal `stoney` user. The `homelab` user is the machine identity
-shared across the fleet, and is in `tagOwners` for every tag the
-role's host_vars reference.
-
-Each host's `tailscale_tag` host_var controls the tag baked into
-the pre-auth key. Example (`host_vars/storage-0001.stoneydavis.internal`):
-
-```yaml
-tailscale_tag: tag:homelab-server
-```
-
-The minted key is stored in AWS Secrets Manager at
-`weasel.stoneydavis.com/headscale/pre-auth-key`. Re-runs of the role
-fetch the existing key from Secrets Manager instead of minting a new
-one (idempotency).
+Pre-auth keys are created and managed manually; Ansible does not create
+them or store them in AWS Secrets Manager. Create a key on the Headscale
+server for the intended user and tag, then supply it to `tailscale up`
+manually on the node. For example, the migration steps below show how to
+register a node with a `homelab`-owned key.
 
 ## Migration from `stoney@`-owned keys
 

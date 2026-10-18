@@ -87,31 +87,23 @@
     enabled: true
     daemon_reload: true
     state: started
-- name: Generate pre-authkey
-  when: not tailscale_authkey
+- name: Create Headscale user
   block:
-    - name: Create user
+    - name: Create headscale user
       register: headscale_user_create
       ansible.builtin.command:
         cmd: headscale users create -o json homelab
       changed_when: false
       failed_when:
         - headscale_user_create.rc != 0
-        - '"already exists" not in (headscale_user_create.stderr | default(""))'
-    - name: Generate pre-auth-key
-      register: headscale_pre_auth_key
-      no_log: true
+        - '"UNIQUE constraint failed: users.name" not in (headscale_user_create.stderr
+          | default(""))'
+    - name: Get headscale user id
       ansible.builtin.command:
-        cmd: >-
-          headscale preauthkeys create --reusable -u homelab -e 99y
-          {{ '--tags ' ~ tailscale_tag if (tailscale_tag | default('')) | length >
-          0 else '' }}
-          -o json
+        cmd: headscale users list -o json -n homelab
+      register: headscale_user_info
       changed_when: false
-    - name: Set secret for pre-authkey
-      no_log: true
-      community.aws.secretsmanager_secret:
-        name: weasel.stoneydavis.com/headscale/pre-auth-key
-        secret_type: string
-        secret: "{{ headscale_pre_auth_key.stdout | from_json | json_query('key')
+    - name: Set Headscale user ID fact
+      ansible.builtin.set_fact:
+        headscale_user_id: "{{ headscale_user_info.stdout | from_json | first | json_query('id')
           }}"
