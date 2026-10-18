@@ -9,10 +9,7 @@
     "tag:ssh-target": ["group:ops", "homelab@", "home-assistant@"]
   },
   "groups": {
-    "group:ops": [
-      "stoney@",
-      "cdavis@stoneydavis.com"
-    ]
+    "group:ops": ["stoney@", "cdavis@stoneydavis.com"]
   },
   "acls": [
     {
@@ -39,17 +36,31 @@
     {
       "action": "accept",
       "src": ["tag:k8s-controlplane", "tag:k8s-agent"],
-      "dst": ["tag:k8s-controlplane:*", "tag:k8s-agent:*", "tag:k8s-service:*", "tag:homelab-server:*"]
+      "dst": [
+        "tag:k8s-controlplane:*",
+        "tag:k8s-agent:*",
+        "tag:k8s-service:*",
+        "tag:homelab-server:*"
+      ]
     },
     {
       "action": "accept",
       "src": ["tag:k8s-service"],
-      "dst": ["tag:homelab-server:*", "tag:k8s-service:*", "autogroup:internet:*"]
+      "dst": [
+        "tag:homelab-server:*",
+        "tag:k8s-service:*",
+        "autogroup:internet:*"
+      ]
     },
     {
       "action": "accept",
       "src": ["tag:headscale", "tag:homelab-server"],
-      "dst": ["tag:headscale:*", "tag:homelab-server:*", "tag:k8s-controlplane:*", "tag:k8s-agent:*"]
+      "dst": [
+        "tag:headscale:*",
+        "tag:homelab-server:*",
+        "tag:k8s-controlplane:*",
+        "tag:k8s-agent:*"
+      ]
     }
   ],
   "ssh": [
@@ -62,7 +73,12 @@
     {
       "action": "accept",
       "src": ["tag:ci"],
-      "dst": ["tag:headscale", "tag:homelab-server", "tag:k8s-controlplane", "tag:k8s-agent"],
+      "dst": [
+        "tag:headscale",
+        "tag:homelab-server",
+        "tag:k8s-controlplane",
+        "tag:k8s-agent"
+      ],
       "users": ["autogroup:nonroot", "root"]
     },
     {
