@@ -13,6 +13,9 @@ etcd-s3-folder: "{{ lookup("community.general.onepassword","backblaze-etcd", fie
 etcd-s3: true
 tls-san:
   - {{ inventory_hostname }}
+  - {{ inventory_hostname.split('.')[0] }}.stoneydavis.org
+  - {{ inventory_hostname.split('.')[0] }}.stoneydavis.internal
+  - {{ inventory_hostname.split('.')[0] }}.stoneydavis.local
 secrets-encryption: true
 # https://kubernetes.io/docs/tasks/administer-cluster/encrypt-data/#providers
 # Secretbox is strong; kms runs as a pod and can have issues
