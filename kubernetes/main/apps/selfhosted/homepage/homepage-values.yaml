@@ -217,7 +217,7 @@ config:
             description: Home Assistant is a home automation system
             widget:
               type: homeassistant
-              url: http://homeassistant.stoneydavis.lan:8123
+              url: http://homeassistant.stoneydavis.org:8123
               key: "{{HOMEPAGE_VAR_HOME_ASSISTANT_API_KEY}}"
     - Media:
         - Plex:
