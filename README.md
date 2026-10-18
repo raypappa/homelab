@@ -108,7 +108,24 @@ Configuration and secrets for CI/CD pipeline:
 | Name                     | Purpose                                                         |
 | ------------------------ | --------------------------------------------------------------- |
 | ANSIBLE_EXTRA_VAR_JSON   | Extra Ansible vars (includes `op_connect_token`, `op_vault_id`) |
+| KUBE_CONFIG              | Base64-encoded kubeconfig for the cluster (see below)           |
 | OP_SERVICE_ACCOUNT_TOKEN | 1Password Service Account token for GitHub Actions              |
+
+#### Updating `KUBE_CONFIG`
+
+The scheduled Ansible workflow decodes `KUBE_CONFIG` with `base64 -d` into
+`~/.kube/config`, so the secret must be base64-encoded. Regenerate it from a
+control plane node and push it with the GitHub CLI:
+
+```bash
+ssh root@kubernetes-node-0002.stoneydavis.internal cat /etc/rancher/k3s/k3s.yaml \
+  | sed -e 's~0.0.0.0~kubernetes-node-0004.stoneydavis.internal~' \
+  | base64 -w0 \
+  | gh secret set KUBE_CONFIG
+```
+
+Run this from a checkout of this repository so `gh` targets the right
+repository. Verify the result with a workflow run (`gh workflow run ansible-scheduled.yaml`) or by checking the "Setup kubectl" step.
 
 ______________________________________________________________________
 
