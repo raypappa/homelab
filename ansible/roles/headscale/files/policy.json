@@ -5,7 +5,7 @@
     "tag:k8s-controlplane": ["group:ops", "homelab@", "tagged-devices@"],
     "tag:k8s-agent": ["group:ops", "homelab@", "tagged-devices@"],
     "tag:k8s-service": ["tag:k8s-controlplane", "tag:k8s-agent"],
-    "tag:ci": ["group:ops", "homelab@"],
+    "tag:ci": ["group:ops", "homelab@", "ci-node@"],
     "tag:ssh-target": ["group:ops", "homelab@", "home-assistant@"]
   },
   "groups": {
