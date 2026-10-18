@@ -1,0 +1,4 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/ansible/ansible-lint/refs/heads/main/src/ansiblelint/schemas/vars.json
+# vim: ft=yaml
+tailscale_tag: tag:k8s-controlplane
