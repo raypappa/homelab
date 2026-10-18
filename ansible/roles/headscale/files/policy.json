@@ -67,7 +67,7 @@
     {
       "action": "accept",
       "src": ["autogroup:member", "group:ops"],
-      "dst": ["tag:ssh-target"],
+      "dst": ["tag:ssh-target", "tag:k8s-controlplane", "tag:k8s-agent"],
       "users": ["autogroup:nonroot", "root"]
     },
     {
