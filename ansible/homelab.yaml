@@ -26,7 +26,7 @@
     - common_reboot # if any updates to disk are requesting a reboot at the end, ensure we reboot
 - name: Hermes
   hosts:
-    - panda.stoneydavis.internal
+    - panda.stoneydavis.org
   become: true
   vars:
     hermes_use_mise: true
