@@ -465,7 +465,6 @@ url = "https://nodejs.org/dist/v25.9.0/node-v25.9.0-win-x64.zip"
 
 [[tools."npm:pnpm"]]
 version = "11.22.0"
-aube = { path = ".mise/locks/npm-pnpm/11.22.0", digest = "sha256:f9c9c9674f869d8c818454f018fa5014929b299b96c5525e5621a62cdf58bd45" }
 backend = "npm:pnpm"
 
 [[tools."pipx:molecule"]]
