@@ -47,23 +47,6 @@
     owner: root
     group: root
     mode: '0755'
-- name: Add headscale config
-  become: true
-  ansible.builtin.template:
-    src: config.yaml.j2
-    dest: "/etc/headscale/config.yaml"
-    owner: root
-    group: root
-    mode: '0644'
-- name: Deploy headscale ACL policy
-  become: true
-  ansible.builtin.copy:
-    src: policy.json
-    dest: /etc/headscale/policy.json
-    owner: root
-    group: root
-    mode: '0600'
-  notify: Restart headscale
 - name: Install required packages
   become: true
   ansible.builtin.apt:
@@ -80,6 +63,23 @@
   ansible.builtin.apt:
     deb: https://github.com/juanfont/headscale/releases/download/v{{ headscale_version
       }}/headscale_{{ headscale_version }}_linux_{{ headscale_dpkg_architecture }}.deb
+- name: Add headscale config
+  become: true
+  ansible.builtin.template:
+    src: config.yaml.j2
+    dest: "/etc/headscale/config.yaml"
+    owner: headscale
+    group: headscale
+    mode: '0600'
+- name: Deploy headscale ACL policy
+  become: true
+  ansible.builtin.copy:
+    src: policy.json
+    dest: /etc/headscale/policy.json
+    owner: headscale
+    group: headscale
+    mode: '0600'
+  notify: Restart headscale
 - name: Enable headscale systemd service
   become: true
   ansible.builtin.systemd_service:

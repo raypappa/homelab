@@ -242,7 +242,7 @@ log:
 #
 # The ACL policy is managed by Ansible:
 #   - Source: ansible/roles/headscale/files/policy.json
-#   - Deployed to: /etc/headscale/policy.json (root:root 0600)
+#   - Deployed to: /etc/headscale/policy.json (headscale:headscale 0600)
 #   - On change, the headscale service is restarted via a handler.
 #
 # To propose a change, edit files/policy.json and run
