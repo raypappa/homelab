@@ -60,19 +60,15 @@ The legacy fleet was registered with pre-auth keys owned by
      --tags tag:homelab-server --expiration 8760h -o json \
      | jq -r .key)
    ```
-1. **On the node**, wipe the local tailscaled state and re-register.
-   The client must forget its old machine key (otherwise headscale
-   sees the stale key, returns a misleading "tags invalid" error
-   even though the policy is fine). Then re-register using **only**
-   the auth key — do not pass `--advertise-tags` because headscale
-   already pinned the tag to the key:
+1. **On the node**, re-register with the new key. **Do not pass
+   `--advertise-tags`**: headscale already pinned the tag to the
+   pre-auth key, and asking the client to advertise it again causes
+   the registration to be rejected with "requested tags [...] are
+   invalid or not permitted". The tag is set at the headscale
+   layer; the client only sends the authkey:
    ```bash
-   sudo systemctl stop tailscaled \
-     && sudo rm -rf /var/lib/tailscale/* \
-     && sudo systemctl start tailscaled \
-     && sleep 3 \
-     && sudo tailscale up --login-server=https://headscale.<your-domain> \
-       --authkey="$KEY"
+   sudo tailscale up --login-server=https://headscale.<your-domain> \
+     --authkey="$KEY"
    ```
 1. **After all nodes have migrated**, expire the old stoney keys:
    ```bash
@@ -105,6 +101,6 @@ To rotate:
    layer.
 
 **Important**: never pass `--advertise-tags` on the `tailscale up`
-invocation when the pre-auth key already has `--tags`. v0.28.0
-returns a misleading "tags invalid" error in that case even when
-the policy is correct.
+invocation when the pre-auth key already has `--tags`. headscale
+returns "requested tags [...] are invalid or not permitted" in
+that case even when the policy is correct.
