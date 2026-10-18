@@ -1,7 +1,6 @@
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/ansible/ansible-lint/refs/heads/main/src/ansiblelint/schemas/vars.json
 # vim: ft=yaml
-tailscale_tag: tag:headscale
 certbot_admin_email: cdavis@stoneydavis.com
 certbot_create_if_missing: true
 certbot_create_standalone_stop_services:
