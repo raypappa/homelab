@@ -98,7 +98,11 @@
       register: headscale_pre_auth_key
       no_log: true
       ansible.builtin.command:
-        cmd: headscale preauthkeys create --reusable -u stoney -e 99y -o json
+        cmd: >-
+          headscale preauthkeys create --reusable -u stoney -e 99y
+          {{ '--tags ' ~ tailscale_tag if (tailscale_tag | default('')) | length >
+          0 else '' }}
+          -o json
       changed_when: false
     - name: Set secret for pre-authkey
       no_log: true
