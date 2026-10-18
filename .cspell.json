@@ -95,7 +95,8 @@
     "**/*external-secret.yaml",
     "kubernetes/**/*-credentials.yaml",
     "**/cluster-secret-store.yaml",
-    "ansible/roles/common/files/*"
+    "ansible/roles/common/files/*",
+    "fnox.toml"
   ],
   "import": [
     "@cspell/dict-k8s/cspell-ext.json",
