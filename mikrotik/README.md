@@ -117,46 +117,22 @@ The role uses `community.routeros.command` to run RouterOS commands and the
 controller's `scp` to upload `.rsc` files (RouterOS's SCP subsystem works
 fine; the well-known libssh bug only affects Ansible's `net_get`/`net_put`).
 
-### Bastion (jump host)
+### Connection
 
-The `mikrotik` group reads `BASTION_HOST`, `BASTION_PORT`, and `BASTION_USER`
-from the environment. When all three are set, the role:
-
-- Builds a `ProxyCommand` for `network_cli` and for the `scp` upload so
-  both reach the device through the bastion.
-- Uses `BASTION_USER` as the device-side SSH user (for both the
-  `network_cli` connection and the `scp` destination).
-- Resolves the device key path as `~/.ssh/<BASTION_USER>` (e.g.
-  `~/.ssh/ansible`).
-- Uploads the corresponding public key as `files/keys/<BASTION_USER>.pub`
-  (e.g. `files/keys/ansible.pub`).
-
-When the env vars are unset, the role uses `raypappa` as the user and
-`~/.ssh/raypappa` as the key — the normal on-network case for a
-controller on the management subnet.
-
-This matches the existing `PROXY_ARGS` / `CI_ARGS` pattern in
-`.taskfiles/ansible/Taskfile.yaml`, so the same env vars you pass to
-`task deploy:ci` will reach the Mikrotik role too.
+The role connects directly to each device as `admin`, using the key at
+`~/.ssh/admin` on the controller. The public key it installs is
+`files/keys/admin.pub`. The controller must be on the management subnet;
+there is no bastion or `ProxyCommand`.
 
 ```bash
-# Direct (no bastion)
 uv run ansible-playbook -i hosts homelab.yaml -t mikrotik
-
-# Through a bastion
-BASTION_HOST=jump.example.com \
-BASTION_PORT=22 \
-BASTION_USER=ansible \
-  uv run ansible-playbook -i hosts homelab.yaml -t mikrotik
 ```
 
 **Bootstrap caveat**: the first-time SSH baseline apply
 (`mikrotik_apply_ssh_baseline=true`) imports `ssh-config.rsc` on the
-device. That script has hardcoded `raypappa` defaults in its variables
-block; if you're bootstrapping a device via a bastion with a different
-user, edit the `:local sshUser` and `:local keyFile` lines at the top
-of `ssh-config.rsc` before running, or add a public key for
-`BASTION_USER` to the device out-of-band.
+device. That script sets `sshUser` to `admin` and `keyFile` to `admin.pub`,
+disables every other user, and switches `admin` to publickey-only. Make sure
+the `admin` key works before running it.
 
 For ad-hoc deploys without Ansible, use `scripts/deploy-mikrotik.py`:
 
@@ -180,7 +156,7 @@ mikrotik/
 │   ├── naming-conventions.md
 │   └── variables.md
 ├── keys/                      ← SSH public keys (one per authorized user)
-│   └── raypappa.pub
+│   └── admin.pub
 ├── ssh-config.rsc             ← SSH baseline (apply first on every device)
 ├── rb5009/                    ← currently the active gateway
 │   ├── vlan10-add.rsc         ← adds VLAN 10 SVI, DHCP, isolation FW (v4)
@@ -210,7 +186,7 @@ ansible/roles/mikrotik/        ← deploys the above
 ├── tasks/{main,ssh,apply-rsc}.yml
 └── files/                     ← symlinks back to mikrotik/
     ├── ssh-config.rsc
-    ├── keys/raypappa.pub
+    ├── keys/admin.pub
     ├── rb5009 -> ../../../mikrotik/rb5009
     ├── hap-core -> ../../../mikrotik/hap-core
     └── ...

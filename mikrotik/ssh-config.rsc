@@ -25,8 +25,8 @@
 
 # ============ VARIABLES — EDIT THIS BLOCK ====================================
 :local sshPort         2200
-:local sshUser         "raypappa"
-:local keyFile         "raypappa.pub"
+:local sshUser         "admin"
+:local keyFile         "admin.pub"
 :local mgmtSubnet      "10.49.48.0/23"
 :local publicKey       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBZkWK6/qM78P8WMNMi7CLBdbIlSpSdtFgFDuJIR4f+S"
 # =============================================================================
