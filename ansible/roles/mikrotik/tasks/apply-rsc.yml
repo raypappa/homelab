@@ -26,8 +26,8 @@
 - name: Mikrotik | SCP each .rsc file to {{ inventory_hostname }}
   ansible.builtin.command:
     cmd: "scp -P {{ mikrotik_ssh_port }} -o StrictHostKeyChecking=accept-new -i {{
-      mikrotik_ssh_key }} {{ mikrotik_scp_proxy_args }} {{ item }} {{ mikrotik_ssh_user
-      }}@{{ mikrotik_target_host }}:/"
+      mikrotik_ssh_key }} {{ item }} {{ mikrotik_ssh_user }}@{{ mikrotik_target_host
+      }}:/"
     chdir: "{{ repo_root }}/ansible"
   loop: "{{ mikrotik_rsc_files }}"
   loop_control:

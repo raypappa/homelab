@@ -78,10 +78,10 @@ def main() -> int:
         type=Path,
         help="file with one device per line (# comments ok)",
     )
-    ap.add_argument("--user", default=os.environ.get("SSH_USER", "raypappa"))
+    ap.add_argument("--user", default=os.environ.get("SSH_USER", "admin"))
     ap.add_argument(
         "--key",
-        default=os.environ.get("SSH_KEY", os.path.expanduser("~/.ssh/raypappa")),
+        default=os.environ.get("SSH_KEY", os.path.expanduser("~/.ssh/admin")),
     )
     ap.add_argument(
         "--port", type=int, default=int(os.environ.get("SSH_PORT", "2200"))

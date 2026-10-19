@@ -3,17 +3,8 @@
 #
 # Per-device overrides happen in host_vars/<device>.yaml.
 
-# SSH connection.
-#
-# When running through a bastion, the controller is operating from a CI
-# context where the same SSH user and key are used everywhere (bastion +
-# device). The role reads BASTION_USER (set by the same env vars as the
-# rest of the inventory's PROXY_ARGS / CI_ARGS in
-# .taskfiles/ansible/Taskfile.yaml) and uses it as the device user and
-# the key basename. When BASTION_USER is unset, the on-network default
-# is `raypappa` and `~/.ssh/raypappa`.
-mikrotik_ssh_user: >-
-  {{ lookup('env', 'BASTION_USER') | default('raypappa', true) }}
+# SSH connection. The device user is `admin`; the key basename follows it.
+mikrotik_ssh_user: admin
 mikrotik_ssh_port: 2200
 mikrotik_ssh_key: "~/.ssh/{{ mikrotik_ssh_user }}"
 
@@ -35,10 +26,3 @@ mikrotik_apply_files: "{{ lookup('fileglob', role_path ~ '/files/' ~ inventory_h
 # Should the SSH baseline be applied? Set to false after first run, or
 # if you manage SSH out-of-band.
 mikrotik_apply_ssh_baseline: true
-
-# SCP proxy options. When running through a bastion, the inventory's
-# mikrotik group sets this so scp also honors the proxy. The default
-# below resolves to empty when BASTION_* env vars are not set.
-mikrotik_scp_proxy_args: >-
-  {{ '-o ProxyCommand="' ~ mikrotik_ssh_proxy_command ~ '"'
-     if (mikrotik_ssh_proxy_command | default('') | length) > 0 else '' }}
