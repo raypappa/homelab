@@ -119,6 +119,9 @@
         name: maxhoesel.pterodactyl.pterodactyl_wings
       # pterodactyl_wings supports additional options, see it's README for more details.
       vars:
+        # The role's docker install uses apt_key, which Debian 13 (trixie) no longer ships.
+        # Docker is already installed on panda.
+        pterodactyl_wings_docker_install: false
         pterodactyl_wings_config:
           uuid: "{{ pterodactyl_wings_panel_uuid }}"
           token_id: "{{ pterodactyl_wings_panel_token_id }}"
