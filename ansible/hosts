@@ -28,8 +28,8 @@ turn_stun:
 
 # Mikrotik devices. Inventory hostnames match the role's files/ subdirs
 # (e.g. inventory_hostname=rb5009 → files/rb5009/*.rsc applied).
-# Connection vars (ansible_connection, ansible_user, etc.) and bastion
-# ProxyCommand setup live in group_vars/mikrotik.yaml — see that file
+# Connection vars (ansible_connection, ansible_user, etc.) live in
+# group_vars/mikrotik.yaml — see that file
 # for the full list.
 #
 # Commented out: the play in homelab.yaml is tagged `never` so it

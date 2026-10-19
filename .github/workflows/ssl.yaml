@@ -110,29 +110,17 @@ jobs:
           install -m 600 -D /dev/null ~/.ssh/id_ed25519
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_ed25519
           printf "Host *\n  StrictHostKeyChecking no\n  UserKnownHostsFile /dev/null\n" > ~/.ssh/config
-      - name: SSH Test
-        run: ssh ${{ vars.BASTION_USER }}@${{ vars.BASTION_HOST }} -p ${{ vars.BASTION_PORT
-          }} echo "SSH Test"
       - name: Ansible Canary
         run: task ansible:deploy:canary:ci -- -l panda.stoneydavis.org
-        env:
-          BASTION_HOST: ${{ vars.BASTION_HOST }}
-          BASTION_PORT: ${{ vars.BASTION_PORT }}
-          BASTION_USER: ${{ vars.BASTION_USER }}
       # If package dependencies are not installed, the following task will fail. So we run in prod :D
       # - name: Ansible Diff
       #   run: task ansible:diff:ci
       #   env:
-      #     BASTION_HOST: ${{ vars.BASTION_HOST}}
-      #     BASTION_PORT: ${{ vars.BASTION_PORT}}
       #     AWS_REGION: ${{ vars.AWS_REGION}}
       #     AWS_DEFAULT_REGION: ${{ vars.AWS_DEFAULT_REGION}}
       - name: Ansible Deploy
         run: task ansible:deploy:ci -- -l panda.stoneydavis.org -t ssl
         env:
-          BASTION_HOST: ${{ vars.BASTION_HOST}}
-          BASTION_USER: ${{ vars.BASTION_USER }}
-          BASTION_PORT: ${{ vars.BASTION_PORT}}
           AWS_REGION: ${{ vars.AWS_REGION}}
           AWS_DEFAULT_REGION: ${{ vars.AWS_DEFAULT_REGION}}
         if: github.ref == 'refs/heads/main'
