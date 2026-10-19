@@ -5,9 +5,10 @@ roles:
     name: raypappa.mise
     # renovate: datasource=git-refs packageName=https://github.com/raypappa/ansible-role-mise.git
     version: "main"
-  - name: xolyu.mariadb
-    # renovate: datasource=galaxy packageName=xolyu.mariadb
-    version: "0.2.0"
+  - src: https://github.com/xolyu/ansible-role-mariadb.git
+    name: xolyu.mariadb
+    # renovate: datasource=git-refs packageName=https://github.com/xolyu/ansible-role-mariadb.git
+    version: "2290e0558ca153185072b133769dfd50cbfe1b35"
   - name: hussainweb.chezmoi
     version: main
   - src: https://github.com/raypappa/ansible-role-coturn.git
