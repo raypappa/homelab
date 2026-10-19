@@ -359,6 +359,7 @@ taplo
 fnox
 mktxp
 routeros
+worktree
 worktrees
 capsman
 mgmt
