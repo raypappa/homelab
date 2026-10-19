@@ -5,14 +5,29 @@
     - name: Setting host facts SSL Certificate
       ansible.builtin.set_fact:
         ssl_certificate_raw: "{{ lookup('amazon.aws.aws_secret', 'puma.stoneydavis.com-cert',
-          region=lookup('env', 'AWS_REGION')) }}"
-    - name: Verify non-empty raw ssl secret
+          region=lookup('env', 'AWS_REGION')) | from_json }}"
+    - name: Verify SSL secret contains certificate, chain, and private key
       ansible.builtin.assert:
-        that: "ssl_certificate_raw != \"\""
-    - name: Verify SSL private key
+        that:
+          - ssl_certificate_raw.certificate | default('') | length > 0
+          - ssl_certificate_raw.certificate_chain | default('') | length > 0
+          - ssl_certificate_raw.private_key | default('') | length > 0
+        fail_msg: "SSL secret puma.stoneydavis.com-cert is missing certificate, certificate_chain,
+          or private_key"
+    - name: Parse SSL private key
       community.crypto.openssl_privatekey_info:
-        content: |
-          {{ ssl_certificate_raw | community.general.json_query('private_key') }}
+        content: "{{ ssl_certificate_raw.private_key }}"
+      register: ssl_private_key_info
+    - name: Parse SSL certificate
+      community.crypto.x509_certificate_info:
+        content: "{{ ssl_certificate_raw.certificate }}"
+      register: ssl_certificate_secret_info
+    - name: Verify SSL certificate matches private key
+      ansible.builtin.assert:
+        that:
+          - ssl_private_key_info.public_key_fingerprints == ssl_certificate_secret_info.public_key_fingerprints
+        fail_msg: "SSL certificate and private key in puma.stoneydavis.com-cert do
+          not match"
     - name: Create SSL Directory
       ansible.builtin.file:
         path: /etc/ssl/game.puma.stoneydavis.com
