@@ -10,6 +10,6 @@ cloudflare:
   tunnelName: "faerun-flux"
   ingress:
     - hostname: "flux.fieldsofbears.com"
-      service: "http://flux.flux.svc.cluster.local:80"
+      service: "http://flux-main.flux.svc.cluster.local:80"
     - hostname: "mcp.fieldsofbears.com"
       service: "http://flux-mcp.flux.svc.cluster.local:3001"
