@@ -4,6 +4,10 @@
   "serverSideApply": false,
   "ignoreDifferences": [],
   "group": "selfhosted",
-  "dependencies": [],
+  "dependencies": [
+    "external-secrets",
+    "volsync",
+    "rook-ceph-cluster"
+  ],
   "wave": "4"
 }
