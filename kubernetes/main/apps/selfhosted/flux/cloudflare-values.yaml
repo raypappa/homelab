@@ -1,3 +1,4 @@
+---
 # Cloudflare Tunnel for Flux
 # Routes public requests to the Flux services through a Cloudflare tunnel.
 
@@ -10,6 +11,4 @@ cloudflare:
   tunnelName: "faerun-flux"
   ingress:
     - hostname: "flux.fieldsofbears.com"
-      service: "http://flux-main.flux.svc.cluster.local:80"
-    - hostname: "mcp.fieldsofbears.com"
-      service: "http://flux-mcp.flux.svc.cluster.local:3001"
+      service: "http://flux.flux.svc.cluster.local:80"
