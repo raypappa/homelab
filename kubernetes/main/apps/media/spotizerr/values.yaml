@@ -56,7 +56,7 @@ service:
     controller: spotizerr
     type: LoadBalancer
     annotations:
-      external-dns.alpha.kubernetes.io/hostname: spotizerr.stoneydavis.internal
+      external-dns.alpha.kubernetes.io/hostname: spotizerr.stoneydavis.local
       external-dns.alpha.kubernetes.io/ttl: "1800"
       external-dns.alpha.kubernetes.io/webhook-comment: "k8s_managed"
       external-dns.alpha.kubernetes.io/webhook-match-subdomain: "true"

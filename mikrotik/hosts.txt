@@ -1,9 +1,0 @@
-# Inventory for scripts/deploy-mikrotik.py
-# One device IP per line. Lines starting with # are ignored.
-#
-# 10.49.48.1   # rb5009
-# 10.49.48.2   # hap-core
-# 10.49.48.7   # ccr2004
-# 10.49.48.8   # crs326-rack2
-# 10.49.48.3   # crs317-raven
-# 10.49.48.20  # rb960pgs-desktop

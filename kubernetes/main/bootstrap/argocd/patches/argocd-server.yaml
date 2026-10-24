@@ -4,7 +4,7 @@ kind: Service
 metadata:
   name: argocd-server
   annotations:
-    external-dns.alpha.kubernetes.io/hostname: argocd.stoneydavis.internal
+    external-dns.alpha.kubernetes.io/hostname: argocd.stoneydavis.local
     external-dns.alpha.kubernetes.io/ttl: "1800"
     external-dns.alpha.kubernetes.io/webhook-comment: "k8s_managed"
     external-dns.alpha.kubernetes.io/webhook-match-subdomain: "true"

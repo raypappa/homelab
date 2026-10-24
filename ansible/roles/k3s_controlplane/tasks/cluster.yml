@@ -39,8 +39,6 @@
     daemon_reload: true
     state: restarted
     enabled: true
-- name: Ensure API server certificate includes requested SANs
-  ansible.builtin.include_tasks: tls_sans.yml
 - name: Get list of certs
   ansible.builtin.find:
     paths: /var/lib/rancher/k3s/server/tls

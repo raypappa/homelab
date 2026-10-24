@@ -13,7 +13,7 @@ registry: txt
 txtOwnerId: default
 txtPrefix: k8s.
 domainFilters:
-  - "stoneydavis.internal"
+  - "stoneydavis.local"
 excludeDomains: []
 policy: sync
 

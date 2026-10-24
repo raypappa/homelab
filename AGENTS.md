@@ -141,7 +141,7 @@ Dry-run diff (shows what would change):
 task ansible:diff
 ```
 
-**CI variants** exist for GitHub Actions deployments: `deploy:ci`, `deploy:canary:ci`, `diff:ci`. They connect directly to hosts over the tailnet with `~/.ssh/id_ed25519`, so they need no extra environment variables.
+**CI variants** exist for bastion-based deployments: `deploy:ci`, `deploy:canary:ci`, `diff:ci`. These expect environment variables: `BASTION_HOST`, `BASTION_PORT`, `BASTION_USER`.
 
 ### AWS CDK
 
@@ -242,7 +242,7 @@ service:
     type: LoadBalancer
     annotations:
       metallb.universe.tf/address-pool: metalpool
-      external-dns.alpha.kubernetes.io/hostname: radarr.stoneydavis.internal
+      external-dns.alpha.kubernetes.io/hostname: radarr.stoneydavis.local
       external-dns.alpha.kubernetes.io/ttl: '1800'
       external-dns.alpha.kubernetes.io/webhook-comment: k8s_managed
       external-dns.alpha.kubernetes.io/webhook-match-subdomain: 'true'
@@ -358,7 +358,7 @@ The root Node package manages repo tooling (Biome, cspell). The actual TypeScrip
 
 ### CI Ansible execution has extra network assumptions
 
-CI/scheduled workflows set up Tailscale, AWS credentials, and SSH keys so the runner can reach the cluster and hosts over the tailnet. A local command that works on the maintainer machine may still fail in CI if it assumes different network reachability.
+CI/scheduled workflows set up Tailscale, AWS credentials, bastion SSH paths, and sometimes SSH port forwarding to reach the cluster. A local command that works on the maintainer machine may still fail in CI if it assumes different network reachability.
 
 ### Never use `git add -A`
 
