@@ -1,0 +1,62 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/ansible/ansible-lint/main/src/ansiblelint/schemas/ansible.json#/$defs/tasks
+# Ensure the API server certificate includes every name in
+# k3s_controlplane_tls_sans. K3s only applies tls-san when it generates a
+# certificate, so an existing certificate has to be rotated to pick up new
+# names. Rotation runs with throttle so only one control plane node has its
+# API server down at a time.
+- name: K3s TLS | Stat API server certificate
+  ansible.builtin.stat:
+    path: "{{ k3s_controlplane_apiserver_cert }}"
+  register: k3s_controlplane_apiserver_cert_stat
+- name: K3s TLS | Read API server certificate
+  when: k3s_controlplane_apiserver_cert_stat.stat.exists
+  community.crypto.x509_certificate_info:
+    path: "{{ k3s_controlplane_apiserver_cert }}"
+  register: k3s_controlplane_apiserver_info
+- name: K3s TLS | Determine SANs missing from API server certificate
+  when: k3s_controlplane_apiserver_cert_stat.stat.exists
+  ansible.builtin.set_fact:
+    k3s_controlplane_missing_sans: "{{ k3s_controlplane_tls_sans | map('regex_replace',
+      '^', 'DNS:') | list | difference(k3s_controlplane_apiserver_info.subject_alt_name)
+      }}"
+- name: K3s TLS | Rotate API server certificate to add missing SANs
+  throttle: 1
+  when:
+    - k3s_controlplane_apiserver_cert_stat.stat.exists
+    - (k3s_controlplane_missing_sans | default([])) | length > 0
+  block:
+    - name: K3s TLS | Log SANs being added
+      ansible.builtin.debug:
+        msg: "Rotating API server certificate to add: {{ k3s_controlplane_missing_sans
+          | join(', ') }}"
+    - name: K3s TLS | Stop K3s before rotating certificates
+      ansible.builtin.systemd:
+        name: k3s
+        state: stopped
+    - name: K3s TLS | Rotate API server certificate
+      ansible.builtin.command:
+        cmd: /usr/local/bin/k3s certificate rotate --service api-server
+      changed_when: true
+    - name: K3s TLS | Start K3s after rotating certificates
+      ansible.builtin.systemd:
+        name: k3s
+        state: started
+    - name: K3s TLS | Wait for API server to answer
+      ansible.builtin.wait_for:
+        port: 6443
+        delay: 10
+        timeout: 300
+        state: started
+    - name: K3s TLS | Re-read API server certificate
+      community.crypto.x509_certificate_info:
+        path: "{{ k3s_controlplane_apiserver_cert }}"
+      register: k3s_controlplane_apiserver_info
+    - name: K3s TLS | Verify API server certificate now includes requested SANs
+      ansible.builtin.assert:
+        that:
+          - >-
+            (k3s_controlplane_tls_sans | map('regex_replace', '^', 'DNS:') | list
+            | difference(k3s_controlplane_apiserver_info.subject_alt_name)) | length
+            == 0
+        fail_msg: API server certificate is still missing SANs after rotation

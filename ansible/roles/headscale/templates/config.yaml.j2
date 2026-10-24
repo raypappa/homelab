@@ -239,13 +239,21 @@ log:
 # headscale supports Tailscale's ACL policies.
 # Please have a look to their KB to better
 # understand the concepts: https://tailscale.com/kb/1018/acls/
+#
+# The ACL policy is managed by Ansible:
+#   - Source: ansible/roles/headscale/files/policy.json
+#   - Deployed to: /etc/headscale/policy.json (headscale:headscale 0600)
+#   - On change, the headscale service is restarted via a handler.
+#
+# To propose a change, edit files/policy.json and run
+# `task ansible:deploy -- -t headscale`.
 policy:
   # The mode can be "file" or "database" that defines
   # where the ACL policies are stored and read from.
   mode: file
   # If the mode is set to "file", the path to a
   # HuJSON file containing ACL policies.
-  path: ""
+  path: /etc/headscale/policy.json
 
 ## DNS
 #
@@ -277,7 +285,7 @@ dns:
   # `base_domain` must be a FQDN, without the trailing dot.
   # The FQDN of the hosts will be
   # `hostname.base_domain` (e.g., _myhost.example.com_).
-  base_domain: stoneydavis.org
+  base_domain: {{ domain_org }}
 
   # Whether to use the local DNS settings of a node or override the local DNS
   # settings (default) and force the use of Headscale's DNS configuration.
@@ -298,7 +306,7 @@ dns:
     # Split DNS (see https://tailscale.com/kb/1054/dns/),
     # a map of domains and which DNS server to use for each.
     split:
-      stoneydavis.local:
+      "{{ domain_internal }}":
         - 10.49.48.1
 
   # Set custom DNS search domains. With MagicDNS enabled,

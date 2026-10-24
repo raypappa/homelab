@@ -18,7 +18,7 @@ storageClasses:
       - nfsvers=4.2
   - name: nfs
     parameters:
-      server: storage-0001.stoneydavis.local
+      server: storage-0001.stoneydavis.internal
       share: /library
     reclaimPolicy: Retain
     volumeBindingMode: Immediate

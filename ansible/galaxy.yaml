@@ -1,17 +1,14 @@
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/ansible/ansible-lint/main/src/ansiblelint/schemas/requirements.json
 roles:
-  - src: https://github.com/raypappa/ansible-role-hermes.git
-    name: raypappa.hermes
-    # renovate: datasource=git-refs packageName=https://github.com/raypappa/ansible-role-hermes.git
-    version: "v0.3.2"
   - src: https://github.com/raypappa/ansible-role-mise.git
     name: raypappa.mise
     # renovate: datasource=git-refs packageName=https://github.com/raypappa/ansible-role-mise.git
     version: "main"
-  - name: xolyu.mariadb
-    # renovate: datasource=galaxy packageName=xolyu.mariadb
-    version: "0.2.0"
+  - src: https://github.com/xolyu/ansible-role-mariadb.git
+    name: xolyu.mariadb
+    # renovate: datasource=git-refs packageName=https://github.com/xolyu/ansible-role-mariadb.git
+    version: "2290e0558ca153185072b133769dfd50cbfe1b35"
   - name: hussainweb.chezmoi
     version: main
   - src: https://github.com/raypappa/ansible-role-coturn.git
@@ -52,3 +49,6 @@ collections:
   - name: ansible.posix
     # renovate: datasource=galaxy-collection packageName=ansible.posix
     version: "2.1.0"
+  - name: community.routeros
+    # renovate: datasource=galaxy-collection packageName=community.routeros
+    version: "3.5.0"

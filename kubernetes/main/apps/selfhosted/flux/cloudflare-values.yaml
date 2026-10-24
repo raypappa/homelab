@@ -1,0 +1,14 @@
+---
+# Cloudflare Tunnel for Flux
+# Routes public requests to the Flux services through a Cloudflare tunnel.
+
+image:
+  # renovate: datasource=docker depName=cloudflare/cloudflared
+  tag: 2025.11.1
+
+cloudflare:
+  secretName: "flux-tunnel-credentials"
+  tunnelName: "faerun-flux"
+  ingress:
+    - hostname: "flux.fieldsofbears.com"
+      service: "http://flux.flux.svc.cluster.local:80"

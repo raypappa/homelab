@@ -47,14 +47,6 @@
     owner: root
     group: root
     mode: '0755'
-- name: Add headscale config
-  become: true
-  ansible.builtin.template:
-    src: config.yaml.j2
-    dest: "/etc/headscale/config.yaml"
-    owner: root
-    group: root
-    mode: '0644'
 - name: Install required packages
   become: true
   ansible.builtin.apt:
@@ -71,30 +63,47 @@
   ansible.builtin.apt:
     deb: https://github.com/juanfont/headscale/releases/download/v{{ headscale_version
       }}/headscale_{{ headscale_version }}_linux_{{ headscale_dpkg_architecture }}.deb
+- name: Add headscale config
+  become: true
+  ansible.builtin.template:
+    src: config.yaml.j2
+    dest: "/etc/headscale/config.yaml"
+    owner: headscale
+    group: headscale
+    mode: '0600'
+- name: Deploy headscale ACL policy
+  become: true
+  ansible.builtin.copy:
+    src: policy.json
+    dest: /etc/headscale/policy.json
+    owner: headscale
+    group: headscale
+    mode: '0600'
+  notify: Restart headscale
 - name: Enable headscale systemd service
   become: true
   ansible.builtin.systemd_service:
     name: headscale.service
     enabled: true
     daemon_reload: true
-    state: restarted
-- name: Generate pre-authkey
-  when: not tailscale_authkey
+    state: started
+- name: Create Headscale user
   block:
-    - name: Create user
+    - name: Create headscale user
+      register: headscale_user_create
       ansible.builtin.command:
-        cmd: headscale users create -o json stoney
+        cmd: headscale users create -o json homelab
       changed_when: false
-    - name: Generate pre-auth-key
-      register: headscale_pre_auth_key
-      no_log: true
+      failed_when:
+        - headscale_user_create.rc != 0
+        - '"UNIQUE constraint failed: users.name" not in (headscale_user_create.stderr
+          | default(""))'
+    - name: Get headscale user id
       ansible.builtin.command:
-        cmd: headscale preauthkeys create --reusable -u stoney -e 99y -o json
+        cmd: headscale users list -o json -n homelab
+      register: headscale_user_info
       changed_when: false
-    - name: Set secret for pre-authkey
-      no_log: true
-      community.aws.secretsmanager_secret:
-        name: weasel.stoneydavis.com/headscale/pre-auth-key
-        secret_type: string
-        secret: "{{ headscale_pre_auth_key.stdout | from_json | json_query('key')
+    - name: Set Headscale user ID fact
+      ansible.builtin.set_fact:
+        headscale_user_id: "{{ headscale_user_info.stdout | from_json | first | json_query('id')
           }}"

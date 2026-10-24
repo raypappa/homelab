@@ -1,0 +1,91 @@
+{
+  "tagOwners": {
+    "tag:headscale": ["group:ops", "homelab@", "tagged-devices@"],
+    "tag:homelab-server": ["group:ops", "homelab@", "tagged-devices@"],
+    "tag:k8s-controlplane": ["group:ops", "homelab@", "tagged-devices@"],
+    "tag:k8s-agent": ["group:ops", "homelab@", "tagged-devices@"],
+    "tag:k8s-service": ["tag:k8s-controlplane", "tag:k8s-agent"],
+    "tag:ci": ["group:ops", "homelab@", "ci-node@"],
+    "tag:ssh-target": ["group:ops", "homelab@", "home-assistant@"]
+  },
+  "groups": {
+    "group:ops": ["stoney@", "cdavis@stoneydavis.com"]
+  },
+  "acls": [
+    {
+      "action": "accept",
+      "src": ["group:ops"],
+      "dst": ["*:*"]
+    },
+    {
+      "action": "accept",
+      "src": ["autogroup:member"],
+      "dst": ["autogroup:self:*"]
+    },
+    {
+      "action": "accept",
+      "src": ["tag:ci"],
+      "dst": [
+        "tag:headscale:*",
+        "tag:homelab-server:*",
+        "tag:k8s-controlplane:*",
+        "tag:k8s-agent:*",
+        "tag:ssh-target:*"
+      ]
+    },
+    {
+      "action": "accept",
+      "src": ["tag:k8s-controlplane", "tag:k8s-agent"],
+      "dst": [
+        "tag:k8s-controlplane:*",
+        "tag:k8s-agent:*",
+        "tag:k8s-service:*",
+        "tag:homelab-server:*"
+      ]
+    },
+    {
+      "action": "accept",
+      "src": ["tag:k8s-service"],
+      "dst": [
+        "tag:homelab-server:*",
+        "tag:k8s-service:*",
+        "autogroup:internet:*"
+      ]
+    },
+    {
+      "action": "accept",
+      "src": ["tag:headscale", "tag:homelab-server"],
+      "dst": [
+        "tag:headscale:*",
+        "tag:homelab-server:*",
+        "tag:k8s-controlplane:*",
+        "tag:k8s-agent:*"
+      ]
+    }
+  ],
+  "ssh": [
+    {
+      "action": "accept",
+      "src": ["autogroup:member", "group:ops"],
+      "dst": ["tag:ssh-target", "tag:k8s-controlplane", "tag:k8s-agent"],
+      "users": ["autogroup:nonroot", "root"]
+    },
+    {
+      "action": "accept",
+      "src": ["tag:ci"],
+      "dst": [
+        "tag:headscale",
+        "tag:homelab-server",
+        "tag:k8s-controlplane",
+        "tag:k8s-agent"
+      ],
+      "users": ["autogroup:nonroot", "root"]
+    },
+    {
+      "action": "accept",
+      "src": ["autogroup:member"],
+      "dst": ["autogroup:self"],
+      "users": ["autogroup:nonroot", "root"]
+    }
+  ]
+}

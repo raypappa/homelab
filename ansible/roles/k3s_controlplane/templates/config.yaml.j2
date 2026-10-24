@@ -13,7 +13,9 @@ etcd-s3-region: "{{ lookup("community.general.onepassword","backblaze-etcd", fie
 etcd-s3-folder: "{{ lookup("community.general.onepassword","backblaze-etcd", field="folder", service_account_token=op_sa_token, subdomain="my", vault=op_vault_id) }}"
 etcd-s3: true
 tls-san:
-  - {{ inventory_hostname }}
+{% for san in k3s_controlplane_tls_sans %}
+  - {{ san }}
+{% endfor %}
 secrets-encryption: true
 # https://kubernetes.io/docs/tasks/administer-cluster/encrypt-data/#providers
 # Secretbox is strong; kms runs as a pod and can have issues
