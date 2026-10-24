@@ -1,10 +1,7 @@
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/values.schema.json
 
-# Flux: self-hosted kanban board (open source, MCP-capable).
-# The Flux *server* is deployed by the chart; the MCP server is bundled
-# alongside it as a sidecar container, so a single Deployment serves both
-# and shares the same data PersistentVolumeClaim.
+# Flux: self-hosted kanban board.
 
 defaultPodOptions:
   securityContext:
@@ -39,28 +36,6 @@ controllers:
           capabilities:
             drop:
               - ALL
-      mcp:
-        image:
-          repository: sirsjg/flux-mcp
-          tag: sha-4d77f4f
-          pullPolicy: IfNotPresent
-        command:
-          - "bun"
-          - "packages/mcp/dist/index.js"
-        args:
-          - "--http"
-          - "--port=3001"
-        env:
-          - name: FLUX_DATA
-            value: /app/packages/data/flux.sqlite
-          - name: FLUX_MCP_PASSWORD
-            valueFrom:
-              secretKeyRef:
-                name: flux-mcp
-                key: mcp-password
-        ports:
-          - name: mcp
-            containerPort: 3001
     type: deployment
 
 service:
@@ -69,11 +44,6 @@ service:
     ports:
       http:
         port: 80
-  mcp:
-    controller: main
-    ports:
-      http:
-        port: 3001
 
 persistence:
   data:

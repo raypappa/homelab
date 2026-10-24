@@ -18,4 +18,3 @@ helmCharts:
 
 resources:
   - ./base/external-secret.yaml
-  - ./base/mcp-password.yaml
