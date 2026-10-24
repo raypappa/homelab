@@ -1,0 +1,24 @@
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: flux
+
+helmCharts:
+  - name: app-template
+    repo: https://bjw-s-labs.github.io/helm-charts
+    version: 5.3.0
+    namespace: flux
+    releaseName: flux
+    valuesFile: values.yaml
+  - name: cloudflare-tunnel
+    repo: https://cloudflare.github.io/helm-charts
+    version: 0.3.2
+    namespace: flux
+    releaseName: flux
+    valuesFile: cloudflare-values.yaml
+
+resources:
+  - ./flux-data-pvc.yaml
+  - ./external-secret.yaml
+  - ./flux-mcp-deployment.yaml
+  - ./flux-mcp-service.yaml

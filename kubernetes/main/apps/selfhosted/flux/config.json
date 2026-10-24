@@ -1,0 +1,9 @@
+{
+  "destNamespace": "flux",
+  "appName": "flux",
+  "serverSideApply": false,
+  "ignoreDifferences": [],
+  "group": "selfhosted",
+  "dependencies": [],
+  "wave": "4"
+}
