@@ -48,7 +48,12 @@ service:
 persistence:
   data:
     type: persistentVolumeClaim
+    storageClass: ceph-block
     accessMode: ReadWriteOnce
+    dataSourceRef:
+      kind: ReplicationDestination
+      apiGroup: volsync.backube
+      name: flux-data-dst
     size: 1Gi
     globalMounts:
       - path: /app/packages/data

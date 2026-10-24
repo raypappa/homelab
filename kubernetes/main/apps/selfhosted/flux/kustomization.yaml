@@ -18,3 +18,6 @@ helmCharts:
 
 resources:
   - ./base/external-secret.yaml
+  - ./base/volsync-external-secret.yaml
+  - ./base/volsync-replication-destination.yaml
+  - ./base/volsync-replication-source.yaml
