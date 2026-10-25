@@ -37,7 +37,7 @@
 # --- 2. Disable unused plain-text / API services -----------------------------
 :do { /ip service set telnet      disabled=yes }   on-error={ :put "telnet set" }
 :do { /ip service set ftp         disabled=yes }   on-error={ :put "ftp set" }
-:do { /ip service set www         disabled=yes port=80 }    on-error={ :put "www set" }
+# :do { /ip service set www         disabled=yes port=80 }    on-error={ :put "www set" }
 :do { /ip service set www-ssl     disabled=yes }   on-error={ :put "www-ssl set" }
 :do { /ip service set api         disabled=yes port=8728 }  on-error={ :put "api set" }
 :do { /ip service set api-ssl     disabled=yes port=8729 }  on-error={ :put "api-ssl set" }

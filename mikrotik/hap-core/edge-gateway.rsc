@@ -36,7 +36,7 @@
 # =============================================================================
 
 # ============ VARIABLES — EDIT THIS BLOCK ====================================
-:local deviceName       "hap-be3-media"
+:local deviceName       "router-on-stick"
 :local mgmtVlanId       1
 :local vlan10Id         10
 

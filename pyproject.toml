@@ -17,6 +17,7 @@ readme = "README.md"
 dev = [
     "ansible-lint<26.10.2,>=26.10.1; platform_system != \"Windows\"",
     "commitizen==4.17.1",
+    "paramiko>=5.1.0",
     "pre-commit<5.0.0,>=4.0.1",
 ]
 
