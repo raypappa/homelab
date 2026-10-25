@@ -1,6 +1,6 @@
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/ansible/ansible-lint/main/src/ansiblelint/schemas/ansible.json#/$defs/tasks
-- name: k3s_agent | Apply node taints via Kubernetes API
+- name: K3s_agent | Apply node taints via Kubernetes API
   kubernetes.core.k8s_taint:
     state: present
     name: "{{ ansible_hostname }}"
