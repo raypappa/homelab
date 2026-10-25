@@ -1,13 +1,13 @@
 {
-  "destNamespace": "flux",
-  "appName": "flux",
-  "serverSideApply": false,
-  "ignoreDifferences": [],
-  "group": "selfhosted",
-  "dependencies": [
-    "external-secrets",
-    "volsync",
-    "rook-ceph-cluster"
-  ],
-  "wave": "4"
+       "destNamespace": "flux",
+       "appName": "flux",
+       "serverSideApply": false,
+       "ignoreDifferences": [],
+       "group": "selfhosted",
+       "dependencies": [
+              "external-secrets",
+              "volsync",
+              "rook-ceph-cluster"
+       ],
+       "wave": "4"
 }
