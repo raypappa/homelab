@@ -12,3 +12,8 @@ cloudflare:
   ingress:
     - hostname: "flux.fieldsofbears.com"
       service: "http://flux.flux.svc.cluster.local:80"
+podSecurityContext:
+  runAsNonRoot: true
+  runAsUser: 65532
+  seccompProfile:
+    type: "RuntimeDefault"
