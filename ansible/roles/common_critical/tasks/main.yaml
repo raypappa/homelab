@@ -100,14 +100,14 @@
   become: true
   ansible.builtin.stat:
     path: /etc/apt/sources.list.d/tailscale.sources
-  register: tailscale_sources
+  register: common_critical_tailscale_sources
   when: ansible_facts['os_family'] == "Debian"
 - name: Remove legacy tailscale.list if tailscale.sources exists
   become: true
   ansible.builtin.file:
     path: /etc/apt/sources.list.d/tailscale.list
     state: absent
-  when: ansible_facts['os_family'] == "Debian" and tailscale_sources.stat.exists
+  when: ansible_facts['os_family'] == "Debian" and common_critical_tailscale_sources.stat.exists
 - name: Update apt cache
   become: true
   ansible.builtin.apt:
