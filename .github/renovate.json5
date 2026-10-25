@@ -51,6 +51,11 @@
   },
   packageRules: [
     {
+      description: 'Keep the Biome CLI package and GitHub Action input in sync',
+      matchPackageNames: ['@biomejs/biome'],
+      groupName: 'Biome',
+    },
+    {
       matchManagers: ['github-actions'],
       automerge: true,
       automergeType: 'pr',
