@@ -16,6 +16,11 @@ localpv-provisioner:
     name: openebs-hostpath
     isDefaultClass: false
     basePath: /var/mnt/sata/openebs/local
+loki:
+  minio:
+    mcImage:
+      repository: docker.io/openebs/mc
+      tag: RELEASE.2024-11-21T17-21-54Z
 openebs-crds:
   csi:
     volumeSnapshots:

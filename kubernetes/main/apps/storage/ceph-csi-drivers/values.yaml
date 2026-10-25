@@ -1,0 +1,217 @@
+---
+operatorConfig:
+  create: false
+  namespace: rook-ceph
+drivers:
+  rbd:
+    enabled: true
+    name: rook-ceph.rbd.csi.ceph.com
+    clusterName: rook-ceph
+    imageSet:
+      name: rook-csi-operator-image-set-configmap
+    snapshotPolicy: volumeSnapshot
+    controllerPlugin:
+      hostNetwork: true
+      replicas: 2
+      deploymentStrategy:
+        type: Recreate
+      priorityClassName: system-cluster-critical
+      tolerations:
+        - key: dedicated
+          operator: Equal
+          value: gpu
+          effect: NoExecute
+      resources:
+        attacher:
+          limits:
+            memory: 256Mi
+          requests:
+            cpu: 100m
+            memory: 128Mi
+        omapGenerator:
+          limits:
+            memory: 1Gi
+          requests:
+            cpu: 250m
+            memory: 512Mi
+        plugin:
+          limits:
+            memory: 1Gi
+          requests:
+            memory: 512Mi
+        provisioner:
+          limits:
+            memory: 256Mi
+          requests:
+            cpu: 100m
+            memory: 128Mi
+        resizer:
+          limits:
+            memory: 256Mi
+          requests:
+            cpu: 100m
+            memory: 128Mi
+        snapshotter:
+          limits:
+            memory: 256Mi
+          requests:
+            cpu: 100m
+            memory: 128Mi
+    nodePlugin:
+      priorityClassName: system-node-critical
+      kubeletDirPath: /var/lib/kubelet
+      tolerations:
+        - key: dedicated
+          operator: Equal
+          value: gpu
+          effect: NoExecute
+      updateStrategy:
+        type: RollingUpdate
+      resources:
+        plugin:
+          limits:
+            memory: 1Gi
+          requests:
+            cpu: 250m
+            memory: 512Mi
+        registrar:
+          limits:
+            memory: 256Mi
+          requests:
+            cpu: 50m
+            memory: 128Mi
+  cephfs:
+    enabled: true
+    name: rook-ceph.cephfs.csi.ceph.com
+    clusterName: rook-ceph
+    imageSet:
+      name: rook-csi-operator-image-set-configmap
+    snapshotPolicy: volumeGroupSnapshot
+    controllerPlugin:
+      hostNetwork: true
+      replicas: 2
+      deploymentStrategy:
+        type: Recreate
+      priorityClassName: system-cluster-critical
+      tolerations:
+        - key: dedicated
+          operator: Equal
+          value: gpu
+          effect: NoExecute
+      resources:
+        attacher:
+          limits:
+            memory: 256Mi
+          requests:
+            cpu: 100m
+            memory: 128Mi
+        plugin:
+          limits:
+            memory: 1Gi
+          requests:
+            cpu: 250m
+            memory: 512Mi
+        provisioner:
+          limits:
+            memory: 256Mi
+          requests:
+            cpu: 100m
+            memory: 128Mi
+        resizer:
+          limits:
+            memory: 256Mi
+          requests:
+            cpu: 100m
+            memory: 128Mi
+        snapshotter:
+          limits:
+            memory: 256Mi
+          requests:
+            cpu: 100m
+            memory: 128Mi
+    nodePlugin:
+      priorityClassName: system-node-critical
+      kubeletDirPath: /var/lib/kubelet
+      tolerations:
+        - key: dedicated
+          operator: Equal
+          value: gpu
+          effect: NoExecute
+      updateStrategy:
+        type: RollingUpdate
+      resources:
+        plugin:
+          limits:
+            memory: 1Gi
+          requests:
+            cpu: 250m
+            memory: 512Mi
+        registrar:
+          limits:
+            memory: 256Mi
+          requests:
+            cpu: 50m
+            memory: 128Mi
+  nfs:
+    enabled: true
+    name: rook-ceph.nfs.csi.ceph.com
+    clusterName: rook-ceph
+    imageSet:
+      name: rook-csi-operator-image-set-configmap
+    snapshotPolicy: volumeSnapshot
+    controllerPlugin:
+      hostNetwork: true
+      replicas: 2
+      deploymentStrategy:
+        type: Recreate
+      priorityClassName: system-cluster-critical
+      tolerations:
+        - key: dedicated
+          operator: Equal
+          value: gpu
+          effect: NoExecute
+      resources:
+        attacher:
+          limits:
+            memory: 1Gi
+          requests:
+            cpu: 250m
+            memory: 512Mi
+        plugin:
+          limits:
+            memory: 1Gi
+          requests:
+            cpu: 250m
+            memory: 512Mi
+        provisioner:
+          limits:
+            memory: 256Mi
+          requests:
+            cpu: 100m
+            memory: 128Mi
+    nodePlugin:
+      priorityClassName: system-node-critical
+      kubeletDirPath: /var/lib/kubelet
+      tolerations:
+        - key: dedicated
+          operator: Equal
+          value: gpu
+          effect: NoExecute
+      updateStrategy:
+        type: RollingUpdate
+      resources:
+        plugin:
+          limits:
+            memory: 1Gi
+          requests:
+            cpu: 250m
+            memory: 512Mi
+        registrar:
+          limits:
+            memory: 256Mi
+          requests:
+            cpu: 50m
+            memory: 128Mi
+  nvmeof:
+    enabled: false
+    name: rook-ceph.nvmeof.csi.ceph.com

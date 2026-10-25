@@ -6,6 +6,10 @@
 defaultPodOptions:
   securityContext:
     runAsNonRoot: true
+    runAsUser: 1001
+    runAsGroup: 1001
+    fsGroup: 1001
+    fsGroupChangePolicy: OnRootMismatch
     seccompProfile:
       type: RuntimeDefault
 
@@ -16,6 +20,10 @@ controllers:
     pod:
       securityContext:
         runAsNonRoot: true
+        runAsUser: 1001
+        runAsGroup: 1001
+        fsGroup: 1001
+        fsGroupChangePolicy: OnRootMismatch
         seccompProfile:
           type: RuntimeDefault
     containers:
@@ -41,13 +49,24 @@ controllers:
 service:
   main:
     controller: main
+    type: LoadBalancer
+    annotations:
+      metallb.universe.tf/address-pool: metalpool
+      external-dns.alpha.kubernetes.io/hostname: flux.stoneydavis.internal
+      external-dns.alpha.kubernetes.io/ttl: "1800"
+      external-dns.alpha.kubernetes.io/webhook-comment: "k8s_managed"
+      external-dns.alpha.kubernetes.io/webhook-match-subdomain: "true"
+      external-dns.alpha.kubernetes.io/webhook-disabled: "false"
+    externalTrafficPolicy: Cluster
     ports:
       http:
         port: 80
+        targetPort: 3000
 
 persistence:
   data:
     type: persistentVolumeClaim
+    forceRename: flux
     storageClass: ceph-block
     accessMode: ReadWriteOnce
     dataSourceRef:
@@ -57,3 +76,15 @@ persistence:
     size: 1Gi
     globalMounts:
       - path: /app/packages/data
+  home:
+    type: persistentVolumeClaim
+    forceRename: flux-home
+    storageClass: ceph-block
+    accessMode: ReadWriteOnce
+    dataSourceRef:
+      kind: ReplicationDestination
+      apiGroup: volsync.backube
+      name: flux-home-dst
+    size: 1Gi
+    globalMounts:
+      - path: /home/flux

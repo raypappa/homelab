@@ -170,6 +170,7 @@ rutorrent
 sabnzbd
 scgi
 selfsign
+sirsjg
 servercontainers
 smartctl
 snmp
@@ -387,3 +388,6 @@ autogroup
 preauthkey
 preauthkeys
 tagOwners
+nvmeof
+omap
+resizer
