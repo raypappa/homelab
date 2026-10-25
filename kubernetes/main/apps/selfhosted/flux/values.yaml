@@ -56,6 +56,7 @@ service:
 persistence:
   data:
     type: persistentVolumeClaim
+    forceRename: flux
     storageClass: ceph-block
     accessMode: ReadWriteOnce
     dataSourceRef:
@@ -65,3 +66,15 @@ persistence:
     size: 1Gi
     globalMounts:
       - path: /app/packages/data
+  home:
+    type: persistentVolumeClaim
+    forceRename: flux-home
+    storageClass: ceph-block
+    accessMode: ReadWriteOnce
+    dataSourceRef:
+      kind: ReplicationDestination
+      apiGroup: volsync.backube
+      name: flux-home-dst
+    size: 1Gi
+    globalMounts:
+      - path: /home/flux
