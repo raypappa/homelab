@@ -387,3 +387,6 @@ autogroup
 preauthkey
 preauthkeys
 tagOwners
+nvmeof
+omap
+resizer
