@@ -32,7 +32,7 @@
 # =============================================================================
 
 # --- 1. SSH service hardening ------------------------------------------------
-/ip ssh set strong-crypto=yes port=$sshPort forwarding-enabled=both
+/ip ssh set strong-crypto=yes forwarding-enabled=both
 
 # --- 2. Disable unused plain-text / API services -----------------------------
 :do { /ip service set telnet      disabled=yes }   on-error={ :put "telnet set" }
