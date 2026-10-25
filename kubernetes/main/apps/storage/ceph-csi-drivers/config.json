@@ -1,0 +1,9 @@
+{
+  "destNamespace": "rook-ceph",
+  "appName": "ceph-csi-drivers",
+  "serverSideApply": false,
+  "ignoreDifferences": [],
+  "group": "storage-controller",
+  "dependencies": ["rook-ceph-operator"],
+  "wave": "3"
+}
