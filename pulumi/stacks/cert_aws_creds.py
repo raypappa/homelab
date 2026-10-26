@@ -64,8 +64,10 @@ class CertManagerAwsCreds(pulumi.ComponentResource):
         partition = get_partition().partition
 
         # IAM user + access key pair for the cert-manager path.
-        user = iam.User(f"{name}-user", name="cert-manager-aws-creds")
-        access_key = iam.AccessKey(f"{name}-access-key", user=user.name)
+        # The user is inherently a user, so the resource name carries no
+        # redundant "-user" suffix.
+        aws_creds = iam.User("cert-manager-aws-creds", name="cert-manager-aws-creds")
+        access_key = iam.AccessKey(f"{name}-access-key", user=aws_creds.name)
 
         # --- Narrow policy -------------------------------------------------
         # Only the three Route53 actions needed for DNS-01, scoped to the
@@ -108,7 +110,7 @@ class CertManagerAwsCreds(pulumi.ComponentResource):
         iam.UserPolicy(
             f"{name}-policy",
             name=f"{name}-policy",
-            user=user.name,
+            user=aws_creds.name,
             policy=policy_doc.json,
         )
 
