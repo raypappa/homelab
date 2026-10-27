@@ -178,7 +178,7 @@ url_api = "https://api.github.com/repos/astral-sh/ruff/releases/assets/603827051
 provenance = "github-attestations"
 
 [[tools."github:darksworm/argonaut"]]
-version = "2.19.0"
+version = "2.20.0"
 backend = "github:darksworm/argonaut"
 
 [tools."github:darksworm/argonaut"."platforms.linux-arm64"]
