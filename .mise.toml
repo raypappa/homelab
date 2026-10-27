@@ -14,7 +14,7 @@ version = "latest"
 
 [tools."pipx:molecule"]
 uvx_args = "--with=molecule-plugins[docker],ansible-lint"
-version = "26.6.0"
+version = "26.10.0"
 
 [tools.taplo]
 version = "latest"
