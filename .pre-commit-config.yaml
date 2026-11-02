@@ -12,7 +12,7 @@ repos:
         stages:
           - pre-push
     repo: https://github.com/commitizen-tools/commitizen
-    rev: v4.19.3
+    rev: 0c47f153e36705819b4d819508fa913d979c1ccc # frozen: v4.19.3
   - hooks:
       - id: no-commit-to-branch
       - id: check-json
@@ -33,7 +33,7 @@ repos:
       - id: mixed-line-ending
       - id: requirements-txt-fixer
     repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v6.0.0
+    rev: 3e8a8703264a2f4a69428a0aa4dcb512790b2c8c # frozen: v6.0.0
   - hooks:
       - id: check-github-workflows
       - id: check-github-actions
@@ -43,7 +43,7 @@ repos:
         additional_dependencies:
           - "json5"
     repo: https://github.com/python-jsonschema/check-jsonschema
-    rev: 0.38.2
+    rev: 39478bf2c099a58683d3f1aedf675105318b078d # frozen: 0.39.0
   - hooks:
       - additional_dependencies:
           - mdformat-frontmatter
@@ -52,17 +52,17 @@ repos:
           - mdformat-config
         id: mdformat
     repo: https://github.com/executablebooks/mdformat
-    rev: 0.7.22
+    rev: 2d496dbc18e31b83a1596685347ffe0b6041daf0 # frozen: 1.0.0
   - repo: https://github.com/streetsidesoftware/cspell-cli
-    rev: v10.3.0
+    rev: f6467e1f1ebecf5020560405c7b26e01786a43c8 # frozen: v10.4.0
     hooks:
       - id: cspell
   - hooks:
       - id: yamlfmt
     repo: https://github.com/google/yamlfmt
-    rev: v0.21.0
+    rev: b5ca1890231d5e1e5181fef75a1be609d1e25029 # frozen: v0.21.0
   - repo: https://github.com/adrienverge/yamllint.git
-    rev: v1.38.0
+    rev: cba56bcde1fdd01c1deb3f945e69764c291a6530 # frozen: v1.38.0
     hooks:
       - id: yamllint
         exclude: .github/workflows
@@ -91,6 +91,6 @@ repos:
         files: "config\\.json(\\.disabled)?"
   - repo: https://github.com/astral-sh/uv-pre-commit
     # uv version.
-    rev: 0.12.24
+    rev: 46787482b9fb2003c56e0f7592e312ef381829d9 # frozen: 0.13.6
     hooks:
       - id: uv-lock
