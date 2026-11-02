@@ -40,6 +40,9 @@ collections:
   - name: community.crypto
     # renovate: datasource=galaxy-collection packageName=community.crypto
     version: "3.0.4"
+  - name: kubernetes.core
+    # renovate: datasource=galaxy-collection packageName=kubernetes.core
+    version: "6.4.0"
   - name: ttafsir.sqlite_utils
     # renovate: datasource=galaxy-collection packageName=ttafsir.sqlite_utils
     version: "1.4.0"
