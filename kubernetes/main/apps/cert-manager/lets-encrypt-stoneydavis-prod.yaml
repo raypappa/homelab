@@ -1,0 +1,26 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/cert-manager.io/clusterissuer_v1.json
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: letsencrypt-stoneydavis-production
+spec:
+  acme:
+    email: postmaster@fieldsofbears.com
+    privateKeySecretRef:
+      name: letsencrypt-stoneydavis-production
+    server: https://acme-v02.api.letsencrypt.org/directory
+    solvers:
+      - dns01:
+          route53:
+            accessKeyIDSecretRef:
+              name: cert-manager-aws-credentials
+              key: access-key-id
+            hostedZoneID: Z07993151Z48PIABM0XKH
+            region: us-east-1
+            secretAccessKeySecretRef:
+              name: cert-manager-aws-credentials
+              key: secret-access-key
+        selector:
+          dnsZones:
+            - stoneydavis.com
