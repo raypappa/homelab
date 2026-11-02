@@ -4,24 +4,30 @@
     - ssl
   block:
     - name: Read cert-manager TLS Secret from Kubernetes
-      ansible.builtin.command:
-        argv:
-          - kubectl
-          - get
-          - secret
-          - puma.stoneydavis.com-tls
-          - --namespace=cert-manager
-          - --output=json
-      changed_when: false
+      kubernetes.core.k8s_info:
+        api_version: v1
+        kind: Secret
+        name: puma.stoneydavis.com-tls
+        namespace: cert-manager
       delegate_to: localhost
       no_log: true
       register: ssl_kubernetes_secret
       run_once: true
+      vars:
+        ansible_python_interpreter: "{{ ansible_playbook_python }}"
+    - name: Verify cert-manager TLS Secret exists and has both key fields
+      ansible.builtin.assert:
+        that:
+          - ssl_kubernetes_secret.resources | length == 1
+          - "'tls.crt' in ssl_kubernetes_secret.resources[0].data"
+          - "'tls.key' in ssl_kubernetes_secret.resources[0].data"
+        fail_msg: "cert-manager TLS Secret must contain tls.crt and tls.key."
+      no_log: true
     - name: Decode cert-manager TLS Secret
       ansible.builtin.set_fact:
-        ssl_certificate_fullchain: "{{ (ssl_kubernetes_secret.stdout | from_json).data['tls.crt']
+        ssl_certificate_fullchain: "{{ ssl_kubernetes_secret.resources[0].data['tls.crt']
           | b64decode }}"
-        ssl_certificate_private_key: "{{ (ssl_kubernetes_secret.stdout | from_json).data['tls.key']
+        ssl_certificate_private_key: "{{ ssl_kubernetes_secret.resources[0].data['tls.key']
           | b64decode }}"
       no_log: true
     - name: Verify cert-manager Secret contains a full chain and private key
@@ -38,13 +44,19 @@
         content: "{{ ssl_certificate_fullchain }}"
         valid_at:
           two_weeks: "+2w"
+      delegate_to: localhost
       register: ssl_certificate_info
       no_log: true
+      vars:
+        ansible_python_interpreter: "{{ ansible_playbook_python }}"
     - name: Parse cert-manager private key
       community.crypto.openssl_privatekey_info:
         content: "{{ ssl_certificate_private_key }}"
+      delegate_to: localhost
       register: ssl_private_key_info
       no_log: true
+      vars:
+        ansible_python_interpreter: "{{ ansible_playbook_python }}"
     - name: Verify cert-manager certificate matches its private key
       ansible.builtin.assert:
         that:
