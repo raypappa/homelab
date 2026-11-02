@@ -8,6 +8,7 @@ spec:
   secretName: puma.stoneydavis.com-tls
   dnsNames:
     - puma.stoneydavis.com
+    - "*.puma.stoneydavis.com"
   issuerRef:
     name: letsencrypt-stoneydavis-production
     kind: ClusterIssuer
