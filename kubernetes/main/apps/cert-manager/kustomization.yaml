@@ -10,6 +10,9 @@ helmCharts:
     valuesFile: values.yaml
     includeCRDs: true
 resources:
+  - ./aws-credentials.yaml
   - ./external-secret.yaml
   - ./lets-encrypt-prod.yaml
+  - ./lets-encrypt-stoneydavis-prod.yaml
   - ./lets-encrypt-staging.yaml
+  - ./puma-stoneydavis-com.yaml
