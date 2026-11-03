@@ -4,6 +4,6 @@
   "serverSideApply": false,
   "ignoreDifferences": [],
   "group": "system",
-  "dependencies": [],
-  "wave": "1"
+  "dependencies": ["external-secrets"],
+  "wave": "3"
 }
