@@ -1,0 +1,19 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/v1_secret.json
+apiVersion: v1
+kind: Secret
+metadata:
+  name: sasha-token
+  namespace: sasha
+  labels:
+    app.kubernetes.io/name: sasha
+    app.kubernetes.io/component: agent-identity
+  annotations:
+    kubernetes.io/service-account.name: sasha
+# Bootstrap token for the agent's kubectl kubeconfig. Legacy (unbound) type
+# so the same mechanism works on any cluster version; the token stays valid
+# across routine Argo CD syncs and is renewed automatically by the
+# ServiceAccountTokenRotation above (12h expiry / 12h rotation). The token is
+# fetched at runtime from this secret and never committed to the repo.
+stringData:
+  kubernetes.io/service-account-token: ""

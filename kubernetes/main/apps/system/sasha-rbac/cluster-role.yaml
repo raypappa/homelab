@@ -1,0 +1,85 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/rbac.authorization.k8s.io_v1_clusterrole.json
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: sasha-cluster-reader
+  labels:
+    app.kubernetes.io/name: sasha
+    app.kubernetes.io/component: agent-identity
+rules:
+  # Namespace discovery (kubectl get ns).
+  - apiGroups:
+      - ""
+    resources:
+      - "namespaces"
+    verbs:
+      - "get"
+      - "list"
+      - "watch"
+  # Service account inspection (agent checks its own identity).
+  - apiGroups:
+      - ""
+    resources:
+      - "serviceaccounts"
+    verbs:
+      - "get"
+      - "list"
+      - "watch"
+  # Events across all namespaces (kubectl get events).
+  - apiGroups:
+      - ""
+    resources:
+      - "events"
+    verbs:
+      - "get"
+      - "list"
+      - "watch"
+  # Workload inspection: pods, logs, and the controllers behind them.
+  - apiGroups:
+      - ""
+    resources:
+      - "pods"
+      - "pods/log"
+    verbs:
+      - "get"
+      - "list"
+      - "watch"
+  - apiGroups:
+      - "apps"
+    resources:
+      - "deployments"
+      - "replicasets"
+      - "statefulsets"
+      - "daemonsets"
+      - "jobs"
+      - "cronjobs"
+    verbs:
+      - "get"
+      - "list"
+      - "watch"
+  # Network and service topology.
+  - apiGroups:
+      - ""
+    resources:
+      - "services"
+    verbs:
+      - "get"
+      - "list"
+      - "watch"
+  - apiGroups:
+      - "networking.k8s.io"
+    resources:
+      - "ingresses"
+    verbs:
+      - "get"
+      - "list"
+      - "watch"
+  # Self-scoping: lets the agent verify its own grants (kubectl auth can-i).
+  - apiGroups:
+      - "authorization.k8s.io"
+    resources:
+      - "selfsubjectaccessreviews"
+      - "selfsubjectrulesreviews"
+    verbs:
+      - "create"

@@ -137,3 +137,5 @@ mirceanton
 kubesec
 Schedulable
 schedulable
+serviceaccounts
+selfsubjectaccessreviews
