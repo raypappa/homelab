@@ -1,0 +1,17 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/argoproj.io_v1alpha1_serviceaccounttokenrotation.json
+apiVersion: argoproj.io/v1alpha1
+kind: ServiceAccountTokenRotation
+metadata:
+  name: sasha
+  namespace: sasha
+  labels:
+    app.kubernetes.io/name: sasha
+    app.kubernetes.io/component: agent-identity
+# Argo CD rotates this ServiceAccount's bound token every 12h (matching the
+# repo's other rotation manifests). This keeps the long-lived secret below
+# valid without any manual rotation on the agent host.
+spec:
+  serviceAccountName: sasha
+  expiryDuration: 12h
+  rotationPeriod: 12h

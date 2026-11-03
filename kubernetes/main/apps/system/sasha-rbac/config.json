@@ -1,0 +1,9 @@
+{
+  "destNamespace": "sasha",
+  "appName": "sasha-rbac",
+  "serverSideApply": false,
+  "ignoreDifferences": [],
+  "group": "system",
+  "dependencies": [],
+  "wave": "1"
+}
