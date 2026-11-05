@@ -7,14 +7,16 @@ Manages the headscale coordination server and its ACL policy.
 - `tasks/main.yaml` — service install, config + policy deploy, Headscale user setup
 - `templates/config.yaml.j2` — headscale server config (rendered to /etc/headscale/config.yaml)
 - `files/policy.json` — Tailscale ACL policy (rendered to /etc/headscale/policy.json)
-- `handlers/main.yml` — restart handler, fired on policy change
+- `handlers/main.yml` — restart handler, fired on config or policy change
 
 ## Policy
 
 The ACL policy at `files/policy.json` is the source of truth. It is
 deployed to the headscale host as `/etc/headscale/policy.json` and
-headscale is restarted on every change. **Do not edit the policy live
-on the server** — it will be overwritten on the next role run.
+headscale is restarted when it changes. The server config template is
+deployed to `/etc/headscale/config.yaml` and also triggers a restart when
+changed. **Do not edit the policy live on the server** — it will be
+overwritten on the next role run.
 
 The current tag layout:
 
