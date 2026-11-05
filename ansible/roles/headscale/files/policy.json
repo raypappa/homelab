@@ -1,4 +1,5 @@
 {
+  "randomizeClientPort": false,
   "tagOwners": {
     "tag:headscale": ["group:ops", "homelab@", "tagged-devices@"],
     "tag:homelab-server": ["group:ops", "homelab@", "tagged-devices@"],

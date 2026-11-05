@@ -71,6 +71,7 @@
     owner: headscale
     group: headscale
     mode: '0600'
+  notify: Restart headscale
 - name: Deploy headscale ACL policy
   become: true
   ansible.builtin.copy:

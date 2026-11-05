@@ -136,8 +136,12 @@ derp:
 # Disables the automatic check for headscale updates on startup
 disable_check_updates: false
 
-# Time before an inactive ephemeral node is deleted?
-ephemeral_node_inactivity_timeout: 5m
+# Default node expiry and cleanup behavior for ephemeral nodes.
+node:
+  expiry: 180d
+  ephemeral:
+    # Time before an inactive ephemeral node is deleted.
+    inactivity_timeout: 5m
 
 database:
   # Database type. Available options: sqlite, postgres
@@ -352,15 +356,10 @@ oidc:
   # `LoadCredential` straightforward:
   # client_secret_path: "${CREDENTIALS_DIRECTORY}/oidc_client_secret"
 
-  # The amount of time a node is authenticated with OpenID until it expires
-  # and needs to reauthenticate.
-  # Setting the value to "0" will mean no expiry.
-  expiry: 180d
-
   # Use the expiry from the token received from OpenID when the user logged
   # in. This will typically lead to frequent need to reauthenticate and should
   # only be enabled if you know what you are doing.
-  # Note: enabling this will cause `oidc.expiry` to be ignored.
+  # Note: enabling this will cause `node.expiry` to be ignored.
   use_expiry_from_token: false
 
   # The OIDC scopes to use, defaults to "openid", "profile" and "email".
@@ -415,11 +414,6 @@ logtail:
   # As there is currently no support for overriding the log server in Headscale, this is
   # disabled by default. Enabling this will make your clients send logs to Tailscale Inc.
   enabled: false
-
-# Enabling this option makes devices prefer a random port for WireGuard traffic over the
-# default static port 41641. This option is intended as a workaround for some buggy
-# firewall devices. See https://tailscale.com/kb/1181/firewalls/ for more information.
-randomize_client_port: false
 
 # Taildrop configuration
 # Taildrop is the file sharing feature of Tailscale, allowing nodes to send files to each other.
