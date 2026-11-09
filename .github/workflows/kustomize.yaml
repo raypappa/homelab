@@ -8,6 +8,7 @@ jobs:
     runs-on: ${{ vars.RUNS_ON }}
     permissions:
       contents: read
+      packages: read
     steps:
       - name: "Checkout"
         uses: actions/checkout@v7
@@ -29,5 +30,16 @@ jobs:
         run: kustomize version
       - name: Helm version
         run: helm version
+      - name: Authenticate Helm to GitHub Container Registry
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          HELM_REGISTRY_CONFIG: ${{ runner.temp }}/helm/registry.json
+        run: |
+          mkdir -p "$(dirname "$HELM_REGISTRY_CONFIG")"
+          printf '%s' "$GITHUB_TOKEN" | helm registry login ghcr.io \
+            --username "$GITHUB_ACTOR" \
+            --password-stdin
       - name: Kustomize It!
+        env:
+          HELM_REGISTRY_CONFIG: ${{ runner.temp }}/helm/registry.json
         run: task build:kustomize
