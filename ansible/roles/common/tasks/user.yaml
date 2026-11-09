@@ -26,22 +26,6 @@
     owner: "{{ user }}"
     group: "{{ user }}"
     mode: "0600"
-- name: Zsh files | user {{ user }}
-  become: true
-  become_user: "{{ user }}"
-  ansible.builtin.copy:
-    src: "{{ path }}"
-    dest: "$HOME/{{ path }}"
-    owner: "{{ user }}"
-    group: "{{ user }}"
-    mode: "0640"
-  loop_control:
-    loop_var: path
-  loop:
-    - .zpath
-    - .zprofile
-    - .zshenv
-    - .zshrc
 - name: Create .local/bin | user {{ user }}
   become: true
   become_user: "{{ user }}"
