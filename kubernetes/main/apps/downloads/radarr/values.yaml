@@ -68,7 +68,7 @@ service:
     controller: main
     type: LoadBalancer
     annotations:
-      metallb.universe.tf/address-pool: metalpool
+      metallb.io/address-pool: metalpool
       external-dns.alpha.kubernetes.io/hostname: radarr.stoneydavis.internal
       external-dns.alpha.kubernetes.io/ttl: "1800"
       external-dns.alpha.kubernetes.io/webhook-comment: "k8s_managed"
