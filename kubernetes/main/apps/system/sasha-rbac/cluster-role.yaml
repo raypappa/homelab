@@ -17,6 +17,13 @@ rules:
       - "get"
       - "list"
       - "watch"
+  # Node readiness for the cluster health check.
+  - apiGroups:
+      - ""
+    resources:
+      - "nodes"
+    verbs:
+      - "list"
   # Service account inspection (agent checks its own identity).
   - apiGroups:
       - ""
