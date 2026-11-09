@@ -17,5 +17,6 @@ jobs:
         uses: biomejs/setup-biome@v2
         with:
           version: 2.5.15
+          token: ${{ github.token }}
       - name: Run Biome
         run: biome ci .
