@@ -6,6 +6,8 @@ jobs:
   kustomize:
     name: "Kustomize"
     runs-on: ${{ vars.RUNS_ON }}
+    permissions:
+      contents: read
     steps:
       - name: "Checkout"
         uses: actions/checkout@v7
@@ -21,6 +23,7 @@ jobs:
         uses: arduino/setup-task@v3.0.0
         with:
           version: ${{ vars.TASK_VERSION}}
+          repo-token: ${{ github.token }}
       - name: Kustomize Version
         run: kustomize version
       - name: Helm version
