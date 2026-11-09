@@ -1,1 +1,18 @@
-{"destNamespace": "external-dns", "appName": "external-dns", "serverSideApply": false, "ignoreDifferences": [], "group": "post-monitoring", "dependencies": ["prometheus-operator", "external-secrets", "prowlarr", "radarr", "flux", "timetagger", "jellyfin", "spotizerr"], "wave": "6"}
+{
+  "destNamespace": "external-dns",
+  "appName": "external-dns",
+  "serverSideApply": false,
+  "ignoreDifferences": [],
+  "group": "post-monitoring",
+  "dependencies": [
+    "prometheus-operator",
+    "external-secrets",
+    "prowlarr",
+    "radarr",
+    "flux",
+    "timetagger",
+    "jellyfin",
+    "spotizerr"
+  ],
+  "wave": "6"
+}
