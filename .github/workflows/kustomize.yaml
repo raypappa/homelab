@@ -13,6 +13,8 @@ jobs:
       - name: "Checkout"
         uses: actions/checkout@v7
       - uses: syntaqx/setup-kustomize@v1
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
         with:
           # renovate: datasource=github-tags depName=kubernetes-sigs/kustomize extractVersion="^kustomize/v(?<version>.*)$" versioning=semver-coerced
           kustomize-version: 5.8.1
