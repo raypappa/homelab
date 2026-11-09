@@ -58,6 +58,7 @@ jobs:
         uses: astral-sh/setup-uv@v10.3.3
         with:
           version: "0.13.6"
+          github-token: ${{ github.token }}
       - name: Install pnpm
         uses: pnpm/action-setup@v6
       - name: Use Node.js
