@@ -10,10 +10,8 @@ metadata:
     app.kubernetes.io/component: agent-identity
   annotations:
     kubernetes.io/service-account.name: sasha
-# Bootstrap token for the agent's kubectl kubeconfig. Legacy (unbound) type
-# so the same mechanism works on any cluster version; the token stays valid
-# across routine Argo CD syncs and is renewed automatically by the
-# ServiceAccountTokenRotation above (12h expiry / 12h rotation). The token is
-# fetched at runtime from this secret and never committed to the repo.
-stringData:
-  kubernetes.io/service-account-token: ""
+# Legacy ServiceAccount token Secret. Kubernetes fills `data.token`, `data.ca.crt`,
+# and `data.namespace` for this type. It does not expire or rotate automatically;
+# delete/recreate this Secret to rotate the credential. ESO mirrors `data.token`
+# to 1Password on its hourly refresh. No token value is stored in Git.
+type: kubernetes.io/service-account-token
