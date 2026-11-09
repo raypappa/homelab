@@ -18,6 +18,7 @@ jobs:
         id: changed-files
         uses: tj-actions/changed-files@v47
         with:
+          token: ${{ github.token }}
           files_yaml: |
             cdk:
               - cdk/bin/**
