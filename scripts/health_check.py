@@ -16,20 +16,24 @@ Exit codes:
 from __future__ import annotations
 
 import argparse
+import ast
 import json
 import pathlib
+import re
 import sys
 from dataclasses import dataclass, field
 from enum import Enum
-from typing import Any, TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
+
+from kubernetes.client.rest import ApiException
+from urllib3.exceptions import HTTPError as Urllib3HTTPError
 
 from kubernetes import client, config
-from kubernetes.client.rest import ApiException
 
 if TYPE_CHECKING:
     from kubernetes.client.models.v1_node import V1Node
-    from kubernetes.client.models.v1_pod import V1Pod
     from kubernetes.client.models.v1_node_condition import V1NodeCondition
+    from kubernetes.client.models.v1_pod import V1Pod
 
 # ---------------------------------------------------------------------------
 # Constants
@@ -38,6 +42,19 @@ if TYPE_CHECKING:
 ARGOCD_NAMESPACE = "argocd"
 SYSTEM_NAMESPACE = "kube-system"
 APPS_DIR = pathlib.Path("kubernetes/main/apps")
+MAX_LOG_LINES = 20
+MAX_LOG_CHARS = 800
+MAX_LOG_REQUESTS = 20
+MAX_DIAGNOSTIC_CHARS = 400
+MAX_ARGO_RESOURCE_DETAILS = 10
+
+_SENSITIVE_VALUE_RE = re.compile(
+    r"(?i)([\"']?(?:[a-z0-9_.-]*(?:password|passwd|token|secret|api[_-]?key|credential)[a-z0-9_.-]*)[\"']?\s*[:=]\s*[\"']?)([^\"'\s,;}]+)"
+)
+_AUTH_HEADER_RE = re.compile(r"(?i)(authorization\s*:\s*(?:bearer|basic)\s+)[^\s,;]+")
+_BEARER_TOKEN_RE = re.compile(r"(?i)(\bbearer\s+)[a-z0-9._~+/-]{8,}={0,2}")
+_URL_CREDENTIALS_RE = re.compile(r"(?i)(https?://)[^\s/@:]+:[^\s/@]+@")
+_ANSI_ESCAPE_RE = re.compile(r"\x1b\[[0-?]*[ -/]*[@-~]")
 
 # Colors (disabled when output is not a TTY)
 _USE_COLOR = sys.stdout.isatty()
@@ -72,6 +89,12 @@ class CheckResult:
     name: str
     status: Status
     details: list[str] = field(default_factory=list)
+
+
+@dataclass
+class LogBudget:
+    remaining: int = MAX_LOG_REQUESTS
+    limit_reported: bool = False
 
 
 @dataclass
@@ -205,7 +228,261 @@ def _container_has_issues(pod: V1Pod) -> list[str]:
     return issues
 
 
-def check_system_pods(v1: client.CoreV1Api) -> CheckResult:
+def _safe_diagnostic(value: Any, limit: int = MAX_DIAGNOSTIC_CHARS) -> str:
+    """Bound diagnostic text and redact common credential formats."""
+    text = str(value).strip()
+    text = _ANSI_ESCAPE_RE.sub("", text)
+    text = re.sub(r"[\x00-\x08\x0b\x0c\x0e-\x1f\x7f]", "", text)
+    text = _SENSITIVE_VALUE_RE.sub(r"\1[REDACTED]", text)
+    text = _AUTH_HEADER_RE.sub(r"\1[REDACTED]", text)
+    text = _BEARER_TOKEN_RE.sub(r"\1[REDACTED]", text)
+    text = _URL_CREDENTIALS_RE.sub(r"\1[REDACTED]@", text)
+    text = re.sub(r"\s+", " ", text)
+    if len(text) > limit:
+        return text[: limit - 1] + "…"
+    return text
+
+
+def _decode_log_text(value: Any) -> str:
+    """Decode Kubernetes client log responses, including its bytes repr form."""
+    if isinstance(value, bytes):
+        return value.decode("utf-8", errors="replace")
+
+    text = str(value)
+    if text.startswith(("b'", 'b"')):
+        try:
+            decoded = ast.literal_eval(text)
+        except (SyntaxError, ValueError):
+            return text
+        if isinstance(decoded, bytes):
+            return decoded.decode("utf-8", errors="replace")
+    return text
+
+
+def _container_needs_diagnostics(
+    container_status: Any,
+    role: str,
+) -> bool:
+    """Return whether this container's state warrants details and a log tail."""
+    state = container_status.state
+    last_state = container_status.last_state
+    waiting = state.waiting if state else None
+    terminated = state.terminated if state else None
+    last_terminated = last_state.terminated if last_state else None
+    completed_init = bool(role == "init" and terminated and terminated.exit_code == 0)
+    return bool(
+        (container_status.ready is False and not completed_init)
+        or (waiting and waiting.reason in UNHEALTHY_CONTAINER_REASONS)
+        or (terminated and terminated.exit_code != 0)
+        or (last_terminated and last_terminated.exit_code != 0)
+    )
+
+
+def _container_diagnostic(container_status: Any, role: str) -> str:
+    """Format status details for a container that needs investigation."""
+    parts: list[str] = []
+    if container_status.ready is False:
+        parts.append("not-ready")
+
+    state = container_status.state
+    last_state = container_status.last_state
+    waiting = state.waiting if state else None
+    terminated = state.terminated if state else None
+    last_terminated = last_state.terminated if last_state else None
+
+    message = ""
+    if waiting:
+        parts.append(f"waiting={waiting.reason or 'Unknown'}")
+        message = waiting.message or ""
+    if terminated and (terminated.exit_code != 0 or role == "init"):
+        parts.append(
+            f"terminated={terminated.reason or 'Unknown'} exitCode={terminated.exit_code}"
+        )
+        message = terminated.message or message
+    if last_terminated and last_terminated.exit_code != 0:
+        parts.append(
+            f"lastTerminated={last_terminated.reason or 'Unknown'} "
+            f"exitCode={last_terminated.exit_code}"
+        )
+        message = last_terminated.message or message
+    if not parts:
+        parts.append("state=unknown")
+
+    restart_count = container_status.restart_count or 0
+    detail = (
+        f"{role} container {container_status.name}: "
+        f"{', '.join(parts)}, restarts={restart_count}"
+    )
+    if message:
+        detail += f"; message={_safe_diagnostic(message)}"
+    return detail
+
+
+def _container_log_details(
+    v1: client.CoreV1Api,
+    namespace: str,
+    pod_name: str,
+    container_statuses: list[Any],
+    budget: LogBudget,
+    role: str,
+) -> list[str]:
+    """Fetch bounded recent logs only for containers with failure signals."""
+    details: list[str] = []
+    for container_status in container_statuses:
+        if not _container_needs_diagnostics(container_status, role):
+            continue
+        if budget.remaining <= 0:
+            if not budget.limit_reported:
+                details.append(
+                    f"log excerpts omitted after {MAX_LOG_REQUESTS} requests"
+                )
+                budget.limit_reported = True
+            break
+
+        last_state = container_status.last_state
+        previous = bool(
+            (container_status.restart_count or 0) > 0
+            and last_state
+            and last_state.terminated
+        )
+        budget.remaining -= 1
+        suffix = " (previous container)" if previous else ""
+        try:
+            log_text = v1.read_namespaced_pod_log(
+                name=pod_name,
+                namespace=namespace,
+                container=container_status.name,
+                previous=previous,
+                tail_lines=MAX_LOG_LINES,
+            )
+        except ApiException as exc:
+            status = f"HTTP {exc.status}" if exc.status else "API error"
+            reason = f" {exc.reason}" if exc.reason else ""
+            details.append(
+                f"{container_status.name}: logs unavailable ({status}{reason})"
+            )
+            continue
+        except (Urllib3HTTPError, OSError) as exc:
+            details.append(
+                f"{container_status.name}: log fetch error ({type(exc).__name__})"
+            )
+            continue
+
+        log_value = _decode_log_text(log_text)
+        lines = [line.strip() for line in log_value.splitlines() if line.strip()]
+        if not lines:
+            details.append(f"{container_status.name}: no log output{suffix}")
+            continue
+        excerpt = _safe_diagnostic(
+            " | ".join(lines[-MAX_LOG_LINES:]),
+            limit=MAX_LOG_CHARS,
+        )
+        details.append(f"{container_status.name}: recent logs{suffix}: {excerpt}")
+    return details
+
+
+def _pod_diagnostic_details(
+    v1: client.CoreV1Api,
+    namespace: str,
+    pod: V1Pod,
+    budget: LogBudget,
+) -> list[str]:
+    """Describe a failed pod and fetch concise logs from affected containers."""
+    meta = pod.metadata
+    status = pod.status
+    pod_name = meta.name if meta and meta.name else "<unknown>"
+    phase = status.phase if status and status.phase else "Unknown"
+    owners = meta.owner_references if meta and meta.owner_references else []
+    owner = f" owner={owners[0].kind}/{owners[0].name}" if owners else ""
+    summary = f"{namespace}/{pod_name}: phase={phase}{owner}"
+    details = [summary]
+
+    if status and status.reason:
+        details.append(f"{pod_name}: reason={status.reason}")
+    if status and status.message:
+        details.append(f"{pod_name}: message={_safe_diagnostic(status.message)}")
+
+    conditions = status.conditions if status and status.conditions else []
+    ready_condition = next(
+        (condition for condition in conditions if condition.type == "Ready"), None
+    )
+    if ready_condition and ready_condition.status != "True":
+        condition_text = f"Ready={ready_condition.status}"
+        if ready_condition.reason:
+            condition_text += f" reason={ready_condition.reason}"
+        if ready_condition.message:
+            condition_text += f"; {_safe_diagnostic(ready_condition.message)}"
+        details.append(f"{pod_name}: {condition_text}")
+
+    container_groups = (
+        ("init", status.init_container_statuses if status else None),
+        ("app", status.container_statuses if status else None),
+    )
+    for role, container_statuses in container_groups:
+        if not container_statuses:
+            continue
+        for container_status in container_statuses:
+            if _container_needs_diagnostics(container_status, role):
+                details.append(_container_diagnostic(container_status, role))
+        details.extend(
+            _container_log_details(
+                v1,
+                namespace,
+                pod_name,
+                container_statuses,
+                budget,
+                role,
+            )
+        )
+    return details
+
+
+def _argo_diagnostic_details(status: dict[str, Any]) -> list[str]:
+    """Summarize Argo conditions and resources needing sync or health attention."""
+    details: list[str] = []
+    for condition in status.get("conditions") or []:
+        condition_type = condition.get("type", "Unknown")
+        message = condition.get("message", "")
+        text = f"condition {condition_type}"
+        if message:
+            text += f": {_safe_diagnostic(message)}"
+        details.append(text)
+
+    resources = status.get("resources") or []
+    affected_resources = [
+        resource
+        for resource in resources
+        if resource.get("status", "Unknown") != "Synced"
+        or (resource.get("health") or {}).get("status", "Unknown")
+        not in ("Healthy", "Unknown")
+    ]
+    for resource in affected_resources[:MAX_ARGO_RESOURCE_DETAILS]:
+        identity = "/".join(
+            part
+            for part in (
+                resource.get("kind", "Resource"),
+                resource.get("namespace", ""),
+                resource.get("name", "<unknown>"),
+            )
+            if part
+        )
+        health_status = (resource.get("health") or {}).get("status", "Unknown")
+        details.append(
+            f"resource {identity}: sync={resource.get('status', 'Unknown')}, "
+            f"health={health_status}"
+        )
+    omitted = len(affected_resources) - MAX_ARGO_RESOURCE_DETAILS
+    if omitted > 0:
+        details.append(f"{omitted} additional affected resource(s) omitted")
+    if not details:
+        details.append("Argo CD reported no condition or resource-level details")
+    return details
+
+
+def check_system_pods(
+    v1: client.CoreV1Api,
+    log_budget: LogBudget | None = None,
+) -> CheckResult:
     """Check that kube-system pods are running and ready."""
     result = CheckResult(name="System Pods", status=Status.OK)
     try:
@@ -217,23 +494,30 @@ def check_system_pods(v1: client.CoreV1Api) -> CheckResult:
         result.details.append(f"API error: {exc.reason}")
         return result
 
-    unhealthy: list[str] = []
+    budget = log_budget or LogBudget()
+    unhealthy = False
     for pod in pods:
-        phase = pod.status.phase if pod.status else "Unknown"
-        pod_name = pod.metadata.name if pod.metadata else "<unknown>"
+        status = pod.status
+        phase = status.phase if status and status.phase else "Unknown"
         if phase == "Succeeded":
             continue
-        if phase not in ("Running",):
-            unhealthy.append(f"{pod_name}: phase={phase}")
-            continue
-        container_issues = _container_has_issues(pod)
-        if container_issues:
-            unhealthy.append(f"{pod_name}: {', '.join(container_issues)}")
+        conditions = status.conditions if status and status.conditions else []
+        ready_condition = next(
+            (condition for condition in conditions if condition.type == "Ready"),
+            None,
+        )
+        if (
+            phase != "Running"
+            or (ready_condition and ready_condition.status != "True")
+            or _container_has_issues(pod)
+        ):
+            unhealthy = True
+            result.status = Status.FAIL
+            result.details.extend(
+                _pod_diagnostic_details(v1, SYSTEM_NAMESPACE, pod, budget)
+            )
 
-    if unhealthy:
-        result.status = Status.FAIL
-        result.details.extend(unhealthy)
-    else:
+    if not unhealthy:
         result.details.append(f"All pods running in {SYSTEM_NAMESPACE}")
     return result
 
@@ -296,6 +580,9 @@ def check_argo_apps(
             parts = [f"sync={sync_status}", f"health={health_status}"]
             wave = config_apps.get(name, {}).get("wave", "?")
             result.details.append(f"{name} [wave {wave}]: {', '.join(parts)}")
+            result.details.extend(
+                f"{name}: {detail}" for detail in _argo_diagnostic_details(status)
+            )
 
     if not result.details:
         result.details.append(f"{len(managed_items)} app(s) synced and healthy")
@@ -305,6 +592,7 @@ def check_argo_apps(
 def check_app_pods(
     v1: client.CoreV1Api,
     config_apps: dict[str, dict[str, Any]],
+    log_budget: LogBudget | None = None,
 ) -> CheckResult:
     """Check pod readiness for each managed application namespace."""
     result = CheckResult(name="App Pods", status=Status.OK)
@@ -316,6 +604,7 @@ def check_app_pods(
         if app.get("destNamespace") not in (SYSTEM_NAMESPACE, ARGOCD_NAMESPACE, None)
     }
 
+    budget = log_budget or LogBudget()
     for ns in sorted(ns for ns in namespaces if ns is not None):
         try:
             pods: list[V1Pod] = v1.list_namespaced_pod(
@@ -327,25 +616,26 @@ def check_app_pods(
             result.details.append(f"{ns}: API error ({exc.reason})")
             continue
 
-        if not pods:
-            continue
-
-        not_ready = []
+        unhealthy_pods: list[V1Pod] = []
         for pod in pods:
             pod_status = pod.status
+            phase = pod_status.phase if pod_status and pod_status.phase else "Unknown"
             conditions = (
                 pod_status.conditions if pod_status and pod_status.conditions else []
             )
             ready_cond = next((c for c in conditions if c.type == "Ready"), None)
-            if ready_cond and ready_cond.status != "True":
-                pod_name = pod.metadata.name if pod.metadata else "<unknown>"
-                not_ready.append(pod_name)
+            if (
+                phase != "Running"
+                or (ready_cond and ready_cond.status != "True")
+                or _container_has_issues(pod)
+            ):
+                unhealthy_pods.append(pod)
 
-        if not_ready:
+        if unhealthy_pods:
             result.status = Status.FAIL
-            result.details.append(
-                f"{ns}: {len(not_ready)} not-ready pod(s): " + ", ".join(not_ready)
-            )
+            result.details.append(f"{ns}: {len(unhealthy_pods)} unhealthy pod(s)")
+            for pod in unhealthy_pods:
+                result.details.extend(_pod_diagnostic_details(v1, ns, pod, budget))
 
     if not result.details:
         checked = len(namespaces)
@@ -495,16 +785,17 @@ def main() -> int:
 
     # Build report
     report = Report(cluster_name=cluster_name)
+    log_budget = LogBudget()
 
     if not args.skip_nodes:
         report.results.append(check_nodes(v1))
 
-    report.results.append(check_system_pods(v1))
+    report.results.append(check_system_pods(v1, log_budget))
 
     if not args.skip_argo:
         report.results.append(check_argo_apps(custom_api, config_apps))
 
-    report.results.append(check_app_pods(v1, config_apps))
+    report.results.append(check_app_pods(v1, config_apps, log_budget))
     report.results.append(check_app_configs(config_apps))
 
     # Output
