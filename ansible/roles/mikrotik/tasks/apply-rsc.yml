@@ -31,7 +31,7 @@
     chdir: "{{ repo_root }}/ansible"
   loop: "{{ mikrotik_rsc_files }}"
   loop_control:
-    label: '{{ item | basename }}'
+    label: "{{ item | basename }}"
   vars:
     repo_root: "{{ playbook_dir }}/.."
   changed_when: true
@@ -43,7 +43,7 @@
     commands: "/import file={{ item | basename }}"
   loop: "{{ mikrotik_rsc_files }}"
   loop_control:
-    label: '{{ item | basename }}'
+    label: "{{ item | basename }}"
   changed_when: true
   when: mikrotik_rsc_files | length > 0
 
@@ -52,7 +52,7 @@
     commands: "/file remove [find name={{ item | basename }}]"
   loop: "{{ mikrotik_rsc_files }}"
   loop_control:
-    label: '{{ item | basename }}'
+    label: "{{ item | basename }}"
   changed_when: true
   when: mikrotik_rsc_files | length > 0
   failed_when: false

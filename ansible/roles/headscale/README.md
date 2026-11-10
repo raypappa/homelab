@@ -46,27 +46,33 @@ The legacy fleet was registered with pre-auth keys owned by
 1. **On weasel**, mint a single-use pre-auth key for the new tag. `--single`
    is the default, so don't pass it; `--tags` bakes the tag into the
    registration so the client doesn't need `--advertise-tags`:
+
    ```bash
    KEY=$(headscale preauthkeys create -u homelab \
      --tags tag:homelab-server --expiration 8760h -o json \
      | jq -r .key)
    ```
+
 1. **On the node**, re-register with the new key. **Do not pass
    `--advertise-tags`**: headscale already pinned the tag to the
    pre-auth key, and asking the client to advertise it again causes
    the registration to be rejected with "requested tags [...] are
    invalid or not permitted". The tag is set at the headscale
    layer; the client only sends the authkey:
+
    ```bash
    sudo tailscale up --login-server=https://headscale.<your-domain> \
      --authkey="$KEY"
    ```
+
 1. **After all nodes have migrated**, expire the old stoney keys:
+
    ```bash
    for ID in $(headscale preauthkeys list -u stoney -o json | jq -r '.[].id'); do
      headscale preauthkeys expire -u stoney -i "$ID"
    done
    ```
+
 1. The old nodes continue to work (they're already registered);
    only new registrations are blocked by expired keys.
 
@@ -80,12 +86,15 @@ the `TAILSCALE_AUTHKEY` GitHub repository secret.
 To rotate:
 
 1. **On weasel**, mint a fresh CI key:
+
    ```bash
    headscale preauthkeys create -u ci-node \
      --tags tag:ci --expiration 8760h --reusable -o json
    ```
+
 1. **In GitHub repo settings → Secrets**, replace `TAILSCALE_AUTHKEY`
    with the new value.
+
 1. The next CI run re-registers as `ci-node@` with `tag:ci`. The
    `tailscale/github-action` correctly omits `--advertise-tags` when
    the auth key has tags baked in; the tag is set at the headscale

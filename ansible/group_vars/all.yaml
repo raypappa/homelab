@@ -22,8 +22,8 @@ domain_internal: stoneydavis.internal
 # Public-facing domain used by Headscale/Tailscale (MagicDNS base domain).
 domain_org: stoneydavis.org
 users:
-  - 'root'
-  - 'stoney'
+  - "root"
+  - "stoney"
 # renovate: datasource=github-releases depName=helm/helm
 helm_version: 4.2.4
 helm_arch:

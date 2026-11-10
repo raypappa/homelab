@@ -78,7 +78,7 @@
 - name: Ensure all user homedir's are configured
   ansible.builtin.include_tasks: user.yaml
   vars:
-    user: '{{ item }}'
+    user: "{{ item }}"
   loop:
     - root
 - name: Install tailscale
@@ -93,5 +93,5 @@
   when: hostname is defined
   notify: reboot
   ansible.builtin.hostname:
-    name: '{{ hostname }}'
+    name: "{{ hostname }}"
     use: debian

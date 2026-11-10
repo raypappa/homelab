@@ -46,7 +46,7 @@
     state: directory
     owner: root
     group: root
-    mode: '0755'
+    mode: "0755"
 - name: Install required packages
   become: true
   ansible.builtin.apt:
@@ -59,7 +59,7 @@
       - ca-certificates
 - name: Install headscale deb package
   become: true
-  become_flags: '-' # https://github.com/ansible/ansible/issues/45219
+  become_flags: "-" # https://github.com/ansible/ansible/issues/45219
   ansible.builtin.apt:
     deb: https://github.com/juanfont/headscale/releases/download/v{{ headscale_version
       }}/headscale_{{ headscale_version }}_linux_{{ headscale_dpkg_architecture }}.deb
@@ -70,7 +70,7 @@
     dest: "/etc/headscale/config.yaml"
     owner: headscale
     group: headscale
-    mode: '0600'
+    mode: "0600"
   notify: Restart headscale
 - name: Deploy headscale ACL policy
   become: true
@@ -79,7 +79,7 @@
     dest: /etc/headscale/policy.json
     owner: headscale
     group: headscale
-    mode: '0600'
+    mode: "0600"
   notify: Restart headscale
 - name: Enable headscale systemd service
   become: true

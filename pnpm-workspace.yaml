@@ -4,5 +4,5 @@ allowBuilds:
   unrs-resolver: false
 linkWorkspacePackages: true
 packages:
-  - 'cdk'
-  - '.'
+  - "cdk"
+  - "."

@@ -18,7 +18,7 @@ spec:
             - "__meta_kubernetes_pod_label_postgres_operator_crunchydata_com_cluster"
           targetLabel: pg_cluster
           separator: "/"
-          replacement: '$1$2'
+          replacement: "$1$2"
         - sourceLabels:
             - __meta_kubernetes_pod_label_postgres_operator_crunchydata_com_instance
           targetLabel: deployment

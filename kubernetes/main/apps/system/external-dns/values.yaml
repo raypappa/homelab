@@ -26,7 +26,6 @@ provider:
       tag: v1.6.3
       pullPolicy: IfNotPresent
     env:
-
       - name: LOG_FORMAT
         value: json
       - name: LOG_LEVEL
