@@ -72,4 +72,3 @@ provider:
 extraArgs:
   - --ignore-ingress-tls-spec
   - --managed-record-types=A
-  - --enable-legacy-annotation-prefix
