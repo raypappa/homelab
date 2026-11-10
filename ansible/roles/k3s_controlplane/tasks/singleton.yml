@@ -76,5 +76,5 @@
 - name: Chmod 0600 /var/lib/rancher/k3s/server/tls/*.crt
   ansible.builtin.file:
     path: "{{ item.path }}"
-    mode: '0600'
+    mode: "0600"
   with_items: "{{ k3s_controlplane_certs.files }}"

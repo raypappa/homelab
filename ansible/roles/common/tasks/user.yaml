@@ -39,7 +39,7 @@
   ansible.builtin.get_url:
     url: https://starship.rs/install.sh
     dest: /tmp/starship_install.sh
-    mode: '0755'
+    mode: "0755"
   register: common_starship_installation_script
 # if the previous task hasn't changed, the shell script is already there
 # and we have already installed starship

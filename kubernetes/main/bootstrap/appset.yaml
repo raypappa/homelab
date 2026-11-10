@@ -69,7 +69,7 @@ spec:
       syncPolicy:
         syncOptions:
           - CreateNamespace=true
-          - 'ServerSideApply={{.serverSideApply}}'
+          - "ServerSideApply={{.serverSideApply}}"
           - Prune=true
       source:
         repoURL: https://github.com/raypappa/homelab.git

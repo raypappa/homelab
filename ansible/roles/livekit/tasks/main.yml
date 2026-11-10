@@ -32,7 +32,7 @@
     dest: /etc/systemd/system/{{ livekit_service_name }}.service
     owner: root
     group: root
-    mode: '0644'
+    mode: "0644"
   register: livekit_service_installed
   notify: Systemctl reload
 - name: Restart livekit

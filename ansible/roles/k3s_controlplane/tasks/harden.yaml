@@ -12,7 +12,7 @@
     dest: /var/lib/rancher/k3s/server/psa.yaml
     owner: root
     group: root
-    mode: '0600'
+    mode: "0600"
 
 - name: CIS hardening | Install Event Rate Limit config
   ansible.builtin.copy:
@@ -20,7 +20,7 @@
     dest: /var/lib/rancher/k3s/server/eventconfig.yaml
     owner: root
     group: root
-    mode: '0600'
+    mode: "0600"
 
 - name: CIS hardening | Install Pod Security Admissions
   ansible.builtin.copy:
@@ -28,7 +28,7 @@
     dest: /var/lib/rancher/k3s/server/manifests/kube-system-network-policies.yaml
     owner: root
     group: root
-    mode: '0600'
+    mode: "0600"
 
 - name: CIS hardening | Install audit log policy
   ansible.builtin.copy:
@@ -36,4 +36,4 @@
     dest: /var/lib/rancher/k3s/server/audit.yaml
     owner: root
     group: root
-    mode: '0600'
+    mode: "0600"

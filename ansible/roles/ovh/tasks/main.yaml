@@ -13,7 +13,7 @@
     dest: /etc/netplan/51-additional-ips.yaml
     owner: root
     group: root
-    mode: '0640'
+    mode: "0640"
   when: ovh_additional_ips is defined
   register: ovh_netplan_template
 - name: Check netplan try

@@ -70,13 +70,15 @@ Lint and check all code:
 
 ```bash
 task check
-pre-commit run -a
+uv run pre-commit run -a
 ```
+
+Run pre-commit through the project-managed uv environment (`uv run pre-commit ...`), not the bare `pre-commit` executable; the bare command may resolve to a different mise-managed installation.
 
 What `task check` does:
 
 - Runs `ansible-lint` on Ansible code
-- Runs `pre-commit run -a` (Biome, yamlfmt, cspell, mdformat, etc.)
+- Runs `uv run pre-commit run -a` (Biome, yamlfmt, cspell, mdformat, etc.)
 
 ### Kubernetes / Kustomize
 
@@ -380,7 +382,7 @@ Every tool entry in `.mise.toml` is a `[tools.<name>]` table with a `version` fi
 
 `[settings].pin = true` rejects `latest` and bare names without a version; CI fails the install step. Use `mise use pypi:foo` (or `mise use pypi:foo@latest` to be explicit) — under `pin = true`, mise resolves the current version and writes the pin into the config for you, so you do not have to look it up by hand. Follow the table-form rule above for the form of the new entry. Then run `mise trust` (first time only for new checkouts) and `mise lock` — `mise.lock` is committed.
 
-**Lockfile churn on unrelated entries:** `mise lock` regenerates *every* tool's lockfile entry that has drifted from its config pin, even tools you did not touch. Disclose unrelated churn in the PR body; do not hand-edit `mise.lock` to add only the new entry.
+**Lockfile churn on unrelated entries:** `mise lock` regenerates _every_ tool's lockfile entry that has drifted from its config pin, even tools you did not touch. Disclose unrelated churn in the PR body; do not hand-edit `mise.lock` to add only the new entry.
 
 ### cspell flags new tool names
 

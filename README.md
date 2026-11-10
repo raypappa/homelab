@@ -141,7 +141,7 @@ Validation:
 
 ```bash
 task check
-pre-commit run -a
+uv run pre-commit run -a
 ```
 
 ______________________________________________________________________
