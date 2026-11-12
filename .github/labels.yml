@@ -15,7 +15,7 @@
   color: "cfd3d7"
   description: "This issue or pull request already exists"
 - name: "enhancement"
-  color: "a2eeef"
+  color: "a2eeef" # cspell:disable-line
   description: "New feature or request"
 - name: "good first issue"
   color: "7057ff"
