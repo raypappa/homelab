@@ -7,3 +7,4 @@ data:
   policy.default: role:readonly
   policy.csv: |-
     g, cdavis, role:admin
+    p, sasha-sync, applications, sync, default/*, allow
