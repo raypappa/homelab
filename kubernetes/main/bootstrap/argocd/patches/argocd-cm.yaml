@@ -8,3 +8,4 @@ data:
   kustomize.buildOptions: --enable-helm
   accounts.homepage: apiKey
   accounts.cdavis: login, apiKey
+  accounts.sasha-sync: apiKey
