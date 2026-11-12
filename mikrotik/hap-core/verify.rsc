@@ -20,13 +20,15 @@
 # --- DHCP ----------------------------------------------------------------
 /ip pool print
 /ip dhcp-server print
+/ip dhcp-server network print
 /ip dhcp-server lease print where server=dhcp-vlan10
 /ip dhcp-server lease print where server=dhcp-vlan10 status=bound
 
 # --- Firewall -------------------------------------------------------------
 /ip firewall nat print
+/ip firewall filter print where chain=input
 /ip firewall filter print where chain=forward
-/ip firewall filter print where comment~"^isolate-"
+/ip firewall filter print where comment~"^isolate-|^allow-vlan|^drop-vlan"
 
-# --- Wireless (should be off) ---------------------------------------------
-/interface wireless print
+# --- Wi-Fi (should be off) -------------------------------------------------
+/interface wifi print
