@@ -52,7 +52,7 @@ repos:
           - mdformat-config
         id: mdformat
     repo: https://github.com/executablebooks/mdformat
-    rev: 2d496dbc18e31b83a1596685347ffe0b6041daf0 # frozen: 1.0.0
+    rev: 82912cdaea4fb830f751504486a7879c70526547 # frozen: 1.0.0
   - repo: https://github.com/streetsidesoftware/cspell-cli
     rev: f6467e1f1ebecf5020560405c7b26e01786a43c8 # frozen: v10.4.0
     hooks:
