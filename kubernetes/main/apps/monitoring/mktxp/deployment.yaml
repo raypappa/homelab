@@ -1,0 +1,99 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mktxp
+  labels:
+    app.kubernetes.io/name: mktxp
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: mktxp
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: mktxp
+      annotations:
+        configmap.reloader.stakater.com/reload: mktxp-config
+        secret.reloader.stakater.com/reload: mktxp-router-credentials
+    spec:
+      automountServiceAccountToken: false
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+        - name: mktxp
+          image: ghcr.io/akpw/mktxp:2.1.0@sha256:512ebedcaeb75e275b95784094c1547fce7884560c712b6883377fe39ef03fa3
+          imagePullPolicy: IfNotPresent
+          command:
+            - mktxp
+          args:
+            - --cfg-dir
+            - /etc/mktxp
+            - export
+          ports:
+            - name: http
+              containerPort: 49090
+              protocol: TCP
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop:
+                - ALL
+          volumeMounts:
+            - name: config
+              mountPath: /etc/mktxp
+              readOnly: true
+            - name: credentials
+              mountPath: /etc/mktxp/secrets
+              readOnly: true
+            - name: routeros-ca
+              mountPath: /etc/mktxp/certs
+              readOnly: true
+            - name: tmp
+              mountPath: /tmp
+          startupProbe:
+            tcpSocket:
+              port: http
+            failureThreshold: 30
+            periodSeconds: 10
+          readinessProbe:
+            tcpSocket:
+              port: http
+            periodSeconds: 10
+          livenessProbe:
+            tcpSocket:
+              port: http
+            periodSeconds: 20
+          resources:
+            requests:
+              cpu: 50m
+              memory: 128Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi
+      volumes:
+        - name: config
+          configMap:
+            name: mktxp-config
+        - name: credentials
+          secret:
+            secretName: mktxp-router-credentials
+            items:
+              - key: secrets.yml
+                path: secrets.yml
+        - name: routeros-ca
+          configMap:
+            name: mktxp-routeros-ca
+            items:
+              - key: ca.crt
+                path: ca.crt
+        - name: tmp
+          emptyDir:
+            medium: Memory
+            sizeLimit: 32Mi

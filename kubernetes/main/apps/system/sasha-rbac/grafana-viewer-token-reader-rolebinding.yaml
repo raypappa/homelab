@@ -1,0 +1,14 @@
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: sasha-grafana-viewer-token-reader
+  namespace: sasha
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: sasha-grafana-viewer-token-reader
+subjects:
+  - kind: ServiceAccount
+    name: sasha
+    namespace: sasha

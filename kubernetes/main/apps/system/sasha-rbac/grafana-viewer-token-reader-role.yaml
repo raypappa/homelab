@@ -1,0 +1,15 @@
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: sasha-grafana-viewer-token-reader
+  namespace: sasha
+rules:
+  - apiGroups:
+      - ""
+    resources:
+      - secrets
+    resourceNames:
+      - grafana-viewer-token
+    verbs:
+      - get

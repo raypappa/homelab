@@ -1,0 +1,30 @@
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: fishymetrics-idrac
+  namespace: monitoring
+  labels:
+    app.kubernetes.io/name: fishymetrics
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: fishymetrics
+  namespaceSelector:
+    matchNames:
+      - monitoring
+  endpoints:
+    - port: metrics
+      path: /scrape
+      params:
+        target:
+          - 10.49.49.128
+      interval: 5m
+      scrapeTimeout: 4m
+      relabelings:
+        - action: replace
+          targetLabel: job
+          replacement: fishymetrics-idrac
+        - action: replace
+          targetLabel: instance
+          replacement: 10.49.49.128

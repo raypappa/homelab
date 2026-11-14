@@ -71,6 +71,15 @@ dashboards:
       datasource:
         - name: DS_PROMETHEUS
           value: Prometheus
+    cloudflare-analytics:
+      # renovate: dashboardName="CloudFlare Zone Analytics"
+      gnetId: 13133
+      revision: 3
+      datasource:
+        - name: DS_PROMETHEUS
+          value: Prometheus
+        - name: DS_THANOS
+          value: Prometheus
     external-dns:
       # renovate: dashboardName="External-DNS"
       gnetId: 15038
@@ -80,6 +89,12 @@ dashboards:
       # renovate: dashboardName="Node Exporter Full"
       gnetId: 1860
       revision: 40
+      datasource:
+        - {name: DS_PROMETHEUS, value: Prometheus}
+    mktxp:
+      # renovate: dashboardName="Mikrotik MKTXP Exporter"
+      gnetId: 13679
+      revision: 32
       datasource:
         - {name: DS_PROMETHEUS, value: Prometheus}
     smartctl-exporter:

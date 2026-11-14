@@ -21,6 +21,7 @@ LASTNAME
 LDAPS
 LOGFILE
 LOGLEVEL
+Logpush
 Notifiarr
 OPCACHE
 ORGANISATION
@@ -391,3 +392,13 @@ tagOwners
 nvmeof
 omap
 resizer
+DRAC
+akpw
+buildinfo
+fishymetrics
+idrac
+lablabs
+netwatch
+routerboard
+runtimeinfo
+subresources

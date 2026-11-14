@@ -1,0 +1,14 @@
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: sasha-monitoring-reader
+  namespace: monitoring
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: sasha-monitoring-reader
+subjects:
+  - kind: ServiceAccount
+    name: sasha
+    namespace: sasha

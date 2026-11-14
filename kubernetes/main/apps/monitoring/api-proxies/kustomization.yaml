@@ -1,0 +1,16 @@
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: monitoring
+resources:
+  - deployment.yaml
+  - services.yaml
+configMapGenerator:
+  - name: prometheus-query-proxy-config
+    files:
+      - prometheus.conf
+  - name: grafana-query-proxy-config
+    files:
+      - grafana.conf
+generatorOptions:
+  disableNameSuffixHash: true

@@ -89,7 +89,7 @@ repos:
         language: python
         types:
           - json
-        files: "config\\.json(\\.disabled)?"
+        files: "config(\\.disabled)?\\.json(\\.disabled)?$"
   - repo: https://github.com/astral-sh/uv-pre-commit
     # uv version.
     rev: d1df990f871e616da38bb602a2671d5e840b9989 # frozen: 0.13.7

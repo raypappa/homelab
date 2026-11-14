@@ -1,0 +1,9 @@
+{
+  "destNamespace": "monitoring",
+  "appName": "mktxp",
+  "serverSideApply": false,
+  "ignoreDifferences": [],
+  "group": "monitoring",
+  "dependencies": ["prometheus-operator"],
+  "wave": "2"
+}

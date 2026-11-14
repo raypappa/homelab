@@ -134,6 +134,24 @@ device. That script sets `sshUser` to `admin` and `keyFile` to `admin.pub`,
 disables every other user, and switches `admin` to publickey-only. Make sure
 the `admin` key works before running it.
 
+## iDRAC Redfish target
+
+The supplied endpoint is `https://10.49.49.128`. It is inside the existing `10.49.48.0/23` management subnet, so it needs no new RouterOS route. Fishymetrics' inactive target ServiceMonitor stores the bare IP and uses HTTPS; scraping stays disabled until the BMC credentials are available as a Secret. No RouterOS lease was added because an IP reservation requires the iDRAC MAC address, which has not been supplied.
+
+## MKTXP monitoring (opt-in; routers are not auto-configured)
+
+The monitoring app is prepared for all six inventory devices: RB5009 (`10.49.48.1`), hAP core (`10.49.48.2`), CCR2004 (`10.49.48.7`), CRS326 rack 2 (`10.49.48.8`), CRS-317 raven (`10.49.48.3`), and RB960PGS desktop (`10.49.48.20`). Its Argo app is deliberately disabled until the prerequisites below are complete.
+
+`shared/mktxp-api-ssl.rsc.example` is a guarded template only. It is outside the Ansible role's per-device `*.rsc` file set, and its `.example` suffix prevents automatic upload/import. Before copying it to a device folder:
+
+1. Determine the actual source address used by the MKTXP pod to reach the router. Set that single address as `/32` in both the RouterOS API-SSL service and the dedicated `mktxp-exporter` user's address restriction. Do not widen this to the whole management subnet.
+1. Install a trusted API-SSL certificate on each router whose SAN matches the IP used in `mktxp.conf`; prepare the corresponding CA bundle as ConfigMap `mktxp-routeros-ca` with key `ca.crt`.
+1. Create Secret `mktxp-router-credentials` with key `secrets.yml`, containing only the dedicated account's `username` and `password`; keep the password in the external secret manager, never in Git or chat.
+1. Render a private copy outside the repository (restrict it to the operator, e.g. mode `0600`), replace the placeholders there, and apply it through a secure manual path. **Never put the filled script, username, or password in Git or chat.** The normal Ansible sync only deploys per-device `.rsc` files from the repository; the `.example` template is intentionally excluded.
+1. Only after the router changes and Secret are ready, enable the MKTXP Argo app by renaming `config.disabled.json` to `config.json` in its app directory.
+
+The template enables API-SSL on port 8729 with certificate verification and a source `/32`; it explicitly keeps the plain API service disabled. Router changes remain an explicit manual step.
+
 For ad-hoc deploys without Ansible, use `scripts/deploy-mikrotik.py`:
 
 ```bash
@@ -152,9 +170,10 @@ For ad-hoc deploys without Ansible, use `scripts/deploy-mikrotik.py`:
 mikrotik/
 ├── README.md                  ← this file
 ├── hosts.txt                  ← ad-hoc inventory for scripts/deploy-mikrotik.py
-├── shared/                    ← conventions + variable glossary
+├── shared/                    ← conventions, variables, RouterOS API-SSL template
 │   ├── naming-conventions.md
-│   └── variables.md
+│   ├── variables.md
+│   └── mktxp-api-ssl.rsc.example  ← guarded; never auto-deployed
 ├── keys/                      ← SSH public keys (one per authorized user)
 │   └── admin.pub
 ├── ssh-config.rsc             ← SSH baseline (apply first on every device)

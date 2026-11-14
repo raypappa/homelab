@@ -1,0 +1,23 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.devbu.io/monitoring.coreos.com/prometheusrule_v1.json
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: infrastructure-exporter-rules
+  labels:
+    prometheus: k8s
+    role: alert-rules
+spec:
+  groups:
+    - name: infrastructure.exporters
+      rules:
+        - alert: InfrastructureExporterDown
+          expr: up{job=~"fishymetrics|mktxp|cloudflare-exporter|fishymetrics-idrac"}
+            == 0
+          for: 5m
+          labels:
+            severity: warning
+          annotations:
+            summary: "Infrastructure monitoring target {{ $labels.job }} is down"
+            description: "Prometheus has been unable to scrape {{ $labels.instance
+              }} for more than 5 minutes."

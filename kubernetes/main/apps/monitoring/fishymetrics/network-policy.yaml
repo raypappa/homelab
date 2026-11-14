@@ -1,0 +1,27 @@
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: fishymetrics
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: fishymetrics
+  policyTypes:
+    - Ingress
+    - Egress
+  ingress:
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: monitoring
+      ports:
+        - protocol: TCP
+          port: 10023
+  egress:
+    - to:
+        - ipBlock:
+            cidr: 10.49.49.128/32
+      ports:
+        - protocol: TCP
+          port: 443

@@ -1,0 +1,112 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: monitoring-api-proxies
+  labels:
+    app.kubernetes.io/name: monitoring-api-proxies
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: monitoring-api-proxies
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: monitoring-api-proxies
+      annotations:
+        configmap.reloader.stakater.com/reload: prometheus-query-proxy-config,grafana-query-proxy-config
+    spec:
+      automountServiceAccountToken: false
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 101
+        runAsGroup: 101
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+        - name: prometheus-query-proxy
+          image: nginxinc/nginx-unprivileged:1.29.3-alpine@sha256:5aea7cc516b419e3526f47dd1531be31a56a046cfe44754d94f9383e13e2ee99
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: prometheus-http
+              containerPort: 8080
+              protocol: TCP
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop:
+                - ALL
+          volumeMounts:
+            - name: prometheus-config
+              mountPath: /etc/nginx/conf.d/default.conf
+              subPath: prometheus.conf
+              readOnly: true
+            - name: tmp
+              mountPath: /tmp
+          readinessProbe:
+            httpGet:
+              path: /healthz
+              port: prometheus-http
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: prometheus-http
+            periodSeconds: 20
+          resources:
+            requests:
+              cpu: 10m
+              memory: 16Mi
+            limits:
+              cpu: 100m
+              memory: 64Mi
+        - name: grafana-query-proxy
+          image: nginxinc/nginx-unprivileged:1.29.3-alpine@sha256:5aea7cc516b419e3526f47dd1531be31a56a046cfe44754d94f9383e13e2ee99
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: grafana-http
+              containerPort: 8080
+              protocol: TCP
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop:
+                - ALL
+          volumeMounts:
+            - name: grafana-config
+              mountPath: /etc/nginx/conf.d/default.conf
+              subPath: grafana.conf
+              readOnly: true
+            - name: tmp
+              mountPath: /tmp
+          readinessProbe:
+            httpGet:
+              path: /healthz
+              port: grafana-http
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: grafana-http
+            periodSeconds: 20
+          resources:
+            requests:
+              cpu: 10m
+              memory: 16Mi
+            limits:
+              cpu: 100m
+              memory: 64Mi
+      volumes:
+        - name: prometheus-config
+          configMap:
+            name: prometheus-query-proxy-config
+        - name: grafana-config
+          configMap:
+            name: grafana-query-proxy-config
+        - name: tmp
+          emptyDir:
+            medium: Memory
+            sizeLimit: 16Mi
