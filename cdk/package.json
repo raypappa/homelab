@@ -27,9 +27,9 @@
     "glob": "^14.0.0",
     "test-exclude": "^8.0.0"
   },
-  "packageManager": "pnpm@11.28.11",
+  "packageManager": "pnpm@12.18.0",
   "engines": {
     "node": "26.13.0",
-    "pnpm": "11.28.11"
+    "pnpm": "12.18.0"
   }
 }
