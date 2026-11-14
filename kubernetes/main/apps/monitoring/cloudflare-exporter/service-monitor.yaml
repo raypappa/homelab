@@ -1,0 +1,23 @@
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: cloudflare-exporter
+  labels:
+    app.kubernetes.io/name: cloudflare-exporter
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: cloudflare-exporter
+  namespaceSelector:
+    matchNames:
+      - monitoring
+  endpoints:
+    - port: metrics
+      path: /metrics
+      interval: 1m
+      scrapeTimeout: 10s
+      relabelings:
+        - action: replace
+          targetLabel: job
+          replacement: cloudflare-exporter

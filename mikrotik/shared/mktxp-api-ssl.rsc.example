@@ -1,0 +1,44 @@
+# Template only: this file is not uploaded or imported by the Ansible role.
+# Copy it into the target device folder as a .rsc file only after replacing
+# every value below and installing a trusted certificate with the right SAN.
+:do {
+    :local monitoringSource "REPLACE_WITH_MONITORING_NODE_IP/32"
+    :local apiSslCertificate "REPLACE_WITH_ROUTEROS_CERTIFICATE_NAME"
+    :local mktxpPassword "REPLACE_WITH_1PASSWORD_SECRET"
+
+    :if ($monitoringSource = "REPLACE_WITH_MONITORING_NODE_IP/32") do={
+        :error "Set monitoringSource to the exporter source IP/32 before import"
+    }
+    :if ($apiSslCertificate = "REPLACE_WITH_ROUTEROS_CERTIFICATE_NAME") do={
+        :error "Install and name a trusted API-SSL certificate before import"
+    }
+    :if ($mktxpPassword = "REPLACE_WITH_1PASSWORD_SECRET") do={
+        :error "Set mktxpPassword from the external secret before import"
+    }
+    :if ([:len [/ip service find where name="api-ssl"]] = 0) do={
+        :error "RouterOS api-ssl service is missing"
+    }
+    :if ([:len [/certificate find where name=$apiSslCertificate && trusted=yes]] = 0) do={
+        :error "The named API-SSL certificate is missing or not trusted"
+    }
+
+    :local groupId [/user group find where name="mktxp-readonly"]
+    :if ([:len $groupId] = 0) do={
+        /user group add name="mktxp-readonly" policy=api,read
+    } else={
+        /user group set $groupId policy=api,read
+    }
+
+    :local userId [/user find where name="mktxp-exporter"]
+    :if ([:len $userId] = 0) do={
+        /user add name="mktxp-exporter" group="mktxp-readonly" password=$mktxpPassword address=$monitoringSource comment="MKTXP read-only monitoring"
+    } else={
+        /user set $userId group="mktxp-readonly" password=$mktxpPassword address=$monitoringSource disabled=no comment="MKTXP read-only monitoring"
+    }
+
+    :local apiService [/ip service find where name="api"]
+    :if ([:len $apiService] > 0) do={
+        /ip service set $apiService disabled=yes
+    }
+    /ip service set [find where name="api-ssl"] disabled=no port=8729 address=$monitoringSource certificate=$apiSslCertificate
+}

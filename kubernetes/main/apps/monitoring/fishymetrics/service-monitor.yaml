@@ -1,0 +1,23 @@
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: fishymetrics
+  labels:
+    app.kubernetes.io/name: fishymetrics
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: fishymetrics
+  namespaceSelector:
+    matchNames:
+      - monitoring
+  endpoints:
+    - port: metrics
+      path: /metrics
+      interval: 1m
+      scrapeTimeout: 10s
+      relabelings:
+        - action: replace
+          targetLabel: job
+          replacement: fishymetrics

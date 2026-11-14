@@ -8,5 +8,9 @@ resources:
   - ./cluster-role-binding.yaml
   - ./argocd-application-reader-role.yaml
   - ./argocd-application-reader-rolebinding.yaml
+  - ./monitoring-reader-role.yaml
+  - ./monitoring-reader-rolebinding.yaml
+  - ./grafana-viewer-token-reader-role.yaml
+  - ./grafana-viewer-token-reader-rolebinding.yaml
   - ./bootstrap-token.yaml
   - ./push-secret.yaml

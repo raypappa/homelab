@@ -1,0 +1,16 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: fishymetrics
+  labels:
+    app.kubernetes.io/name: fishymetrics
+spec:
+  type: ClusterIP
+  selector:
+    app.kubernetes.io/name: fishymetrics
+  ports:
+    - name: metrics
+      port: 10023
+      targetPort: http
+      protocol: TCP

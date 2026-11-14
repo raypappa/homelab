@@ -1,0 +1,23 @@
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: mktxp
+  labels:
+    app.kubernetes.io/name: mktxp
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: mktxp
+  namespaceSelector:
+    matchNames:
+      - monitoring
+  endpoints:
+    - port: metrics
+      path: /metrics
+      interval: 1m
+      scrapeTimeout: 30s
+      relabelings:
+        - action: replace
+          targetLabel: job
+          replacement: mktxp
