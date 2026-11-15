@@ -172,5 +172,5 @@ add chain=input action=accept comment="allow all v6 input"
 # FROM A CLIENT ON VLAN 10:
 #   ip -6 addr            # should show fd00:10::/64 address
 #   ip -6 route           # default via fd00:10::1
-#   dig AAAA hostname.stoneydavis.internal @fd00:10::1
+#   dig AAAA hostname.internal.stoneydavis.com @fd00:10::1
 # =============================================================================
