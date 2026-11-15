@@ -4,5 +4,5 @@ kind: ConfigMap
 metadata:
   name: argocd-cmd-params-cm
 data:
-  server.insecure: "true"
+  server.insecure: "false"
   applicationsetcontroller.enable.progressive.syncs: "true"
