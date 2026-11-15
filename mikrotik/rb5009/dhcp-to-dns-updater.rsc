@@ -15,7 +15,8 @@
 # DHCPv6 hooks (RouterOS 7.10+):
 #   /ipv6 dhcp-server set dhcpv6-vlan10 lease-script=DHCP-to-DNS-updater
 #
-# Domain: stoneydavis.internal (RFC 6762 reserved; not forwarded to public)
+# DNS suffixes: internal.stoneydavis.com (new) and stoneydavis.internal (legacy).
+# Dual-publish during the migration; remove the legacy suffix after verification.
 #
 # Behavior:
 #   - Reads each bound v4 lease; if host-name is set, creates an A record
@@ -36,9 +37,12 @@
 #   /ipv6 dhcp-server set dhcpv6-vlan10 lease-script=DHCP-to-DNS-updater
 # =============================================================================
 
-:local dhcpServers { {"defconf"; "stoneydavis.internal"};
+:local dhcpServers { {"defconf"; "internal.stoneydavis.com"};
+                      {"defconf"; "stoneydavis.internal"};
+                      {"dhcp-vlan10"; "internal.stoneydavis.com"};
                       {"dhcp-vlan10"; "stoneydavis.internal"} };
-:local dhcp6Servers { {"dhcpv6-vlan10"; "stoneydavis.internal"} };
+:local dhcp6Servers { {"dhcpv6-vlan10"; "internal.stoneydavis.com"};
+                       {"dhcpv6-vlan10"; "stoneydavis.internal"} };
 :local ignoredHostNames { "localhost"; "LocalHost"; "localHost"; "Localhost" };
 :local ttl "00:10:00";
 

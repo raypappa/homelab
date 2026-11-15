@@ -63,6 +63,6 @@ DUID-EN format: `00030001` + MAC bytes (no colons, lowercase).
 
 ## DNS / zone
 
-| Variable  | Example                | Notes                             |
-| --------- | ---------------------- | --------------------------------- |
-| `dnsZone` | `stoneydavis.internal` | Internal-only zone (RFC 6762 TLD) |
+| Variable  | Example                    | Notes                                                                                  |
+| --------- | -------------------------- | -------------------------------------------------------------------------------------- |
+| `dnsZone` | `internal.stoneydavis.com` | Internal-only suffix; legacy `stoneydavis.internal` is dual-published during migration |

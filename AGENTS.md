@@ -244,7 +244,7 @@ service:
     type: LoadBalancer
     annotations:
       metallb.universe.tf/address-pool: metalpool
-      external-dns.kubernetes.io/hostname: radarr.stoneydavis.internal
+      external-dns.kubernetes.io/hostname: radarr.internal.stoneydavis.com
       external-dns.kubernetes.io/ttl: '1800'
       external-dns.kubernetes.io/webhook-comment: k8s_managed
       external-dns.kubernetes.io/webhook-match-subdomain: 'true'

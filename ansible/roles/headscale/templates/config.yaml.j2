@@ -312,6 +312,8 @@ dns:
     split:
       "{{ domain_internal }}":
         - 10.49.48.1
+      "{{ domain_internal_legacy }}":
+        - 10.49.48.1
 
   # Set custom DNS search domains. With MagicDNS enabled,
   # your tailnet base_domain is always the first search domain.

@@ -17,8 +17,10 @@ extra_server_args: ""
 extra_agent_args: ""
 ansible_user: root
 tailscale_up_skip: true
-# Internal DNS domain; keep in sync with the split DNS and TLS SANs that use it.
-domain_internal: stoneydavis.internal
+# Internal DNS domain; keep in sync with split DNS, TLS SANs, and service records.
+domain_internal: internal.stoneydavis.com
+# Retain the old suffix during the DNS migration so existing clients keep resolving.
+domain_internal_legacy: stoneydavis.internal
 # Public-facing domain used by Headscale/Tailscale (MagicDNS base domain).
 domain_org: stoneydavis.org
 users:

@@ -116,8 +116,8 @@ The scheduled Ansible workflow decodes `KUBE_CONFIG` with `base64 -d` into
 control plane node and push it with the GitHub CLI:
 
 ```bash
-ssh root@kubernetes-node-0002.stoneydavis.internal cat /etc/rancher/k3s/k3s.yaml \
-  | sed -e 's~0.0.0.0~kubernetes-node-0004.stoneydavis.internal~' \
+ssh root@kubernetes-node-0002.internal.stoneydavis.com cat /etc/rancher/k3s/k3s.yaml \
+  | sed -e 's~0.0.0.0~kubernetes-node-0004.internal.stoneydavis.com~' \
   | base64 -w0 \
   | gh secret set KUBE_CONFIG
 ```

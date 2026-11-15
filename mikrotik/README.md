@@ -70,10 +70,13 @@ sequence:
 1. **RB5009** — `vlan10-ipv6.rsc` adds ULA, DHCPv6, and v6 isolation
    firewall. Optional but recommended; skip if you don't want v6 yet.
 
-1. **RB5009** — `dhcp-to-dns-updater.rsc` registers the script and
-   hooks it to `dhcp-vlan10` and `dhcpv6-vlan10`. Creates A and AAAA
-   records under `stoneydavis.internal` for every bound lease with a
-   host-name. Skip if you don't want the DNS sync.
+1. **RB5009** — `dhcp-to-dns-updater.rsc` is the source for the
+   `DHCP-to-DNS-updater` RouterOS system script. After updating its source and
+   retaining the v4/v6 lease-script bindings, it creates A and AAAA records
+   under `internal.stoneydavis.com` and the legacy `stoneydavis.internal`
+   suffix during migration. The Ansible import task does not persist or bind
+   this script; see the [migration runbook](../docs/internal-dns-migration.md)
+   for the controlled transition, verification, rollback, and cleanup steps.
 
 1. **CCR2004** — `core-trunk.rsc` enables VLAN filtering and configures
    trunk ports. Pure L2 changes; no risk to other devices.
