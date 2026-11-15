@@ -1,0 +1,11 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: argocd-server
+spec:
+  template:
+    metadata:
+      annotations:
+        # Environment-backed command params require a Pod restart when changed.
+        homelab.stoneydavis.com/argocd-cmd-params-revision: https-enabled
