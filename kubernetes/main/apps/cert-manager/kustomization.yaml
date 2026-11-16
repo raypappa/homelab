@@ -17,3 +17,4 @@ resources:
   - ./lets-encrypt-staging.yaml
   - ./puma-stoneydavis-com.yaml
   - ./argocd-server-certificate.yaml
+  - ./idrac-puma-internal-stoneydavis-com.yaml
