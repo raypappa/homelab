@@ -15,7 +15,6 @@ import pulumi
 # the provider can represent that setting.
 REMOTE_TUNNELS = {
     "argocd": {
-        "tunnel_id_config": "argocdTunnelId",
         "config": {
             "ingresses": [
                 {
@@ -57,13 +56,20 @@ def validate_tunnel_config(tunnel_name: str, config: dict) -> None:
         )
 
 
+def tunnel_identifiers(tunnel_name: str, config: dict) -> tuple[str, str]:
+    """Read the account and tunnel IDs from the tunnel-specific config object."""
+    account_id = config["accountId"]
+    tunnel_id = config[tunnel_name]["tunnelId"]
+    return account_id, tunnel_id
+
+
 def register_cloudflare_tunnel_configs() -> None:
     """Adopt and manage the declared Cloudflare dashboard tunnel configs."""
-    config = pulumi.Config("cloudflare")
-    account_id = config.require("accountId")
+    config = pulumi.Config()
+    tunnel_configs = config.require_object("cloudflare_tunnels")
 
     for name, tunnel in REMOTE_TUNNELS.items():
-        tunnel_id = config.require(tunnel["tunnel_id_config"])
+        account_id, tunnel_id = tunnel_identifiers(name, tunnel_configs)
         tunnel_config = tunnel["config"]
         validate_tunnel_config(name, tunnel_config)
 

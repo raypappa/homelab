@@ -1,9 +1,24 @@
 import unittest
 
-from stacks.cloudflare_tunnels import REMOTE_TUNNELS, validate_tunnel_config
+from stacks.cloudflare_tunnels import (
+    REMOTE_TUNNELS,
+    tunnel_identifiers,
+    validate_tunnel_config,
+)
 
 
 class CloudflareTunnelConfigTests(unittest.TestCase):
+    def test_tunnel_identifiers_use_tunnel_specific_config(self):
+        config = {
+            "accountId": "account-id",
+            "argocd": {"tunnelId": "tunnel-id"},
+        }
+
+        self.assertEqual(
+            tunnel_identifiers("argocd", config),
+            ("account-id", "tunnel-id"),
+        )
+
     def test_argocd_ingress_uses_verified_https_origin(self):
         argocd = REMOTE_TUNNELS["argocd"]
         config = argocd["config"]
