@@ -4,9 +4,11 @@ environment:
     - faerun/1password
   values:
     pulumiConfig:
-      "cloudflare:accountId": ${1password.cloudflare_account_id}
-      "cloudflare:argocdTunnelId": a54a1a1a-d087-4f0c-a0a9-e4e760ce5822
       "cloudflare:apiToken": ${1password.cloudflare_api_token}
+      cloudflare_tunnels:
+        accountId: ${1password.cloudflare_account_id}
+        argocd:
+          tunnelId: a54a1a1a-d087-4f0c-a0a9-e4e760ce5822
       aws:region: us-west-2
       faerun:weasel:
         primary_ipv6: 2607:5300:60:95cc::1
