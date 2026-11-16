@@ -1,6 +1,6 @@
 ---
 name: faerun
-description: A minimal AWS Python Pulumi program
+description: Homelab AWS and Cloudflare Python Pulumi program
 runtime:
   name: python
   options:

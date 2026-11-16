@@ -98,43 +98,36 @@ backend = "github:argoproj/argo-cd"
 
 [tools."github:argoproj/argo-cd"."platforms.linux-arm64"]
 checksum = "sha256:6310acfc44f2b492b5cdb5352c86f11a42d35895b3bd522d0f4fa9df4e9ad314"
-checksum_source = "mise-versions"
 url = "https://github.com/argoproj/argo-cd/releases/download/v3.5.7/argocd-linux-arm64"
 url_api = "https://api.github.com/repos/argoproj/argo-cd/releases/assets/703043878"
 
 [tools."github:argoproj/argo-cd"."platforms.linux-arm64-musl"]
 checksum = "sha256:6310acfc44f2b492b5cdb5352c86f11a42d35895b3bd522d0f4fa9df4e9ad314"
-checksum_source = "mise-versions"
 url = "https://github.com/argoproj/argo-cd/releases/download/v3.5.7/argocd-linux-arm64"
 url_api = "https://api.github.com/repos/argoproj/argo-cd/releases/assets/703043878"
 
 [tools."github:argoproj/argo-cd"."platforms.linux-x64"]
 checksum = "sha256:e9b7c3f5316b8546bdd499dfb8d874e413a5e3605899a55ec2ce0b668a3e2801"
-checksum_source = "mise-versions"
 url = "https://github.com/argoproj/argo-cd/releases/download/v3.5.7/argocd-linux-amd64"
 url_api = "https://api.github.com/repos/argoproj/argo-cd/releases/assets/703044399"
 
 [tools."github:argoproj/argo-cd"."platforms.linux-x64-musl"]
 checksum = "sha256:e9b7c3f5316b8546bdd499dfb8d874e413a5e3605899a55ec2ce0b668a3e2801"
-checksum_source = "mise-versions"
 url = "https://github.com/argoproj/argo-cd/releases/download/v3.5.7/argocd-linux-amd64"
 url_api = "https://api.github.com/repos/argoproj/argo-cd/releases/assets/703044399"
 
 [tools."github:argoproj/argo-cd"."platforms.macos-arm64"]
 checksum = "sha256:7ee53742940e463189ee8dd484d9c7e90d37e0c27fc644afdea5509f8c6d9116"
-checksum_source = "mise-versions"
 url = "https://github.com/argoproj/argo-cd/releases/download/v3.5.7/argocd-darwin-arm64"
 url_api = "https://api.github.com/repos/argoproj/argo-cd/releases/assets/703044403"
 
 [tools."github:argoproj/argo-cd"."platforms.macos-x64"]
 checksum = "sha256:1c5c3b9b0e08819f3863119deb16838275990ce8a116a9c42283f92a0af2d1a4"
-checksum_source = "mise-versions"
 url = "https://github.com/argoproj/argo-cd/releases/download/v3.5.7/argocd-darwin-amd64"
 url_api = "https://api.github.com/repos/argoproj/argo-cd/releases/assets/703043874"
 
 [tools."github:argoproj/argo-cd"."platforms.windows-x64"]
 checksum = "sha256:2760487c36a06ef23f9b14bbc1d89a5c11f065ede5abc0fbf9899650aad65495"
-checksum_source = "mise-versions"
 url = "https://github.com/argoproj/argo-cd/releases/download/v3.5.7/argocd-windows-amd64.exe"
 url_api = "https://api.github.com/repos/argoproj/argo-cd/releases/assets/703044383"
 
@@ -190,37 +183,31 @@ backend = "github:darksworm/argonaut"
 
 [tools."github:darksworm/argonaut"."platforms.linux-arm64"]
 checksum = "sha256:52135b9e144d56d06b7705939e679b722bdf64c73a8b06ce12d449678f13c4c5"
-checksum_source = "mise-versions"
 url = "https://github.com/darksworm/argonaut/releases/download/v2.20.0/argonaut-2.20.0-linux-arm64.tar.gz"
 url_api = "https://api.github.com/repos/darksworm/argonaut/releases/assets/585750729"
 
 [tools."github:darksworm/argonaut"."platforms.linux-arm64-musl"]
 checksum = "sha256:52135b9e144d56d06b7705939e679b722bdf64c73a8b06ce12d449678f13c4c5"
-checksum_source = "mise-versions"
 url = "https://github.com/darksworm/argonaut/releases/download/v2.20.0/argonaut-2.20.0-linux-arm64.tar.gz"
 url_api = "https://api.github.com/repos/darksworm/argonaut/releases/assets/585750729"
 
 [tools."github:darksworm/argonaut"."platforms.linux-x64"]
 checksum = "sha256:ca0a9db61f5f9e6b8b03b2ddd556cecb74da8512cf6af3a4c2af7ce0d4ca4a8c"
-checksum_source = "mise-versions"
 url = "https://github.com/darksworm/argonaut/releases/download/v2.20.0/argonaut-2.20.0-linux-amd64.tar.gz"
 url_api = "https://api.github.com/repos/darksworm/argonaut/releases/assets/585750728"
 
 [tools."github:darksworm/argonaut"."platforms.linux-x64-musl"]
 checksum = "sha256:ca0a9db61f5f9e6b8b03b2ddd556cecb74da8512cf6af3a4c2af7ce0d4ca4a8c"
-checksum_source = "mise-versions"
 url = "https://github.com/darksworm/argonaut/releases/download/v2.20.0/argonaut-2.20.0-linux-amd64.tar.gz"
 url_api = "https://api.github.com/repos/darksworm/argonaut/releases/assets/585750728"
 
 [tools."github:darksworm/argonaut"."platforms.macos-arm64"]
 checksum = "sha256:d1c4ad691bd8f36481535fb19ed8a8365c7318b19cd1436a6dcd929a87d0589b"
-checksum_source = "mise-versions"
 url = "https://github.com/darksworm/argonaut/releases/download/v2.20.0/argonaut-2.20.0-darwin-arm64.tar.gz"
 url_api = "https://api.github.com/repos/darksworm/argonaut/releases/assets/585750730"
 
 [tools."github:darksworm/argonaut"."platforms.macos-x64"]
 checksum = "sha256:d37651302554948836f3efd28bf8fb51d7cbceb54480a4ee9e68efa29517694f"
-checksum_source = "mise-versions"
 url = "https://github.com/darksworm/argonaut/releases/download/v2.20.0/argonaut-2.20.0-darwin-amd64.tar.gz"
 url_api = "https://api.github.com/repos/darksworm/argonaut/releases/assets/585750732"
 
@@ -492,49 +479,49 @@ version = "1.38.0"
 backend = "pipx:yamllint"
 
 [[tools.pulumi]]
-version = "3.256.0"
+version = "3.276.0"
 backend = "aqua:pulumi/pulumi"
 
 [tools.pulumi."platforms.linux-arm64"]
-checksum = "sha256:a5b0c4cfc894d9147b8769eeb590fb6517f98829595d95443c2b6f91b1815711"
-url = "https://github.com/pulumi/pulumi/releases/download/v3.256.0/pulumi-v3.256.0-linux-arm64.tar.gz"
-url_api = "https://api.github.com/repos/pulumi/pulumi/releases/assets/501681507"
+checksum = "sha256:dbf8d1efd39f3fc3f0d9cefa37c6caba8fdf937562dbaa93b6c284ded4f2c904"
+url = "https://github.com/pulumi/pulumi/releases/download/v3.276.0/pulumi-v3.276.0-linux-arm64.tar.gz"
+url_api = "https://api.github.com/repos/pulumi/pulumi/releases/assets/739644964"
 provenance = "cosign"
 
 [tools.pulumi."platforms.linux-arm64-musl"]
-checksum = "sha256:a5b0c4cfc894d9147b8769eeb590fb6517f98829595d95443c2b6f91b1815711"
-url = "https://github.com/pulumi/pulumi/releases/download/v3.256.0/pulumi-v3.256.0-linux-arm64.tar.gz"
-url_api = "https://api.github.com/repos/pulumi/pulumi/releases/assets/501681507"
+checksum = "sha256:dbf8d1efd39f3fc3f0d9cefa37c6caba8fdf937562dbaa93b6c284ded4f2c904"
+url = "https://github.com/pulumi/pulumi/releases/download/v3.276.0/pulumi-v3.276.0-linux-arm64.tar.gz"
+url_api = "https://api.github.com/repos/pulumi/pulumi/releases/assets/739644964"
 provenance = "cosign"
 
 [tools.pulumi."platforms.linux-x64"]
-checksum = "sha256:fe4afd4cda48f7fe06961268834caf78fb1efa8b31ee61ad00ee2e6cfa91caea"
-url = "https://github.com/pulumi/pulumi/releases/download/v3.256.0/pulumi-v3.256.0-linux-x64.tar.gz"
-url_api = "https://api.github.com/repos/pulumi/pulumi/releases/assets/501681589"
+checksum = "sha256:99f6b4626be083a3326517a46ba33b995f44812058143a018d9dffaa027ec3bf"
+url = "https://github.com/pulumi/pulumi/releases/download/v3.276.0/pulumi-v3.276.0-linux-x64.tar.gz"
+url_api = "https://api.github.com/repos/pulumi/pulumi/releases/assets/739645293"
 provenance = "cosign"
 
 [tools.pulumi."platforms.linux-x64-musl"]
-checksum = "sha256:fe4afd4cda48f7fe06961268834caf78fb1efa8b31ee61ad00ee2e6cfa91caea"
-url = "https://github.com/pulumi/pulumi/releases/download/v3.256.0/pulumi-v3.256.0-linux-x64.tar.gz"
-url_api = "https://api.github.com/repos/pulumi/pulumi/releases/assets/501681589"
+checksum = "sha256:99f6b4626be083a3326517a46ba33b995f44812058143a018d9dffaa027ec3bf"
+url = "https://github.com/pulumi/pulumi/releases/download/v3.276.0/pulumi-v3.276.0-linux-x64.tar.gz"
+url_api = "https://api.github.com/repos/pulumi/pulumi/releases/assets/739645293"
 provenance = "cosign"
 
 [tools.pulumi."platforms.macos-arm64"]
-checksum = "sha256:da8ed5d80c07ef00c5b0a489ddcedf4c985092d69b8efc4e9d2193e1e4f05b5b"
-url = "https://github.com/pulumi/pulumi/releases/download/v3.256.0/pulumi-v3.256.0-darwin-arm64.tar.gz"
-url_api = "https://api.github.com/repos/pulumi/pulumi/releases/assets/501681339"
+checksum = "sha256:e85bc0a62950d07bf1a5ff2fde30fe7367dc16b6b0ac20ad67ae3e0af80e32f1"
+url = "https://github.com/pulumi/pulumi/releases/download/v3.276.0/pulumi-v3.276.0-darwin-arm64.tar.gz"
+url_api = "https://api.github.com/repos/pulumi/pulumi/releases/assets/739644470"
 provenance = "cosign"
 
 [tools.pulumi."platforms.macos-x64"]
-checksum = "sha256:53a8c8775cb6e9886482552a3e7c74eccec7284dce4a4f68368a94113cf47b98"
-url = "https://github.com/pulumi/pulumi/releases/download/v3.256.0/pulumi-v3.256.0-darwin-x64.tar.gz"
-url_api = "https://api.github.com/repos/pulumi/pulumi/releases/assets/501681412"
+checksum = "sha256:41d2da438cc5cc1ad1f3f5ac917fe40df84970028636c235f83961f399b2390c"
+url = "https://github.com/pulumi/pulumi/releases/download/v3.276.0/pulumi-v3.276.0-darwin-x64.tar.gz"
+url_api = "https://api.github.com/repos/pulumi/pulumi/releases/assets/739644692"
 provenance = "cosign"
 
 [tools.pulumi."platforms.windows-x64"]
-checksum = "sha256:7e4e7e6c148e3b9f6cc36c871a07e2806f4a2196cc707b758d850765490041d3"
-url = "https://github.com/pulumi/pulumi/releases/download/v3.256.0/pulumi-v3.256.0-windows-x64.zip"
-url_api = "https://api.github.com/repos/pulumi/pulumi/releases/assets/501681813"
+checksum = "sha256:bbd22568c7ba0fb137d0b646f323a7ddd08587c1c5da7932796b786457ec795e"
+url = "https://github.com/pulumi/pulumi/releases/download/v3.276.0/pulumi-v3.276.0-windows-x64.zip"
+url_api = "https://api.github.com/repos/pulumi/pulumi/releases/assets/739645734"
 provenance = "cosign"
 
 [[tools."pypi:mikrotik-rsc-auditor"]]
