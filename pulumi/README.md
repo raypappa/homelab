@@ -21,43 +21,20 @@ The current Argo CD route preserves `argocd.fieldsofbears.com` and points to `ht
 
 ### Required stack configuration
 
-The program needs a Cloudflare account ID, the `faerun-argocd` tunnel ID, and an API token. IDs are ordinary configuration; the token must be a secret.
+`Pulumi.prod.yaml` contains the production configuration as an inline Pulumi ESC environment. It imports `faerun/1password`, which must expose `1passwordToken` as a secret; ESC uses that token to read the Cloudflare account ID and API token from the listed 1Password item. The nonsecret Argo CD tunnel ID, AWS region, and existing `faerun:weasel` values are also declared in the file.
 
-#### Pulumi Cloud dashboard (recommended)
+The values under `environment.values.pulumiConfig` become Pulumi stack configuration. The Cloudflare API token is passed as the provider's secret `cloudflare:apiToken`; it is resolved from 1Password at environment-open time and is not stored in the repository. The 1Password item paths are references, not secret values. The `1password-secrets` ESC provider is currently in preview.
 
-Create or edit an ESC environment in the Pulumi Cloud dashboard. In its Document view, add:
-
-```yaml
-values:
-  pulumiConfig:
-    cloudflare:accountId: <ACCOUNT_ID>
-    cloudflare:argocdTunnelId: <TUNNEL_ID>
-    cloudflare:apiToken:
-      fn::secret: <CLOUDFLARE_API_TOKEN>
-```
-
-Save the environment, then link it to the `faerun/prod` stack from `pulumi/`:
+ESC integration requires the Pulumi Cloud backend. From `pulumi/`, select the production stack and preview:
 
 ```bash
 pulumi stack select <ORG>/faerun/prod
-pulumi config env add <FULL_ESC_ENVIRONMENT_NAME>
+pulumi preview
 ```
 
-The stack's environment reference is configuration, not the token. ESC requires the stack to use the Pulumi Cloud backend.
+The Cloudflare API token should be scoped to the account that owns the tunnels and have **Cloudflare Tunnel Read** and **Cloudflare Tunnel Write** permissions. It does not need DNS permissions. Never paste the token into chat or commit its value to this repository.
 
-#### Direct stack configuration alternative
-
-From `pulumi/`, set the public IDs and enter the token at Pulumi's secret prompt:
-
-```bash
-pulumi config set cloudflare:accountId <ACCOUNT_ID>
-pulumi config set cloudflare:argocdTunnelId <TUNNEL_ID>
-pulumi config set --secret cloudflare:apiToken
-```
-
-The token should be scoped to the Cloudflare account that owns the tunnels and have **Cloudflare Tunnel Read** and **Cloudflare Tunnel Write** permissions. It does not need DNS permissions. Never paste the token into chat or store it in plaintext in this repository.
-
-The Cloudflare provider imports the existing tunnel config using `<account_id>/<tunnel_id>`. Review the preview's import and route diff before the first apply. Add each additional remotely managed tunnel to `REMOTE_TUNNELS`, configure its ID in the stack or ESC environment, and add tests for its complete ingress configuration.
+The Cloudflare provider imports the existing tunnel config using `<account_id>/<tunnel_id>`. Review the preview's import and route diff before the first apply. To add another remotely managed tunnel, add it to `REMOTE_TUNNELS`, give it a stack-config key for its tunnel ID in `Pulumi.prod.yaml`, and add tests for its complete ingress configuration.
 
 ## Existing AWS resources
 
