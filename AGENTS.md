@@ -8,7 +8,7 @@ This repository manages a homelab as infrastructure-as-code across several layer
 - **Argo CD + ApplicationSet** take over ongoing Kubernetes app deployment after bootstrap.
 - **Kubernetes manifests** live under `kubernetes/main`, mostly as Kustomize trees with Helm chart integration.
 - **AWS CDK** provisions AWS-side resources used by the homelab and CI.
-- **Pulumi** exists as a separate Python workspace for AWS resources; currently contains minimal checked-in code.
+- **Pulumi** is a Python workspace for AWS resources and remotely managed Cloudflare Tunnel configurations.
 
 **Control Flow**: Ansible configures hosts and bootstraps Kubernetes and Argo CD first. After bootstrap, all cluster deployments are managed by Argo CD (described in `README.md`).
 
@@ -271,14 +271,18 @@ Observed patterns:
 - AWS CDK feature flags are set in `cdk.json`
 - `cdk/lib/stacks/githubOIDC.ts` uses `this.node.tryGetContext("githubMap")` to create GitHub OIDC provider and IAM role for GitHub Actions
 
-**Pulumi** (`pulumi/` directory) is a separate Python IaC workspace.
+**Pulumi** (`pulumi/` directory) is a Python IaC workspace for the AWS resources and remotely managed Cloudflare Tunnel configurations.
 
 Currently contains:
 
-- `pulumi/stacks/weasel.py` — real component code
-- `pulumi/main.py`, `pulumi/README.md` — template/scaffold files
+- `pulumi/stacks/weasel.py` — Route 53 records
+- `pulumi/stacks/cloudflare_tunnels.py` — remote Cloudflare Tunnel configs; currently the Argo CD tunnel only
+- `pulumi/__main__.py` — stack entry point for AWS and Cloudflare resources
+- `pulumi/README.md` — setup, configuration, import, and preview guidance
 
-**Guidance**: Verify whether a given change belongs in Pulumi or CDK before editing. Treat Pulumi as a secondary, experimental surface compared with the primary CDK codebase.
+Only tunnels with `config_src: cloudflare` belong in the Pulumi registry. Locally managed tunnels stay with their `cloudflared` configuration. Add remote tunnels incrementally after reviewing and preserving their complete live ingress configuration.
+
+**Guidance**: Verify whether a given change belongs in Pulumi or CDK before editing. Pulumi remains a distinct Python IaC surface; the checked-in stack currently manages AWS resources and selected Cloudflare remote tunnel configuration.
 
 ## Style and file conventions
 
