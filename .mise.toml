@@ -26,7 +26,7 @@ version = "latest"
 version = "latest"
 
 [tools.node]
-version = "26.13.0"
+version = "26.13.1"
 [tools."npm:pnpm"]
 version = "11.28.11"
 [tools."github:astral-sh/ruff"]
