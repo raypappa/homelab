@@ -16,7 +16,7 @@ jobs:
       - name: Setup Biome
         uses: biomejs/setup-biome@v2
         with:
-          version: 2.6.6
+          version: 2.6.7
           token: ${{ github.token }}
       - name: Run Biome
         run: biome ci .
