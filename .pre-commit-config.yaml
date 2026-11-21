@@ -43,7 +43,7 @@ repos:
         additional_dependencies:
           - "json5"
     repo: https://github.com/python-jsonschema/check-jsonschema
-    rev: 39478bf2c099a58683d3f1aedf675105318b078d # frozen: 0.39.0
+    rev: a76b92851fc9eede9f9bc4073eb55202f34eb0df # frozen: 0.39.0
   - hooks:
       - additional_dependencies:
           - mdformat-frontmatter
