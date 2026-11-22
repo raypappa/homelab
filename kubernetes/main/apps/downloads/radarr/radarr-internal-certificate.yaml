@@ -1,0 +1,12 @@
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: radarr-internal-stoneydavis-com
+spec:
+  secretName: radarr-internal-stoneydavis-com-tls
+  dnsNames:
+    - radarr.internal.stoneydavis.com
+  issuerRef:
+    name: letsencrypt-stoneydavis-production
+    kind: ClusterIssuer
