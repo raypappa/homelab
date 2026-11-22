@@ -17,6 +17,9 @@ storageClasses:
     mountOptions:
       - nfsvers=4.2
   - name: nfs
+    # StorageClass parameters are immutable; force a recreate to update them.
+    annotations:
+      argocd.argoproj.io/sync-options: Force=true,Replace=true
     parameters:
       server: storage-0001.internal.stoneydavis.com
       share: /library
