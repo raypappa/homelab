@@ -6,6 +6,8 @@ resources:
   - ./service-account.yaml
   - ./cluster-role.yaml
   - ./cluster-role-binding.yaml
+  - ./cluster-resource-reader-role.yaml
+  - ./cluster-resource-reader-rolebinding.yaml
   - ./argocd-application-reader-role.yaml
   - ./argocd-application-reader-rolebinding.yaml
   - ./monitoring-reader-role.yaml
