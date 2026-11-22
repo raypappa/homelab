@@ -16,6 +16,10 @@ helmCharts:
     releaseName: radarr
     version: 5.1.0
     valuesFile: values.yaml
+configMapGenerator:
+  - name: radarr-tls-proxy-config
+    files:
+      - default.conf=radarr-tls-proxy.conf
 resources:
   - ./radarr-internal-certificate.yaml
   - ./base/library-pvc.yaml
