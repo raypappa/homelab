@@ -17,6 +17,7 @@ helmCharts:
     version: 5.1.0
     valuesFile: values.yaml
 resources:
+  - ./radarr-internal-certificate.yaml
   - ./base/library-pvc.yaml
   - ./base/volsync-external-secret.yaml
   - ./base/volsync-replication-source.yaml
