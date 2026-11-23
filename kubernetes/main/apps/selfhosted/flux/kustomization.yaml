@@ -19,6 +19,8 @@ configMapGenerator:
   - name: flux-tls-proxy-config
     files:
       - default.conf=tls-proxy.conf
+    options:
+      disableNameSuffixHash: true
 resources:
   - ./internal-certificate.yaml
   - ./base/external-secret.yaml
