@@ -1,0 +1,152 @@
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: prometheus-operator
+  labels:
+    app.kubernetes.io/component: controller
+    app.kubernetes.io/name: prometheus-operator
+    app.kubernetes.io/version: 0.95.2
+rules:
+  - apiGroups:
+      - monitoring.coreos.com
+    resources:
+      - alertmanagers
+      - alertmanagers/finalizers
+      - prometheusagents
+      - prometheusagents/finalizers
+      - prometheuses
+      - prometheuses/finalizers
+      - thanosrulers
+      - thanosrulers/finalizers
+    verbs:
+      - patch
+  - apiGroups:
+      - monitoring.coreos.com
+    resources:
+      - alertmanagers/finalizers
+      - prometheusagents/finalizers
+      - prometheuses/finalizers
+      - thanosrulers/finalizers
+    verbs:
+      - update
+  - apiGroups:
+      - monitoring.coreos.com
+    resources:
+      - alertmanagers/status
+      - alertmanagerconfigs/status
+      - podmonitors/status
+      - probes/status
+      - prometheuses/status
+      - prometheusagents/status
+      - prometheusrules/status
+      - scrapeconfigs/status
+      - servicemonitors/status
+      - thanosrulers/status
+    verbs:
+      - create
+      - update
+      - patch
+      - delete
+  - apiGroups:
+      - monitoring.coreos.com
+    resources:
+      - alertmanagers
+      - alertmanagerconfigs
+      - podmonitors
+      - probes
+      - prometheusagents
+      - prometheuses
+      - prometheusrules
+      - servicemonitors
+      - scrapeconfigs
+      - thanosrulers
+    verbs:
+      - get
+      - list
+      - watch
+  - apiGroups:
+      - apps
+    resources:
+      - statefulsets
+    verbs:
+      - get
+      - list
+      - watch
+      - create
+      - update
+      - patch
+      - delete
+  - apiGroups:
+      - ""
+    resources:
+      - configmaps
+      - secrets
+    verbs:
+      - get
+      - list
+      - watch
+      - create
+      - update
+      - delete
+  - apiGroups:
+      - ""
+    resources:
+      - pods
+    verbs:
+      - list
+  - apiGroups:
+      - ""
+    resources:
+      - services
+      - services/finalizers
+    verbs:
+      - get
+      - create
+      - update
+      - delete
+  - apiGroups:
+      - ""
+    resources:
+      - namespaces
+    verbs:
+      - get
+      - list
+      - watch
+  - apiGroups:
+      - events.k8s.io
+    resources:
+      - events
+    verbs:
+      - patch
+      - create
+  - apiGroups:
+      - networking.k8s.io
+    resources:
+      - ingresses
+    verbs:
+      - get
+      - list
+      - watch
+  - apiGroups:
+      - storage.k8s.io
+    resources:
+      - storageclasses
+    verbs:
+      - get
+  - apiGroups:
+      - ""
+    resources:
+      - nodes
+    verbs:
+      - list
+      - watch
+  - apiGroups:
+      - ""
+    resources:
+      - endpoints
+    verbs:
+      - get
+      - create
+      - update
+      - delete

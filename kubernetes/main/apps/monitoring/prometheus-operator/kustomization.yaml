@@ -10,9 +10,8 @@ helmCharts:
     namespace: monitoring
     releaseName: prometheus-operator-crds
     includeCRDs: true
-  - name: app-template
-    repo: https://bjw-s-labs.github.io/helm-charts
-    version: 5.3.0
-    namespace: monitoring
-    releaseName: prometheus-operator
-    valuesFile: prometheus-operator-values.yaml
+resources:
+  - ./service-account.yaml
+  - ./cluster-role.yaml
+  - ./cluster-role-binding.yaml
+  - ./deployment.yaml
