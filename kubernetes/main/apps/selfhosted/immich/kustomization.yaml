@@ -15,6 +15,7 @@ helmCharts:
     namespace: immich
     valuesFile: cloudflare-values.yaml
 resources:
+  - ./internal-certificate.yaml
   - ./base/external-secret.yaml
   - ./base/pvc.yaml
   - ./base/volsync-external-secret.yaml

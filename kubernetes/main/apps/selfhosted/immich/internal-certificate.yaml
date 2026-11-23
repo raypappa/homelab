@@ -1,0 +1,13 @@
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: immich-internal-stoneydavis-com
+  namespace: immich
+spec:
+  secretName: immich-internal-stoneydavis-com-tls
+  dnsNames:
+    - immich.internal.stoneydavis.com
+  issuerRef:
+    name: letsencrypt-stoneydavis-production
+    kind: ClusterIssuer
