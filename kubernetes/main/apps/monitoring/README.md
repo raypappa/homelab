@@ -4,6 +4,7 @@ This directory contains the monitoring stack and opt-in exporters. The core is s
 
 ## Core stack
 
+- The `monitoring` namespace is labeled `pod-security.kubernetes.io/enforce: privileged` (plus matching `audit`/`warn`), like `rook-ceph`, so node-exporter can keep its `hostPID` and `hostPath` requirements. The namespace manifest ships with the `prometheus-operator` app, the first in the monitoring group.
 - `prometheus-operator` installs the Prometheus Operator CRDs and controller in one Argo CD app. The controller is ordered after the CRDs; the separate `prometheus` app depends on it and defines the `Prometheus` custom resource.
 - `prometheus`, `loki`, and `tempo` persist to `ceph-block`. Prometheus and Loki retain 14 days; their PVC requests are 55Gi and 50Gi respectively. Tempo uses its local backend with a 20Gi PVC and 14-day retention.
 - Grafana, Loki, Tempo, and Alloy use separate upstream charts. Prometheus is operator-managed. Loki uses the chart's Monolithic mode and Tempo uses a single local-backend instance; this keeps storage simple but is not an HA/object-storage design. Grafana uses its direct chart, while Alloy runs as a DaemonSet and ships pod logs to Loki.
