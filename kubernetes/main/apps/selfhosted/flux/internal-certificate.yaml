@@ -1,0 +1,13 @@
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: flux-internal-stoneydavis-com
+  namespace: flux
+spec:
+  secretName: flux-internal-stoneydavis-com-tls
+  dnsNames:
+    - flux.internal.stoneydavis.com
+  issuerRef:
+    name: letsencrypt-stoneydavis-production
+    kind: ClusterIssuer
