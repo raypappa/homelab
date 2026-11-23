@@ -22,3 +22,5 @@ resources:
   - ./base/pvc/config/volsync-external-secret.yaml
   - ./base/pvc/config/volsync-replication-destination.yaml
   - ./base/library-pvc.yaml
+  - ./tailscale-serve-config.yaml
+  - ./tailscale-external-secret.yaml

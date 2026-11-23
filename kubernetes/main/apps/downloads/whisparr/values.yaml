@@ -32,6 +32,29 @@ controllers:
           PUID: 1001
           PGID: 1001
           UMASK: "022"
+      tailscale:
+        image:
+          repository: ghcr.io/tailscale/tailscale
+          tag: v1.102.2
+          pullPolicy: IfNotPresent
+        env:
+          TS_AUTHKEY:
+            valueFrom:
+              secretKeyRef:
+                name: tailscale-auth
+                key: TS_AUTHKEY
+          TS_EXTRA_ARGS: "--login-server=https://weasel.stoneydavis.com --hostname=whisparr"
+          TS_KUBE_SECRET: ""
+          TS_USERSPACE: "true"
+          TS_STATE_DIR: "/tmp/tailscale/state"
+          TS_SOCKET: "/tmp/tailscale/run/tailscaled.sock"
+          TS_SERVE_CONFIG: "/etc/tailscale/serve-config.json"
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+              - ALL
+          readOnlyRootFilesystem: false
 service:
   main:
     controller: main
@@ -45,8 +68,33 @@ persistence:
     storageClass: ceph-filesystem
     accessMode: ReadWriteOnce
     size: 5Gi
+    advancedMounts:
+      main:
+        main:
+          - path: /config
   library:
     enabled: true
     type: hostPath
     hostPathType: Directory
     hostPath: /library
+    advancedMounts:
+      main:
+        main:
+          - path: /library
+  tailscale-state:
+    enabled: true
+    type: emptyDir
+    sizeLimit: 128Mi
+    advancedMounts:
+      main:
+        tailscale:
+          - path: /tmp/tailscale
+  tailscale-serve-config:
+    enabled: true
+    type: configMap
+    name: tailscale-serve
+    advancedMounts:
+      main:
+        tailscale:
+          - path: /etc/tailscale
+            readOnly: true

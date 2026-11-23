@@ -56,6 +56,29 @@ controllers:
           capabilities:
             drop:
               - ALL
+      tailscale:
+        image:
+          repository: ghcr.io/tailscale/tailscale
+          tag: v1.102.2
+          pullPolicy: IfNotPresent
+        env:
+          TS_AUTHKEY:
+            valueFrom:
+              secretKeyRef:
+                name: tailscale-auth
+                key: TS_AUTHKEY
+          TS_EXTRA_ARGS: "--login-server=https://weasel.stoneydavis.com --hostname=sonarr"
+          TS_KUBE_SECRET: ""
+          TS_USERSPACE: "true"
+          TS_STATE_DIR: "/tmp/tailscale/state"
+          TS_SOCKET: "/tmp/tailscale/run/tailscaled.sock"
+          TS_SERVE_CONFIG: "/etc/tailscale/serve-config.json"
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+              - ALL
+          readOnlyRootFilesystem: false
 service:
   app:
     controller: sonarr
@@ -65,12 +88,45 @@ service:
 persistence:
   config:
     existingClaim: sonarr-config
+    advancedMounts:
+      sonarr:
+        app:
+          - path: /config
   add-ons:
     type: emptyDir
+    advancedMounts:
+      sonarr:
+        app:
+          - path: /add-ons
   tmp:
     type: emptyDir
+    advancedMounts:
+      sonarr:
+        app:
+          - path: /tmp
   media:
     enabled: true
     type: hostPath
     hostPathType: Directory
     hostPath: /library
+    advancedMounts:
+      sonarr:
+        app:
+          - path: /library
+  tailscale-state:
+    enabled: true
+    type: emptyDir
+    sizeLimit: 128Mi
+    advancedMounts:
+      sonarr:
+        tailscale:
+          - path: /tmp/tailscale
+  tailscale-serve-config:
+    enabled: true
+    type: configMap
+    name: tailscale-serve
+    advancedMounts:
+      sonarr:
+        tailscale:
+          - path: /etc/tailscale
+            readOnly: true

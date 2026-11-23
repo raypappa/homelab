@@ -51,6 +51,29 @@ controllers:
               secretKeyRef:
                 name: spotizerr-admin
                 key: password
+      tailscale:
+        image:
+          repository: ghcr.io/tailscale/tailscale
+          tag: v1.102.2
+          pullPolicy: IfNotPresent
+        env:
+          TS_AUTHKEY:
+            valueFrom:
+              secretKeyRef:
+                name: tailscale-auth
+                key: TS_AUTHKEY
+          TS_EXTRA_ARGS: "--login-server=https://weasel.stoneydavis.com --hostname=spotizerr"
+          TS_KUBE_SECRET: ""
+          TS_USERSPACE: "true"
+          TS_STATE_DIR: "/tmp/tailscale/state"
+          TS_SOCKET: "/tmp/tailscale/run/tailscaled.sock"
+          TS_SERVE_CONFIG: "/etc/tailscale/serve-config.json"
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+              - ALL
+          readOnlyRootFilesystem: false
 service:
   spotizerr:
     controller: spotizerr
@@ -71,8 +94,10 @@ persistence:
     type: persistentVolumeClaim
     accessMode: ReadWriteOnce
     size: 1Gi
-    globalMounts:
-      - path: /app/config
+    advancedMounts:
+      spotizerr:
+        app:
+          - path: /app/config
     dataSourceRef:
       kind: ReplicationDestination
       apiGroup: volsync.backube
@@ -81,28 +106,53 @@ persistence:
     type: persistentVolumeClaim
     accessMode: ReadWriteOnce
     size: 1Gi
-    globalMounts:
-      - path: /app/prgs
+    advancedMounts:
+      spotizerr:
+        app:
+          - path: /app/prgs
     dataSourceRef:
       kind: ReplicationDestination
       apiGroup: volsync.backube
       name: spotizerr-progress-dst
   downloads:
-    globalMounts:
-      - path: /app/downloads
     enabled: true
     existingClaim: spotizerr-library-downloads-nfs
+    advancedMounts:
+      spotizerr:
+        app:
+          - path: /app/downloads
   data:
     type: persistentVolumeClaim
     accessMode: ReadWriteOnce
     size: 1Gi
-    globalMounts:
-      - path: /app/data
+    advancedMounts:
+      spotizerr:
+        app:
+          - path: /app/data
     dataSourceRef:
       kind: ReplicationDestination
       apiGroup: volsync.backube
       name: spotizerr-data-dst
   logs:
     type: emptyDir
-    globalMounts:
-      - path: /app/logs
+    advancedMounts:
+      spotizerr:
+        app:
+          - path: /app/logs
+  tailscale-state:
+    enabled: true
+    type: emptyDir
+    sizeLimit: 128Mi
+    advancedMounts:
+      spotizerr:
+        tailscale:
+          - path: /tmp/tailscale
+  tailscale-serve-config:
+    enabled: true
+    type: configMap
+    name: tailscale-serve
+    advancedMounts:
+      spotizerr:
+        tailscale:
+          - path: /etc/tailscale
+            readOnly: true

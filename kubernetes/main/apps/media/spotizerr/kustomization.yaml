@@ -29,3 +29,5 @@ resources:
   - ./base/pvc/progress/volsync-replication-source.yaml
   - ./base/library-pvc.yaml
   - ./base/tunnel-credentials.yaml
+  - ./tailscale-serve-config.yaml
+  - ./tailscale-external-secret.yaml
