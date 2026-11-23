@@ -51,6 +51,29 @@ controllers:
           allowPrivilegeEscalation: false
           readOnlyRootFilesystem: true
           capabilities: {drop: ["ALL"]}
+      tailscale:
+        image:
+          repository: ghcr.io/tailscale/tailscale
+          tag: v1.102.2
+          pullPolicy: IfNotPresent
+        env:
+          TS_AUTHKEY:
+            valueFrom:
+              secretKeyRef:
+                name: tailscale-auth
+                key: TS_AUTHKEY
+          TS_EXTRA_ARGS: "--login-server=https://weasel.stoneydavis.com --hostname=readarr"
+          TS_KUBE_SECRET: ""
+          TS_USERSPACE: "true"
+          TS_STATE_DIR: "/tmp/tailscale/state"
+          TS_SOCKET: "/tmp/tailscale/run/tailscaled.sock"
+          TS_SERVE_CONFIG: "/etc/tailscale/serve-config.json"
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+              - ALL
+          readOnlyRootFilesystem: false
 service:
   app:
     controller: readarr
@@ -73,10 +96,39 @@ persistence:
     storageClass: ceph-filesystem
     accessMode: ReadWriteOnce
     size: 20Gi
+    advancedMounts:
+      readarr:
+        app:
+          - path: /config
   library:
     enabled: true
     type: hostPath
     hostPathType: Directory
     hostPath: /library
+    advancedMounts:
+      readarr:
+        app:
+          - path: /library
   tmp:
     type: emptyDir
+    advancedMounts:
+      readarr:
+        app:
+          - path: /tmp
+  tailscale-state:
+    enabled: true
+    type: emptyDir
+    sizeLimit: 128Mi
+    advancedMounts:
+      readarr:
+        tailscale:
+          - path: /tmp/tailscale
+  tailscale-serve-config:
+    enabled: true
+    type: configMap
+    name: tailscale-serve
+    advancedMounts:
+      readarr:
+        tailscale:
+          - path: /etc/tailscale
+            readOnly: true

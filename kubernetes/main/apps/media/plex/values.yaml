@@ -59,6 +59,29 @@ controllers:
         resources:
           requests:
             cpu: 100m
+      tailscale:
+        image:
+          repository: ghcr.io/tailscale/tailscale
+          tag: v1.102.2
+          pullPolicy: IfNotPresent
+        env:
+          TS_AUTHKEY:
+            valueFrom:
+              secretKeyRef:
+                name: tailscale-auth
+                key: TS_AUTHKEY
+          TS_EXTRA_ARGS: "--login-server=https://weasel.stoneydavis.com --hostname=plex"
+          TS_KUBE_SECRET: ""
+          TS_USERSPACE: "true"
+          TS_STATE_DIR: "/tmp/tailscale/state"
+          TS_SOCKET: "/tmp/tailscale/run/tailscaled.sock"
+          TS_SERVE_CONFIG: "/etc/tailscale/serve-config.json"
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+              - ALL
+          readOnlyRootFilesystem: false
 service:
   app:
     controller: plex
@@ -95,12 +118,31 @@ persistence:
     type: hostPath
     hostPathType: Directory
     hostPath: /library
-    globalMounts:
-      - path: /library
-        readOnly: true
+    advancedMounts:
+      plex:
+        app:
+          - path: /library
+            readOnly: true
   transcode:
     type: emptyDir
     advancedMounts:
       plex:
         app:
           - path: /transcode
+  tailscale-state:
+    enabled: true
+    type: emptyDir
+    sizeLimit: 128Mi
+    advancedMounts:
+      plex:
+        tailscale:
+          - path: /tmp/tailscale
+  tailscale-serve-config:
+    enabled: true
+    type: configMap
+    name: tailscale-serve
+    advancedMounts:
+      plex:
+        tailscale:
+          - path: /etc/tailscale
+            readOnly: true
