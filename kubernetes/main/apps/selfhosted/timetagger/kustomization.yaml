@@ -17,6 +17,7 @@ helmCharts:
     version: 5.1.0
     valuesFile: values.yaml
 resources:
+  - ./internal-certificate.yaml
   - ./base/tunnel-external-secret.yaml
   - ./base/credentials-external-secret.yaml
   - ./base/volsync-external-secret.yaml
