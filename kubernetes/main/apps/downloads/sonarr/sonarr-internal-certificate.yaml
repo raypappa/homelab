@@ -1,0 +1,13 @@
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: sonarr-internal-stoneydavis-com
+  namespace: sonarr
+spec:
+  secretName: sonarr-internal-stoneydavis-com-tls
+  dnsNames:
+    - sonarr.internal.stoneydavis.com
+  issuerRef:
+    name: letsencrypt-stoneydavis-production
+    kind: ClusterIssuer
