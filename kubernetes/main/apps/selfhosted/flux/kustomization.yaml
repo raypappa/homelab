@@ -17,6 +17,7 @@ helmCharts:
     valuesFile: cloudflare-values.yaml
 
 resources:
+  - ./internal-certificate.yaml
   - ./base/external-secret.yaml
   - ./base/volsync-external-secret.yaml
   - ./base/volsync-replication-destination.yaml
