@@ -1,0 +1,9 @@
+{
+  "destNamespace": "monitoring",
+  "appName": "node-exporter",
+  "serverSideApply": false,
+  "ignoreDifferences": [],
+  "group": "monitoring",
+  "dependencies": ["prometheus-operator"],
+  "wave": "2"
+}

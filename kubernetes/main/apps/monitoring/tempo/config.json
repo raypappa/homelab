@@ -1,0 +1,9 @@
+{
+  "destNamespace": "monitoring",
+  "appName": "tempo",
+  "serverSideApply": true,
+  "ignoreDifferences": [],
+  "group": "monitoring",
+  "dependencies": ["prometheus-operator", "rook-ceph-cluster"],
+  "wave": "4"
+}

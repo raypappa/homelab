@@ -212,6 +212,7 @@ datasources:
     datasources:
       - access: proxy
         name: Prometheus
+        uid: Prometheus
         type: prometheus
         url: http://prometheus-operated.monitoring.svc.cluster.local:9090
         isDefault: true
@@ -219,14 +220,22 @@ datasources:
           prometheusType: Prometheus
       - access: proxy
         name: Loki
+        uid: Loki
         type: loki
-        url: http://loki-headless.monitoring.svc.cluster.local:3100
-      - name: Alertmanager
-        type: alertmanager
-        access: proxy
-        url: http://alertmanager.monitoring.svc.cluster.local:9093
+        url: http://loki-gateway.monitoring.svc.cluster.local
+      - access: proxy
+        name: Tempo
+        uid: Tempo
+        type: tempo
+        url: http://tempo.monitoring.svc.cluster.local:3200
         jsonData:
-          implementation: prometheus
+          tracesToLogsV2:
+            datasourceUid: Loki
+            spanStartTimeShift: 1h
+            spanEndTimeShift: 1h
+            filterByTraceID: false
+            filterBySpanID: false
+            customQuery: false
     deleteDatasources:
       - name: Alertmanager
         orgId: 1
@@ -248,7 +257,6 @@ env:
   GF_NEWS_NEWS_FEED_ENABLED: false
   GF_PLUGINS_ALLOW_LOADING_UNSIGNED_PLUGINS: natel-discrete-panel,pr0ps-trackmap-panel,panodata-map-panel
   GF_SECURITY_COOKIE_SAMESITE: grafana
-  GF_SERVER_ROOT_URL: https://grafana.bjw-s.dev
 imageRenderer:
   enabled: true
 persistence:
@@ -270,13 +278,7 @@ resources:
     memory: 128Mi
 route:
   main:
-    enabled: true
-    hostnames:
-      - grafana.bjw-s.dev
-    parentRefs:
-      - name: internal
-        namespace: kube-system
-        sectionName: https
+    enabled: false
 serviceAccount:
   create: true
   autoMount: true

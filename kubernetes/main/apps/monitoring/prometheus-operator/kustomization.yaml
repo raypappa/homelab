@@ -6,7 +6,13 @@ namespace: monitoring
 helmCharts:
   - name: prometheus-operator-crds
     repo: oci://ghcr.io/prometheus-community/charts
-    version: 28.0.1
+    version: 33.0.2
     namespace: monitoring
     releaseName: prometheus-operator-crds
-    valuesFile: prometheus-operator-crds-values.yaml
+    includeCRDs: true
+  - name: app-template
+    repo: https://bjw-s-labs.github.io/helm-charts
+    version: 5.3.0
+    namespace: monitoring
+    releaseName: prometheus-operator
+    valuesFile: prometheus-operator-values.yaml

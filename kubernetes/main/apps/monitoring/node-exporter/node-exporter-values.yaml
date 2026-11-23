@@ -22,7 +22,7 @@ prometheus:
         targetLabel: nodename
       - action: replace
         regex: (.*)
-        replacement: $1.bjw-s.internal:9100
+        replacement: $1
         sourceLabels:
           - kubernetes_node
         targetLabel: instance
