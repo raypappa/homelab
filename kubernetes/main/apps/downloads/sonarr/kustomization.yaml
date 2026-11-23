@@ -16,6 +16,7 @@ helmCharts:
     namespace: sonarr
     valuesFile: cloudflare-values.yaml
 resources:
+  - ./sonarr-internal-certificate.yaml
   - ./external-secret.yaml
   - ./pvc/config/volsync-replication-source.yaml
   - ./pvc/config/volsync-external-secret.yaml
