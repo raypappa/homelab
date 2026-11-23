@@ -1,0 +1,13 @@
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: leantime-internal-stoneydavis-com
+  namespace: leantime
+spec:
+  secretName: leantime-internal-stoneydavis-com-tls
+  dnsNames:
+    - leantime.internal.stoneydavis.com
+  issuerRef:
+    name: letsencrypt-stoneydavis-production
+    kind: ClusterIssuer
