@@ -1,0 +1,12 @@
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: prowlarr-internal-stoneydavis-com
+spec:
+  secretName: prowlarr-internal-stoneydavis-com-tls
+  dnsNames:
+    - prowlarr.internal.stoneydavis.com
+  issuerRef:
+    name: letsencrypt-stoneydavis-production
+    kind: ClusterIssuer
