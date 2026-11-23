@@ -4,5 +4,6 @@
   "serverSideApply": true,
   "ignoreDifferences": [],
   "group": "monitoring",
+  "dependencies": [],
   "wave": "1"
 }

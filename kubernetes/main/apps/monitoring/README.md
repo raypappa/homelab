@@ -1,6 +1,17 @@
 # Infrastructure monitoring rollout
 
-This directory adds opt-in exporters and read-only access to the existing Prometheus/Grafana stack. Exporters that need credentials or RouterOS preparation remain disabled until those prerequisites exist; no secret values or live changes belong in this repository.
+This directory contains the monitoring stack and opt-in exporters. The core is split into Argo CD apps rendered by Kustomize `helmCharts`; it does not use direct `helm install` or `kube-prometheus-stack`.
+
+## Core stack
+
+- `prometheus-operator` installs the Prometheus Operator CRDs and controller in one Argo CD app. The controller is ordered after the CRDs; the separate `prometheus` app depends on it and defines the `Prometheus` custom resource.
+- `prometheus`, `loki`, and `tempo` persist to `ceph-block`. Prometheus and Loki retain 14 days; their PVC requests are 55Gi and 50Gi respectively. Tempo uses its local backend with a 20Gi PVC and 14-day retention.
+- Grafana, Loki, Tempo, and Alloy use separate upstream charts. Prometheus is operator-managed. Loki uses the chart's Monolithic mode and Tempo uses a single local-backend instance; this keeps storage simple but is not an HA/object-storage design. Grafana uses its direct chart, while Alloy runs as a DaemonSet and ships pod logs to Loki.
+- Grafana's Gateway API route remains disabled until a hostname is confirmed. Its service is internal-only. Prometheus, Loki, and Tempo are also not exposed outside the cluster.
+- Alertmanager is not enabled. Prometheus rules are restored, but alerts will not notify until an Alertmanager is deployed and configured.
+- The Prometheus app currently excludes legacy static `ScrapeConfig` targets for `gladius.bjw-s.internal`; that hostname could not be resolved from this environment. Re-enable those only after the target is verified and Smartctl is deployed.
+
+Exporters that need credentials or RouterOS preparation remain disabled until those prerequisites exist; no secret values or live changes belong in this repository.
 
 ## Exporters and target scope
 

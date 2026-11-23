@@ -5,10 +5,10 @@ kind: Kustomization
 namespace: monitoring
 helmCharts:
   - name: grafana
-    repo: oci://ghcr.io/grafana/helm-charts
+    repo: https://grafana-community.github.io/helm-charts
     namespace: monitoring
     releaseName: grafana
-    version: 10.5.15
+    version: 14.5.0
     valuesFile: grafana-values.yaml
 resources:
   - ./externalsecret.yaml

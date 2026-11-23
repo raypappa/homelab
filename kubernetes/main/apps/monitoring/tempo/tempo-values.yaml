@@ -1,0 +1,35 @@
+---
+tempo:
+  reportingEnabled: false
+  retention: 336h
+  metricsGenerator:
+    enabled: false
+  storage:
+    trace:
+      backend: local
+      local:
+        path: /var/tempo/traces
+      wal:
+        path: /var/tempo/wal
+  receivers:
+    otlp:
+      protocols:
+        grpc:
+          endpoint: 0.0.0.0:4317
+        http:
+          endpoint: 0.0.0.0:4318
+  resources:
+    requests:
+      cpu: 100m
+      memory: 512Mi
+    limits:
+      memory: 1Gi
+persistence:
+  enabled: true
+  storageClassName: ceph-block
+  accessModes:
+    - ReadWriteOnce
+  size: 20Gi
+serviceMonitor:
+  enabled: true
+  interval: 1m

@@ -1,5 +1,8 @@
 ---
-deploymentMode: SingleBinary
+deploymentMode: Monolithic
+gateway:
+  enabled: true
+  replicas: 1
 loki:
   analytics:
     reporting_enabled: false
@@ -13,7 +16,7 @@ loki:
   ingester:
     chunk_encoding: snappy
   limits_config:
-    retention_period: 14d
+    retention_period: 336h
   schemaConfig:
     configs:
       - from: "2024-04-01"
@@ -27,32 +30,42 @@ loki:
     log_level: info
   storage:
     type: filesystem
-backend:
-  replicas: 0
-chunksCache:
-  enabled: false
-gateway:
-  replicas: 0
+    filesystem:
+      chunks_directory: /var/loki/chunks
+      rules_directory: /var/loki/rules
+monitoring:
+  serviceMonitor:
+    enabled: true
+    interval: 1m
+  rules:
+    enabled: false
+  alerts:
+    enabled: false
 lokiCanary:
   enabled: false
 read:
   replicas: 0
+write:
+  replicas: 0
+backend:
+  replicas: 0
+chunksCache:
+  enabled: false
 resultsCache:
   enabled: false
-sidecar:
-  image:
-    repository: ghcr.io/kiwigrid/k8s-sidecar
-    # renovate: datasource=docker depName=ghcr.io/kiwigrid/k8s-sidecar
-    tag: 2.10.1
-  rules:
-    searchNamespace: ALL
 singleBinary:
   replicas: 1
+  resources:
+    requests:
+      cpu: 200m
+      memory: 512Mi
+    limits:
+      memory: 2Gi
   persistence:
     enabled: true
     storageClass: ceph-block
     size: 50Gi
+    whenScaled: Retain
+    whenDeleted: Retain
 test:
   enabled: false
-write:
-  replicas: 0
