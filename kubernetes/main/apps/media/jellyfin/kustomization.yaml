@@ -16,6 +16,7 @@ helmCharts:
     namespace: jellyfin
     valuesFile: cloudflare-values.yaml
 resources:
+  - ./internal-certificate.yaml
   - ./base/external-secret.yaml
   - ./base/pvc/config/volsync-replication-source.yaml
   - ./base/pvc/config/volsync-external-secret.yaml
