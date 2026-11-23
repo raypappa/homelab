@@ -1,0 +1,13 @@
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: plex-internal-stoneydavis-com
+  namespace: media
+spec:
+  secretName: plex-internal-stoneydavis-com-tls
+  dnsNames:
+    - plex.internal.stoneydavis.com
+  issuerRef:
+    name: letsencrypt-stoneydavis-production
+    kind: ClusterIssuer

@@ -15,6 +15,7 @@ helmCharts:
     namespace: plex
     valuesFile: cloudflare-values.yaml
 resources:
+  - ./internal-certificate.yaml
   - ./external-secret.yaml
   - ./pvc/cache/volsync-replication-source.yaml
   - ./pvc/cache/volsync-external-secret.yaml
