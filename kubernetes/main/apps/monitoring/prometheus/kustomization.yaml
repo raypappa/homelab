@@ -3,13 +3,7 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 namespace: monitoring
-helmCharts:
-  - name: app-template
-    repo: https://bjw-s-labs.github.io/helm-charts
-    version: 5.3.0
-    namespace: monitoring
-    releaseName: prometheus
-    valuesFile: prometheus-values.yaml
 resources:
+  - ./instance.yaml
   - ./alerts
   - ./prometheusrules
