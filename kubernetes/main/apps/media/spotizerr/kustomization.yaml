@@ -15,6 +15,10 @@ helmCharts:
     releaseName: spotizerr
     namespace: spotizerr
     valuesFile: cloudflare-values.yaml
+configMapGenerator:
+  - name: spotizerr-tls-proxy-config
+    files:
+      - default.conf=tls-proxy.conf
 resources:
   - ./internal-certificate.yaml
   - ./base/external-secret.yaml
