@@ -17,7 +17,7 @@ helmCharts:
     version: 5.1.0
     valuesFile: values.yaml
 resources:
-  - ./whisparr-internal-certificate.yaml
+  - ./internal-certificate.yaml
   - ./volsync-external-secret.yaml
   - ./volsync-replication-source.yaml
   - ./volsync-replication-destination.yaml
