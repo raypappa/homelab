@@ -11,7 +11,10 @@ cloudflare:
   tunnelName: "faerun-flux"
   ingress:
     - hostname: "flux.fieldsofbears.com"
-      service: "http://flux.flux.svc.cluster.local:80"
+      service: "https://flux.flux.svc.cluster.local:443"
+      originRequest:
+        originServerName: "flux.internal.stoneydavis.com"
+        noTLSVerify: false
 podSecurityContext:
   runAsNonRoot: true
   runAsUser: 65532

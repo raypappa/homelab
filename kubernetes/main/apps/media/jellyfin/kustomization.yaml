@@ -15,6 +15,10 @@ helmCharts:
     releaseName: jellyfin
     namespace: jellyfin
     valuesFile: cloudflare-values.yaml
+configMapGenerator:
+  - name: jellyfin-tls-proxy-config
+    files:
+      - default.conf=tls-proxy.conf
 resources:
   - ./internal-certificate.yaml
   - ./base/external-secret.yaml

@@ -92,6 +92,45 @@ controllers:
             drop:
               - ALL
           readOnlyRootFilesystem: false
+      tls-proxy:
+        image:
+          repository: docker.io/nginx/nginx-unprivileged
+          # renovate: datasource=docker depName=nginx/nginx-unprivileged
+          tag: 1.31.7
+          digest: sha256:ea4fd7ab5a8dc6348c18240bd3546f355f8373cd8f112580f7d8bd8ff5a74772
+          pullPolicy: IfNotPresent
+        securityContext:
+          capabilities:
+            drop:
+              - ALL
+          allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: true
+        probes:
+          liveness:
+            enabled: true
+            custom: true
+            spec:
+              httpGet:
+                path: /healthz
+                port: 8443
+                scheme: HTTPS
+              periodSeconds: 20
+          readiness:
+            enabled: true
+            custom: true
+            spec:
+              httpGet:
+                path: /healthz
+                port: 8443
+                scheme: HTTPS
+              periodSeconds: 10
+        resources:
+          requests:
+            cpu: 10m
+            memory: 16Mi
+          limits:
+            cpu: 100m
+            memory: 64Mi
 service:
   app:
     controller: main
@@ -108,6 +147,9 @@ service:
       http:
         targetPort: *port
         port: 80
+      https:
+        port: 443
+        targetPort: 8443
 persistence:
   config:
     enabled: true
@@ -153,3 +195,30 @@ persistence:
         tailscale:
           - path: /etc/tailscale
             readOnly: true
+  tls-proxy-config:
+    enabled: true
+    type: configMap
+    name: prowlarr-tls-proxy-config
+    advancedMounts:
+      main:
+        tls-proxy:
+          - path: /etc/nginx/conf.d/default.conf
+            subPath: default.conf
+            readOnly: true
+  prowlarr-internal-tls:
+    enabled: true
+    type: secret
+    name: prowlarr-internal-stoneydavis-com-tls
+    advancedMounts:
+      main:
+        tls-proxy:
+          - path: /etc/nginx/certs
+            readOnly: true
+  tls-proxy-tmp:
+    enabled: true
+    type: emptyDir
+    sizeLimit: 64Mi
+    advancedMounts:
+      main:
+        tls-proxy:
+          - path: /tmp

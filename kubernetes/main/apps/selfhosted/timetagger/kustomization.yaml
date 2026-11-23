@@ -16,6 +16,10 @@ helmCharts:
     releaseName: timetagger
     version: 5.1.0
     valuesFile: values.yaml
+configMapGenerator:
+  - name: timetagger-tls-proxy-config
+    files:
+      - default.conf=tls-proxy.conf
 resources:
   - ./internal-certificate.yaml
   - ./base/tunnel-external-secret.yaml
