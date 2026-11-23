@@ -1,0 +1,12 @@
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: flood-internal-stoneydavis-com
+spec:
+  secretName: flood-internal-stoneydavis-com-tls
+  dnsNames:
+    - flood.internal.stoneydavis.com
+  issuerRef:
+    name: letsencrypt-stoneydavis-production
+    kind: ClusterIssuer
