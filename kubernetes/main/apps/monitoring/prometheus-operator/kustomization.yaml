@@ -11,6 +11,7 @@ helmCharts:
     releaseName: prometheus-operator-crds
     includeCRDs: true
 resources:
+  - ./namespace.yaml
   - ./service-account.yaml
   - ./cluster-role.yaml
   - ./cluster-role-binding.yaml
