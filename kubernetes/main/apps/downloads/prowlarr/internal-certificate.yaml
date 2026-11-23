@@ -10,3 +10,8 @@ spec:
   issuerRef:
     name: letsencrypt-stoneydavis-production
     kind: ClusterIssuer
+  keystores:
+    pkcs12:
+      create: true
+      password: "changeit"
+      profile: Modern2023

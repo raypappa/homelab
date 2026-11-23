@@ -402,3 +402,8 @@ netwatch
 routerboard
 runtimeinfo
 subresources
+changeit
+ENABLESSL
+SSLCERTPASSWORD
+SSLCERTPATH
+SSLPORT
