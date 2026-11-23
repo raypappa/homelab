@@ -20,7 +20,10 @@ controllers:
         fsGroup: 1001
         fsGroupChangePolicy: "OnRootMismatch"
         runAsNonRoot: true
-    strategy: RollingUpdate
+    # Recreate so the single pod can hand off its RWO PVCs to its
+    # replacement. RollingUpdate would wait on volumes still attached
+    # by the terminating pod and block the rollout.
+    strategy: Recreate
     containers:
       app:
         securityContext:
