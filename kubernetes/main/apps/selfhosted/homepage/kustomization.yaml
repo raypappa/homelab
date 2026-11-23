@@ -15,4 +15,5 @@ helmCharts:
     namespace: homepage
     valuesFile: cloudflare-values.yaml
 resources:
+  - ./internal-certificate.yaml
   - ./external-secret.yaml

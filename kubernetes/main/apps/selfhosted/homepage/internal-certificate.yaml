@@ -1,0 +1,13 @@
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: homepage-internal-stoneydavis-com
+  namespace: homepage
+spec:
+  secretName: homepage-internal-stoneydavis-com-tls
+  dnsNames:
+    - homepage.internal.stoneydavis.com
+  issuerRef:
+    name: letsencrypt-stoneydavis-production
+    kind: ClusterIssuer
