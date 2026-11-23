@@ -16,4 +16,5 @@ helmCharts:
     namespace: ollama
     valuesFile: cloudflare-values.yaml
 resources:
+  - ./internal-certificate.yaml
   - ./external-secret.yaml
