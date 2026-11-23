@@ -48,7 +48,7 @@ controllers:
         image:
           repository: docker.io/nginx/nginx-unprivileged
           # renovate: datasource=docker depName=nginx/nginx-unprivileged
-          tag: 1.31.7
+          tag: 1.31.8
           digest: sha256:ea4fd7ab5a8dc6348c18240bd3546f355f8373cd8f112580f7d8bd8ff5a74772
           pullPolicy: IfNotPresent
         securityContext:
