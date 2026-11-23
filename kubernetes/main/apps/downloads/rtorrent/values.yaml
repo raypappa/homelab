@@ -52,6 +52,8 @@ controllers:
             drop:
               - ALL
           readOnlyRootFilesystem: false
+          seccompProfile:
+            type: RuntimeDefault
 service:
   main:
     controller: main

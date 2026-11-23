@@ -74,6 +74,8 @@ controllers:
             drop:
               - ALL
           readOnlyRootFilesystem: false
+          seccompProfile:
+            type: RuntimeDefault
       tls-proxy:
         image:
           repository: docker.io/nginx/nginx-unprivileged

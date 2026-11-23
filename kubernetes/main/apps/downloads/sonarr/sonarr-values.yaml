@@ -79,6 +79,8 @@ controllers:
             drop:
               - ALL
           readOnlyRootFilesystem: false
+          seccompProfile:
+            type: RuntimeDefault
 service:
   app:
     controller: sonarr
