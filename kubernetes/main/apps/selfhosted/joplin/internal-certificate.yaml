@@ -1,0 +1,13 @@
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: joplin-internal-stoneydavis-com
+  namespace: joplin
+spec:
+  secretName: joplin-internal-stoneydavis-com-tls
+  dnsNames:
+    - joplin.internal.stoneydavis.com
+  issuerRef:
+    name: letsencrypt-stoneydavis-production
+    kind: ClusterIssuer
