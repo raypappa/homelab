@@ -12,7 +12,7 @@ repos:
         stages:
           - pre-push
     repo: https://github.com/commitizen-tools/commitizen
-    rev: f690817de25831a37094ca35af5ada05c909ff1c # frozen: v4.19.3
+    rev: e153e14bdac00edc46e390e4f99cbc6bbf808ef6 # frozen: v4.19.4
   - hooks:
       - id: no-commit-to-branch
       - id: check-json
